@@ -24,7 +24,7 @@ export default function SiteMarketingHeader({ appendDesktop = null, authDrawer }
           Portrait phones are narrower than landscape — flex row was clipping the menu control.
           Reserve right padding on <lg and pin the menu button so it is always visible.
         */}
-        <div className="relative w-full max-w-6xl mx-auto px-3 sm:px-6 lg:px-10 min-h-14 sm:min-h-16 py-1.5 sm:py-0 flex items-center justify-between gap-2 min-w-0 pr-[max(3.5rem,env(safe-area-inset-right))] lg:pr-10">
+        <div className="relative w-full max-w-6xl mx-auto px-3 sm:px-6 lg:px-10 min-h-14 sm:min-h-16 py-1.5 sm:py-0 flex items-center justify-between gap-2 min-w-0 pr-[max(5rem,env(safe-area-inset-right))] lg:pr-10">
           <BrandLogo
             compact
             className="min-w-0 shrink max-w-[min(100%,40vw)] sm:max-w-[min(100%,46vw)] lg:max-w-none rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2"
@@ -40,13 +40,12 @@ export default function SiteMarketingHeader({ appendDesktop = null, authDrawer }
               </NavLink>
             ))}
           </nav>
-          <div className="flex items-center justify-end gap-1 sm:gap-2 min-w-0 shrink-0">
+          <div className="flex items-center justify-end gap-2 sm:gap-3 min-w-0 shrink-0 max-lg:mr-1">
             <Link
               to="/assessment"
-              className={`${beginFreeHeaderButtonClass} shrink min-w-0 touch-manipulation max-lg:px-2 max-lg:py-1.5`}
+              className={`${beginFreeHeaderButtonClass} shrink min-w-0 touch-manipulation max-lg:px-2.5 max-lg:py-1.5`}
             >
-              <span className="lg:hidden">Start</span>
-              <span className="hidden lg:inline">Begin free</span>{' '}
+              Begin free{' '}
               <span aria-hidden className="ml-0.5 sm:ml-1">
                 →
               </span>
@@ -56,7 +55,7 @@ export default function SiteMarketingHeader({ appendDesktop = null, authDrawer }
           <button
             type="button"
             onClick={() => setDrawerOpen(true)}
-            className="lg:hidden absolute right-[max(0.75rem,env(safe-area-inset-right))] top-1/2 z-[60] -translate-y-1/2 flex h-11 w-11 items-center justify-center rounded-md border border-alignment-accent/25 bg-alignment-surface text-alignment-accent shadow-sm hover:bg-alignment-accent/5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2 touch-manipulation"
+            className="lg:hidden absolute right-[max(0.5rem,env(safe-area-inset-right))] top-1/2 z-[60] -translate-y-1/2 flex h-11 w-11 items-center justify-center rounded-lg text-alignment-accent hover:bg-alignment-accent/[0.07] active:bg-alignment-accent/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2 touch-manipulation"
             aria-label="Open menu"
             aria-expanded={drawerOpen}
           >
