@@ -19,7 +19,7 @@ export default function MobileDrawer({ open, onClose, children }) {
       <div
         role="presentation"
         aria-hidden={!open}
-        className={`fixed inset-0 z-[200] bg-alignment-deep/25 backdrop-blur-sm transition-opacity duration-300 lg:hidden ${
+        className={`fixed inset-0 z-[500] bg-alignment-deep/25 backdrop-blur-sm transition-opacity duration-300 lg:hidden ${
           open ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
         onClick={onClose}
@@ -27,11 +27,11 @@ export default function MobileDrawer({ open, onClose, children }) {
       <aside
         aria-modal="true"
         aria-label="Navigation menu"
-        className={`fixed top-0 right-0 z-[210] h-full w-full max-w-sm bg-alignment-surface shadow-apple-lg flex flex-col transition-transform duration-300 ease-out lg:hidden ${
+        className={`fixed top-0 right-0 z-[510] h-[100dvh] max-h-[100dvh] w-full max-w-sm bg-alignment-surface shadow-apple-lg flex flex-col transition-transform duration-300 ease-out lg:hidden pt-[env(safe-area-inset-top)] ${
           open ? 'translate-x-0 pointer-events-auto' : 'translate-x-full pointer-events-none'
         }`}
       >
-        <div className="flex items-center justify-between h-14 px-6 border-b border-alignment-accent/[0.06]">
+        <div className="flex shrink-0 items-center justify-between h-14 px-4 sm:px-6 border-b border-alignment-accent/[0.06]">
           <span className="text-lg font-semibold tracking-tight text-alignment-accent">
             Menu
           </span>
@@ -46,7 +46,7 @@ export default function MobileDrawer({ open, onClose, children }) {
             </svg>
           </button>
         </div>
-        <nav className="flex flex-col p-4 gap-1">
+        <nav className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto overscroll-contain p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
           {children}
         </nav>
       </aside>

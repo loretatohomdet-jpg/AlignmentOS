@@ -105,8 +105,9 @@ function Layout({ children }) {
 
   const appendDesktop = (
     <>
+      {/* Account avatar only on large screens — on phones/tablets the header bar is too narrow; use the menu drawer instead */}
       {isLoggedIn && (
-        <div className="md:hidden flex items-center shrink-0">
+        <div className="hidden lg:flex items-center shrink-0">
           <HeaderUserMenu isLoggedIn onLogout={() => setIsLoggedIn(false)} />
         </div>
       )}

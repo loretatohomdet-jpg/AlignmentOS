@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { siteLegalLinks, siteMarketingFooter, siteSecondaryFooter } from '../config/footerNav';
 
 const linkClass =
-  'hover:text-alignment-accent transition-colors duration-200 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2 rounded-sm';
+  'hover:text-alignment-accent transition-colors duration-200 whitespace-normal sm:whitespace-nowrap break-words sm:break-normal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2 rounded-sm';
 
 /** Landing page marketing grid + legal */
 export function SiteMarketingFooterNav({ className = '' }) {

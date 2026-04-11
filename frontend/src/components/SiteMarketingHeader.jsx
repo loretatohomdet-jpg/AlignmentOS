@@ -19,15 +19,15 @@ export default function SiteMarketingHeader({ appendDesktop = null, authDrawer }
 
   return (
     <>
-      <header className="sticky top-0 z-50 w-full border-b border-alignment-accent/[0.06] bg-alignment-surface/90 backdrop-blur-md supports-[backdrop-filter]:bg-alignment-surface/80 relative overflow-visible">
+      <header className="sticky top-0 z-50 w-full border-b border-alignment-accent/[0.06] bg-alignment-surface/90 backdrop-blur-md supports-[backdrop-filter]:bg-alignment-surface/80 relative overflow-visible pt-[max(0px,env(safe-area-inset-top))]">
         {/*
           Portrait phones are narrower than landscape — flex row was clipping the menu control.
           Reserve right padding on <lg and pin the menu button so it is always visible.
         */}
-        <div className="relative w-full max-w-6xl mx-auto px-3 sm:px-6 lg:px-10 min-h-14 sm:min-h-16 py-1.5 sm:py-0 flex items-center justify-between gap-2 min-w-0 pr-14 lg:pr-10">
+        <div className="relative w-full max-w-6xl mx-auto px-3 sm:px-6 lg:px-10 min-h-14 sm:min-h-16 py-1.5 sm:py-0 flex items-center justify-between gap-2 min-w-0 pr-[max(3.5rem,env(safe-area-inset-right))] lg:pr-10">
           <BrandLogo
             compact
-            className="min-w-0 shrink max-w-[min(100%,46vw)] lg:max-w-none rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2"
+            className="min-w-0 shrink max-w-[min(100%,40vw)] sm:max-w-[min(100%,46vw)] lg:max-w-none rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2"
           />
           <nav className="hidden lg:flex items-center gap-5 lg:gap-8 flex-1 justify-center min-w-0" aria-label="Primary">
             {siteNavMainLinks.map(({ to, label }) => (
@@ -40,7 +40,7 @@ export default function SiteMarketingHeader({ appendDesktop = null, authDrawer }
               </NavLink>
             ))}
           </nav>
-          <div className="flex items-center justify-end gap-1 sm:gap-2 min-w-0 flex-1 lg:flex-initial lg:shrink-0">
+          <div className="flex items-center justify-end gap-1 sm:gap-2 min-w-0 shrink-0">
             <Link
               to="/assessment"
               className={`${beginFreeHeaderButtonClass} shrink min-w-0 touch-manipulation max-lg:px-2 max-lg:py-1.5`}
@@ -56,7 +56,7 @@ export default function SiteMarketingHeader({ appendDesktop = null, authDrawer }
           <button
             type="button"
             onClick={() => setDrawerOpen(true)}
-            className="lg:hidden absolute right-3 top-1/2 z-[60] -translate-y-1/2 flex h-11 w-11 items-center justify-center rounded-md border border-alignment-accent/25 bg-alignment-surface text-alignment-accent shadow-sm hover:bg-alignment-accent/5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2 touch-manipulation"
+            className="lg:hidden absolute right-[max(0.75rem,env(safe-area-inset-right))] top-1/2 z-[60] -translate-y-1/2 flex h-11 w-11 items-center justify-center rounded-md border border-alignment-accent/25 bg-alignment-surface text-alignment-accent shadow-sm hover:bg-alignment-accent/5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2 touch-manipulation"
             aria-label="Open menu"
             aria-expanded={drawerOpen}
           >
@@ -87,17 +87,22 @@ export default function SiteMarketingHeader({ appendDesktop = null, authDrawer }
         </Link>
         <p className="px-4 pt-4 pb-1 text-xs font-medium text-alignment-accent/70 uppercase tracking-wider">Account</p>
         {authDrawer?.isLoggedIn ? (
-          <a
-            href="/"
-            className={siteNavDrawerRowClass}
-            onClick={(e) => {
-              e.preventDefault();
-              setDrawerOpen(false);
-              authDrawer.onLogout();
-            }}
-          >
-            Log out
-          </a>
+          <>
+            <Link to="/profile" className={siteNavDrawerRowClass} onClick={() => setDrawerOpen(false)}>
+              Profile
+            </Link>
+            <a
+              href="/"
+              className={siteNavDrawerRowClass}
+              onClick={(e) => {
+                e.preventDefault();
+                setDrawerOpen(false);
+                authDrawer.onLogout();
+              }}
+            >
+              Log out
+            </a>
+          </>
         ) : authDrawer ? (
           <>
             <Link to="/signup" className={siteNavDrawerRowClass} onClick={() => setDrawerOpen(false)}>
