@@ -13,6 +13,12 @@ body,
   height: 100%;
 }
 
+/* Clip horizontal overflow on the app shell only — not html/body, so position:fixed overlays (e.g. mobile nav) stay reliable on iOS Safari */
+#root {
+  overflow-x: clip;
+  max-width: 100%;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display',
     system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;

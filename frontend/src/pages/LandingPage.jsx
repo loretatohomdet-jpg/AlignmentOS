@@ -66,7 +66,7 @@ function AnimatedProofStat({ target, prefix = '', suffix = '', label }) {
 
   return (
     <div ref={ref} className="bg-alignment-primary px-4 py-8 sm:py-10 md:py-12 text-center">
-      <p className="font-display text-[2rem] sm:text-4xl md:text-[2.75rem] font-medium text-white leading-none tracking-tight tabular-nums">
+      <p className="font-display text-[clamp(1.35rem,7vw,2.75rem)] sm:text-4xl md:text-[2.75rem] font-medium text-white leading-none tracking-tight tabular-nums px-1">
         {prefix}
         {value}
         {suffix}
@@ -322,7 +322,7 @@ export default function LandingPage() {
               <p className="text-[11px] sm:text-xs font-normal uppercase tracking-[0.28em] text-alignment-accent/50 mb-8 sm:mb-10">
                 Human alignment software
               </p>
-              <h1 className="font-display text-[2.75rem] sm:text-5xl md:text-[3.25rem] lg:text-[3.5rem] font-medium text-alignment-accent leading-[1.12] tracking-tight text-balance">
+              <h1 className="font-display text-[clamp(1.85rem,6.5vw,2.75rem)] sm:text-5xl md:text-[3.25rem] lg:text-[3.5rem] font-medium text-alignment-accent leading-[1.12] tracking-tight text-balance px-0">
                 A system for becoming{' '}
                 <span className="text-alignment-accent/70 italic font-normal">whole.</span>
               </h1>
