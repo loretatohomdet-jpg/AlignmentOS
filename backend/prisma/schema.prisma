@@ -1,0 +1,190 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  avatarUrl String?
+  role      Role     @default(USER)
+  plan      Plan     @default(FREE)
+  /** When set, user cannot sign in (moderation). */
+  suspendedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  responses        Response[]
+  scores           AlignmentIndexScore[]
+  alignmentProfiles AlignmentProfile[]
+  activeHabits     ActiveHabit[]
+  adminNotesAbout  AdminUserNote[] @relation("AdminNoteSubject")
+  adminNotesAuthored AdminUserNote[] @relation("AdminNoteAuthor")
+}
+
+/** Internal support / moderation notes on a user (visible to admins only). */
+model AdminUserNote {
+  id        String   @id @default(uuid())
+  userId    String
+  authorId  String
+  body      String
+  createdAt DateTime @default(now())
+
+  subject User @relation("AdminNoteSubject", fields: [userId], references: [id], onDelete: Cascade)
+  author  User @relation("AdminNoteAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+}
+
+enum Plan {
+  FREE
+  PRO
+  TEAM
+}
+
+model Lead {
+  id        String   @id @default(uuid())
+  email     String
+  source    String?  @default("lander")
+  createdAt DateTime @default(now())
+
+  @@index([email, source])
+  @@index([createdAt])
+}
+
+model Assessment {
+  id          String    @id @default(uuid())
+  title       String
+  description String?
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  questions         Question[]
+  responses         Response[]
+  scores            AlignmentIndexScore[]
+  alignmentProfiles AlignmentProfile[]
+}
+
+enum Pillar {
+  IDENTITY
+  PURPOSE
+  MINDSET
+  HABITS
+  ENVIRONMENT
+  EXECUTION
+}
+
+enum QuestionType {
+  STANDARD
+  PENALTY
+}
+
+model Question {
+  id           String       @id @default(uuid())
+  assessmentId String
+  text         String
+  order        Int
+  scaleMin     Int          @default(1)
+  scaleMax     Int          @default(5)
+  pillar       Pillar
+  questionType QuestionType @default(STANDARD)
+
+  assessment Assessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  responses  Response[]
+}
+
+model AlignmentProfile {
+  id            String   @id @default(uuid())
+  userId        String   @unique
+  assessmentId  String
+  aqScore       Float
+  primaryDomain String?
+  archetype     String?
+  pillarScores  Json
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assessment   Assessment    @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  activeHabits ActiveHabit[]
+
+  @@index([userId, createdAt])
+}
+
+model Response {
+  id           String   @id @default(uuid())
+  userId       String
+  assessmentId String
+  questionId   String
+  value        Int
+  createdAt    DateTime @default(now())
+
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assessment Assessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  question   Question   @relation(fields: [questionId], references: [id], onDelete: Cascade)
+}
+
+model AlignmentIndexScore {
+  id           String   @id @default(uuid())
+  userId       String
+  assessmentId String
+  score        Float
+  createdAt    DateTime @default(now())
+
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assessment Assessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+}
+
+model Habit {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  level       Int
+  pillar      Pillar
+  tags        String[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  activeHabits ActiveHabit[]
+}
+
+model ActiveHabit {
+  id         String   @id @default(uuid())
+  userId     String
+  habitId    String
+  profileId  String?
+  assignedAt DateTime @default(now())
+
+  user     User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  habit    Habit             @relation(fields: [habitId], references: [id], onDelete: Cascade)
+  profile  AlignmentProfile? @relation(fields: [profileId], references: [id], onDelete: SetNull)
+  completions HabitCompletion[]
+
+  @@unique([userId, habitId])
+  @@index([userId])
+}
+
+model HabitCompletion {
+  id             String   @id @default(uuid())
+  activeHabitId  String
+  completedAt    DateTime @default(now())
+
+  activeHabit ActiveHabit @relation(fields: [activeHabitId], references: [id], onDelete: Cascade)
+
+  @@index([activeHabitId, completedAt])
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
