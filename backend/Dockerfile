@@ -1,6 +1,9 @@
 # Express + Prisma — explicit image so Railway doesn’t need to guess (avoids Railpack “build plan” failures on monorepos).
 FROM node:20-bookworm-slim
 
+RUN apt-get update && apt-get install -y --no-install-recommends openssl ca-certificates \
+  && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 
 COPY package*.json ./
@@ -12,4 +15,4 @@ RUN npx prisma generate
 ENV NODE_ENV=production
 EXPOSE 5000
 
-CMD ["npm", "start"]
+CMD ["sh", "-c", "set -e && ./node_modules/.bin/prisma migrate deploy && exec node server.js"]
