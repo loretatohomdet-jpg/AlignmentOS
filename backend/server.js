@@ -17,9 +17,18 @@ const agentRoutes = require('./src/routes/agent');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware — in production set CORS_ORIGIN to your frontend URL (e.g. https://app.alignmentos.com)
-const corsOrigin = process.env.CORS_ORIGIN;
-app.use(cors(corsOrigin ? { origin: corsOrigin } : undefined));
+// Middleware — set CORS_ORIGIN to your frontend origin(s). Comma-separated for prod + Vercel previews.
+const corsOriginRaw = process.env.CORS_ORIGIN;
+const corsOrigins = corsOriginRaw
+  ? corsOriginRaw.split(',').map((s) => s.trim()).filter(Boolean)
+  : [];
+const corsOptions =
+  corsOrigins.length === 0
+    ? undefined
+    : corsOrigins.length === 1
+      ? { origin: corsOrigins[0] }
+      : { origin: corsOrigins };
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Health check

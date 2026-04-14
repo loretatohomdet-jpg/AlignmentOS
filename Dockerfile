@@ -12,10 +12,9 @@ COPY backend/package*.json ./
 RUN npm ci
 
 COPY backend/ .
-RUN npx prisma generate
+RUN npx prisma generate && chmod +x scripts/railway-start.sh
 
 ENV NODE_ENV=production
 EXPOSE 5000
 
-# Migrations need DATABASE_URL at runtime (set on Railway). Use local prisma binary (no npx ambiguity).
-CMD ["sh", "-c", "set -e && ./node_modules/.bin/prisma migrate deploy && exec node server.js"]
+CMD ["sh", "scripts/railway-start.sh"]

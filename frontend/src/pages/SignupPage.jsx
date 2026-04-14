@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useSearchParams, NavLink } from 'react-router-dom';
 import axios from 'axios';
-import { API_BASE } from '../config/apiBase';
+import { API_BASE, networkErrorUserMessage } from '../config/apiBase';
 import SiteMarketingHeader from '../components/SiteMarketingHeader';
 import { authHeadingClass, authLeadClass } from '../constants/authPageTheme';
 
@@ -36,7 +36,7 @@ export default function SignupPage() {
         : msg;
       setError(
         detail ||
-          (err.code === 'ERR_NETWORK' ? 'Cannot reach server. Is the backend running?' : err.message) ||
+          (err.code === 'ERR_NETWORK' ? networkErrorUserMessage() : err.message) ||
           'Sign up failed. Check your details or try again.'
       );
     } finally {

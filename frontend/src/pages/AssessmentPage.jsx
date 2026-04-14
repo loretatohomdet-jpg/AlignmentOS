@@ -4,7 +4,7 @@ import axios from 'axios';
 import { getCategoryProgress, sortQuestionsByDomainOrder } from '../utils/assessmentCategory';
 import { DOMAIN_ORDER, DOMAIN_LABELS, PILLAR_INTRO } from '../constants/domains';
 import { diagRun } from '../constants/diagnosticTheme';
-import { API_BASE } from '../config/apiBase';
+import { API_BASE, networkErrorUserMessage } from '../config/apiBase';
 import { domainScoresToDisplayPct } from '../utils/domainScores';
 import { buildGuestPreviewPayload } from '../utils/assessmentPreview';
 const DRAFT_KEY = 'alignment_assessment_draft';
@@ -86,7 +86,7 @@ export default function AssessmentPage() {
         } else if (err.response?.status === 404) {
           setError('No assessment is available right now. Please try again later.');
         } else if (err.code === 'ERR_NETWORK') {
-          setError('Cannot reach the server. Make sure the backend is running.');
+          setError(networkErrorUserMessage());
         } else {
           setError(err.response?.data?.message || 'Failed to load assessment.');
         }

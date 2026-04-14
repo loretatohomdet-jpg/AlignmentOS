@@ -72,7 +72,13 @@ export default function ProfilePage() {
       setUser(data);
       setSuccess(true);
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to update profile');
+      const msg = err.response?.data?.message;
+      const zod = err.response?.data?.errors;
+      const detail =
+        Array.isArray(zod) && zod.length
+          ? zod.map((e) => e.message || e.path?.join('.')).filter(Boolean).join(' ')
+          : null;
+      setError(detail || msg || 'Failed to update profile');
     } finally {
       setSaving(false);
     }
@@ -161,13 +167,20 @@ export default function ProfilePage() {
             </label>
             <input
               id="avatarUrl"
-              type="url"
+              type="text"
+              inputMode="url"
+              autoComplete="off"
               value={avatarUrl}
               onChange={(e) => setAvatarUrl(e.target.value)}
               className="w-full rounded-xl border border-alignment-accent/10 bg-alignment-surface px-4 py-3 text-alignment-accent placeholder-alignment-accent/45 focus:border-alignment-accent focus:ring-2 focus:ring-alignment-accent/20 outline-none transition-all"
-              placeholder="https://example.com/your-photo.jpg"
+              placeholder="https://…"
             />
-            <p className="mt-1 text-xs text-alignment-accent/70">Paste a link to an image. Use a square image for best results.</p>
+            <p className="mt-1 text-xs text-alignment-accent/70">
+              Paste a direct link to an image file (<span className="whitespace-nowrap">https://…</span> ending in{' '}
+              <span className="whitespace-nowrap">.jpg</span>, <span className="whitespace-nowrap">.png</span>, etc.).
+              This app does not upload files from your device—host the image (e.g. Imgur, Dropbox public link), then paste
+              the URL here and tap Save changes.
+            </p>
           </div>
           <div>
             <span className="text-sm font-medium text-alignment-accent">Plan</span>
