@@ -12,4 +12,4 @@ RUN npx prisma generate
 ENV NODE_ENV=production
 EXPOSE 5000
 
-CMD ["node", "server.js"]
+CMD ["npm", "start"]

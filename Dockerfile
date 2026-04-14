@@ -13,4 +13,5 @@ RUN npx prisma generate
 ENV NODE_ENV=production
 EXPOSE 5000
 
-CMD ["node", "server.js"]
+# Migrations need DB at runtime (DATABASE_URL on Railway). Build only runs prisma generate above.
+CMD ["npm", "start"]
