@@ -1,6 +1,19 @@
 const { z } = require('zod');
 
-/** Accepts https image links; empty string from clients becomes null. */
+const MAX_DATA_URL_LENGTH = 280000;
+
+function isValidAvatarString(s) {
+  if (typeof s !== 'string') return false;
+  if (s.length > MAX_DATA_URL_LENGTH) return false;
+  if (/^data:image\/(jpeg|png|webp|gif);base64,/i.test(s)) return true;
+  try {
+    const u = new URL(s);
+    return u.protocol === 'https:' || u.protocol === 'http:';
+  } catch {
+    return false;
+  }
+}
+
 const optionalImageUrl = z.preprocess(
   (v) => {
     if (v === undefined) return undefined;
@@ -8,7 +21,12 @@ const optionalImageUrl = z.preprocess(
     if (typeof v === 'string' && v.trim() === '') return null;
     return typeof v === 'string' ? v.trim() : v;
   },
-  z.union([z.null(), z.string().max(2000).url()]).optional()
+  z
+    .union([
+      z.null(),
+      z.string().max(MAX_DATA_URL_LENGTH).refine(isValidAvatarString, { message: 'Invalid image URL' }),
+    ])
+    .optional()
 );
 
 const updateProfileSchema = z.object({

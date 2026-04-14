@@ -1,6 +1,14 @@
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const MODEL = process.env.OPENAI_AGENT_MODEL || 'gpt-4o-mini';
 
+/** GET /api/agent/status */
+function status(req, res) {
+  res.json({
+    enabled: Boolean(OPENAI_API_KEY),
+    code: OPENAI_API_KEY ? null : 'AGENT_DISABLED',
+  });
+}
+
 const SYSTEM_PROMPT = `You are the Alignment OS assistant. You help users reflect on alignment between their work and what matters to them—identity, purpose, rhythms, and environment. You are calm, clear, and ethical. You do not gamify or push; you offer perspective and gentle prompts. You can answer questions about the AQ assessment, daily practice, and reflection. Keep replies concise (a short paragraph unless the user asks for more). If asked about something outside alignment or the product, briefly redirect to how it might connect to priorities or say you're here for alignment-related support.`;
 
 /**
@@ -12,6 +20,7 @@ async function chat(req, res, next) {
   try {
     if (!OPENAI_API_KEY) {
       return res.status(503).json({
+        code: 'AGENT_DISABLED',
         message: 'AI agent is not configured. Set OPENAI_API_KEY on the server.',
       });
     }
@@ -64,4 +73,4 @@ async function chat(req, res, next) {
   }
 }
 
-module.exports = { chat };
+module.exports = { chat, status };

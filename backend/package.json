@@ -12,7 +12,8 @@
     "db:fix": "bash scripts/fix-pg-hba.sh",
     "prisma:migrate": "prisma migrate dev --name init",
     "prisma:generate": "prisma generate",
-    "seed": "npx prisma db seed"
+    "seed": "npx prisma db seed",
+    "test": "node --test tests/*.test.cjs"
   },
   "dependencies": {
     "@prisma/client": "^6.19.2",
@@ -20,10 +21,12 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.0",
     "express": "^4.18.0",
+    "express-rate-limit": "^8.3.2",
     "jsonwebtoken": "^9.0.0",
+    "multer": "^2.1.1",
+    "prisma": "^6.19.2",
     "resend": "^6.9.2",
-    "zod": "^3.23.8",
-    "prisma": "^6.19.2"
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",

@@ -13,6 +13,8 @@ model User {
   password  String
   name      String
   avatarUrl String?
+  /** Opaque token for public /s/:token score card (no PII beyond first name on share page). */
+  shareToken String? @unique
   role      Role     @default(USER)
   plan      Plan     @default(FREE)
   /** When set, user cannot sign in (moderation). */

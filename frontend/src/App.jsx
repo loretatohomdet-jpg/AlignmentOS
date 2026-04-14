@@ -48,6 +48,7 @@ import EthicsPage from './pages/EthicsPage';
 import NotFoundPage from './pages/NotFoundPage';
 import SuccessPage from './pages/SuccessPage';
 import SharePage from './pages/SharePage';
+import SharePublicPage from './pages/SharePublicPage';
 import HeaderUserMenu from './components/HeaderUserMenu';
 import AgentFloatingButton from './components/AgentFloatingButton';
 import BrandLogo from './components/BrandLogo';
@@ -175,6 +176,7 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={<LandingPage />} />
+      <Route path="/s/:token" element={<SharePublicPage />} />
       <Route path="/start" element={<StartPage />} />
       <Route path="/go/alignment" element={<StartPage />} />
       <Route path="/login" element={<LoginPage />} />

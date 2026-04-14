@@ -34,6 +34,7 @@ export default function ProfilePage() {
   const [error, setError] = useState(null);
   const [name, setName] = useState('');
   const [avatarUrl, setAvatarUrl] = useState('');
+  const [avatarUploading, setAvatarUploading] = useState(false);
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
@@ -81,6 +82,31 @@ export default function ProfilePage() {
       setError(detail || msg || 'Failed to update profile');
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleAvatarFile = async (e) => {
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (!file || !file.type.startsWith('image/')) return;
+    const token = localStorage.getItem('accessToken');
+    if (!token) return;
+    setAvatarUploading(true);
+    setError(null);
+    setSuccess(false);
+    try {
+      const fd = new FormData();
+      fd.append('file', file);
+      const { data } = await axios.post(`${API_BASE}/me/avatar`, fd, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setUser(data);
+      setAvatarUrl(data.avatarUrl || '');
+      setSuccess(true);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Could not upload image.');
+    } finally {
+      setAvatarUploading(false);
     }
   };
 
@@ -162,8 +188,16 @@ export default function ProfilePage() {
             <p className="mt-1 text-xs text-alignment-accent/70">Email cannot be changed here.</p>
           </div>
           <div>
-            <label htmlFor="avatarUrl" className="block text-sm font-medium text-alignment-accent mb-2">
-              Profile picture URL
+            <span className="block text-sm font-medium text-alignment-accent mb-2">Profile picture</span>
+            <div className="flex flex-wrap items-center gap-3">
+              <label className="inline-flex items-center justify-center rounded-full border border-alignment-accent/15 bg-alignment-surface px-4 py-2 text-sm font-medium text-alignment-accent cursor-pointer hover:bg-alignment-accent/[0.03]">
+                <input type="file" accept="image/jpeg,image/png,image/webp,image/gif" className="sr-only" onChange={handleAvatarFile} disabled={avatarUploading || saving} />
+                {avatarUploading ? 'Uploading…' : 'Upload photo'}
+              </label>
+              <span className="text-xs text-alignment-accent/60">JPEG, PNG, WebP, or GIF · max ~200KB</span>
+            </div>
+            <label htmlFor="avatarUrl" className="block text-sm font-medium text-alignment-accent mb-2 mt-5">
+              Or paste image URL
             </label>
             <input
               id="avatarUrl"
@@ -176,10 +210,8 @@ export default function ProfilePage() {
               placeholder="https://…"
             />
             <p className="mt-1 text-xs text-alignment-accent/70">
-              Paste a direct link to an image file (<span className="whitespace-nowrap">https://…</span> ending in{' '}
-              <span className="whitespace-nowrap">.jpg</span>, <span className="whitespace-nowrap">.png</span>, etc.).
-              This app does not upload files from your device—host the image (e.g. Imgur, Dropbox public link), then paste
-              the URL here and tap Save changes.
+              Direct <span className="whitespace-nowrap">https://</span> link to a <span className="whitespace-nowrap">.jpg</span> /{' '}
+              <span className="whitespace-nowrap">.png</span> file, then Save changes.
             </p>
           </div>
           <div>
