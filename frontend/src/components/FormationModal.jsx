@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { formationExploreUrl } from '../config/externalLinks';
 
 const DISMISS_KEY = 'formationModalDismissedAt';
 const DISMISS_DAYS = 7;
@@ -36,7 +37,7 @@ export default function FormationModal({ show, onClose, aqScore, daysWithHabits 
         </p>
         <div className="mt-6 flex flex-col sm:flex-row gap-3">
           <a
-            href="https://simplicityandproductivity.com/"
+            href={formationExploreUrl()}
             target="_blank"
             rel="noopener noreferrer"
             className="rounded-full bg-alignment-primary text-white px-5 py-2.5 text-sm font-medium hover:bg-alignment-primary/90 text-center"

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { formationExploreUrl } from '../config/externalLinks';
 import { API_BASE } from '../config/apiBase';
 
 export default function BusinessAlignmentPage() {
@@ -216,7 +217,7 @@ export default function BusinessAlignmentPage() {
                 View Team plan
               </Link>
               <a
-                href="https://simplicityandproductivity.com/"
+                href={formationExploreUrl()}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full sm:w-auto rounded-full bg-alignment-surface text-alignment-accent px-8 py-4 text-base font-medium hover:bg-alignment-accent/5 transition-colors border border-alignment-accent/5"

@@ -1,4 +1,10 @@
 import { Link } from 'react-router-dom';
+import {
+  programHubUrl,
+  courseLibraryUrl,
+  bookingUrl,
+  formationExploreUrl,
+} from '../config/externalLinks';
 
 const rowClass =
   'flex items-center justify-between px-6 py-4 border-b border-alignment-accent/5 last:border-0 hover:bg-alignment-accent/5 transition-colors';
@@ -38,6 +44,29 @@ export default function MorePage() {
           <span className="text-sm text-alignment-accent/45">Full map · preview</span>
         </Link>
       </Section>
+
+      {(programHubUrl || courseLibraryUrl || bookingUrl) && (
+        <Section title="Programs & formation">
+          {programHubUrl && (
+            <a href={programHubUrl} className={rowClass} target="_blank" rel="noopener noreferrer">
+              <span className="font-medium text-alignment-accent">Program hub</span>
+              <span className="text-alignment-accent/70">↗</span>
+            </a>
+          )}
+          {courseLibraryUrl && (
+            <a href={courseLibraryUrl} className={rowClass} target="_blank" rel="noopener noreferrer">
+              <span className="font-medium text-alignment-accent">Course library</span>
+              <span className="text-sm text-alignment-accent/45">Teachable</span>
+            </a>
+          )}
+          {bookingUrl && (
+            <a href={bookingUrl} className={rowClass} target="_blank" rel="noopener noreferrer">
+              <span className="font-medium text-alignment-accent">Book a mentor call</span>
+              <span className="text-alignment-accent/70">↗</span>
+            </a>
+          )}
+        </Section>
+      )}
 
       <Section title="Story & pricing">
         <Link to="/platform" className={rowClass}>
@@ -115,12 +144,7 @@ export default function MorePage() {
           <span className="font-medium text-alignment-accent">Support</span>
           <span className="text-alignment-accent/70">→</span>
         </a>
-        <a
-          href="https://simplicityandproductivity.com/"
-          className={rowClass}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a href={formationExploreUrl()} className={rowClass} target="_blank" rel="noopener noreferrer">
           <span className="font-medium text-alignment-accent">Explore formation</span>
           <span className="text-alignment-accent/70">↗</span>
         </a>

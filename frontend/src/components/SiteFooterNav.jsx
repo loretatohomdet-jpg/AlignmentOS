@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { siteLegalLinks, siteMarketingFooter, siteSecondaryFooter } from '../config/footerNav';
+import { extraMarketingFooterLinks } from '../config/externalLinks';
 
 const linkClass =
   'hover:text-alignment-accent transition-colors duration-200 whitespace-normal sm:whitespace-nowrap break-words sm:break-normal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2 rounded-sm';
@@ -24,6 +25,17 @@ export function SiteMarketingFooterNav({ className = '' }) {
           </Link>
         ),
       )}
+      {extraMarketingFooterLinks.map((item) => (
+        <a
+          key={`ext-${item.label}-${item.href}`}
+          href={item.href}
+          className={`${linkClass} text-alignment-accent/45`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {item.label}
+        </a>
+      ))}
       {siteLegalLinks.map((item) => (
         <Link key={item.to} to={item.to} className={`${linkClass} text-alignment-accent/45`}>
           {item.label}

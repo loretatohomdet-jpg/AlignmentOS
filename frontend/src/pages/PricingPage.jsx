@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import BrandLogo from '../components/BrandLogo';
+import { checkoutHabitUrl, checkoutJourneyUrl, courseLibraryUrl } from '../config/externalLinks';
 import SiteMarketingHeader from '../components/SiteMarketingHeader';
 import { SiteSecondaryFooterNav } from '../components/SiteFooterNav';
 
@@ -234,12 +235,23 @@ export default function PricingPage() {
                     </li>
                   ))}
                 </ul>
-                <Link
-                  to="/login"
-                  className={`mt-10 w-full inline-flex items-center justify-center rounded-sm bg-alignment-primary text-white text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] py-3.5 transition-colors hover:bg-alignment-primary/90 ${focusRing}`}
-                >
-                  Activate <span aria-hidden className="ml-2">→</span>
-                </Link>
+                {checkoutHabitUrl ? (
+                  <a
+                    href={checkoutHabitUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`mt-10 w-full inline-flex items-center justify-center rounded-sm bg-alignment-primary text-white text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] py-3.5 transition-colors hover:bg-alignment-primary/90 ${focusRing}`}
+                  >
+                    Activate <span aria-hidden className="ml-2">→</span>
+                  </a>
+                ) : (
+                  <Link
+                    to="/login"
+                    className={`mt-10 w-full inline-flex items-center justify-center rounded-sm bg-alignment-primary text-white text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] py-3.5 transition-colors hover:bg-alignment-primary/90 ${focusRing}`}
+                  >
+                    Activate <span aria-hidden className="ml-2">→</span>
+                  </Link>
+                )}
                 <p className="mt-4 text-center text-[11px] text-alignment-accent/45">
                   Secure checkout via Stripe · Cancel any time
                 </p>
@@ -264,18 +276,40 @@ export default function PricingPage() {
                     </li>
                   ))}
                 </ul>
-                <Link
-                  to="/login"
-                  className={`mt-6 w-full inline-flex items-center justify-center rounded-sm bg-alignment-surface text-alignment-accent text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] py-3.5 transition-colors hover:bg-alignment-surface/90 ${focusRing} focus-visible:ring-offset-alignment-foundation`}
-                >
-                  Begin journey to purpose <span aria-hidden className="ml-2">→</span>
-                </Link>
-                <Link
-                  to="/start"
-                  className="mt-3 w-full inline-flex items-center justify-center rounded-sm border border-white/25 text-white text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.14em] py-3 transition-colors hover:bg-alignment-surface/5"
-                >
-                  See the full programme <span aria-hidden className="ml-2">→</span>
-                </Link>
+                {checkoutJourneyUrl ? (
+                  <a
+                    href={checkoutJourneyUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`mt-6 w-full inline-flex items-center justify-center rounded-sm bg-alignment-surface text-alignment-accent text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] py-3.5 transition-colors hover:bg-alignment-surface/90 ${focusRing} focus-visible:ring-offset-alignment-foundation`}
+                  >
+                    Begin journey to purpose <span aria-hidden className="ml-2">→</span>
+                  </a>
+                ) : (
+                  <Link
+                    to="/login"
+                    className={`mt-6 w-full inline-flex items-center justify-center rounded-sm bg-alignment-surface text-alignment-accent text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] py-3.5 transition-colors hover:bg-alignment-surface/90 ${focusRing} focus-visible:ring-offset-alignment-foundation`}
+                  >
+                    Begin journey to purpose <span aria-hidden className="ml-2">→</span>
+                  </Link>
+                )}
+                {courseLibraryUrl ? (
+                  <a
+                    href={courseLibraryUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-3 w-full inline-flex items-center justify-center rounded-sm border border-white/25 text-white text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.14em] py-3 transition-colors hover:bg-alignment-surface/5"
+                  >
+                    See the full programme <span aria-hidden className="ml-2">→</span>
+                  </a>
+                ) : (
+                  <Link
+                    to="/start"
+                    className="mt-3 w-full inline-flex items-center justify-center rounded-sm border border-white/25 text-white text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.14em] py-3 transition-colors hover:bg-alignment-surface/5"
+                  >
+                    See the full programme <span aria-hidden className="ml-2">→</span>
+                  </Link>
+                )}
               </div>
             </div>
           </div>
