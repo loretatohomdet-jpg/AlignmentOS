@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { DOMAIN_ORDER, DOMAIN_LABELS } from '../constants/domains';
+import DomainPillarIcon from './DomainPillarIcon';
 import { domainScoresToDisplayPct } from '../utils/domainScores';
 import { diag, resultsUi } from '../constants/diagnosticTheme';
 import { API_BASE } from '../config/apiBase';
@@ -165,9 +166,12 @@ export default function DiagnosticResultsSummary({
                 const pct = domainScoresToDisplayPct(pillarScores, key);
                 return (
                   <div key={key}>
-                    <div className="flex justify-between text-sm mb-1.5">
-                      <span className="font-medium text-alignment-accent">{DOMAIN_LABELS[key]}</span>
-                      <span className="text-alignment-accent/70 tabular-nums">{pct.toFixed(0)}%</span>
+                    <div className="flex justify-between items-center gap-2 text-sm mb-1.5">
+                      <span className="font-medium text-alignment-accent flex items-center gap-2 min-w-0">
+                        <DomainPillarIcon pillar={key} className="w-5 h-5 shrink-0 text-alignment-accent/65" />
+                        <span className="truncate">{DOMAIN_LABELS[key]}</span>
+                      </span>
+                      <span className="text-alignment-accent/70 tabular-nums shrink-0">{pct.toFixed(0)}%</span>
                     </div>
                     <div className={`h-1.5 rounded-full overflow-hidden ${diag.barTrack}`}>
                       <div

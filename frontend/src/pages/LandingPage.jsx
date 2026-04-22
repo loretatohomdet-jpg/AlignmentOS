@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import AgentFloatingButton from '../components/AgentFloatingButton';
 import BrandLogo from '../components/BrandLogo';
 import SiteMarketingHeader from '../components/SiteMarketingHeader';
+import DomainPillarIcon from '../components/DomainPillarIcon';
 import { SiteMarketingFooterNav } from '../components/SiteFooterNav';
 
 function usePrefersReducedMotion() {
@@ -216,12 +217,12 @@ export default function LandingPage() {
   ];
 
   const sixDomains = [
-    { dot: 'bg-alignment-primary', title: 'Identity', body: 'Who you are — values, moral framework, the person you are becoming.' },
-    { dot: 'bg-alignment-primary/70', title: 'Purpose', body: 'What you are for — mission clarity, direction, vocation this season.' },
-    { dot: 'bg-alignment-primary/50', title: 'Mindset', body: 'How you think — beliefs shaping perception, confidence, decisions.' },
-    { dot: 'bg-alignment-primary/40', title: 'Habits', body: 'What you do daily — practices reinforcing identity and purpose.' },
-    { dot: 'bg-alignment-primary/60', title: 'Environment', body: 'What surrounds you — relationships, inputs, spaces shaping behaviour.' },
-    { dot: 'bg-alignment-primary/35', title: 'Execution', body: 'How you follow through — discipline, planning, completing what matters.' },
+    { pillar: 'IDENTITY', iconClass: 'text-alignment-primary', title: 'Identity', body: 'Who you are — values, moral framework, the person you are becoming.' },
+    { pillar: 'PURPOSE', iconClass: 'text-alignment-primary/70', title: 'Purpose', body: 'What you are for — mission clarity, direction, vocation this season.' },
+    { pillar: 'MINDSET', iconClass: 'text-alignment-primary/50', title: 'Mindset', body: 'How you think — beliefs shaping perception, confidence, decisions.' },
+    { pillar: 'HABITS', iconClass: 'text-alignment-primary/40', title: 'Habits', body: 'What you do daily — practices reinforcing identity and purpose.' },
+    { pillar: 'ENVIRONMENT', iconClass: 'text-alignment-primary/60', title: 'Environment', body: 'What surrounds you — relationships, inputs, spaces shaping behaviour.' },
+    { pillar: 'EXECUTION', iconClass: 'text-alignment-primary/35', title: 'Execution', body: 'How you follow through — discipline, planning, completing what matters.' },
   ];
 
   const alignmentTypes = [
@@ -492,10 +493,10 @@ export default function LandingPage() {
             <div className="mt-12 sm:mt-16 grid grid-cols-1 gap-px border border-alignment-primary/15 bg-alignment-primary/15 sm:grid-cols-2 lg:grid-cols-3">
               {sixDomains.map((domain) => (
                 <div
-                  key={domain.title}
+                  key={domain.pillar}
                   className="bg-alignment-surface p-6 sm:p-8 text-left transition-colors duration-200 motion-reduce:transition-none hover:bg-alignment-accent/[0.02] sm:min-h-[11rem]"
                 >
-                  <span className={`inline-block h-2 w-2 rounded-full ${domain.dot}`} aria-hidden />
+                  <DomainPillarIcon pillar={domain.pillar} className={`h-7 w-7 shrink-0 ${domain.iconClass}`} />
                   <h3 className="mt-4 text-base font-semibold text-alignment-accent tracking-tight">{domain.title}</h3>
                   <p className="mt-2 text-sm text-alignment-accent/70 leading-relaxed">{domain.body}</p>
                 </div>

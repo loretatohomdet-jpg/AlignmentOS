@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import BrandLogo from '../components/BrandLogo';
 import SiteMarketingHeader from '../components/SiteMarketingHeader';
+import DomainPillarIcon from '../components/DomainPillarIcon';
 import { SiteSecondaryFooterNav } from '../components/SiteFooterNav';
 
 const focusRing = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2';
@@ -48,12 +49,12 @@ const foundations = [
 ];
 
 const domains = [
-  { dot: 'bg-alignment-primary', title: 'Identity', body: 'Values, moral framework, the person you are becoming.' },
-  { dot: 'bg-alignment-primary/70', title: 'Purpose', body: 'Mission clarity, direction, vocation this season.' },
-  { dot: 'bg-alignment-primary/50', title: 'Mindset', body: 'Beliefs shaping perception, confidence, decisions.' },
-  { dot: 'bg-alignment-primary/35', title: 'Habits', body: 'Practices reinforcing identity and purpose daily.' },
-  { dot: 'bg-alignment-primary/25', title: 'Environment', body: 'Relationships, inputs, spaces shaping behaviour.' },
-  { dot: 'bg-alignment-primary/15', title: 'Execution', body: 'Discipline, planning, completing what matters.' },
+  { pillar: 'IDENTITY', iconClass: 'text-alignment-primary', title: 'Identity', body: 'Values, moral framework, the person you are becoming.' },
+  { pillar: 'PURPOSE', iconClass: 'text-alignment-primary/70', title: 'Purpose', body: 'Mission clarity, direction, vocation this season.' },
+  { pillar: 'MINDSET', iconClass: 'text-alignment-primary/50', title: 'Mindset', body: 'Beliefs shaping perception, confidence, decisions.' },
+  { pillar: 'HABITS', iconClass: 'text-alignment-primary/35', title: 'Habits', body: 'Practices reinforcing identity and purpose daily.' },
+  { pillar: 'ENVIRONMENT', iconClass: 'text-alignment-primary/25', title: 'Environment', body: 'Relationships, inputs, spaces shaping behaviour.' },
+  { pillar: 'EXECUTION', iconClass: 'text-alignment-primary/15', title: 'Execution', body: 'Discipline, planning, completing what matters.' },
 ];
 
 export default function PlatformPage() {
@@ -130,15 +131,12 @@ export default function PlatformPage() {
             are in motion.
           </p>
           <ul className="mt-12">
-            {domains.map(({ dot, title, body }, i) => (
+            {domains.map(({ pillar, iconClass, title, body }, i) => (
               <li
-                key={title}
+                key={pillar}
                 className={`flex gap-4 sm:gap-6 py-6 sm:py-7 ${i > 0 ? 'border-t border-alignment-accent/10' : ''}`}
               >
-                <span
-                  className={`mt-1.5 h-3 w-3 shrink-0 rounded-full ${dot}`}
-                  aria-hidden
-                />
+                <DomainPillarIcon pillar={pillar} className={`mt-0.5 h-7 w-7 shrink-0 ${iconClass}`} />
                 <div className="grid min-w-0 flex-1 gap-1 sm:grid-cols-[minmax(0,10rem)_1fr] sm:gap-x-8 sm:gap-y-0">
                   <h3 className="font-semibold text-alignment-accent">{title}</h3>
                   <p className="text-sm sm:text-base text-alignment-accent/65 leading-relaxed">{body}</p>

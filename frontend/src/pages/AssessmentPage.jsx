@@ -6,6 +6,7 @@ import { DOMAIN_ORDER, DOMAIN_LABELS, PILLAR_INTRO } from '../constants/domains'
 import { diagRun } from '../constants/diagnosticTheme';
 import { API_BASE, networkErrorUserMessage } from '../config/apiBase';
 import { domainScoresToDisplayPct } from '../utils/domainScores';
+import DomainPillarIcon from '../components/DomainPillarIcon';
 import { buildGuestPreviewPayload } from '../utils/assessmentPreview';
 const DRAFT_KEY = 'alignment_assessment_draft';
 /** Handoff to /results after submit (score + strain + email gate); cleared when read */
@@ -625,9 +626,12 @@ export default function AssessmentPage() {
                         const pct = domainScoresToDisplayPct(guestPreview.pillarScores, key);
                         return (
                           <div key={key}>
-                            <div className="flex justify-between text-sm mb-1">
-                              <span className="font-medium text-alignment-accent">{DOMAIN_LABELS[key]}</span>
-                              <span className="text-alignment-accent/70 tabular-nums">{pct}%</span>
+                            <div className="flex justify-between items-center gap-2 text-sm mb-1">
+                              <span className="font-medium text-alignment-accent flex items-center gap-2 min-w-0">
+                                <DomainPillarIcon pillar={key} className="w-5 h-5 shrink-0 text-alignment-accent/65" />
+                                <span className="truncate">{DOMAIN_LABELS[key]}</span>
+                              </span>
+                              <span className="text-alignment-accent/70 tabular-nums shrink-0">{pct}%</span>
                             </div>
                             <div className="h-1.5 rounded-full overflow-hidden bg-alignment-accent/[0.08]">
                               <div

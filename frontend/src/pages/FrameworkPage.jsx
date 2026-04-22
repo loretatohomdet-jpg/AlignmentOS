@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import BrandLogo from '../components/BrandLogo';
 import SiteMarketingHeader from '../components/SiteMarketingHeader';
+import DomainPillarIcon from '../components/DomainPillarIcon';
 import { SiteSecondaryFooterNav } from '../components/SiteFooterNav';
 
 const focusRing = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2';
@@ -25,34 +26,40 @@ const HEX_DOMAINS = [
 
 const CARD_DOMAINS = [
   {
+    pillar: 'IDENTITY',
+    iconClass: 'text-alignment-primary',
     title: 'Identity',
     body: 'Who you are — values, moral framework, the person you are becoming.',
-    dot: 'bg-alignment-primary',
   },
   {
+    pillar: 'PURPOSE',
+    iconClass: 'text-alignment-primary/70',
     title: 'Purpose',
     body: 'What you are for — mission clarity, direction, vocation this season.',
-    dot: 'bg-alignment-primary/70',
   },
   {
+    pillar: 'MINDSET',
+    iconClass: 'text-alignment-primary/50',
     title: 'Mindset',
     body: 'How you think — beliefs shaping perception, confidence, decisions.',
-    dot: 'bg-alignment-primary/50',
   },
   {
+    pillar: 'HABITS',
+    iconClass: 'text-alignment-primary/35',
     title: 'Habits',
     body: 'What you do daily — practices reinforcing identity and purpose.',
-    dot: 'bg-alignment-primary/35',
   },
   {
+    pillar: 'ENVIRONMENT',
+    iconClass: 'text-alignment-primary/25',
     title: 'Environment',
     body: 'What surrounds you — relationships, inputs, spaces shaping behaviour.',
-    dot: 'bg-alignment-primary/25',
   },
   {
+    pillar: 'EXECUTION',
+    iconClass: 'text-alignment-primary/15',
     title: 'Execution',
     body: 'How you follow through — discipline, planning, completing what matters.',
-    dot: 'bg-alignment-primary/15',
   },
 ];
 
@@ -217,13 +224,13 @@ export default function FrameworkPage() {
 
         <section className={`border-t border-alignment-accent/[0.08] bg-alignment-surface ${sectionClass} py-14 sm:py-18 pb-16`}>
           <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {CARD_DOMAINS.map(({ title, body, dot }) => (
+            {CARD_DOMAINS.map(({ pillar, iconClass, title, body }) => (
               <li
-                key={title}
+                key={pillar}
                 className="rounded-xl border border-alignment-accent/[0.08] bg-alignment-surface px-5 py-5 sm:px-6 sm:py-6 shadow-sm"
               >
                 <div className="flex items-start gap-3">
-                  <span className={`mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full ${dot}`} aria-hidden />
+                  <DomainPillarIcon pillar={pillar} className={`mt-0.5 h-6 w-6 shrink-0 ${iconClass}`} />
                   <div>
                     <h2 className="font-semibold text-alignment-accent text-base">{title}</h2>
                     <p className="mt-2 text-sm text-alignment-accent/65 leading-relaxed">{body}</p>

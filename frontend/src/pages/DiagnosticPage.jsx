@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { DOMAIN_ORDER, DOMAIN_LABELS } from '../constants/domains';
+import DomainPillarIcon from '../components/DomainPillarIcon';
 import { diag } from '../constants/diagnosticTheme';
 
 /** One-line description per domain — matches six-domain AQ model */
@@ -70,8 +71,13 @@ export default function DiagnosticPage() {
                 key={key}
                 className={`rounded-2xl border ${diag.border} bg-alignment-surface px-5 py-4 shadow-apple`}
               >
-                <p className="text-sm font-semibold text-alignment-accent">{DOMAIN_LABELS[key]}</p>
-                <p className="mt-1.5 text-sm text-alignment-accent/65 leading-relaxed">{DOMAIN_BLURBS[key]}</p>
+                <div className="flex gap-3 items-start">
+                  <DomainPillarIcon pillar={key} className="w-6 h-6 shrink-0 text-alignment-accent/65 mt-0.5" />
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-semibold text-alignment-accent">{DOMAIN_LABELS[key]}</p>
+                    <p className="mt-1.5 text-sm text-alignment-accent/65 leading-relaxed">{DOMAIN_BLURBS[key]}</p>
+                  </div>
+                </div>
               </li>
             ))}
           </ul>

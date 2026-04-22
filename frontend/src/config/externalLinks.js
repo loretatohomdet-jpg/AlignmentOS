@@ -13,7 +13,10 @@ export const programHubUrl = trimUrl(import.meta.env.VITE_PROGRAM_HUB_URL);
 export const courseLibraryUrl = trimUrl(import.meta.env.VITE_COURSE_LIBRARY_URL);
 export const bookingUrl = trimUrl(import.meta.env.VITE_BOOKING_URL);
 export const checkoutHabitUrl = trimUrl(import.meta.env.VITE_CHECKOUT_HABIT_URL);
+/** Self-guided Journey to Purpose (one-time), e.g. Teachable checkout */
 export const checkoutJourneyUrl = trimUrl(import.meta.env.VITE_CHECKOUT_JOURNEY_URL);
+/** Guided cohort application or checkout (falls back to booking when unset) */
+export const cohortApplyUrl = trimUrl(import.meta.env.VITE_COHORT_APPLY_URL) || bookingUrl;
 
 /** Fallback when no VITE_PROGRAM_HUB_URL — existing formation site */
 export const formationExploreFallback = 'https://simplicityandproductivity.com/';
