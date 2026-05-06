@@ -305,20 +305,18 @@ export default function LandingPage() {
       <SiteMarketingHeader />
 
       <main id="main-content" className="flex-1 w-full scroll-mt-16" tabIndex={-1}>
-        {/* First fold — 3D “card” on Apple grey (floating white panel + soft shadow) */}
-        <section className="w-full bg-apple-surface-muted px-3 pt-4 pb-6 sm:px-5 sm:pt-5 sm:pb-8 md:px-8 md:pb-10 lg:px-10">
-          <div
-            className="relative mx-auto flex max-w-[min(100%,1400px)] min-h-[calc(100vh-5.5rem)] sm:min-h-[calc(100vh-6rem)] flex-col overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] md:rounded-[2.25rem] border border-alignment-accent/[0.07] bg-alignment-surface shadow-[0_32px_64px_-12px_rgba(44,46,38,0.14),0_12px_24px_-8px_rgba(44,46,38,0.08),0_0_0_1px_rgba(44,46,38,0.05)]"
-          >
-          <div
-            className="absolute inset-0 pointer-events-none"
-            aria-hidden
-            style={{
-              background:
-                'radial-gradient(ellipse 75% 55% at 50% 36%, #ffffff 0%, #f7f5f0 45%, #e7e4dc 100%)',
-            }}
-          />
-          <div className="relative flex-1 flex flex-col justify-center px-6 sm:px-8 lg:px-12 pt-12 pb-8 sm:pt-16 sm:pb-10">
+        {/* First fold — full-bleed hero (no inset card / frame) */}
+        <section className="flex w-full flex-col bg-alignment-surface min-h-[calc(100vh-5.5rem)] sm:min-h-[calc(100vh-6rem)]">
+          <div className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
+            <div
+              className="absolute inset-0 pointer-events-none"
+              aria-hidden
+              style={{
+                background:
+                  'radial-gradient(ellipse 75% 55% at 50% 36%, #ffffff 0%, #f7f5f0 45%, #e7e4dc 100%)',
+              }}
+            />
+            <div className="relative flex flex-1 flex-col justify-center px-6 sm:px-8 lg:px-12 pt-12 pb-8 sm:pt-16 sm:pb-10">
             <div className="max-w-2xl mx-auto text-center">
               <p className="text-[11px] sm:text-xs font-normal uppercase tracking-[0.28em] text-alignment-accent/50 mb-8 sm:mb-10">
                 Human alignment software
@@ -354,10 +352,11 @@ export default function LandingPage() {
                 </Link>
               </p>
             </div>
+            </div>
           </div>
 
           <div
-            className="relative w-full rounded-b-[1.25rem] sm:rounded-b-[1.75rem] md:rounded-b-[2rem] bg-alignment-primary text-white overflow-hidden"
+            className="relative w-full shrink-0 bg-alignment-primary text-white overflow-hidden"
             role="region"
             aria-label="Six alignment domains"
           >
@@ -374,7 +373,6 @@ export default function LandingPage() {
                 ))}
               </ul>
             </div>
-          </div>
           </div>
         </section>
 
