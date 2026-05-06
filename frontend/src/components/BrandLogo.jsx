@@ -12,27 +12,32 @@ export default function BrandLogo({
   /** Narrow screens: responsive height + max-width (better for mobile headers). */
   compact = false,
 }) {
-  const textClass = compact
-    ? 'text-[13px] sm:text-[0.95rem] font-semibold tracking-tight leading-none text-alignment-accent'
-    : 'text-[0.95rem] sm:text-lg font-semibold tracking-tight leading-none text-alignment-accent';
+  const labelClass = compact
+    ? 'text-[0.9375rem] sm:text-[1.0625rem] md:text-[1.125rem] font-semibold tracking-tight text-alignment-accent font-sans leading-none'
+    : 'text-[0.95rem] sm:text-[1.0625rem] md:text-lg font-semibold tracking-tight text-alignment-accent font-sans leading-none';
 
   return (
     <Link
       to={to}
-      className={`inline-flex items-center gap-2 sm:gap-2.5 min-w-0 shrink max-w-full hover:opacity-90 transition-opacity ${className}`}
+      className={`inline-flex items-center gap-2.5 sm:gap-3 min-w-0 shrink max-w-full hover:opacity-90 transition-opacity ${className}`}
       aria-label="Alignment OS home"
     >
-      <img
-        src="/alignment-brand-mark.png"
-        alt=""
-        style={compact ? undefined : { height: iconHeightPx, width: 'auto' }}
-        className={`w-auto object-contain object-left select-none pointer-events-none shrink-0 ${
-          compact ? 'h-7 sm:h-10 md:h-11' : ''
-        }`}
-        decoding="async"
-        draggable={false}
-      />
-      <span className={`${textClass} whitespace-nowrap font-sans`}>
+      {/* Wrapper keeps the mark vertically centered with the wordmark (img is block to avoid inline baseline gap). */}
+      <span className="flex shrink-0 items-center justify-center self-center">
+        <img
+          src="/alignment-brand-mark.png"
+          alt=""
+          width={210}
+          height={180}
+          style={compact ? undefined : { height: iconHeightPx, width: 'auto' }}
+          className={`block w-auto max-h-full object-contain object-center select-none pointer-events-none ${
+            compact ? 'h-8 sm:h-10 md:h-11' : ''
+          }`}
+          decoding="async"
+          draggable={false}
+        />
+      </span>
+      <span className={`inline-flex items-center self-center ${labelClass} whitespace-nowrap`}>
         Alignment<span className="text-alignment-primary">OS</span>
       </span>
     </Link>
