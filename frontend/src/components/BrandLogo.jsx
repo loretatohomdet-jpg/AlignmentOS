@@ -19,7 +19,7 @@ export default function BrandLogo({
   return (
     <Link
       to={to}
-      className={`inline-flex items-center gap-2.5 sm:gap-3 min-w-0 shrink max-w-full hover:opacity-90 transition-opacity ${className}`}
+      className={`inline-flex items-center gap-2 sm:gap-2.5 min-w-0 shrink max-w-full hover:opacity-90 transition-opacity ${className}`}
       aria-label="Alignment OS home"
     >
       {/* Wrapper keeps the mark vertically centered with the wordmark (img is block to avoid inline baseline gap). */}
