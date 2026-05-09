@@ -26,8 +26,27 @@ model User {
   scores           AlignmentIndexScore[]
   alignmentProfiles AlignmentProfile[]
   activeHabits     ActiveHabit[]
+  reflections      Reflection[]
   adminNotesAbout  AdminUserNote[] @relation("AdminNoteSubject")
   adminNotesAuthored AdminUserNote[] @relation("AdminNoteAuthor")
+}
+
+/** Weekly / quarterly written reflections (stored server-side; Reflect page). */
+model Reflection {
+  id        String         @id @default(uuid())
+  userId    String
+  type      ReflectionType
+  answers   Json
+  createdAt DateTime       @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+}
+
+enum ReflectionType {
+  WEEKLY
+  QUARTERLY
 }
 
 /** Internal support / moderation notes on a user (visible to admins only). */
