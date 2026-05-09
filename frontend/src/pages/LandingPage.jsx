@@ -298,7 +298,7 @@ export default function LandingPage() {
   );
 
   return (
-    <div className="min-h-screen w-full bg-alignment-surface flex flex-col overflow-x-hidden">
+    <div className="min-h-screen w-full bg-alignment-page bg-fixed flex flex-col overflow-x-hidden">
       <a href="#main-content" className="skip-to-main">
         Skip to main content
       </a>
@@ -306,16 +306,9 @@ export default function LandingPage() {
 
       <main id="main-content" className="flex-1 w-full scroll-mt-16" tabIndex={-1}>
         {/* First fold — full-bleed hero (no inset card / frame) */}
-        <section className="flex w-full flex-col bg-alignment-surface min-h-[calc(100vh-5.5rem)] sm:min-h-[calc(100vh-6rem)]">
+        <section className="flex w-full flex-col bg-transparent min-h-[calc(100vh-5.5rem)] sm:min-h-[calc(100vh-6rem)]">
           <div className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
-            <div
-              className="absolute inset-0 pointer-events-none"
-              aria-hidden
-              style={{
-                background:
-                  'radial-gradient(ellipse 75% 55% at 50% 36%, #ffffff 0%, #f7f5f0 45%, #e7e4dc 100%)',
-              }}
-            />
+            <div className="absolute inset-0 pointer-events-none bg-alignment-hero" aria-hidden />
             <div className="relative flex flex-1 flex-col justify-center px-6 sm:px-8 lg:px-12 pt-12 pb-8 sm:pt-16 sm:pb-10">
             <div className="max-w-2xl mx-auto text-center">
               <p className="text-[11px] sm:text-xs font-normal uppercase tracking-[0.28em] text-alignment-accent/50 mb-8 sm:mb-10">
@@ -337,7 +330,7 @@ export default function LandingPage() {
                 </Link>
                 <Link
                   to="/about"
-                  className={`inline-flex items-center justify-center rounded-sm bg-alignment-surface text-alignment-accent text-xs sm:text-sm font-medium uppercase tracking-[0.12em] px-8 sm:px-10 py-4 border border-alignment-accent/15 transition-colors duration-200 hover:bg-alignment-accent/[0.03] ${focusRingBtn}`}
+                  className={`inline-flex items-center justify-center rounded-sm bg-alignment-surfaceSoft text-alignment-accent text-xs sm:text-sm font-medium uppercase tracking-[0.12em] px-8 sm:px-10 py-4 border border-alignment-accent/15 transition-colors duration-200 hover:bg-alignment-accent/[0.03] ${focusRingBtn}`}
                 >
                   Why this exists
                 </Link>
@@ -377,7 +370,7 @@ export default function LandingPage() {
         </section>
 
         {/* Second section — quote */}
-        <section className="w-full border-t border-alignment-accent/[0.06] bg-alignment-surface">
+        <section className="w-full border-t border-alignment-accent/[0.06] bg-alignment-surfaceSoft/90">
           <div className="max-w-xl mx-auto px-6 sm:px-8 py-20 sm:py-28 text-center">
             <blockquote className="font-display text-[1.35rem] sm:text-2xl md:text-[1.75rem] font-normal text-alignment-accent leading-[1.45] tracking-tight text-balance">
               <p>You are not failing for lack of effort.</p>
@@ -475,7 +468,7 @@ export default function LandingPage() {
         </section>
 
         {/* Six domains — 2×3 grid */}
-        <section className="w-full border-t border-alignment-accent/[0.06] bg-alignment-surface">
+        <section className="w-full border-t border-alignment-accent/[0.06] bg-alignment-surfaceSoft/90">
           <div className="max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-16 sm:py-24 lg:py-28">
             <p className="text-[10px] sm:text-[11px] font-normal uppercase tracking-[0.24em] text-alignment-accent/50">
               Six domains
@@ -492,7 +485,7 @@ export default function LandingPage() {
               {sixDomains.map((domain) => (
                 <div
                   key={domain.pillar}
-                  className="bg-alignment-surface p-6 sm:p-8 text-left transition-colors duration-200 motion-reduce:transition-none hover:bg-alignment-accent/[0.02] sm:min-h-[11rem]"
+                  className="bg-alignment-foundationBright/95 p-6 sm:p-8 text-left transition-colors duration-200 motion-reduce:transition-none hover:bg-alignment-accent/[0.02] sm:min-h-[11rem]"
                 >
                   <DomainPillarIcon pillar={domain.pillar} className={`h-7 w-7 shrink-0 ${domain.iconClass}`} />
                   <h3 className="mt-4 text-base font-semibold text-alignment-accent tracking-tight">{domain.title}</h3>
@@ -504,7 +497,7 @@ export default function LandingPage() {
         </section>
 
         {/* Alignment Types — diagnostic profiles */}
-        <section className="w-full border-t border-alignment-accent/[0.06] bg-alignment-surface">
+        <section className="w-full border-t border-alignment-accent/[0.06] bg-alignment-surfaceSoft/90">
           <div className="max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-16 sm:py-24 lg:py-28">
             <p className="text-[10px] sm:text-[11px] font-normal uppercase tracking-[0.24em] text-alignment-accent/50">
               Alignment types
@@ -583,7 +576,7 @@ export default function LandingPage() {
                 {earlyUserQuotes.map((t) => (
                   <figure
                     key={t.name}
-                    className="flex flex-col bg-alignment-surface border border-alignment-accent/[0.08] rounded-xl p-6 sm:p-8 text-left shadow-sm transition-shadow duration-300 ease-out motion-reduce:transition-none hover:shadow-md hover:border-alignment-accent/12"
+                    className="flex flex-col bg-alignment-surfaceSoft border border-alignment-accent/10 rounded-xl p-6 sm:p-8 text-left shadow-sm transition-shadow duration-300 ease-out motion-reduce:transition-none hover:shadow-md hover:border-alignment-accent/12"
                   >
                     <blockquote className="font-display text-base sm:text-[1.05rem] italic text-alignment-accent/85 leading-relaxed flex-1">
                       <p>&ldquo;{t.quote}&rdquo;</p>
@@ -605,7 +598,7 @@ export default function LandingPage() {
         <FinalCtaClosing />
 
         {/* Footer — white bar */}
-        <footer className="w-full border-t border-alignment-accent/[0.08] bg-alignment-surface pb-[max(1rem,env(safe-area-inset-bottom))]">
+        <footer className="w-full border-t border-alignment-accent/[0.08] bg-alignment-surfaceSoft/95 backdrop-blur-[2px] pb-[max(1rem,env(safe-area-inset-bottom))]">
           <div className="w-full max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-8 sm:py-10">
             <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between lg:gap-12">
               <div className="max-w-xs">

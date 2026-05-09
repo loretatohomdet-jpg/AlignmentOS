@@ -23,7 +23,8 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display',
     system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   color: #2c2e26;
-  background: #f7f5f0;
+  background: linear-gradient(180deg, #fbfaf8 0%, #f8f6f2 38%, #f5f2ea 72%, #f1ede6 100%);
+  background-attachment: fixed;
 }
 
 /* Subtle selection — primary olive tint */

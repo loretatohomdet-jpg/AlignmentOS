@@ -141,7 +141,7 @@ function Layout({ children }) {
   );
 
   return (
-    <div className="min-h-screen flex flex-col bg-alignment-surface">
+    <div className="min-h-screen flex flex-col bg-alignment-page bg-fixed">
       <SiteMarketingHeader
         appendDesktop={appendDesktop}
         authDrawer={{
@@ -151,7 +151,7 @@ function Layout({ children }) {
       />
       <main className="flex-1">{children}</main>
       {!immersiveAssessment && <AgentFloatingButton />}
-      <footer className="border-t border-alignment-accent/[0.06] mt-auto">
+      <footer className="border-t border-alignment-accent/[0.07] mt-auto bg-alignment-surfaceSoft/80 backdrop-blur-[2px]">
         <div className="max-w-5xl mx-auto px-6 sm:px-8 py-5 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between text-sm text-alignment-accent/70">
           <BrandLogo iconHeightPx={40} className="shrink-0" />
           <nav className="flex flex-wrap items-center gap-x-4 gap-y-2" aria-label="Footer">

@@ -31,6 +31,11 @@ module.exports = {
           primary: '#6E7158',
           secondary: '#9A9B84',
           foundation: '#F7F5F0',
+          /** A breath lighter than foundation — hero highlights & frosted chrome */
+          foundationBright: '#FBFAF8',
+          /** Cards / panels — warm lift without heavy greige slabs */
+          surfaceSoft: '#F1EFE9',
+          /** Strong band — footer stripes, intentional separation (original greige) */
           surface: '#E7E4DC',
           neutral: '#D6D2C8',
           /** Primary text & UI ink — dark warm green-gray (not #000) */
@@ -48,7 +53,8 @@ module.exports = {
           blue: '#6E7158',
           'blue-hover': '#5a5d47',
           surface: '#F7F5F0',
-          'surface-muted': '#F7F5F0',
+          /** Alternating marketing sections — airy vs foundation */
+          'surface-muted': '#F4F2EC',
         },
       },
       boxShadow: {
@@ -101,6 +107,12 @@ module.exports = {
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        /** Full-page wash — same hues as foundation → surface, smoother than flat fills */
+        'alignment-page':
+          'linear-gradient(180deg, #FBFAF8 0%, #F8F6F2 38%, #F5F2EA 72%, #F1EDE6 100%)',
+        /** Hero mist — soft white center, no harsh greige edge */
+        'alignment-hero':
+          'radial-gradient(ellipse 82% 58% at 50% 34%, #FFFFFF 0%, #FBFAF8 42%, #F7F5F0 72%, #EDE9E2 100%)',
       },
     },
   },

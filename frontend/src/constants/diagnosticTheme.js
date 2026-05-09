@@ -6,7 +6,7 @@ export const diag = {
   /** Page / section background */
   bg: 'bg-alignment-foundation',
   /** Surfaces that read as “card on warm ground” */
-  card: 'bg-alignment-surface',
+  card: 'bg-alignment-surfaceSoft',
   /** Primary text */
   text: 'text-alignment-accent',
   /** Secondary labels */
@@ -24,14 +24,14 @@ export const diag = {
   barTrack: 'bg-alignment-accent/[0.08]',
   barFill: 'bg-alignment-primary',
   /** Borders */
-  border: 'border-alignment-accent/[0.08]',
+  border: 'border-alignment-accent/10',
   /** Inputs */
   input:
-    'border-alignment-accent/10 bg-alignment-surface text-alignment-accent placeholder:text-alignment-accent/40',
+    'border-alignment-accent/10 bg-alignment-surfaceSoft text-alignment-accent placeholder:text-alignment-accent/40',
   /** Primary strain title */
   strainTitle: 'text-alignment-accent',
   /** Alignment “type” card */
-  typeCard: 'bg-alignment-surface border border-alignment-accent/[0.06] shadow-apple',
+  typeCard: 'bg-alignment-surfaceSoft border border-alignment-accent/10 shadow-apple',
 };
 
 /**
@@ -76,9 +76,9 @@ export const resultsUi = {
   heading: 'font-display text-alignment-accent',
   btnPrimary: `${diag.btn} ${diag.btnHover} inline-flex items-center justify-center rounded-sm px-5 py-2.5 text-[10px] font-semibold uppercase tracking-[0.14em] transition-colors`,
   btnOutline:
-    'inline-flex items-center justify-center rounded-sm border border-alignment-accent/15 bg-alignment-surface text-alignment-accent text-[10px] font-semibold uppercase tracking-[0.14em] px-5 py-2.5 hover:bg-alignment-accent/[0.03] transition-colors',
+    'inline-flex items-center justify-center rounded-sm border border-alignment-accent/15 bg-alignment-surfaceSoft text-alignment-accent text-[10px] font-semibold uppercase tracking-[0.14em] px-5 py-2.5 hover:bg-alignment-accent/[0.03] transition-colors',
   input:
-    'w-full rounded-xl border border-alignment-accent/12 bg-alignment-surface px-4 py-3 text-sm text-alignment-accent placeholder:text-alignment-accent/40 focus:border-alignment-primary/40 focus:outline-none focus:ring-2 focus:ring-alignment-primary/15',
+    'w-full rounded-xl border border-alignment-accent/12 bg-alignment-surfaceSoft px-4 py-3 text-sm text-alignment-accent placeholder:text-alignment-accent/40 focus:border-alignment-primary/40 focus:outline-none focus:ring-2 focus:ring-alignment-primary/15',
 };
 
 export const diagRun = {
@@ -89,13 +89,13 @@ export const diagRun = {
   category: 'text-alignment-accent/50',
   barTrack: 'bg-alignment-accent/10',
   barFill: 'bg-alignment-primary',
-  domainCard: 'rounded-2xl border border-alignment-accent/10 bg-alignment-surface shadow-apple',
+  domainCard: 'rounded-2xl border border-alignment-accent/10 bg-alignment-surfaceSoft shadow-apple',
   domainKicker: 'text-alignment-accent/45',
   domainTitle: 'text-alignment-accent',
   domainBody: 'text-alignment-accent/60',
   question: 'text-alignment-accent',
   likertIdle:
-    'border border-alignment-accent/15 bg-alignment-surface text-alignment-accent hover:border-alignment-accent/30 hover:bg-alignment-accent/[0.02]',
+    'border border-alignment-accent/15 bg-alignment-surfaceSoft text-alignment-accent hover:border-alignment-accent/30 hover:bg-alignment-accent/[0.02]',
   likertActive: 'bg-alignment-primary text-white border-alignment-primary ring-2 ring-alignment-primary/20',
   likertCaption: 'text-alignment-accent/50',
   scaleEnds: 'text-alignment-accent/40',
@@ -104,9 +104,9 @@ export const diagRun = {
   primaryBtn: 'bg-alignment-primary text-white hover:bg-alignment-primary/90',
   primaryBtnDisabled: 'bg-alignment-primary/15 text-alignment-accent/35 cursor-not-allowed border border-alignment-primary/20',
   ghostLink: 'text-alignment-accent/45 hover:text-alignment-accent',
-  errorBox: 'rounded-2xl border border-alignment-accent/10 bg-alignment-surface text-alignment-accent px-4 py-3',
-  emptySurface: 'rounded-2xl border border-alignment-accent/10 bg-alignment-surface shadow-apple',
-  reviewCard: 'rounded-2xl border border-alignment-accent/[0.08] bg-alignment-surface shadow-apple',
+  errorBox: 'rounded-2xl border border-alignment-accent/10 bg-alignment-surfaceSoft text-alignment-accent px-4 py-3',
+  emptySurface: 'rounded-2xl border border-alignment-accent/10 bg-alignment-surfaceSoft shadow-apple',
+  reviewCard: 'rounded-2xl border border-alignment-accent/10 bg-alignment-surfaceSoft shadow-apple',
   reviewMuted: 'text-alignment-accent/55',
   reviewLink: 'text-alignment-accent/55 hover:text-alignment-accent',
 };

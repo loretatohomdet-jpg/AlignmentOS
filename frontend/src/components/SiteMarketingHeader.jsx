@@ -19,7 +19,7 @@ export default function SiteMarketingHeader({ appendDesktop = null, authDrawer }
 
   return (
     <>
-      <header className="sticky top-0 z-50 w-full border-b border-alignment-accent/[0.06] bg-alignment-surface/90 backdrop-blur-md supports-[backdrop-filter]:bg-alignment-surface/80 relative overflow-visible pt-[max(0px,env(safe-area-inset-top))]">
+      <header className="sticky top-0 z-50 w-full border-b border-alignment-accent/[0.07] bg-alignment-foundation/88 backdrop-blur-md supports-[backdrop-filter]:bg-alignment-foundation/78 relative overflow-visible pt-[max(0px,env(safe-area-inset-top))]">
         {/*
           Portrait phones are narrower than landscape — flex row was clipping the menu control.
           Reserve right padding on <lg and pin the menu button so it is always visible.
