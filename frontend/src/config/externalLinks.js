@@ -17,12 +17,37 @@ export const checkoutHabitUrl = trimUrl(import.meta.env.VITE_CHECKOUT_HABIT_URL)
 export const checkoutJourneyUrl = trimUrl(import.meta.env.VITE_CHECKOUT_JOURNEY_URL);
 /** Guided cohort application or checkout (falls back to booking when unset) */
 export const cohortApplyUrl = trimUrl(import.meta.env.VITE_COHORT_APPLY_URL) || bookingUrl;
+/** Creator handoff (GHL funnel, Teachable, etc.) */
+export const creatorUrl = trimUrl(import.meta.env.VITE_CREATOR_URL);
 
 /** Fallback when no VITE_PROGRAM_HUB_URL — existing formation site */
 export const formationExploreFallback = 'https://simplicityandproductivity.com/';
 
 export function formationExploreUrl() {
   return programHubUrl || formationExploreFallback;
+}
+
+function withUtmParams(url, params) {
+  if (!url) return '';
+  try {
+    const u = new URL(url);
+    Object.entries(params || {}).forEach(([k, v]) => {
+      if (v == null || v === '') return;
+      u.searchParams.set(k, String(v));
+    });
+    return u.toString();
+  } catch (_) {
+    return url;
+  }
+}
+
+/** Outbound Creator URL with basic UTM tracking applied. */
+export function creatorHandoffUrl({ medium = 'app', source = 'alignmentos', campaign = 'creator' } = {}) {
+  return withUtmParams(creatorUrl, {
+    utm_source: source,
+    utm_medium: medium,
+    utm_campaign: campaign,
+  });
 }
 
 /** Extra footer nav items when env URLs are set */

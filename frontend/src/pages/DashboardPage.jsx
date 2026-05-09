@@ -16,6 +16,7 @@ import {
   RadialBar,
 } from 'recharts';
 import { API_BASE } from '../config/apiBase';
+import { creatorHandoffUrl } from '../config/externalLinks';
 
 const FALLBACK_PROMPT = {
   title: 'Set one intention for the day',
@@ -202,6 +203,7 @@ export default function DashboardPage() {
 
   const token = localStorage.getItem('accessToken');
   const authHeaders = token ? { Authorization: `Bearer ${token}` } : {};
+  const creatorHref = creatorHandoffUrl();
 
   useEffect(() => {
     if (!authed) {
@@ -607,6 +609,16 @@ export default function DashboardPage() {
                   >
                     View pricing →
                   </Link>
+                  {creatorHref && (
+                    <a
+                      href={creatorHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex rounded-full border border-alignment-accent/15 bg-alignment-surface px-5 py-2.5 text-sm font-medium text-alignment-accent hover:bg-alignment-accent/5 transition-colors"
+                    >
+                      Continue to Creator →
+                    </a>
+                  )}
                   <Link
                     to="/results"
                     className="inline-flex rounded-full border border-alignment-accent/15 bg-alignment-surface px-5 py-2.5 text-sm font-medium text-alignment-accent hover:bg-alignment-accent/5 transition-colors"

@@ -13,6 +13,7 @@ import {
 import DiagnosticResultsSummary from '../components/DiagnosticResultsSummary';
 import { diag, resultsUi } from '../constants/diagnosticTheme';
 import { API_BASE } from '../config/apiBase';
+import { creatorHandoffUrl } from '../config/externalLinks';
 
 const REQUEST_TIMEOUT_MS = 15000;
 const FRESH_RESULT_KEY = 'alignment_os_fresh_result';
@@ -39,6 +40,7 @@ export default function ResultsPage() {
   };
 
   const shareUrl = typeof window !== 'undefined' ? `${window.location.origin}/assessment` : '';
+  const creatorHref = creatorHandoffUrl();
 
   const fetchHabits = useCallback(async () => {
     const token = localStorage.getItem('accessToken');
@@ -367,9 +369,23 @@ export default function ResultsPage() {
                     <p className="mt-4 text-sm text-alignment-accent/60 leading-relaxed flex-1">
                       Journey to Purpose — 90 days, 14 modules, complete life architecture. One time. Lifetime access.
                     </p>
-                    <Link to="/pricing#journey-tier" className={`mt-6 inline-flex ${resultsUi.btnOutline} px-8 py-3 self-start`}>
-                      Explore Journey to Purpose →
-                    </Link>
+                    {creatorHref ? (
+                      <a
+                        href={creatorHref}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`mt-6 inline-flex ${resultsUi.btnOutline} px-8 py-3 self-start`}
+                      >
+                        Continue to Creator →
+                      </a>
+                    ) : (
+                      <Link
+                        to="/pricing#journey-tier"
+                        className={`mt-6 inline-flex ${resultsUi.btnOutline} px-8 py-3 self-start`}
+                      >
+                        Explore Journey to Purpose →
+                      </Link>
+                    )}
                   </section>
                 </div>
 
