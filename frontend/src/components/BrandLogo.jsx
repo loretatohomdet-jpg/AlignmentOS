@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom';
+import wordmarkSrc from '../assets/alignment-os-wordmark.png';
 
 /**
- * Horizontal wordmark — full “Alignment OS” logo asset (PNG).
- * File: `public/alignment-os-wordmark.png` (transparent background).
+ * Horizontal wordmark — full “Alignment OS” logo (PNG).
+ * Imported so production builds get a content-hashed URL (avoids stale CDN/PWA cache on `/public/*.png`).
  */
 export default function BrandLogo({
   to = '/',
@@ -15,11 +16,11 @@ export default function BrandLogo({
   return (
     <Link
       to={to}
-      className={`inline-flex items-center min-w-0 shrink max-w-full hover:opacity-90 transition-opacity ${className}`}
+      className={`inline-flex items-center min-w-0 shrink max-w-full bg-transparent hover:opacity-90 transition-opacity ${className}`}
       aria-label="Alignment OS home"
     >
       <img
-        src="/alignment-os-wordmark.png"
+        src={wordmarkSrc}
         alt=""
         width={1024}
         height={171}
