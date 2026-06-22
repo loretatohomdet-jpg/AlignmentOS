@@ -17,6 +17,8 @@ model User {
   shareToken String? @unique
   role      Role     @default(USER)
   plan      Plan     @default(FREE)
+  stripeCustomerId     String? @unique
+  stripeSubscriptionId String?
   /** When set, user cannot sign in (moderation). */
   suspendedAt DateTime?
   createdAt DateTime @default(now())

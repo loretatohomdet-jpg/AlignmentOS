@@ -10,9 +10,11 @@ export default function SuccessPage() {
       <p className="text-[10px] uppercase tracking-[0.24em] text-alignment-accent/45">Success</p>
       <h1 className="mt-4 font-display text-2xl sm:text-3xl font-medium text-alignment-accent">You&apos;re set</h1>
       <p className="mt-4 text-sm text-alignment-accent/65 leading-relaxed">
-        {from === 'signup'
-          ? 'Your account is ready. Continue to the app or take the diagnostic.'
-          : 'Next step: sign in to save progress, or take the diagnostic if you haven’t yet.'}
+        {from === 'checkout'
+          ? 'Payment received. Your Habit Engine access is active — open the dashboard to begin today’s practice.'
+          : from === 'signup'
+            ? 'Your account is ready. Continue to the app or take the diagnostic.'
+            : 'Next step: sign in to save progress, or take the diagnostic if you haven’t yet.'}
       </p>
       <div className="mt-10 flex flex-col sm:flex-row items-center gap-3">
         <Link

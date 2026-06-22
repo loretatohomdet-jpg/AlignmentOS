@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const { ZodError } = require('zod');
 const { prisma } = require('../prismaClient');
 const { registerSchema, loginSchema, forgotPasswordSchema, resetPasswordSchema } = require('../validation/authSchemas');
+const { subscribeRegistered } = require('../services/convertkit');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-me';
 const TOKEN_EXPIRES_IN = '1h';
@@ -66,6 +67,10 @@ async function register(req, res, next) {
     });
 
     const token = signToken(user);
+
+    subscribeRegistered(user.email, user.name).catch((err) =>
+      console.error('ConvertKit signup subscribe failed:', err.message)
+    );
 
     res.status(201).json({
       token,

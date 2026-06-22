@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import BrandLogo from '../components/BrandLogo';
+import { API_BASE, networkErrorUserMessage } from '../config/apiBase';
 import {
   bookingUrl,
   checkoutHabitUrl,
@@ -94,7 +96,45 @@ function SectionRule({ children, bgClass = 'bg-alignment-surface' }) {
 }
 
 export default function PricingPage() {
+  const navigate = useNavigate();
   const [billing, setBilling] = useState('monthly');
+  const [checkoutLoading, setCheckoutLoading] = useState(null);
+  const [checkoutError, setCheckoutError] = useState(null);
+
+  const startCheckout = async (priceKey) => {
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+      navigate(`/login?returnTo=${encodeURIComponent('/pricing')}`);
+      return;
+    }
+    setCheckoutError(null);
+    setCheckoutLoading(priceKey);
+    try {
+      const { data } = await axios.post(
+        `${API_BASE}/billing/checkout`,
+        { priceKey },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      if (data?.url) {
+        window.location.href = data.url;
+        return;
+      }
+      setCheckoutError('Checkout link was not returned.');
+    } catch (err) {
+      const fallback =
+        priceKey === 'journey' ? checkoutJourneyUrl : checkoutHabitUrl;
+      if (err.response?.status === 503 && fallback) {
+        window.location.href = fallback;
+        return;
+      }
+      setCheckoutError(
+        err.response?.data?.message ||
+          (err.code === 'ERR_NETWORK' ? networkErrorUserMessage() : 'Checkout unavailable.')
+      );
+    } finally {
+      setCheckoutLoading(null);
+    }
+  };
 
   useEffect(() => {
     const prev = document.title;
@@ -138,6 +178,11 @@ export default function PricingPage() {
             <p className="mt-8 text-sm sm:text-base text-alignment-accent/65 max-w-lg mx-auto leading-relaxed">
               Five steps. Each earns the next. Nothing is required before you are ready.
             </p>
+            {checkoutError && (
+              <p className="mt-4 text-sm text-red-800 bg-red-50 border border-red-200 rounded-lg px-4 py-3 max-w-md mx-auto" role="alert">
+                {checkoutError}
+              </p>
+            )}
           </div>
         </section>
 
@@ -218,7 +263,7 @@ export default function PricingPage() {
                 </p>
                 <CheckList items={foundationHabit} />
                 <div className="flex-1" />
-                {checkoutHabitUrl ? (
+                {checkoutHabitUrl && !localStorage.getItem('accessToken') ? (
                   <a
                     href={checkoutHabitUrl}
                     target="_blank"
@@ -228,12 +273,15 @@ export default function PricingPage() {
                     Activate <span aria-hidden className="ml-2">→</span>
                   </a>
                 ) : (
-                  <Link
-                    to="/login"
-                    className={`mt-10 w-full inline-flex items-center justify-center rounded-sm border border-alignment-primary/40 bg-transparent px-4 py-3.5 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] text-alignment-primary transition-colors hover:bg-alignment-primary/[0.06] ${focusRing}`}
+                  <button
+                    type="button"
+                    disabled={!!checkoutLoading}
+                    onClick={() => startCheckout(billing === 'yearly' ? 'habit_yearly' : 'habit_monthly')}
+                    className={`mt-10 w-full inline-flex items-center justify-center rounded-sm border border-alignment-primary/40 bg-transparent px-4 py-3.5 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] text-alignment-primary transition-colors hover:bg-alignment-primary/[0.06] disabled:opacity-60 ${focusRing}`}
                   >
-                    Activate <span aria-hidden className="ml-2">→</span>
-                  </Link>
+                    {checkoutLoading?.startsWith('habit') ? 'Redirecting…' : 'Activate'}{' '}
+                    <span aria-hidden className="ml-2">→</span>
+                  </button>
                 )}
                 <p className="mt-3 text-center text-[11px] text-alignment-accent/45">Secure checkout · Stripe</p>
               </div>
@@ -252,7 +300,7 @@ export default function PricingPage() {
                 <p className="mt-1 text-xs text-alignment-accent/50">Self-guided · lifetime access</p>
                 <CheckList items={foundationJourney} />
                 <div className="flex-1" />
-                {checkoutJourneyUrl ? (
+                {checkoutJourneyUrl && !localStorage.getItem('accessToken') ? (
                   <a
                     href={checkoutJourneyUrl}
                     target="_blank"
@@ -262,12 +310,15 @@ export default function PricingPage() {
                     Begin journey <span aria-hidden className="ml-2">→</span>
                   </a>
                 ) : (
-                  <Link
-                    to="/login"
-                    className={`mt-10 w-full inline-flex items-center justify-center rounded-sm bg-alignment-primary text-white px-4 py-3.5 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] transition-colors hover:bg-alignment-primary/90 ${focusRing}`}
+                  <button
+                    type="button"
+                    disabled={!!checkoutLoading}
+                    onClick={() => startCheckout('journey')}
+                    className={`mt-10 w-full inline-flex items-center justify-center rounded-sm bg-alignment-primary text-white px-4 py-3.5 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] transition-colors hover:bg-alignment-primary/90 disabled:opacity-60 ${focusRing}`}
                   >
-                    Begin journey <span aria-hidden className="ml-2">→</span>
-                  </Link>
+                    {checkoutLoading === 'journey' ? 'Redirecting…' : 'Begin journey'}{' '}
+                    <span aria-hidden className="ml-2">→</span>
+                  </button>
                 )}
               </div>
             </div>

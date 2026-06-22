@@ -13,6 +13,8 @@ const userRoutes = require('./src/routes/user');
 const leadRoutes = require('./src/routes/lead');
 const adminRoutes = require('./src/routes/admin');
 const agentRoutes = require('./src/routes/agent');
+const billingRoutes = require('./src/routes/billing');
+const { handleStripeWebhook } = require('./src/controllers/stripeWebhookController');
 const { getPublic: getPublicShare } = require('./src/controllers/shareController');
 
 const app = express();
@@ -29,6 +31,14 @@ const corsOptions =
     : corsOrigins.length === 1
       ? { origin: corsOrigins[0] }
       : { origin: corsOrigins };
+
+// Stripe webhooks require the raw request body (before express.json)
+app.post(
+  '/api/webhooks/stripe',
+  express.raw({ type: 'application/json' }),
+  handleStripeWebhook
+);
+
 app.use(cors(corsOptions));
 app.use(express.json({ limit: '120kb' }));
 
@@ -86,6 +96,9 @@ app.use('/api/lead', leadLimiter, leadRoutes);
 
 // User profile (GET + PATCH /api/me)
 app.use('/api/me', userRoutes);
+
+// Billing (Stripe Checkout)
+app.use('/api/billing', billingRoutes);
 
 // Admin (auth + ADMIN role required)
 app.use('/api/admin', adminRoutes);

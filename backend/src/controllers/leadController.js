@@ -1,6 +1,7 @@
 const { ZodError } = require('zod');
 const { prisma } = require('../prismaClient');
 const { createLeadSchema } = require('../validation/leadSchemas');
+const { subscribeLead } = require('../services/convertkit');
 
 async function sendWelcomeEmailIfConfigured(email) {
   const apiKey = process.env.RESEND_API_KEY;
@@ -37,6 +38,9 @@ async function create(req, res, next) {
     });
     sendWelcomeEmailIfConfigured(lead.email).catch((err) =>
       console.error('Welcome email failed:', err.message)
+    );
+    subscribeLead(lead.email, lead.source || 'lander').catch((err) =>
+      console.error('ConvertKit lead subscribe failed:', err.message)
     );
     res.status(201).json({ id: lead.id, email: lead.email });
   } catch (err) {
