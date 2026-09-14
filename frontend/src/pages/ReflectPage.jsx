@@ -352,7 +352,7 @@ export default function ReflectPage() {
             </button>
           </div>
         </>
-      )}
+      ) : null}
     </div>
   );
 }
