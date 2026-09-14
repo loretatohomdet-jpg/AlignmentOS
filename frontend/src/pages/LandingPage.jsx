@@ -195,12 +195,12 @@ export default function LandingPage() {
   ];
 
   const sixDomains = [
-    { pillar: 'IDENTITY', iconClass: 'text-alignment-primary', title: 'Identity' },
-    { pillar: 'PURPOSE', iconClass: 'text-alignment-primary/70', title: 'Purpose' },
-    { pillar: 'MINDSET', iconClass: 'text-alignment-primary/50', title: 'Mindset' },
-    { pillar: 'HABITS', iconClass: 'text-alignment-primary/40', title: 'Habits' },
-    { pillar: 'ENVIRONMENT', iconClass: 'text-alignment-primary/60', title: 'Environment' },
-    { pillar: 'EXECUTION', iconClass: 'text-alignment-primary/35', title: 'Execution' },
+    { pillar: 'IDENTITY', title: 'Identity' },
+    { pillar: 'PURPOSE', title: 'Purpose' },
+    { pillar: 'MINDSET', title: 'Mindset' },
+    { pillar: 'HABITS', title: 'Habits' },
+    { pillar: 'ENVIRONMENT', title: 'Environment' },
+    { pillar: 'EXECUTION', title: 'Execution' },
   ];
 
   const proofStats = [
@@ -230,9 +230,8 @@ export default function LandingPage() {
 
       <main id="main-content" className="flex-1 w-full scroll-mt-16" tabIndex={-1}>
         {/* First fold — full-bleed hero (no inset card / frame) */}
-        <section className="flex w-full flex-col bg-transparent min-h-[calc(100vh-5.5rem)] sm:min-h-[calc(100vh-6rem)]">
+        <section className="flex w-full flex-col bg-alignment-foundation min-h-[calc(100vh-5.5rem)] sm:min-h-[calc(100vh-6rem)]">
           <div className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
-            <div className="absolute inset-0 pointer-events-none bg-alignment-hero" aria-hidden />
             <div className="relative flex flex-1 flex-col justify-center px-6 sm:px-8 lg:px-12 pt-12 pb-8 sm:pt-16 sm:pb-10">
             <div className="max-w-2xl mx-auto text-center">
               <p className="text-[11px] sm:text-xs font-normal uppercase tracking-[0.28em] text-alignment-accent/50 mb-8 sm:mb-10">
@@ -245,20 +244,16 @@ export default function LandingPage() {
               <p className="mt-8 sm:mt-10 text-sm sm:text-base text-alignment-accent/70 leading-relaxed max-w-lg mx-auto font-sans">
                 Measure six domains. Close the gap. Build structure that holds.
               </p>
-              <div className="mt-8 sm:mt-10 w-full max-w-md mx-auto text-left">
-                <EmailCaptureForm
-                  source="home-hero"
-                  redirectTo="/assessment"
-                  layout="inline"
-                  buttonText="Get free score"
-                  helperText={null}
-                />
+              <div className="mt-8 sm:mt-10 flex justify-center">
+                <Link
+                  to="/assessment"
+                  className="inline-flex items-center justify-center rounded-sm bg-alignment-primary text-white text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.2em] px-8 py-3.5 transition-colors duration-200 hover:bg-alignment-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2 focus-visible:ring-offset-alignment-foundation"
+                >
+                  Get free score <span aria-hidden className="ml-2">→</span>
+                </Link>
               </div>
               <p className="mt-4 text-[11px] sm:text-xs text-alignment-accent/45 tracking-wide text-center">
-                12 min · Free · No card ·{' '}
-                <Link to="/assessment" className="text-alignment-accent/55 underline-offset-2 hover:underline">
-                  or start diagnostic
-                </Link>
+                12 min · Free · No card
               </p>
               <p className="mt-6 text-sm text-alignment-accent/50">
                 <Link to="/login" className="text-alignment-accent underline-offset-4 hover:underline">
@@ -381,10 +376,15 @@ export default function LandingPage() {
               {sixDomains.map((domain) => (
                 <div
                   key={domain.pillar}
-                  className="flex items-center gap-3 rounded-xl border border-alignment-accent/10 bg-alignment-foundationBright/95 px-4 py-3"
+                  className="group flex items-center gap-3 rounded-xl border border-alignment-accent/10 bg-alignment-foundationBright/95 px-4 py-3 transition-colors duration-200 hover:border-alignment-primary hover:bg-alignment-primary"
                 >
-                  <DomainPillarIcon pillar={domain.pillar} className={`h-6 w-6 shrink-0 ${domain.iconClass}`} />
-                  <h3 className="text-sm font-semibold text-alignment-accent">{domain.title}</h3>
+                  <DomainPillarIcon
+                    pillar={domain.pillar}
+                    className="h-6 w-6 shrink-0 text-alignment-primary transition-colors duration-200 group-hover:text-white"
+                  />
+                  <h3 className="text-sm font-semibold text-alignment-accent transition-colors duration-200 group-hover:text-white">
+                    {domain.title}
+                  </h3>
                 </div>
               ))}
             </div>
