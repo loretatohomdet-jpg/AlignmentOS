@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "User" ADD COLUMN "habitNudgeEnabled" BOOLEAN NOT NULL DEFAULT true,
+ADD COLUMN "habitNudgeHour" INTEGER NOT NULL DEFAULT 8,
+ADD COLUMN "lastHabitNudgeAt" TIMESTAMP(3);

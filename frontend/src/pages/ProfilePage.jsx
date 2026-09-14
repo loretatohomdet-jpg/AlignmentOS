@@ -34,8 +34,22 @@ export default function ProfilePage() {
   const [error, setError] = useState(null);
   const [name, setName] = useState('');
   const [avatarUrl, setAvatarUrl] = useState('');
+  const [habitNudgeEnabled, setHabitNudgeEnabled] = useState(true);
+  const [habitNudgeLocalHour, setHabitNudgeLocalHour] = useState(8);
   const [avatarUploading, setAvatarUploading] = useState(false);
   const [success, setSuccess] = useState(false);
+
+  function utcHourToLocal(utcHour) {
+    const d = new Date();
+    d.setUTCHours(Number(utcHour) || 0, 0, 0, 0);
+    return d.getHours();
+  }
+
+  function localHourToUtc(localHour) {
+    const d = new Date();
+    d.setHours(Number(localHour) || 0, 0, 0, 0);
+    return d.getUTCHours();
+  }
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
@@ -49,6 +63,8 @@ export default function ProfilePage() {
         setUser(res.data);
         setName(res.data.name || '');
         setAvatarUrl(res.data.avatarUrl || '');
+        setHabitNudgeEnabled(res.data.habitNudgeEnabled !== false);
+        setHabitNudgeLocalHour(utcHourToLocal(res.data.habitNudgeHour ?? 8));
       })
       .catch((err) => {
         if (err.response?.status === 401) navigate('/login?returnTo=/profile', { replace: true });
@@ -67,7 +83,7 @@ export default function ProfilePage() {
     try {
       const { data } = await axios.patch(
         `${API_BASE}/me`,
-        { name: name.trim() || undefined, avatarUrl: avatarUrl.trim() || null },
+        { name: name.trim() || undefined, avatarUrl: avatarUrl.trim() || null, habitNudgeEnabled, habitNudgeHour: localHourToUtc(habitNudgeLocalHour) },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setUser(data);
@@ -220,6 +236,48 @@ export default function ProfilePage() {
             <Link to="/pricing" className="mt-1 text-sm text-alignment-accent hover:underline">
               View plans
             </Link>
+          </div>
+          <div className="rounded-2xl border border-alignment-accent/10 bg-alignment-surface p-5">
+            <p className="text-sm font-medium text-alignment-accent">Daily follow-up</p>
+            <p className="mt-1 text-sm text-alignment-accent/65 leading-relaxed">
+              One email when a practice still needs holding. Same prompt as Practice. Paid plans only.
+            </p>
+            <label className="mt-4 flex items-start gap-3 text-sm text-alignment-accent">
+              <input
+                type="checkbox"
+                className="mt-0.5 rounded border-alignment-accent/30"
+                checked={habitNudgeEnabled}
+                onChange={(e) => setHabitNudgeEnabled(e.target.checked)}
+              />
+              <span>Send a follow-up on days I have not completed the hold</span>
+            </label>
+            <label htmlFor="nudge-hour" className="mt-4 block text-sm font-medium text-alignment-accent">
+              Time
+            </label>
+            <select
+              id="nudge-hour"
+              value={habitNudgeLocalHour}
+              onChange={(e) => setHabitNudgeLocalHour(Number(e.target.value))}
+              disabled={!habitNudgeEnabled}
+              className="mt-2 w-full rounded-xl border border-alignment-accent/10 bg-alignment-surface px-4 py-3 text-alignment-accent outline-none focus:ring-2 focus:ring-alignment-accent/20 disabled:opacity-50"
+            >
+              {Array.from({ length: 24 }, (_, hour) => {
+                const label = new Date(2020, 0, 1, hour).toLocaleTimeString(undefined, {
+                  hour: 'numeric',
+                  minute: '2-digit',
+                });
+                return (
+                  <option key={hour} value={hour}>
+                    {label}
+                  </option>
+                );
+              })}
+            </select>
+            {!user.habitNudgeEmailReady && (
+              <p className="mt-2 text-xs text-alignment-accent/55">
+                Preference is saved. Emails start once transactional mail is connected on the server.
+              </p>
+            )}
           </div>
           <div className="flex flex-wrap gap-3 pt-2">
             <button

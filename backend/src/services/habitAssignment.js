@@ -103,4 +103,29 @@ async function assignHabits(profileId, userId, _segmentTags = []) {
   return created;
 }
 
-module.exports = { assignHabits, HABIT_ORDER_BY_PILLAR, DIAGNOSTIC_TAG };
+/**
+ * If this user already has a diagnostic profile but no practices, install them.
+ * Safe to call on every habits fetch (no-op when habits already exist).
+ */
+async function ensureActiveHabits(userId) {
+  const existingCount = await prisma.activeHabit.count({ where: { userId } });
+  if (existingCount > 0) {
+    return { assigned: [], alreadyHad: true };
+  }
+  const profile = await prisma.alignmentProfile.findUnique({
+    where: { userId },
+  });
+  if (!profile) {
+    return { assigned: [], alreadyHad: false };
+  }
+  const assigned = await assignHabits(profile.id, userId, []);
+  if (assigned.length === 0) {
+    console.warn('Habit assignment produced no habits', {
+      userId,
+      pillar: profile.primaryDomain,
+    });
+  }
+  return { assigned, alreadyHad: false };
+}
+
+module.exports = { assignHabits, ensureActiveHabits, HABIT_ORDER_BY_PILLAR, DIAGNOSTIC_TAG };

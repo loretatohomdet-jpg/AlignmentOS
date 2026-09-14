@@ -53,6 +53,7 @@ import HeaderUserMenu from './components/HeaderUserMenu';
 import AgentFloatingButton from './components/AgentFloatingButton';
 import BrandLogo from './components/BrandLogo';
 import SiteMarketingHeader from './components/SiteMarketingHeader';
+import { siteNavMainLinks, siteNavSignedInLinks } from './config/siteNav';
 import { siteSecondaryFooter } from './config/footerNav';
 import { API_BASE } from './config/apiBase';
 
@@ -144,6 +145,12 @@ function Layout({ children }) {
     <div className="min-h-screen flex flex-col bg-alignment-page bg-fixed">
       <SiteMarketingHeader
         appendDesktop={appendDesktop}
+        navLinks={isLoggedIn ? siteNavSignedInLinks : siteNavMainLinks}
+        primaryCta={
+          isLoggedIn
+            ? { to: '/practice', label: 'Today' }
+            : { to: '/assessment', label: 'Begin free' }
+        }
         authDrawer={{
           isLoggedIn,
           onLogout: handleDrawerLogout,

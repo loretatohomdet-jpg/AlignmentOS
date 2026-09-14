@@ -32,6 +32,8 @@ const optionalImageUrl = z.preprocess(
 const updateProfileSchema = z.object({
   name: z.string().min(1).max(200).optional(),
   avatarUrl: optionalImageUrl,
+  habitNudgeEnabled: z.boolean().optional(),
+  habitNudgeHour: z.number().int().min(0).max(23).optional(),
 });
 
 module.exports = { updateProfileSchema };

@@ -2,8 +2,29 @@ const crypto = require('crypto');
 const { ZodError } = require('zod');
 const { prisma } = require('../prismaClient');
 const { updateProfileSchema } = require('../validation/profileSchemas');
+const { isResendConfigured } = require('../services/resendMail');
 
 const MAX_AVATAR_FILE_BYTES = 200_000;
+
+const publicUserSelect = {
+  id: true,
+  email: true,
+  name: true,
+  avatarUrl: true,
+  shareToken: true,
+  role: true,
+  plan: true,
+  createdAt: true,
+  habitNudgeEnabled: true,
+  habitNudgeHour: true,
+};
+
+function withNudgeMeta(user) {
+  return {
+    ...user,
+    habitNudgeEmailReady: isResendConfigured(),
+  };
+}
 
 function detectImageMime(buf) {
   if (!buf || buf.length < 12) return null;
@@ -21,24 +42,14 @@ async function getMe(req, res, next) {
     const userId = req.user.sub;
     const user = await prisma.user.findUnique({
       where: { id: userId },
-      select: {
-        id: true,
-        email: true,
-        name: true,
-        avatarUrl: true,
-        shareToken: true,
-        role: true,
-        plan: true,
-        createdAt: true,
-        suspendedAt: true,
-      },
+      select: { ...publicUserSelect, suspendedAt: true },
     });
     if (!user) return res.status(404).json({ message: 'User not found' });
     if (user.suspendedAt) {
       return res.status(403).json({ message: 'Account suspended.' });
     }
     const { suspendedAt: _s, ...safe } = user;
-    res.json(safe);
+    res.json(withNudgeMeta(safe));
   } catch (err) {
     next(err);
   }
@@ -54,19 +65,12 @@ async function updateMe(req, res, next) {
       data: {
         ...(data.name !== undefined && { name: data.name }),
         ...(data.avatarUrl !== undefined && { avatarUrl: data.avatarUrl }),
+        ...(data.habitNudgeEnabled !== undefined && { habitNudgeEnabled: data.habitNudgeEnabled }),
+        ...(data.habitNudgeHour !== undefined && { habitNudgeHour: data.habitNudgeHour }),
       },
-      select: {
-        id: true,
-        email: true,
-        name: true,
-        avatarUrl: true,
-        shareToken: true,
-        role: true,
-        plan: true,
-        createdAt: true,
-      },
+      select: publicUserSelect,
     });
-    res.json(user);
+    res.json(withNudgeMeta(user));
   } catch (err) {
     if (err instanceof ZodError) {
       return res.status(400).json({ message: 'Invalid data', errors: err.errors });
@@ -115,18 +119,9 @@ async function uploadAvatar(req, res, next) {
     const user = await prisma.user.update({
       where: { id: userId },
       data: { avatarUrl: dataUrl },
-      select: {
-        id: true,
-        email: true,
-        name: true,
-        avatarUrl: true,
-        shareToken: true,
-        role: true,
-        plan: true,
-        createdAt: true,
-      },
+      select: publicUserSelect,
     });
-    res.json(user);
+    res.json(withNudgeMeta(user));
   } catch (err) {
     next(err);
   }

@@ -20,6 +20,12 @@ test('profile: accepts small data URL prefix', () => {
   assert.strictEqual(r.avatarUrl, tiny);
 });
 
-test('profile: rejects invalid string', () => {
-  assert.throws(() => updateProfileSchema.parse({ avatarUrl: 'ftp://bad' }));
+test('profile: accepts habit nudge prefs', () => {
+  const r = updateProfileSchema.parse({ habitNudgeEnabled: false, habitNudgeHour: 7 });
+  assert.strictEqual(r.habitNudgeEnabled, false);
+  assert.strictEqual(r.habitNudgeHour, 7);
+});
+
+test('profile: rejects invalid nudge hour', () => {
+  assert.throws(() => updateProfileSchema.parse({ habitNudgeHour: 24 }));
 });

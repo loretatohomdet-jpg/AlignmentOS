@@ -1,7 +1,9 @@
 const { prisma } = require('../prismaClient');
 const { utcDay, summarizeActiveHabits } = require('../services/habitEngine');
+const { ensureActiveHabits } = require('../services/habitAssignment');
 
 async function loadActiveWithCompletions(userId) {
+  await ensureActiveHabits(userId);
   return prisma.activeHabit.findMany({
     where: { userId },
     include: {

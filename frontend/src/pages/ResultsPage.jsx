@@ -77,6 +77,7 @@ export default function ResultsPage() {
       setError(null);
       if (handoff) {
         setResult(handoff);
+        if (Array.isArray(handoff.habits)) setHabits(handoff.habits);
         setLoading(false);
       } else {
         setLoading(true);
@@ -183,7 +184,7 @@ export default function ResultsPage() {
                     <ul className="mt-6 space-y-4 flex-1">
                       {habits.length === 0 ? (
                         <li className="text-sm text-alignment-accent/45 border border-alignment-accent/[0.06] rounded-lg px-4 py-3 bg-apple-surface-muted">
-                          —
+                          Finish the diagnostic while signed in to install three practices.
                         </li>
                       ) : (
                         habits.slice(0, 3).map((h) => (
@@ -194,6 +195,9 @@ export default function ResultsPage() {
                         ))
                       )}
                     </ul>
+                    <Link to="/practice" className={`mt-6 inline-flex ${resultsUi.btnPrimary} px-6 py-2.5 self-start`}>
+                      Open Practice →
+                    </Link>
                   </section>
 
                   <section className={`${resultsUi.panel} flex flex-col h-full min-h-0`}>
@@ -350,15 +354,19 @@ export default function ResultsPage() {
                 {/* Row 3: two columns */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-6 xl:gap-8 lg:items-stretch">
                   <section className="rounded-xl border border-alignment-accent/[0.08] bg-alignment-surface px-6 py-8 shadow-apple h-full flex flex-col">
-                    <h3 className={`${resultsUi.heading} text-xl sm:text-2xl`}>Ready to install the system?</h3>
+                    <h3 className={`${resultsUi.heading} text-xl sm:text-2xl`}>Ready to hold the day?</h3>
                     <p className="mt-4 text-sm text-alignment-accent/60 leading-relaxed flex-1">
-                      Habit Engine — daily tracking, weekly review, quarterly reset. Your habits stored, your score history
-                      built, your formation compounding.
+                      Practice is the daily surface. Tracking, weekly review, and follow-up emails unlock with Habit Engine.
                     </p>
                     <p className="mt-4 text-alignment-accent font-medium">$12/month · $120/year</p>
-                    <Link to="/pricing" className={`mt-6 inline-flex ${resultsUi.btnPrimary} px-8 py-3 self-start`}>
-                      Activate the Habit Engine →
-                    </Link>
+                    <div className="mt-6 flex flex-wrap gap-3">
+                      <Link to="/practice" className={`inline-flex ${resultsUi.btnPrimary} px-8 py-3`}>
+                        Open Practice →
+                      </Link>
+                      <Link to="/pricing" className={`inline-flex ${resultsUi.btnOutline} px-8 py-3`}>
+                        Activate tracking
+                      </Link>
+                    </div>
                   </section>
 
                   <section className="rounded-xl border border-alignment-accent/[0.08] bg-alignment-surface px-6 py-8 shadow-apple h-full flex flex-col">

@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-const steps = [
+const defaultSteps = [
   {
     n: '01',
-    title: 'Open the Habit Engine',
+    title: 'Open Practice',
     body: 'Three habits from your primary gap. Do one today.',
     to: '/practice',
   },
@@ -17,7 +17,7 @@ const steps = [
   {
     n: '03',
     title: 'Do your weekly review on Sunday',
-    body: '10 minutes. The most important habit in the system.',
+    body: '10 minutes. The most important habit in the system. We will remind you.',
     to: '/reflect',
   },
 ];
@@ -25,7 +25,7 @@ const steps = [
 /**
  * First-visit welcome overlay for /dashboard — uses Alignment OS palette (ivory / olive / ink).
  */
-export default function DashboardWelcomeModal({ open, onDismiss }) {
+export default function DashboardWelcomeModal({ open, onDismiss, hasScore = false, hasHabits = false }) {
   useEffect(() => {
     if (!open) return;
     const onKey = (e) => {
@@ -53,14 +53,29 @@ export default function DashboardWelcomeModal({ open, onDismiss }) {
           id="dashboard-welcome-title"
           className="mt-6 font-display text-[1.65rem] sm:text-[2rem] font-medium text-alignment-accent leading-[1.2] tracking-tight"
         >
-          Your system is ready.
+          {hasHabits ? 'Your practices are installed.' : hasScore ? 'Your score is in.' : 'Here is the loop.'}
         </h2>
         <p className="mt-3 font-display text-[1.35rem] sm:text-[1.5rem] italic font-normal text-alignment-primary leading-snug">
-          Here is where to begin.
+          {hasHabits
+            ? 'Practice is where the day is held.'
+            : hasScore
+              ? 'Open Practice after the diagnostic installs your three.'
+              : 'Start with the diagnostic. Three practices follow.'}
         </p>
 
         <div className="mt-10 border-t border-alignment-accent/10">
-          {steps.map((step) => (
+          {(hasScore
+            ? defaultSteps
+            : [
+                {
+                  n: '01',
+                  title: 'Take the diagnostic',
+                  body: 'Twelve minutes. Your lowest domain becomes three practices.',
+                  to: '/assessment',
+                },
+                ...defaultSteps.slice(1),
+              ]
+          ).map((step) => (
             <Link
               key={step.n}
               to={step.to}

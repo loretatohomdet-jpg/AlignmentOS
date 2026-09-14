@@ -19,11 +19,6 @@ import { API_BASE } from '../config/apiBase';
 import { creatorHandoffUrl } from '../config/externalLinks';
 import { isPaidPlan } from '../utils/plan';
 
-const FALLBACK_PROMPT = {
-  title: 'Set one intention for the day',
-  description: 'Take a moment to write down your single most important priority before you begin.',
-};
-
 const PILLAR_LABELS = {
   IDENTITY: 'Identity',
   PURPOSE: 'Purpose',
@@ -74,8 +69,7 @@ function HabitRow({ habit, onComplete, token, API_BASE, locked }) {
 
 const TODAY_RESPONSE_KEY = (habitId, dateStr) => `today_response_${habitId}_${dateStr}`;
 
-function TodayPracticeCard({ habit, fallback, onComplete, token, API_BASE, focusPillar, locked }) {
-  const prompt = habit || fallback;
+function TodayPracticeCard({ habit, onComplete, token, API_BASE, focusPillar, locked }) {
   const todayStr = new Date().toISOString().slice(0, 10);
   const storageKey = habit ? TODAY_RESPONSE_KEY(habit.id, todayStr) : null;
   const [response, setResponse] = useState(() => {
@@ -134,8 +128,19 @@ function TodayPracticeCard({ habit, fallback, onComplete, token, API_BASE, focus
         </span>
       )}
       <p className="text-xs font-medium text-alignment-accent/70 uppercase tracking-wider mb-3">Your practice</p>
-      <p className="text-lg font-semibold text-alignment-accent tracking-tight">{prompt.title}</p>
-      {prompt.description && <p className="mt-2 text-alignment-accent/70 text-sm">{prompt.description}</p>}
+      {habit ? (
+        <>
+          <p className="text-lg font-semibold text-alignment-accent tracking-tight">{habit.title}</p>
+          {habit.description && <p className="mt-2 text-alignment-accent/70 text-sm">{habit.description}</p>}
+        </>
+      ) : (
+        <>
+          <p className="text-lg font-semibold text-alignment-accent tracking-tight">No practices yet</p>
+          <p className="mt-2 text-alignment-accent/70 text-sm">
+            Finish the diagnostic while signed in. Three practices from your lowest domain will appear here and on Practice.
+          </p>
+        </>
+      )}
       {habit ? (
         <>
           <label htmlFor="today-practice-response" className="mt-4 block text-sm font-medium text-alignment-accent">
@@ -367,7 +372,12 @@ export default function DashboardPage() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 relative">
-      <DashboardWelcomeModal open={welcomeOpen} onDismiss={dismissWelcome} />
+      <DashboardWelcomeModal
+        open={welcomeOpen}
+        onDismiss={dismissWelcome}
+        hasScore={Boolean(result)}
+        hasHabits={habits.length > 0}
+      />
 
       {error && (
         <div className="mb-6 rounded-2xl bg-alignment-surface border border-alignment-accent/15 px-4 py-3 text-sm text-alignment-accent">
@@ -416,7 +426,6 @@ export default function DashboardPage() {
               <section className="min-h-0">
                 <TodayPracticeCard
                   habit={primaryHabit}
-                  fallback={FALLBACK_PROMPT}
                   onComplete={refreshHabits}
                   token={token}
                   API_BASE={API_BASE}

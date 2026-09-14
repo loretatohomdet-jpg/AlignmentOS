@@ -8,6 +8,13 @@ export const siteNavMainLinks = [
   { to: '/dashboard', label: 'Dashboard' },
 ];
 
+/** Product nav when signed in — daily work lives on Practice. */
+export const siteNavSignedInLinks = [
+  { to: '/dashboard', label: 'Dashboard' },
+  { to: '/practice', label: 'Practice' },
+  { to: '/reflect', label: 'Review' },
+];
+
 export const siteNavLinkClass =
   'text-[10px] sm:text-[11px] font-normal uppercase tracking-[0.22em] text-alignment-accent/50 hover:text-alignment-accent transition-colors';
 

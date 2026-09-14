@@ -233,6 +233,26 @@ async function submitAssessment(req, res, next) {
 
     const label = buildAlignmentLabel(aqScore);
 
+    let habits = [];
+    try {
+      await assignHabits(profile.id, userId, []);
+      const active = await prisma.activeHabit.findMany({
+        where: { userId },
+        include: { habit: true },
+        orderBy: { assignedAt: 'asc' },
+      });
+      habits = active.map((row) => ({
+        id: row.id,
+        habitId: row.habitId,
+        title: row.habit.title,
+        description: row.habit.description,
+        level: row.habit.level,
+        pillar: row.habit.pillar,
+      }));
+    } catch (assignErr) {
+      console.error('Habit assignment failed:', assignErr.message);
+    }
+
     res.status(201).json({
       score: aqScore,
       label,
@@ -246,14 +266,8 @@ async function submitAssessment(req, res, next) {
       primaryStrainLabel: primaryDomain ? DOMAIN_LABELS[primaryDomain] : null,
       primaryStrainDescription:
         'Your primary structural gap — where habit installation begins.',
+      habits,
     });
-
-    const profileId = profile.id;
-    if (profileId) {
-      setImmediate(() => {
-        assignHabits(profileId, userId, []).catch(() => {});
-      });
-    }
   } catch (err) {
     if (err instanceof ZodError) {
       return res.status(400).json({ message: 'Invalid data', errors: err.errors });

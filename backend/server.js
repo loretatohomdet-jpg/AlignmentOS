@@ -14,7 +14,9 @@ const leadRoutes = require('./src/routes/lead');
 const adminRoutes = require('./src/routes/admin');
 const agentRoutes = require('./src/routes/agent');
 const billingRoutes = require('./src/routes/billing');
+const cronRoutes = require('./src/routes/cron');
 const { handleStripeWebhook } = require('./src/controllers/stripeWebhookController');
+const { startHabitNudgeScheduler } = require('./src/services/habitNudge');
 const { getPublic: getPublicShare } = require('./src/controllers/shareController');
 
 const app = express();
@@ -100,6 +102,9 @@ app.use('/api/me', userRoutes);
 // Billing (Stripe Checkout)
 app.use('/api/billing', billingRoutes);
 
+// Scheduled jobs (CRON_SECRET)
+app.use('/api/cron', cronRoutes);
+
 // Admin (auth + ADMIN role required)
 app.use('/api/admin', adminRoutes);
 
@@ -112,6 +117,7 @@ app.use(errorHandler);
 if (require.main === module) {
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`Express server listening on port ${PORT}`);
+    startHabitNudgeScheduler();
   });
 }
 

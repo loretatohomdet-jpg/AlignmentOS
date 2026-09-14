@@ -10,11 +10,16 @@ import {
 } from '../config/siteNav';
 
 /**
- * Shared marketing header: logo, centered Pricing / About / Dashboard, Begin free, mobile drawer.
+ * Shared marketing header: logo, centered nav, primary CTA, mobile drawer.
  * Use `appendDesktop` for Sign in / account controls (e.g. app shell).
  * When `authDrawer` is set (app shell), Account drawer shows Sign up + Sign in or Log out.
  */
-export default function SiteMarketingHeader({ appendDesktop = null, authDrawer }) {
+export default function SiteMarketingHeader({
+  appendDesktop = null,
+  authDrawer,
+  navLinks = siteNavMainLinks,
+  primaryCta = { to: '/assessment', label: 'Begin free' },
+}) {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   return (
@@ -30,7 +35,7 @@ export default function SiteMarketingHeader({ appendDesktop = null, authDrawer }
             className="min-w-0 shrink max-w-[min(100%,40vw)] sm:max-w-[min(100%,46vw)] lg:max-w-none rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2"
           />
           <nav className="hidden lg:flex items-center gap-5 lg:gap-8 flex-1 justify-center min-w-0" aria-label="Primary">
-            {siteNavMainLinks.map(({ to, label }) => (
+            {navLinks.map(({ to, label }) => (
               <NavLink
                 key={to}
                 to={to}
@@ -42,10 +47,10 @@ export default function SiteMarketingHeader({ appendDesktop = null, authDrawer }
           </nav>
           <div className="flex items-center justify-end gap-2 sm:gap-3 min-w-0 shrink-0 max-lg:mr-1">
             <Link
-              to="/assessment"
+              to={primaryCta.to}
               className={`${beginFreeHeaderButtonClass} shrink min-w-0 touch-manipulation max-lg:px-2.5 max-lg:py-1.5`}
             >
-              Begin free{' '}
+              {primaryCta.label}{' '}
               <span aria-hidden className="ml-0.5 sm:ml-1">
                 →
               </span>
@@ -67,7 +72,7 @@ export default function SiteMarketingHeader({ appendDesktop = null, authDrawer }
       </header>
       <MobileDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)}>
         <p className="px-4 pt-2 pb-1 text-xs font-medium text-alignment-accent/70 uppercase tracking-wider">Navigate</p>
-        {siteNavMainLinks.map(({ to, label }) => (
+        {navLinks.map(({ to, label }) => (
           <NavLink
             key={to}
             to={to}
@@ -78,11 +83,11 @@ export default function SiteMarketingHeader({ appendDesktop = null, authDrawer }
           </NavLink>
         ))}
         <Link
-          to="/assessment"
+          to={primaryCta.to}
           className={siteNavDrawerRowClass}
           onClick={() => setDrawerOpen(false)}
         >
-          Begin free
+          {primaryCta.label}
         </Link>
         <p className="px-4 pt-4 pb-1 text-xs font-medium text-alignment-accent/70 uppercase tracking-wider">Account</p>
         {authDrawer?.isLoggedIn ? (
