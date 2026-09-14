@@ -185,11 +185,13 @@ model Habit {
 }
 
 model ActiveHabit {
-  id         String   @id @default(uuid())
+  id         String    @id @default(uuid())
   userId     String
   habitId    String
   profileId  String?
-  assignedAt DateTime @default(now())
+  assignedAt DateTime  @default(now())
+  /** Set when a later diagnostic replaces this practice. Completions are kept. */
+  endedAt    DateTime?
 
   user     User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   habit    Habit             @relation(fields: [habitId], references: [id], onDelete: Cascade)
@@ -198,6 +200,7 @@ model ActiveHabit {
 
   @@unique([userId, habitId])
   @@index([userId])
+  @@index([userId, endedAt])
 }
 
 model HabitCompletion {

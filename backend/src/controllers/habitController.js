@@ -5,7 +5,7 @@ const { ensureActiveHabits } = require('../services/habitAssignment');
 async function loadActiveWithCompletions(userId) {
   await ensureActiveHabits(userId);
   return prisma.activeHabit.findMany({
-    where: { userId },
+    where: { userId, endedAt: null },
     include: {
       habit: true,
       completions: { select: { completedAt: true } },
@@ -47,7 +47,7 @@ async function completeHabit(req, res, next) {
       return res.status(400).json({ message: 'activeHabitId required' });
     }
     const active = await prisma.activeHabit.findFirst({
-      where: { id: activeHabitId, userId },
+      where: { id: activeHabitId, userId, endedAt: null },
     });
     if (!active) {
       return res.status(404).json({ message: 'Habit not found' });

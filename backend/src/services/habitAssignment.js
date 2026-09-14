@@ -36,20 +36,7 @@ const HABIT_ORDER_BY_PILLAR = {
   ],
 };
 
-/**
- * @param {string} profileId - AlignmentProfile id
- * @param {string} userId - User id
- * @param {string[]} [_segmentTags] - reserved for future segmentation (v1 library is domain-only)
- * @returns {Promise<Array<{ habitId: string, level: number, pillar: string, title: string }>>}
- */
-async function assignHabits(profileId, userId, _segmentTags = []) {
-  const profile = await prisma.alignmentProfile.findUnique({
-    where: { id: profileId },
-  });
-  if (!profile || !profile.primaryDomain) return [];
-
-  const pillar = profile.primaryDomain;
-
+async function habitsForPillar(pillar) {
   const titleOrder = HABIT_ORDER_BY_PILLAR[pillar];
   let habits = [];
 
@@ -74,15 +61,84 @@ async function assignHabits(profileId, userId, _segmentTags = []) {
     });
   }
 
-  const created = [];
-  for (const habit of habits.slice(0, 3)) {
-    try {
-      const existing = await prisma.activeHabit.findUnique({
-        where: { userId_habitId: { userId, habitId: habit.id } },
+  return habits.slice(0, 3);
+}
+
+function serializeActive(row) {
+  return {
+    id: row.id,
+    habitId: row.habitId,
+    title: row.habit.title,
+    description: row.habit.description,
+    level: row.habit.level,
+    pillar: row.habit.pillar,
+    assignedAt: row.assignedAt,
+  };
+}
+
+async function loadCurrentActive(userId) {
+  return prisma.activeHabit.findMany({
+    where: { userId, endedAt: null },
+    include: { habit: true },
+    orderBy: { assignedAt: 'asc' },
+  });
+}
+
+/**
+ * Install or replace the current three practices from the profile’s primary domain.
+ * Previous practices are ended (not deleted) so completion history is kept.
+ */
+async function syncActiveHabits(userId, profileId) {
+  const profile = await prisma.alignmentProfile.findUnique({
+    where: { id: profileId },
+  });
+  if (!profile || !profile.primaryDomain) return [];
+
+  const desired = await habitsForPillar(profile.primaryDomain);
+  if (!desired.length) {
+    console.warn('Habit assignment produced no habits', {
+      userId,
+      pillar: profile.primaryDomain,
+    });
+    return [];
+  }
+
+  const desiredIds = desired.map((h) => h.id);
+  const current = await prisma.activeHabit.findMany({
+    where: { userId, endedAt: null },
+  });
+  const currentIds = current.map((row) => row.habitId);
+  const sameSet =
+    currentIds.length === desiredIds.length && desiredIds.every((id) => currentIds.includes(id));
+  if (sameSet) {
+    const rows = await loadCurrentActive(userId);
+    return rows.map(serializeActive);
+  }
+
+  const now = new Date();
+  await prisma.activeHabit.updateMany({
+    where: {
+      userId,
+      endedAt: null,
+      habitId: { notIn: desiredIds },
+    },
+    data: { endedAt: now },
+  });
+
+  for (const habit of desired) {
+    const existing = await prisma.activeHabit.findUnique({
+      where: { userId_habitId: { userId, habitId: habit.id } },
+    });
+    if (existing) {
+      await prisma.activeHabit.update({
+        where: { id: existing.id },
+        data: {
+          endedAt: null,
+          profileId,
+          ...(existing.endedAt ? { assignedAt: now } : {}),
+        },
       });
-      if (existing) {
-        continue;
-      }
+    } else {
       await prisma.activeHabit.create({
         data: {
           userId,
@@ -90,25 +146,29 @@ async function assignHabits(profileId, userId, _segmentTags = []) {
           profileId,
         },
       });
-      created.push({
-        habitId: habit.id,
-        level: habit.level,
-        pillar: habit.pillar,
-        title: habit.title,
-      });
-    } catch (e) {
-      // skip if already assigned
     }
   }
-  return created;
+
+  const rows = await loadCurrentActive(userId);
+  return rows.map(serializeActive);
 }
 
 /**
- * If this user already has a diagnostic profile but no practices, install them.
- * Safe to call on every habits fetch (no-op when habits already exist).
+ * @param {string} profileId
+ * @param {string} userId
+ * @returns {Promise<Array<{ habitId: string, level: number, pillar: string, title: string }>>}
+ */
+async function assignHabits(profileId, userId) {
+  return syncActiveHabits(userId, profileId);
+}
+
+/**
+ * If this user already has a diagnostic profile but no current practices, install them.
  */
 async function ensureActiveHabits(userId) {
-  const existingCount = await prisma.activeHabit.count({ where: { userId } });
+  const existingCount = await prisma.activeHabit.count({
+    where: { userId, endedAt: null },
+  });
   if (existingCount > 0) {
     return { assigned: [], alreadyHad: true };
   }
@@ -118,14 +178,15 @@ async function ensureActiveHabits(userId) {
   if (!profile) {
     return { assigned: [], alreadyHad: false };
   }
-  const assigned = await assignHabits(profile.id, userId, []);
-  if (assigned.length === 0) {
-    console.warn('Habit assignment produced no habits', {
-      userId,
-      pillar: profile.primaryDomain,
-    });
-  }
+  const assigned = await syncActiveHabits(userId, profile.id);
   return { assigned, alreadyHad: false };
 }
 
-module.exports = { assignHabits, ensureActiveHabits, HABIT_ORDER_BY_PILLAR, DIAGNOSTIC_TAG };
+module.exports = {
+  assignHabits,
+  syncActiveHabits,
+  ensureActiveHabits,
+  loadCurrentActive,
+  HABIT_ORDER_BY_PILLAR,
+  DIAGNOSTIC_TAG,
+};

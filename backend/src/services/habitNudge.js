@@ -51,7 +51,7 @@ async function sendDueHabitNudges() {
     try {
       await ensureActiveHabits(user.id);
       const active = await prisma.activeHabit.findMany({
-        where: { userId: user.id },
+        where: { userId: user.id, endedAt: null },
         include: {
           habit: true,
           completions: { select: { completedAt: true } },

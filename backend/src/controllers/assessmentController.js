@@ -2,7 +2,7 @@ const { ZodError } = require('zod');
 const { prisma } = require('../prismaClient');
 const { submitAssessmentSchema } = require('../validation/assessmentSchemas');
 const { computeAQ, getAlignmentTypeSubtitle } = require('../services/aqScore');
-const { assignHabits } = require('../services/habitAssignment');
+const { syncActiveHabits } = require('../services/habitAssignment');
 const { resolveActiveAssessmentWithQuestions } = require('../services/assessmentEnsureQuestions');
 
 const DOMAIN_LABELS = {
@@ -235,20 +235,7 @@ async function submitAssessment(req, res, next) {
 
     let habits = [];
     try {
-      await assignHabits(profile.id, userId, []);
-      const active = await prisma.activeHabit.findMany({
-        where: { userId },
-        include: { habit: true },
-        orderBy: { assignedAt: 'asc' },
-      });
-      habits = active.map((row) => ({
-        id: row.id,
-        habitId: row.habitId,
-        title: row.habit.title,
-        description: row.habit.description,
-        level: row.habit.level,
-        pillar: row.habit.pillar,
-      }));
+      habits = await syncActiveHabits(userId, profile.id);
     } catch (assignErr) {
       console.error('Habit assignment failed:', assignErr.message);
     }
