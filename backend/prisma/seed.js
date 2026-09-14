@@ -42,19 +42,28 @@ async function main() {
 
   console.log('Assessment:', assessment.title);
 
-  await prisma.question.deleteMany({
-    where: { assessmentId: assessment.id },
-  });
+  const ensureOnly = process.argv.includes('--ensure');
 
-  const questionRows = getQuestionsForSeed(assessment.id);
-  await prisma.question.createMany({ data: questionRows });
-  console.log(`Created ${questionRows.length} questions.`);
+  if (!ensureOnly) {
+    await prisma.question.deleteMany({
+      where: { assessmentId: assessment.id },
+    });
+
+    const questionRows = getQuestionsForSeed(assessment.id);
+    await prisma.question.createMany({ data: questionRows });
+    console.log(`Created ${questionRows.length} questions.`);
+  } else {
+    const qCount = await prisma.question.count({ where: { assessmentId: assessment.id } });
+    if (qCount === 0) {
+      const questionRows = getQuestionsForSeed(assessment.id);
+      await prisma.question.createMany({ data: questionRows });
+      console.log(`Ensure: created ${questionRows.length} questions.`);
+    } else {
+      console.log(`Ensure: leaving ${qCount} questions in place.`);
+    }
+  }
 
   // Diagnostic v1.0 — exactly three habits per domain (Primary Gap library)
-  await prisma.habit.deleteMany({
-    where: { tags: { has: DIAGNOSTIC_TAG } },
-  });
-
   const diagnosticHabits = [
     {
       title: 'Morning Identity Anchor',
@@ -185,8 +194,25 @@ async function main() {
     },
   ];
 
-  await prisma.habit.createMany({ data: diagnosticHabits });
-  console.log(`Seeded ${diagnosticHabits.length} diagnostic v1 habits.`);
+  if (ensureOnly) {
+    let created = 0;
+    for (const habit of diagnosticHabits) {
+      const existing = await prisma.habit.findFirst({
+        where: { title: habit.title, pillar: habit.pillar },
+      });
+      if (existing) continue;
+      await prisma.habit.create({ data: habit });
+      created += 1;
+    }
+    const total = await prisma.habit.count();
+    console.log(`Ensure catalog: created ${created}, total ${total}.`);
+  } else {
+    await prisma.habit.deleteMany({
+      where: { tags: { has: DIAGNOSTIC_TAG } },
+    });
+    await prisma.habit.createMany({ data: diagnosticHabits });
+    console.log(`Seeded ${diagnosticHabits.length} diagnostic v1 habits.`);
+  }
 }
 
 main()
