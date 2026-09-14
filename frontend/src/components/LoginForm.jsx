@@ -14,7 +14,7 @@ import {
  * Shared sign-in form for full-page /login and LoginModal.
  */
 export default function LoginForm({
-  returnTo = '/dashboard',
+  returnTo = '/practice',
   /** Called after token is stored (navigate or parent state update) */
   onSuccess,
   /** Smaller vertical spacing for modal */

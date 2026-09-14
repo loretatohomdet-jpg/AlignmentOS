@@ -4,7 +4,7 @@ import LoginForm from './LoginForm';
 /**
  * Sign-in as a modal with blurred backdrop (e.g. when opening Dashboard while logged out).
  */
-export default function LoginModal({ open, onClose, returnTo = '/dashboard', onLoggedIn }) {
+export default function LoginModal({ open, onClose, returnTo = '/practice', onLoggedIn }) {
   useEffect(() => {
     if (!open) return;
     const onKey = (e) => {

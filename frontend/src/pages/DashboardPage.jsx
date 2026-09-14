@@ -377,11 +377,9 @@ export default function DashboardPage() {
 
   const nextStep = !result
     ? { label: 'Take the assessment', to: '/assessment', cta: 'Start →', isHabit: false }
-    : habits.length > 0 && !paid
-      ? { label: 'Activate the Habit Engine', to: '/pricing', cta: 'Activate →', isHabit: false }
-      : habits.length > 0
-        ? { label: primaryHabit.title, to: null, cta: 'Mark done', isHabit: true }
-        : { label: 'View your results and insights', to: '/results', cta: 'View →', isHabit: false };
+    : habits.length > 0
+      ? { label: primaryHabit.title, to: null, cta: 'Mark done', isHabit: true }
+      : { label: 'View your results and insights', to: '/results', cta: 'View →', isHabit: false };
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 relative">
@@ -420,7 +418,7 @@ export default function DashboardPage() {
             )}
           </div>
 
-          {paid && habitStats?.prompt && (
+          {habitStats?.prompt && (
             <div className="mt-6 rounded-2xl border border-alignment-primary/20 bg-alignment-primary/[0.06] p-5 sm:p-6">
               <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-primary">
                 {habitStats.prompt.kind === 'adjust' ? 'Needs adjustment' : 'Habit Engine'}
@@ -443,7 +441,7 @@ export default function DashboardPage() {
                   token={token}
                   API_BASE={API_BASE}
                   focusPillar={result?.primaryDomain ? PILLAR_LABELS[result.primaryDomain] || result.primaryDomain : null}
-                  locked={!paid}
+                  locked={false}
                   onFail={setError}
                 />
               </section>
@@ -609,7 +607,7 @@ export default function DashboardPage() {
                         onComplete={refreshHabits}
                         token={token}
                         API_BASE={API_BASE}
-                        locked={!paid}
+                        locked={false}
                         onFail={setError}
                       />
                     ))}
@@ -630,10 +628,10 @@ export default function DashboardPage() {
               </div>
               <div className="flex flex-wrap gap-2 shrink-0">
                 <Link
-                  to={paid ? '/practice' : '/pricing'}
+                  to="/practice"
                   className="inline-flex rounded-full bg-alignment-primary text-white px-5 py-2.5 text-sm font-medium hover:bg-alignment-primary/90 transition-colors"
                 >
-                  {paid ? 'Open engine →' : 'Activate →'}
+                  Open Practice →
                 </Link>
                 {creatorHref && (
                   <a

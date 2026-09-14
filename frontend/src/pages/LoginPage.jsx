@@ -4,7 +4,7 @@ import SiteMarketingHeader from '../components/SiteMarketingHeader';
 
 export default function LoginPage() {
   const [searchParams] = useSearchParams();
-  const returnTo = searchParams.get('returnTo') || '/dashboard';
+  const returnTo = searchParams.get('returnTo') || '/practice';
 
   return (
     <div className="min-h-screen w-full bg-alignment-surface flex flex-col overflow-x-hidden antialiased">

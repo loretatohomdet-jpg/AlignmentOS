@@ -17,12 +17,15 @@ import { SiteSecondaryFooterNav } from '../components/SiteFooterNav';
 const focusRing =
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2 focus-visible:ring-offset-alignment-foundation';
 
-const foundationFree = ['24-question diagnostic', 'Score + alignment type', 'Three habits previewed'];
+const foundationFree = [
+  '24-question diagnostic',
+  'Score + alignment type',
+  'Three practices + daily check-in',
+];
 
 const foundationHabit = [
-  'Full dashboard',
-  'Daily habit tracking',
   'Weekly + quarterly reviews',
+  'Sunday review rhythm',
   'Score history',
 ];
 

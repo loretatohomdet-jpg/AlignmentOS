@@ -67,7 +67,7 @@ export default function PracticePage() {
   }, [load]);
 
   const markDone = async (habit) => {
-    if (!paid || habit.completedToday || completingId) return;
+    if (habit.completedToday || completingId) return;
     setCompletingId(habit.id);
     try {
       await axios.post(`${API_BASE}/habits/complete`, { activeHabitId: habit.id }, { headers: authHeaders() });
@@ -119,16 +119,16 @@ export default function PracticePage() {
 
       {!paid && (
         <div className="mt-6 rounded-2xl border border-alignment-accent/10 bg-alignment-surface p-6">
-          <p className="font-medium text-alignment-accent">Tracking unlocks with Habit Engine</p>
+          <p className="font-medium text-alignment-accent">Hold the three. Reviews unlock with the plan.</p>
           <p className="mt-2 text-sm text-alignment-accent/70 leading-relaxed">
-            You can see the three prescribed habits. Daily check-in, weekly rhythm, and adjustment prompts activate with
-            the $12/month plan.
+            Daily check-in is included. Weekly review, quarterly reflection, and follow-up emails are on the $12/month
+            Habit Engine.
           </p>
           <Link
             to="/pricing"
             className="mt-5 inline-flex rounded-full bg-alignment-primary text-white px-5 py-2.5 text-sm font-medium hover:bg-alignment-primary/90"
           >
-            Activate
+            See the plan
           </Link>
         </div>
       )}
@@ -163,8 +163,7 @@ export default function PracticePage() {
                     <p className="mt-1.5 text-sm text-alignment-accent/70 leading-relaxed">{habit.description}</p>
                   )}
                 </div>
-                {paid ? (
-                  <button
+                <button
                     type="button"
                     onClick={() => markDone(habit)}
                     disabled={habit.completedToday || completingId === habit.id}
@@ -172,14 +171,6 @@ export default function PracticePage() {
                   >
                     {habit.completedToday ? 'Held today' : completingId === habit.id ? '…' : 'Mark done'}
                   </button>
-                ) : (
-                  <Link
-                    to="/pricing"
-                    className="shrink-0 rounded-full bg-alignment-primary text-white px-4 py-2 text-sm font-medium hover:bg-alignment-primary/90"
-                  >
-                    Unlock
-                  </Link>
-                )}
               </div>
               <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
                 <WeekDots last7Days={habit.last7Days} />
@@ -193,17 +184,21 @@ export default function PracticePage() {
         )}
       </div>
 
-      {paid && (
-        <p className="mt-10 text-sm text-alignment-accent/60">
+      <p className="mt-10 text-sm text-alignment-accent/60">
+        {paid ? (
           <Link to="/reflect" className="font-medium text-alignment-accent hover:underline">
             Weekly review
           </Link>
-          <span className="text-alignment-accent/35"> · </span>
-          <Link to="/dashboard" className="hover:underline">
-            Dashboard
+        ) : (
+          <Link to="/pricing" className="font-medium text-alignment-accent hover:underline">
+            Unlock weekly review
           </Link>
-        </p>
-      )}
+        )}
+        <span className="text-alignment-accent/35"> · </span>
+        <Link to="/dashboard" className="hover:underline">
+          Dashboard
+        </Link>
+      </p>
     </div>
   );
 }
