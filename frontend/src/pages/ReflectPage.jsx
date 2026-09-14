@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import { API_BASE, networkErrorUserMessage } from '../config/apiBase';
+import { isPaidPlan } from '../utils/plan';
+import { Link } from 'react-router-dom';
 
 const LOCAL_KEY = 'savedReflections';
 
@@ -41,6 +43,7 @@ export default function ReflectPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [paid, setPaid] = useState(false);
 
   const fetchReflections = useCallback(async () => {
     const token = localStorage.getItem('accessToken');
@@ -51,10 +54,14 @@ export default function ReflectPage() {
     }
     setError(null);
     try {
-      const { data } = await axios.get(`${API_BASE}/me/reflections`, { headers: authHeaders() });
+      const [meRes, { data }] = await Promise.all([
+        axios.get(`${API_BASE}/me`, { headers: authHeaders() }).catch(() => ({ data: null })),
+        axios.get(`${API_BASE}/me/reflections`, { headers: authHeaders() }),
+      ]);
+      setPaid(isPaidPlan(meRes.data?.plan));
       const list = Array.isArray(data) ? data : [];
 
-      if (list.length === 0) {
+      if (list.length === 0 && isPaidPlan(meRes.data?.plan)) {
         const local = loadLocalSaved();
         if (local.length > 0) {
           let anyOk = false;
@@ -103,6 +110,10 @@ export default function ReflectPage() {
   const persist = async (legacyType, answers) => {
     const token = localStorage.getItem('accessToken');
     if (!token) return false;
+    if (!paid) {
+      setError('Weekly and quarterly reviews unlock with Habit Engine.');
+      return false;
+    }
     const type = typeApiFromLegacy(legacyType);
     if (!type) return false;
     setSaving(true);
@@ -286,9 +297,24 @@ export default function ReflectPage() {
 
       {errorBanner}
 
+      {!loading && !paid && (
+        <div className="mt-8 rounded-2xl border border-alignment-accent/10 bg-alignment-surface p-6 sm:p-8">
+          <p className="font-medium text-alignment-accent">Reviews are part of the Habit Engine</p>
+          <p className="mt-2 text-sm text-alignment-accent/70 leading-relaxed">
+            Weekly and quarterly reflection save to your account after you activate. $12/month or $120/year.
+          </p>
+          <Link
+            to="/pricing"
+            className="mt-5 inline-flex rounded-full bg-alignment-primary text-white px-5 py-2.5 text-sm font-medium hover:bg-alignment-primary/90"
+          >
+            Activate Habit Engine
+          </Link>
+        </div>
+      )}
+
       {loading ? (
         <p className="mt-8 text-alignment-accent/70">Loading reflections…</p>
-      ) : (
+      ) : paid ? (
         <>
           <div className="mt-8 grid sm:grid-cols-2 gap-4">
             <button

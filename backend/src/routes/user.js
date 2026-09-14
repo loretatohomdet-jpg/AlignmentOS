@@ -1,6 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const { authMiddleware } = require('../middleware/auth');
+const { requirePaidPlan } = require('../middleware/requirePaidPlan');
 const { getMe, updateMe, rotateShareToken, uploadAvatar } = require('../controllers/userController');
 const { listReflections, createReflection } = require('../controllers/reflectionController');
 
@@ -15,7 +16,7 @@ router.use(authMiddleware);
 router.get('/', getMe);
 router.patch('/', updateMe);
 router.get('/reflections', listReflections);
-router.post('/reflections', createReflection);
+router.post('/reflections', requirePaidPlan, createReflection);
 router.post('/share', rotateShareToken);
 router.post('/avatar', upload.single('file'), uploadAvatar);
 

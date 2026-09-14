@@ -1,9 +1,24 @@
 const { z } = require('zod');
-const { createCheckoutSession } = require('../services/stripeBilling');
+const { createCheckoutSession, getStripe, resolvePriceId } = require('../services/stripeBilling');
 
 const checkoutSchema = z.object({
   priceKey: z.enum(['habit_monthly', 'habit_yearly', 'journey']),
 });
+
+/** GET /api/billing/status — public; whether Stripe checkout is ready */
+async function billingStatus(_req, res) {
+  const stripeReady = Boolean(getStripe());
+  const webhookReady = Boolean(process.env.STRIPE_WEBHOOK_SECRET);
+  res.json({
+    configured: stripeReady && Boolean(resolvePriceId('habit_monthly') || resolvePriceId('habit_yearly')),
+    webhookConfigured: webhookReady,
+    prices: {
+      habit_monthly: Boolean(resolvePriceId('habit_monthly')),
+      habit_yearly: Boolean(resolvePriceId('habit_yearly')),
+      journey: Boolean(resolvePriceId('journey')),
+    },
+  });
+}
 
 /** POST /api/billing/checkout — auth required */
 async function startCheckout(req, res, next) {
@@ -23,4 +38,4 @@ async function startCheckout(req, res, next) {
   }
 }
 
-module.exports = { startCheckout };
+module.exports = { startCheckout, billingStatus };

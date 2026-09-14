@@ -17,6 +17,7 @@ import {
 } from 'recharts';
 import { API_BASE } from '../config/apiBase';
 import { creatorHandoffUrl } from '../config/externalLinks';
+import { isPaidPlan } from '../utils/plan';
 
 const FALLBACK_PROMPT = {
   title: 'Set one intention for the day',
@@ -32,10 +33,10 @@ const PILLAR_LABELS = {
   EXECUTION: 'Execution',
 };
 
-function HabitRow({ habit, onComplete, token, API_BASE }) {
+function HabitRow({ habit, onComplete, token, API_BASE, locked }) {
   const [completing, setCompleting] = useState(false);
   const handleDone = async () => {
-    if (completing) return;
+    if (completing || locked) return;
     setCompleting(true);
     try {
       await axios.post(`${API_BASE}/habits/complete`, { activeHabitId: habit.id }, { headers: { Authorization: `Bearer ${token}` } });
@@ -50,21 +51,30 @@ function HabitRow({ habit, onComplete, token, API_BASE }) {
         {habit.description && <p className="text-sm text-alignment-accent/70 mt-0.5">{habit.description}</p>}
         <span className="inline-block mt-1 text-xs text-alignment-accent/70 rounded-full bg-alignment-surface px-2 py-0.5">Level {habit.level}</span>
       </div>
-      <button
-        type="button"
-        onClick={handleDone}
-        disabled={completing}
-        className="shrink-0 rounded-full bg-alignment-primary text-white px-4 py-2 text-sm font-medium hover:bg-alignment-primary/90 disabled:opacity-50"
-      >
-        {completing ? '…' : 'Done'}
-      </button>
+      {locked ? (
+        <Link
+          to="/pricing"
+          className="shrink-0 rounded-full bg-alignment-primary text-white px-4 py-2 text-sm font-medium hover:bg-alignment-primary/90"
+        >
+          Unlock
+        </Link>
+      ) : (
+        <button
+          type="button"
+          onClick={handleDone}
+          disabled={completing}
+          className="shrink-0 rounded-full bg-alignment-primary text-white px-4 py-2 text-sm font-medium hover:bg-alignment-primary/90 disabled:opacity-50"
+        >
+          {completing ? '…' : 'Done'}
+        </button>
+      )}
     </div>
   );
 }
 
 const TODAY_RESPONSE_KEY = (habitId, dateStr) => `today_response_${habitId}_${dateStr}`;
 
-function TodayPracticeCard({ habit, fallback, onComplete, token, API_BASE, focusPillar }) {
+function TodayPracticeCard({ habit, fallback, onComplete, token, API_BASE, focusPillar, locked }) {
   const prompt = habit || fallback;
   const todayStr = new Date().toISOString().slice(0, 10);
   const storageKey = habit ? TODAY_RESPONSE_KEY(habit.id, todayStr) : null;
@@ -90,7 +100,7 @@ function TodayPracticeCard({ habit, fallback, onComplete, token, API_BASE, focus
   };
 
   const handleDone = async () => {
-    if (completing || !habit) return;
+    if (completing || !habit || locked) return;
     setCompleting(true);
     try {
       await axios.post(`${API_BASE}/habits/complete`, { activeHabitId: habit.id }, { headers: { Authorization: `Bearer ${token}` } });
@@ -139,15 +149,26 @@ function TodayPracticeCard({ habit, fallback, onComplete, token, API_BASE, focus
             rows={3}
             className="mt-2 w-full rounded-xl border border-alignment-accent/[0.08] bg-alignment-surface px-4 py-3 text-alignment-accent placeholder-alignment-accent/45 focus:border-alignment-accent focus:ring-2 focus:ring-alignment-accent/10 outline-none transition-all resize-none"
           />
-          <button
-            type="button"
-            onClick={handleDone}
-            disabled={completing}
-            className="mt-4 rounded-full bg-alignment-primary text-white px-5 py-2.5 text-sm font-medium hover:bg-alignment-primary/90 disabled:opacity-50 transition-colors"
-          >
-            {completing ? '…' : 'Mark done'}
-          </button>
-          <p className="mt-3 text-xs text-alignment-accent/70">Optional</p>
+          {locked ? (
+            <Link
+              to="/pricing"
+              className="mt-4 inline-block rounded-full bg-alignment-primary text-white px-5 py-2.5 text-sm font-medium hover:bg-alignment-primary/90 transition-colors"
+            >
+              Activate Habit Engine
+            </Link>
+          ) : (
+            <button
+              type="button"
+              onClick={handleDone}
+              disabled={completing}
+              className="mt-4 rounded-full bg-alignment-primary text-white px-5 py-2.5 text-sm font-medium hover:bg-alignment-primary/90 disabled:opacity-50 transition-colors"
+            >
+              {completing ? '…' : 'Mark done'}
+            </button>
+          )}
+          <p className="mt-3 text-xs text-alignment-accent/70">
+            {locked ? 'Daily tracking unlocks with Habit Engine.' : 'Optional'}
+          </p>
         </>
       ) : (
         <Link to="/assessment" className="mt-4 inline-block rounded-full bg-alignment-primary text-white px-5 py-2.5 text-sm font-medium hover:bg-alignment-primary/90 transition-colors">
@@ -318,6 +339,7 @@ export default function DashboardPage() {
   }
 
   const firstName = user?.name?.split(/\s+/)[0] || 'there';
+  const paid = isPaidPlan(user?.plan);
   const todayStr = new Date().toLocaleDateString(undefined, { weekday: 'long', month: 'short', day: 'numeric' });
   const primaryHabit = habits[0] ?? null;
   const lastTakenAt = result?.createdAt ? new Date(result.createdAt) : null;
@@ -333,9 +355,11 @@ export default function DashboardPage() {
 
   const nextStep = !result
     ? { label: 'Take the assessment', to: '/assessment', cta: 'Start →', isHabit: false }
-    : habits.length > 0
-      ? { label: primaryHabit.title, to: null, cta: 'Mark done', isHabit: true }
-      : { label: 'View your results and insights', to: '/results', cta: 'View →', isHabit: false };
+    : habits.length > 0 && !paid
+      ? { label: 'Activate the Habit Engine', to: '/pricing', cta: 'Activate →', isHabit: false }
+      : habits.length > 0
+        ? { label: primaryHabit.title, to: null, cta: 'Mark done', isHabit: true }
+        : { label: 'View your results and insights', to: '/results', cta: 'View →', isHabit: false };
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 relative">
@@ -380,6 +404,7 @@ export default function DashboardPage() {
                   token={token}
                   API_BASE={API_BASE}
                   focusPillar={result?.primaryDomain ? PILLAR_LABELS[result.primaryDomain] || result.primaryDomain : null}
+                  locked={!paid}
                 />
               </section>
 
@@ -521,10 +546,10 @@ export default function DashboardPage() {
                       <p className="text-sm text-alignment-accent/70">~10 min reflection</p>
                     </div>
                     <Link
-                      to="/reflect"
+                      to={paid ? '/reflect' : '/pricing'}
                       className="mt-4 w-full text-center rounded-full bg-alignment-primary text-white px-5 py-2.5 text-sm font-medium hover:bg-alignment-primary/90 transition-colors"
                     >
-                      Do it now
+                      {paid ? 'Do it now' : 'Unlock reviews'}
                     </Link>
                   </>
                 )}
@@ -541,6 +566,7 @@ export default function DashboardPage() {
                         onComplete={refreshHabits}
                         token={token}
                         API_BASE={API_BASE}
+                        locked={!paid}
                       />
                     ))}
                   </div>

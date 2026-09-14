@@ -67,6 +67,22 @@ export default function PricingPage() {
   const [billing, setBilling] = useState('monthly');
   const [checkoutLoading, setCheckoutLoading] = useState(null);
   const [checkoutError, setCheckoutError] = useState(null);
+  const [billingReady, setBillingReady] = useState(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    axios
+      .get(`${API_BASE}/billing/status`)
+      .then(({ data }) => {
+        if (!cancelled) setBillingReady(Boolean(data?.configured));
+      })
+      .catch(() => {
+        if (!cancelled) setBillingReady(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const startCheckout = async (priceKey) => {
     const token = localStorage.getItem('accessToken');
@@ -250,7 +266,11 @@ export default function PricingPage() {
                     <span aria-hidden className="ml-2">→</span>
                   </button>
                 )}
-                <p className="mt-3 text-center text-[11px] text-alignment-accent/45">Secure checkout · Stripe</p>
+                <p className="mt-3 text-center text-[11px] text-alignment-accent/45">
+                  {billingReady === false
+                    ? 'Stripe checkout is being connected. You can still begin free.'
+                    : 'Secure checkout · Stripe'}
+                </p>
               </div>
 
               {/* Step 3 */}
