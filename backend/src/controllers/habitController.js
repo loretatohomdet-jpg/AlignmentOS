@@ -1,24 +1,37 @@
 const { prisma } = require('../prismaClient');
+const { utcDay, summarizeActiveHabits } = require('../services/habitEngine');
+
+async function loadActiveWithCompletions(userId) {
+  return prisma.activeHabit.findMany({
+    where: { userId },
+    include: {
+      habit: true,
+      completions: { select: { completedAt: true } },
+    },
+    orderBy: { assignedAt: 'asc' },
+  });
+}
 
 async function getActiveHabits(req, res, next) {
   try {
     const userId = req.user.sub;
-    const active = await prisma.activeHabit.findMany({
-      where: { userId },
-      include: {
-        habit: true,
-      },
-      orderBy: { assignedAt: 'desc' },
-    });
-    res.json(active.map((a) => ({
-      id: a.id,
-      habitId: a.habitId,
-      title: a.habit.title,
-      description: a.habit.description,
-      level: a.habit.level,
-      pillar: a.habit.pillar,
-      assignedAt: a.assignedAt,
-    })));
+    const active = await loadActiveWithCompletions(userId);
+    const summary = summarizeActiveHabits(active);
+    res.json(
+      summary.habits.map((h) => ({
+        id: h.id,
+        habitId: h.habitId,
+        title: h.title,
+        description: h.description,
+        level: h.level,
+        pillar: h.pillar,
+        assignedAt: h.assignedAt,
+        completedToday: h.completedToday,
+        completedLast7: h.completedLast7,
+        last7Days: h.last7Days,
+        streak: h.streak,
+      }))
+    );
   } catch (err) {
     next(err);
   }
@@ -37,10 +50,24 @@ async function completeHabit(req, res, next) {
     if (!active) {
       return res.status(404).json({ message: 'Habit not found' });
     }
+
+    const today = utcDay(new Date());
+    const dayStart = new Date(`${today}T00:00:00.000Z`);
+    const dayEnd = new Date(`${today}T23:59:59.999Z`);
+    const existing = await prisma.habitCompletion.findFirst({
+      where: {
+        activeHabitId: active.id,
+        completedAt: { gte: dayStart, lte: dayEnd },
+      },
+    });
+    if (existing) {
+      return res.json({ completedAt: existing.completedAt, alreadyCompleted: true });
+    }
+
     const completion = await prisma.habitCompletion.create({
       data: { activeHabitId: active.id },
     });
-    res.status(201).json({ completedAt: completion.completedAt });
+    res.status(201).json({ completedAt: completion.completedAt, alreadyCompleted: false });
   } catch (err) {
     next(err);
   }
@@ -49,28 +76,16 @@ async function completeHabit(req, res, next) {
 async function getCompletionStats(req, res, next) {
   try {
     const userId = req.user.sub;
-    const active = await prisma.activeHabit.findMany({
-      where: { userId },
-      select: { id: true },
-    });
-    const ids = active.map((a) => a.id);
-    const completions = await prisma.habitCompletion.findMany({
-      where: { activeHabitId: { in: ids } },
-      select: { completedAt: true, activeHabitId: true },
-    });
-    const byDay = {};
-    const todayUtc = new Date().toISOString().slice(0, 10);
-    const completedActiveHabitIdsToday = new Set();
-    for (const c of completions) {
-      const day = c.completedAt.toISOString().slice(0, 10);
-      byDay[day] = (byDay[day] || 0) + 1;
-      if (day === todayUtc) completedActiveHabitIdsToday.add(c.activeHabitId);
-    }
-    const totalDays = Object.keys(byDay).length;
+    const active = await loadActiveWithCompletions(userId);
+    const summary = summarizeActiveHabits(active);
     res.json({
-      totalCompletions: completions.length,
-      totalDaysWithActivity: totalDays,
-      completedActiveHabitIdsToday: [...completedActiveHabitIdsToday],
+      totalCompletions: summary.totalCompletions,
+      totalDaysWithActivity: summary.totalDaysWithActivity,
+      completedActiveHabitIdsToday: summary.completedActiveHabitIdsToday,
+      today: summary.today,
+      last7Days: summary.last7Days,
+      habits: summary.habits,
+      prompt: summary.prompt,
     });
   } catch (err) {
     next(err);

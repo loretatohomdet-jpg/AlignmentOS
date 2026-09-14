@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const steps = [
   {
     n: '01',
-    title: 'Check your Habits tab',
+    title: 'Open the Habit Engine',
     body: 'Three habits from your primary gap. Do one today.',
     to: '/practice',
   },

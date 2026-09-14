@@ -62,10 +62,10 @@ function HabitRow({ habit, onComplete, token, API_BASE, locked }) {
         <button
           type="button"
           onClick={handleDone}
-          disabled={completing}
+          disabled={completing || habit.completedToday}
           className="shrink-0 rounded-full bg-alignment-primary text-white px-4 py-2 text-sm font-medium hover:bg-alignment-primary/90 disabled:opacity-50"
         >
-          {completing ? '…' : 'Done'}
+          {habit.completedToday ? 'Held' : completing ? '…' : 'Done'}
         </button>
       )}
     </div>
@@ -160,10 +160,10 @@ function TodayPracticeCard({ habit, fallback, onComplete, token, API_BASE, focus
             <button
               type="button"
               onClick={handleDone}
-              disabled={completing}
+              disabled={completing || habit.completedToday}
               className="mt-4 rounded-full bg-alignment-primary text-white px-5 py-2.5 text-sm font-medium hover:bg-alignment-primary/90 disabled:opacity-50 transition-colors"
             >
-              {completing ? '…' : 'Mark done'}
+              {habit.completedToday ? 'Held today' : completing ? '…' : 'Mark done'}
             </button>
           )}
           <p className="mt-3 text-xs text-alignment-accent/70">
@@ -348,8 +348,12 @@ export default function DashboardPage() {
 
   const refreshHabits = async () => {
     try {
-      const res = await axios.get(`${API_BASE}/habits/active`, { headers: authHeaders });
-      setHabits(Array.isArray(res.data) ? res.data : []);
+      const [habitsRes, statsRes] = await Promise.all([
+        axios.get(`${API_BASE}/habits/active`, { headers: authHeaders }),
+        axios.get(`${API_BASE}/habits/stats`, { headers: authHeaders }).catch(() => ({ data: null })),
+      ]);
+      setHabits(Array.isArray(habitsRes.data) ? habitsRes.data : []);
+      if (statsRes.data) setHabitStats(statsRes.data);
     } catch (_) {}
   };
 
@@ -392,6 +396,19 @@ export default function DashboardPage() {
               </Link>
             )}
           </div>
+
+          {paid && habitStats?.prompt && (
+            <div className="mt-6 rounded-2xl border border-alignment-primary/20 bg-alignment-primary/[0.06] p-5 sm:p-6">
+              <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-primary">
+                {habitStats.prompt.kind === 'adjust' ? 'Needs adjustment' : 'Habit Engine'}
+              </p>
+              <p className="mt-2 font-medium text-alignment-accent">{habitStats.prompt.title}</p>
+              <p className="mt-1 text-sm text-alignment-accent/70 leading-relaxed">{habitStats.prompt.body}</p>
+              <Link to="/practice" className="mt-3 inline-block text-sm font-medium text-alignment-accent hover:underline">
+                Open Habit Engine →
+              </Link>
+            </div>
+          )}
 
           <div className="mt-8 lg:mt-10 space-y-6 lg:space-y-8 animate-slide-up">
             {/* Row 1: three columns */}
@@ -582,14 +599,14 @@ export default function DashboardPage() {
             <div className="rounded-2.5xl border border-alignment-accent/[0.08] bg-alignment-surface px-6 py-6 shadow-apple flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
                 <p className="text-xs font-medium text-alignment-accent/70 uppercase tracking-wider mb-1">Go deeper</p>
-                <p className="font-medium text-alignment-accent">Habit Engine & Journey</p>
+                <p className="font-medium text-alignment-accent">Habit Engine</p>
               </div>
               <div className="flex flex-wrap gap-2 shrink-0">
                 <Link
-                  to="/pricing"
+                  to={paid ? '/practice' : '/pricing'}
                   className="inline-flex rounded-full bg-alignment-primary text-white px-5 py-2.5 text-sm font-medium hover:bg-alignment-primary/90 transition-colors"
                 >
-                  Pricing →
+                  {paid ? 'Open engine →' : 'Activate →'}
                 </Link>
                 {creatorHref && (
                   <a

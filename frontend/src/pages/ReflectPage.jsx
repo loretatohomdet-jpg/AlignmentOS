@@ -44,6 +44,7 @@ export default function ReflectPage() {
   const [error, setError] = useState(null);
   const [saving, setSaving] = useState(false);
   const [paid, setPaid] = useState(false);
+  const [enginePrompt, setEnginePrompt] = useState(null);
 
   const fetchReflections = useCallback(async () => {
     const token = localStorage.getItem('accessToken');
@@ -54,11 +55,13 @@ export default function ReflectPage() {
     }
     setError(null);
     try {
-      const [meRes, { data }] = await Promise.all([
+      const [meRes, { data }, statsRes] = await Promise.all([
         axios.get(`${API_BASE}/me`, { headers: authHeaders() }).catch(() => ({ data: null })),
         axios.get(`${API_BASE}/me/reflections`, { headers: authHeaders() }),
+        axios.get(`${API_BASE}/habits/stats`, { headers: authHeaders() }).catch(() => ({ data: null })),
       ]);
       setPaid(isPaidPlan(meRes.data?.plan));
+      setEnginePrompt(statsRes.data?.prompt || null);
       const list = Array.isArray(data) ? data : [];
 
       if (list.length === 0 && isPaidPlan(meRes.data?.plan)) {
@@ -158,6 +161,14 @@ export default function ReflectPage() {
         </div>
 
         {errorBanner}
+
+        {enginePrompt && (
+          <div className="mt-6 rounded-2xl border border-alignment-primary/20 bg-alignment-primary/[0.06] p-5">
+            <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-primary">This week’s engine</p>
+            <p className="mt-2 font-medium text-alignment-accent">{enginePrompt.title}</p>
+            <p className="mt-1 text-sm text-alignment-accent/70 leading-relaxed">{enginePrompt.body}</p>
+          </div>
+        )}
 
         <div className="mt-8 rounded-2xl bg-alignment-surface border border-alignment-accent/5 shadow-apple p-6 sm:p-8 space-y-5">
           <div>

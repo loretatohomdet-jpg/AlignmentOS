@@ -23,6 +23,10 @@ export default function MorePage() {
       <p className="mt-2 text-alignment-accent/70">App shortcuts, story, and account.</p>
 
       <Section title="Your alignment">
+        <Link to="/practice" className={rowClass}>
+          <span className="font-medium text-alignment-accent">Habit Engine</span>
+          <span className="text-sm text-alignment-accent/45">Today’s practices</span>
+        </Link>
         <Link to="/results" className={rowClass}>
           <span className="font-medium text-alignment-accent">Results</span>
           <span className="text-alignment-accent/70">→</span>
