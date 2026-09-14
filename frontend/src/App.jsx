@@ -6,7 +6,7 @@ function RequireAuth({ children }) {
   const location = useLocation();
   const hasToken = typeof window !== 'undefined' && !!localStorage.getItem('accessToken');
   if (!hasToken) {
-    const returnTo = encodeURIComponent(location.pathname || '/dashboard');
+    const returnTo = encodeURIComponent(location.pathname || '/practice');
     return <Navigate to={`/login?returnTo=${returnTo}`} replace />;
   }
   return children;
@@ -53,7 +53,6 @@ import HeaderUserMenu from './components/HeaderUserMenu';
 import AgentFloatingButton from './components/AgentFloatingButton';
 import BrandLogo from './components/BrandLogo';
 import SiteMarketingHeader from './components/SiteMarketingHeader';
-import { siteNavMainLinks, siteNavSignedInLinks } from './config/siteNav';
 import { siteSecondaryFooter } from './config/footerNav';
 import { API_BASE } from './config/apiBase';
 
@@ -145,12 +144,6 @@ function Layout({ children }) {
     <div className="min-h-screen flex flex-col bg-alignment-page bg-fixed">
       <SiteMarketingHeader
         appendDesktop={appendDesktop}
-        navLinks={isLoggedIn ? siteNavSignedInLinks : siteNavMainLinks}
-        primaryCta={
-          isLoggedIn
-            ? { to: '/practice', label: 'Today' }
-            : { to: '/assessment', label: 'Begin free' }
-        }
         authDrawer={{
           isLoggedIn,
           onLogout: handleDrawerLogout,
@@ -252,7 +245,7 @@ export default function App() {
           </Layout>
         }
       />
-      <Route path="/today" element={<Navigate to="/dashboard" replace />} />
+      <Route path="/today" element={<Navigate to="/practice" replace />} />
       <Route
         path="/practice"
         element={

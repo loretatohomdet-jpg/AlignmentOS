@@ -1,34 +1,74 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import BrandLogo from './BrandLogo';
+import HeaderUserMenu from './HeaderUserMenu';
 import MobileDrawer from './MobileDrawer';
 import {
   siteNavMainLinks,
+  siteNavSignedInLinks,
   siteNavLinkClass,
   siteNavDrawerRowClass,
   beginFreeHeaderButtonClass,
 } from '../config/siteNav';
 
+function readLoggedIn() {
+  return typeof window !== 'undefined' && !!localStorage.getItem('accessToken');
+}
+
 /**
- * Shared marketing header: logo, centered nav, primary CTA, mobile drawer.
- * Use `appendDesktop` for Sign in / account controls (e.g. app shell).
- * When `authDrawer` is set (app shell), Account drawer shows Sign up + Sign in or Log out.
+ * Site header. Logged-in users always get Dashboard · Practice · Review and Today,
+ * including on Home, Pricing, and other marketing pages.
  */
-export default function SiteMarketingHeader({
-  appendDesktop = null,
-  authDrawer,
-  navLinks = siteNavMainLinks,
-  primaryCta = { to: '/assessment', label: 'Begin free' },
-}) {
+export default function SiteMarketingHeader({ appendDesktop = null, authDrawer }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(readLoggedIn);
+
+  useEffect(() => {
+    const sync = () => setIsLoggedIn(readLoggedIn());
+    sync();
+    window.addEventListener('alignment-auth', sync);
+    window.addEventListener('storage', sync);
+    return () => {
+      window.removeEventListener('alignment-auth', sync);
+      window.removeEventListener('storage', sync);
+    };
+  }, []);
+
+  const navLinks = isLoggedIn ? siteNavSignedInLinks : siteNavMainLinks;
+  const primaryCta = isLoggedIn
+    ? { to: '/practice', label: 'Today' }
+    : { to: '/assessment', label: 'Begin free' };
+
+  const handleLogout = () => {
+    try {
+      localStorage.removeItem('accessToken');
+    } catch (_) {}
+    window.dispatchEvent(new Event('alignment-auth'));
+    setIsLoggedIn(false);
+    window.location.href = '/';
+  };
+
+  const drawerAuth = authDrawer ?? { isLoggedIn, onLogout: handleLogout };
+
+  const accountDesktop =
+    appendDesktop ?? (
+      <div className="hidden md:flex items-center gap-1 shrink-0">
+        {!isLoggedIn ? (
+          <NavLink
+            to="/login"
+            className="px-4 py-2 rounded-full text-sm font-medium text-alignment-accent/70 hover:text-alignment-accent transition-colors"
+          >
+            Sign In
+          </NavLink>
+        ) : (
+          <HeaderUserMenu isLoggedIn={isLoggedIn} onLogout={handleLogout} />
+        )}
+      </div>
+    );
 
   return (
     <>
       <header className="sticky top-0 z-50 w-full border-b border-alignment-accent/[0.07] bg-alignment-foundation/88 backdrop-blur-md supports-[backdrop-filter]:bg-alignment-foundation/78 relative overflow-visible pt-[max(0px,env(safe-area-inset-top))]">
-        {/*
-          Portrait phones are narrower than landscape — flex row was clipping the menu control.
-          Reserve right padding on <lg and pin the menu button so it is always visible.
-        */}
         <div className="relative w-full max-w-6xl mx-auto px-3 sm:px-6 lg:px-10 min-h-14 sm:min-h-16 py-1.5 sm:py-0 flex items-center justify-between gap-2 min-w-0 pr-[max(5rem,env(safe-area-inset-right))] lg:pr-10">
           <BrandLogo
             compact
@@ -55,7 +95,7 @@ export default function SiteMarketingHeader({
                 →
               </span>
             </Link>
-            {appendDesktop}
+            {accountDesktop}
           </div>
           <button
             type="button"
@@ -90,7 +130,7 @@ export default function SiteMarketingHeader({
           {primaryCta.label}
         </Link>
         <p className="px-4 pt-4 pb-1 text-xs font-medium text-alignment-accent/70 uppercase tracking-wider">Account</p>
-        {authDrawer?.isLoggedIn ? (
+        {drawerAuth.isLoggedIn ? (
           <>
             <Link to="/profile" className={siteNavDrawerRowClass} onClick={() => setDrawerOpen(false)}>
               Profile
@@ -101,13 +141,13 @@ export default function SiteMarketingHeader({
               onClick={(e) => {
                 e.preventDefault();
                 setDrawerOpen(false);
-                authDrawer.onLogout();
+                drawerAuth.onLogout();
               }}
             >
               Log out
             </a>
           </>
-        ) : authDrawer ? (
+        ) : (
           <>
             <Link to="/signup" className={siteNavDrawerRowClass} onClick={() => setDrawerOpen(false)}>
               Sign up
@@ -116,10 +156,6 @@ export default function SiteMarketingHeader({
               Sign in
             </Link>
           </>
-        ) : (
-          <Link to="/login" className={siteNavDrawerRowClass} onClick={() => setDrawerOpen(false)}>
-            Sign in
-          </Link>
         )}
       </MobileDrawer>
     </>

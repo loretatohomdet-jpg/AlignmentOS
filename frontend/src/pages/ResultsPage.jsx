@@ -173,6 +173,19 @@ export default function ResultsPage() {
 
             {!lockResultsUntilEmail && (
               <div className="mt-10 lg:mt-12 space-y-6 lg:space-y-8">
+                <div className="rounded-xl border border-alignment-primary/20 bg-alignment-primary/[0.06] px-6 py-6 sm:px-8 sm:py-7 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                  <div>
+                    <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-primary">Next</p>
+                    <p className="mt-2 font-medium text-alignment-accent">Hold today’s practice</p>
+                    <p className="mt-1 text-sm text-alignment-accent/70 leading-relaxed">
+                      Three practices from your lowest domain. Mark one done.
+                    </p>
+                  </div>
+                  <Link to="/practice" className={`shrink-0 inline-flex ${resultsUi.btnPrimary} px-8 py-3`}>
+                    Open Practice →
+                  </Link>
+                </div>
+
                 {/* Row 1: three columns (lg+) */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-6 xl:gap-8 lg:items-stretch">
                   <section className={`${resultsUi.panel} flex flex-col h-full min-h-0`}>
@@ -195,9 +208,6 @@ export default function ResultsPage() {
                         ))
                       )}
                     </ul>
-                    <Link to="/practice" className={`mt-6 inline-flex ${resultsUi.btnPrimary} px-6 py-2.5 self-start`}>
-                      Open Practice →
-                    </Link>
                   </section>
 
                   <section className={`${resultsUi.panel} flex flex-col h-full min-h-0`}>
@@ -278,8 +288,11 @@ export default function ResultsPage() {
                         Reflect on what held and what drifted.
                       </p>
                     </div>
-                    <Link to="/reflect" className={`${resultsUi.btnPrimary} mt-5 w-full text-center`}>
-                      Do it now
+                    <Link
+                      to="/reflect"
+                      className="mt-5 text-[10px] font-semibold uppercase tracking-[0.18em] text-alignment-accent/60 hover:text-alignment-accent"
+                    >
+                      Weekly review →
                     </Link>
                   </section>
                 </div>
@@ -354,19 +367,13 @@ export default function ResultsPage() {
                 {/* Row 3: two columns */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-6 xl:gap-8 lg:items-stretch">
                   <section className="rounded-xl border border-alignment-accent/[0.08] bg-alignment-surface px-6 py-8 shadow-apple h-full flex flex-col">
-                    <h3 className={`${resultsUi.heading} text-xl sm:text-2xl`}>Ready to hold the day?</h3>
+                    <h3 className={`${resultsUi.heading} text-xl sm:text-2xl`}>Go deeper when you are ready</h3>
                     <p className="mt-4 text-sm text-alignment-accent/60 leading-relaxed flex-1">
-                      Practice is the daily surface. Tracking, weekly review, and follow-up emails unlock with Habit Engine.
+                      Weekly review, quarterly reflection, and the $12/month plan. Practice is already open.
                     </p>
-                    <p className="mt-4 text-alignment-accent font-medium">$12/month · $120/year</p>
-                    <div className="mt-6 flex flex-wrap gap-3">
-                      <Link to="/practice" className={`inline-flex ${resultsUi.btnPrimary} px-8 py-3`}>
-                        Open Practice →
-                      </Link>
-                      <Link to="/pricing" className={`inline-flex ${resultsUi.btnOutline} px-8 py-3`}>
-                        Activate tracking
-                      </Link>
-                    </div>
+                    <Link to="/pricing" className={`mt-6 inline-flex ${resultsUi.btnOutline} px-8 py-3 self-start`}>
+                      See plans
+                    </Link>
                   </section>
 
                   <section className="rounded-xl border border-alignment-accent/[0.08] bg-alignment-surface px-6 py-8 shadow-apple h-full flex flex-col">
