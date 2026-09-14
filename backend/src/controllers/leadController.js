@@ -1,7 +1,7 @@
 const { ZodError } = require('zod');
 const { prisma } = require('../prismaClient');
 const { createLeadSchema } = require('../validation/leadSchemas');
-const { subscribeLead } = require('../services/convertkit');
+const { subscribeLead, isConfigured } = require('../services/convertkit');
 
 async function sendWelcomeEmailIfConfigured(email) {
   const apiKey = process.env.RESEND_API_KEY;
@@ -30,19 +30,30 @@ async function sendWelcomeEmailIfConfigured(email) {
 async function create(req, res, next) {
   try {
     const data = createLeadSchema.parse(req.body);
-    const lead = await prisma.lead.create({
-      data: {
-        email: data.email.toLowerCase().trim(),
-        source: data.source || 'lander',
-      },
-    });
-    sendWelcomeEmailIfConfigured(lead.email).catch((err) =>
+    const email = data.email.toLowerCase().trim();
+    const source = data.source || 'lander';
+
+    let lead = null;
+    try {
+      lead = await prisma.lead.create({ data: { email, source } });
+    } catch (dbErr) {
+      console.error('Lead DB save failed:', dbErr.message);
+    }
+
+    const kitSaved = await subscribeLead(email, source);
+
+    if (!lead && !kitSaved) {
+      const message = isConfigured()
+        ? 'Could not save your email. Try again in a moment.'
+        : 'Email capture is not configured yet. Try again later or contact support.';
+      return res.status(503).json({ message });
+    }
+
+    sendWelcomeEmailIfConfigured(email).catch((err) =>
       console.error('Welcome email failed:', err.message)
     );
-    subscribeLead(lead.email, lead.source || 'lander').catch((err) =>
-      console.error('ConvertKit lead subscribe failed:', err.message)
-    );
-    res.status(201).json({ id: lead.id, email: lead.email });
+
+    res.status(201).json({ id: lead?.id ?? null, email });
   } catch (err) {
     if (err instanceof ZodError) {
       return res.status(400).json({ message: 'Invalid email', errors: err.errors });

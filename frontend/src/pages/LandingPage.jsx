@@ -2,6 +2,7 @@ import { useState, useEffect, Fragment, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import AgentFloatingButton from '../components/AgentFloatingButton';
 import BrandLogo from '../components/BrandLogo';
+import EmailCaptureForm from '../components/EmailCaptureForm';
 import SiteMarketingHeader from '../components/SiteMarketingHeader';
 import DomainPillarIcon from '../components/DomainPillarIcon';
 import { SiteMarketingFooterNav } from '../components/SiteFooterNav';
@@ -147,36 +148,29 @@ function FinalCtaClosing() {
         >
           Your score is waiting.
         </h2>
-        <p className="mt-8 text-sm sm:text-base text-alignment-accent/75 leading-relaxed">
-          <span className="font-semibold text-alignment-accent tabular-nums">{n24}</span> questions
-          <span className="mx-2 sm:mx-2.5 text-alignment-primary/40" aria-hidden>
-            ·
-          </span>
-          <span className="font-semibold text-alignment-accent tabular-nums">{n6}</span> domains
-          <span className="mx-2 sm:mx-2.5 text-alignment-primary/40" aria-hidden>
-            ·
-          </span>
-          <span className="font-semibold text-alignment-accent tabular-nums">{n12}</span> minutes.
+        <p className="mt-6 text-sm sm:text-base text-alignment-accent/75 leading-relaxed">
+          <span className="font-semibold text-alignment-accent tabular-nums">{n24}</span> questions ·{' '}
+          <span className="font-semibold text-alignment-accent tabular-nums">{n6}</span> domains ·{' '}
+          <span className="font-semibold text-alignment-accent tabular-nums">{n12}</span> min · free
         </p>
-        <p className="mt-3 text-sm text-alignment-accent/55">Free forever. No card required.</p>
 
-        <div className="mt-10 flex flex-col items-center gap-5">
-          <Link
-            to="/assessment"
-            className={`inline-flex items-center gap-2 rounded-sm bg-alignment-primary text-white px-8 py-3.5 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.2em] transition-colors duration-200 ease-out hover:bg-alignment-primary/90 focus-visible:ring-offset-alignment-foundation ${focusRingBtn}`}
-          >
-            Begin free diagnostic
-            <span className="translate-y-px" aria-hidden>
-              →
-            </span>
-          </Link>
+        <div className="mt-8 w-full max-w-sm mx-auto text-left">
+          <EmailCaptureForm
+            source="home-footer-cta"
+            redirectTo="/assessment"
+            layout="stacked"
+            buttonText="Get free score"
+            helperText="No spam. Unsubscribe any time."
+          />
+        </div>
+        <p className="mt-5 text-center">
           <Link
             to="/dashboard"
             className="text-[11px] sm:text-xs text-alignment-accent/50 transition-colors duration-200 hover:text-alignment-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-alignment-primary/30 rounded-sm px-0.5"
           >
-            Already have an account? Open Dashboard <span aria-hidden>→</span>
+            Already have an account? Dashboard <span aria-hidden>→</span>
           </Link>
-        </div>
+        </p>
       </div>
     </section>
   );
@@ -194,68 +188,19 @@ export default function LandingPage() {
   ];
 
   const compoundingSteps = [
-    {
-      n: 1,
-      title: 'Diagnostic',
-      body: '24 questions. Six domains scored. Alignment Type named. Primary strain identified. Free.',
-    },
-    {
-      n: 2,
-      title: 'Identity anchors',
-      body: 'Three statements about who you are becoming. Every habit is rooted here.',
-    },
-    {
-      n: 3,
-      title: 'Habit engine',
-      body: 'Three habits from your primary gap. Tracked daily. Recalibrated every 90 days.',
-    },
-    {
-      n: 4,
-      title: 'Weekly review',
-      body: '10 minutes every Sunday. What held. What drifted. Intention for the week ahead.',
-    },
+    { n: 1, title: 'Diagnostic' },
+    { n: 2, title: 'Identity anchors' },
+    { n: 3, title: 'Habit engine' },
+    { n: 4, title: 'Weekly review' },
   ];
 
   const sixDomains = [
-    { pillar: 'IDENTITY', iconClass: 'text-alignment-primary', title: 'Identity', body: 'Who you are — values, moral framework, the person you are becoming.' },
-    { pillar: 'PURPOSE', iconClass: 'text-alignment-primary/70', title: 'Purpose', body: 'What you are for — mission clarity, direction, vocation this season.' },
-    { pillar: 'MINDSET', iconClass: 'text-alignment-primary/50', title: 'Mindset', body: 'How you think — beliefs shaping perception, confidence, decisions.' },
-    { pillar: 'HABITS', iconClass: 'text-alignment-primary/40', title: 'Habits', body: 'What you do daily — practices reinforcing identity and purpose.' },
-    { pillar: 'ENVIRONMENT', iconClass: 'text-alignment-primary/60', title: 'Environment', body: 'What surrounds you — relationships, inputs, spaces shaping behaviour.' },
-    { pillar: 'EXECUTION', iconClass: 'text-alignment-primary/35', title: 'Execution', body: 'How you follow through — discipline, planning, completing what matters.' },
-  ];
-
-  const alignmentTypes = [
-    {
-      title: 'The Integrated Person',
-      tagline: 'Coherence across all six domains.',
-      status: 'All domains strong',
-    },
-    {
-      title: 'The Capable Builder',
-      tagline: 'Building much. Rooted in less.',
-      status: 'High execution, low identity',
-    },
-    {
-      title: 'The Thoughtful Seeker',
-      tagline: 'Interior life present. Direction forming.',
-      status: 'High identity, low purpose',
-    },
-    {
-      title: 'The Ordered Life',
-      tagline: 'Structure real. Alignment still forming.',
-      status: 'High habits, low anchor',
-    },
-    {
-      title: 'The Person Under Pressure',
-      tagline: 'Formation in a demanding season.',
-      status: 'Low environment + execution',
-    },
-    {
-      title: 'The Developing Person',
-      tagline: 'Multiple domains in active formation.',
-      status: 'Beginning honestly',
-    },
+    { pillar: 'IDENTITY', iconClass: 'text-alignment-primary', title: 'Identity' },
+    { pillar: 'PURPOSE', iconClass: 'text-alignment-primary/70', title: 'Purpose' },
+    { pillar: 'MINDSET', iconClass: 'text-alignment-primary/50', title: 'Mindset' },
+    { pillar: 'HABITS', iconClass: 'text-alignment-primary/40', title: 'Habits' },
+    { pillar: 'ENVIRONMENT', iconClass: 'text-alignment-primary/60', title: 'Environment' },
+    { pillar: 'EXECUTION', iconClass: 'text-alignment-primary/35', title: 'Execution' },
   ];
 
   const proofStats = [
@@ -263,27 +208,6 @@ export default function LandingPage() {
     { target: 6, label: 'Life domains' },
     { target: 90, label: 'Day cycles' },
     { target: 0, prefix: '$', label: 'To begin' },
-  ];
-
-  const earlyUserQuotes = [
-    {
-      quote:
-        'I had been productive for years and still felt something was missing. The diagnostic named it in 12 minutes…',
-      name: 'Marcus T.',
-      meta: 'Product lead, 34',
-    },
-    {
-      quote:
-        'The weekly review alone changed how I end every week. Five questions, ten minutes, and I know where I stand…',
-      name: 'Claire D.',
-      meta: 'Founder, 29',
-    },
-    {
-      quote:
-        'I retook the diagnostic at 90 days. Score moved from 58 to 74. Not because I worked harder — because for the first time I was working on the right things…',
-      name: 'James O.',
-      meta: 'Engineer, 41',
-    },
   ];
 
   const domainRow = (
@@ -318,28 +242,25 @@ export default function LandingPage() {
                 A system for becoming{' '}
                 <span className="text-alignment-accent/70 italic font-normal">whole.</span>
               </h1>
-              <p className="mt-10 sm:mt-12 text-sm sm:text-base text-alignment-accent/70 leading-relaxed max-w-xl mx-auto font-sans">
-                Most people are productive. Few are coherent. Alignment OS measures the six domains that determine whether a life holds together — and builds the structure to close the gap.
+              <p className="mt-8 sm:mt-10 text-sm sm:text-base text-alignment-accent/70 leading-relaxed max-w-lg mx-auto font-sans">
+                Measure six domains. Close the gap. Build structure that holds.
               </p>
-              <div className="mt-10 sm:mt-12 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4">
-                <Link
-                  to="/assessment"
-                  className={`inline-flex items-center justify-center rounded-sm bg-alignment-primary text-white text-xs sm:text-sm font-medium uppercase tracking-[0.12em] px-8 sm:px-10 py-4 transition-colors duration-200 hover:bg-alignment-primary/90 focus-visible:ring-offset-alignment-foundation ${focusRingBtn}`}
-                >
-                  Begin free diagnostic <span aria-hidden className="ml-2">→</span>
-                </Link>
-                <Link
-                  to="/about"
-                  className={`inline-flex items-center justify-center rounded-sm bg-alignment-surfaceSoft text-alignment-accent text-xs sm:text-sm font-medium uppercase tracking-[0.12em] px-8 sm:px-10 py-4 border border-alignment-accent/15 transition-colors duration-200 hover:bg-alignment-accent/[0.03] ${focusRingBtn}`}
-                >
-                  Why this exists
-                </Link>
+              <div className="mt-8 sm:mt-10 w-full max-w-md mx-auto text-left">
+                <EmailCaptureForm
+                  source="home-hero"
+                  redirectTo="/assessment"
+                  layout="inline"
+                  buttonText="Get free score"
+                  helperText={null}
+                />
               </div>
-              <p className="mt-6 text-[11px] sm:text-xs text-alignment-accent/45 tracking-wide">
-                12 minutes · Free forever · No card required
+              <p className="mt-4 text-[11px] sm:text-xs text-alignment-accent/45 tracking-wide text-center">
+                12 min · Free · No card ·{' '}
+                <Link to="/assessment" className="text-alignment-accent/55 underline-offset-2 hover:underline">
+                  or start diagnostic
+                </Link>
               </p>
-              <p className="mt-10 text-sm text-alignment-accent/50">
-                Already have an account?{' '}
+              <p className="mt-6 text-sm text-alignment-accent/50">
                 <Link to="/login" className="text-alignment-accent underline-offset-4 hover:underline">
                   Sign in
                 </Link>
@@ -371,16 +292,10 @@ export default function LandingPage() {
 
         {/* Second section — quote */}
         <section className="w-full border-t border-alignment-accent/[0.06] bg-alignment-surfaceSoft/90">
-          <div className="max-w-xl mx-auto px-6 sm:px-8 py-20 sm:py-28 text-center">
-            <blockquote className="font-display text-[1.35rem] sm:text-2xl md:text-[1.75rem] font-normal text-alignment-accent leading-[1.45] tracking-tight text-balance">
-              <p>You are not failing for lack of effort.</p>
-              <p className="mt-6 sm:mt-8">
-                You are failing for lack of{' '}
-                <em className="italic text-alignment-accent/70">structure beneath</em>{' '}
-                the effort.
-              </p>
-              <p className="mt-6 sm:mt-8 text-alignment-accent/70">
-                Alignment OS builds that structure.
+          <div className="max-w-xl mx-auto px-6 sm:px-8 py-12 sm:py-16 text-center">
+            <blockquote className="font-display text-xl sm:text-2xl font-normal text-alignment-accent leading-snug tracking-tight text-balance">
+              <p>
+                You need <em className="italic text-alignment-accent/70">structure beneath</em> the effort — not more effort.
               </p>
             </blockquote>
           </div>
@@ -388,21 +303,11 @@ export default function LandingPage() {
 
         {/* The compounding loop — four steps */}
         <section className="w-full border-t border-alignment-accent/[0.06] bg-apple-surface-muted">
-          <div className="max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-16 sm:py-24 lg:py-28">
-            <p className="text-[10px] sm:text-[11px] font-normal uppercase tracking-[0.24em] text-alignment-accent/50">
-              The compounding loop
-            </p>
-            <h2 className="mt-4 sm:mt-6 font-display text-[2rem] sm:text-[2.35rem] md:text-[2.75rem] font-medium text-alignment-accent leading-[1.15] tracking-tight max-w-xl text-balance">
-              Four steps.
-              <br />
-              <span className="italic font-normal text-alignment-accent/80">One system that holds.</span>
+          <div className="max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12 sm:py-16">
+            <h2 className="font-display text-2xl sm:text-3xl font-medium text-alignment-accent leading-tight tracking-tight max-w-xl text-balance">
+              Four steps. <span className="italic font-normal text-alignment-accent/80">One system.</span>
             </h2>
-            <p className="mt-6 sm:mt-8 text-sm sm:text-base text-alignment-accent/70 leading-relaxed max-w-2xl font-sans">
-              Each step builds on the last. The diagnostic names the gap. The anchors root the identity. The habits close the gap. The reviews compound the gains.
-            </p>
-
-            <div className="mt-14 sm:mt-16 lg:mt-20">
-              {/** Mobile: stacked + down chevrons */}
+            <div className="mt-10 sm:mt-12">
               <ol className="flex flex-col gap-0 lg:hidden">
                 {compoundingSteps.map((step, idx) => (
                   <li key={step.n} className="list-none">
@@ -414,7 +319,6 @@ export default function LandingPage() {
                         {step.n}
                       </span>
                       <h3 className="mt-4 text-base font-semibold text-alignment-accent tracking-tight">{step.title}</h3>
-                      <p className="mt-2 text-sm text-alignment-accent/70 leading-relaxed">{step.body}</p>
                     </div>
                     {idx < 3 && (
                       <div className="flex justify-start pl-3 py-5" aria-hidden="true">
@@ -439,7 +343,6 @@ export default function LandingPage() {
                         {step.n}
                       </span>
                       <h3 className="mt-6 text-base font-semibold text-alignment-accent tracking-tight">{step.title}</h3>
-                      <p className="mt-2 text-sm text-alignment-accent/70 leading-relaxed">{step.body}</p>
                     </div>
                     {idx < 3 && (
                       <div
@@ -456,95 +359,40 @@ export default function LandingPage() {
               </div>
             </div>
 
-            <div className="mt-12 sm:mt-14 lg:mt-16 max-w-xl">
+            <div className="mt-10 max-w-xl">
               <Link
                 to="/assessment"
                 className={`inline-block rounded-sm text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.2em] text-alignment-accent border-b border-alignment-accent/25 pb-1 transition-colors duration-200 hover:border-alignment-accent focus-visible:border-alignment-accent ${focusRingBtn}`}
               >
-                Start with the diagnostic — free forever <span aria-hidden>→</span>
+                Start free <span aria-hidden>→</span>
               </Link>
             </div>
           </div>
         </section>
 
-        {/* Six domains — 2×3 grid */}
+        {/* Six domains */}
         <section className="w-full border-t border-alignment-accent/[0.06] bg-alignment-surfaceSoft/90">
-          <div className="max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-16 sm:py-24 lg:py-28">
-            <p className="text-[10px] sm:text-[11px] font-normal uppercase tracking-[0.24em] text-alignment-accent/50">
+          <div className="max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12 sm:py-16">
+            <h2 className="font-display text-2xl sm:text-3xl font-medium text-alignment-accent leading-tight tracking-tight">
               Six domains
-            </p>
-            <h2 className="mt-4 sm:mt-6 font-display text-[2rem] sm:text-[2.35rem] md:text-[2.75rem] font-medium text-alignment-accent leading-[1.15] tracking-tight max-w-3xl text-balance">
-              Every domain that determines whether a life{' '}
-              <span className="italic font-normal text-alignment-accent/80">coheres.</span>
             </h2>
-            <p className="mt-6 sm:mt-8 text-sm sm:text-base text-alignment-accent/70 leading-relaxed max-w-2xl font-sans">
-              Neglect any one — the others cannot hold. Alignment OS measures all six, names the gap, and installs the habits to close it.
-            </p>
 
-            <div className="mt-12 sm:mt-16 grid grid-cols-1 gap-px border border-alignment-primary/15 bg-alignment-primary/15 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
               {sixDomains.map((domain) => (
                 <div
                   key={domain.pillar}
-                  className="bg-alignment-foundationBright/95 p-6 sm:p-8 text-left transition-colors duration-200 motion-reduce:transition-none hover:bg-alignment-accent/[0.02] sm:min-h-[11rem]"
+                  className="flex items-center gap-3 rounded-xl border border-alignment-accent/10 bg-alignment-foundationBright/95 px-4 py-3"
                 >
-                  <DomainPillarIcon pillar={domain.pillar} className={`h-7 w-7 shrink-0 ${domain.iconClass}`} />
-                  <h3 className="mt-4 text-base font-semibold text-alignment-accent tracking-tight">{domain.title}</h3>
-                  <p className="mt-2 text-sm text-alignment-accent/70 leading-relaxed">{domain.body}</p>
+                  <DomainPillarIcon pillar={domain.pillar} className={`h-6 w-6 shrink-0 ${domain.iconClass}`} />
+                  <h3 className="text-sm font-semibold text-alignment-accent">{domain.title}</h3>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Alignment Types — diagnostic profiles */}
-        <section className="w-full border-t border-alignment-accent/[0.06] bg-alignment-surfaceSoft/90">
-          <div className="max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-16 sm:py-24 lg:py-28">
-            <p className="text-[10px] sm:text-[11px] font-normal uppercase tracking-[0.24em] text-alignment-accent/50">
-              Alignment types
-            </p>
-            <h2 className="mt-4 sm:mt-6 font-display text-[2rem] sm:text-[2.35rem] md:text-[2.75rem] font-medium text-alignment-accent leading-[1.15] tracking-tight max-w-3xl text-balance">
-              Which one are{' '}
-              <span className="italic font-normal text-alignment-accent/80">you?</span>
-            </h2>
-            <p className="mt-6 sm:mt-8 text-sm sm:text-base text-alignment-accent/70 leading-relaxed max-w-2xl font-sans">
-              The diagnostic assigns one of six structural profiles. Each comes with its own habits, formation path, and 90-day projection.
-            </p>
-
-            <div className="mt-12 sm:mt-16 border-y border-alignment-accent/[0.12] divide-y divide-alignment-accent/[0.12]">
-              {alignmentTypes.map((row) => (
-                <div
-                  key={row.title}
-                  className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-10 py-6 sm:py-7 sm:px-4 sm:-mx-4 sm:rounded-lg transition-colors duration-200 motion-reduce:transition-none hover:bg-alignment-accent/[0.02]"
-                >
-                  <div className="min-w-0 max-w-2xl">
-                    <p className="font-display text-lg sm:text-xl font-semibold text-alignment-accent tracking-tight">{row.title}</p>
-                    <p className="mt-1.5 font-display text-base sm:text-[1.05rem] italic text-alignment-accent/75 leading-snug">
-                      {row.tagline}
-                    </p>
-                  </div>
-                  <p className="shrink-0 text-[10px] sm:text-[11px] font-normal uppercase tracking-[0.18em] text-alignment-accent/45 sm:max-w-[13rem] sm:text-right leading-relaxed">
-                    {row.status}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-10 sm:mt-12">
-              <Link
-                to="/assessment"
-                className={`inline-flex items-center gap-2 rounded-sm bg-alignment-primary text-white px-6 py-3.5 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.2em] transition-colors duration-200 hover:bg-alignment-primary/90 ${focusRingBtn}`}
-              >
-                Find your type — free
-                <span className="translate-y-px" aria-hidden>
-                  →
-                </span>
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* Proof stats + early users */}
-        <section className="w-full border-t border-alignment-accent/[0.06]" aria-labelledby="early-users-heading">
+        {/* Proof stats */}
+        <section className="w-full border-t border-alignment-accent/[0.06]">
           <div className="w-full bg-alignment-primary">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-px bg-white/25">
               {proofStats.map((s) => (
@@ -556,40 +404,6 @@ export default function LandingPage() {
                   label={s.label}
                 />
               ))}
-            </div>
-          </div>
-
-          <div className="w-full bg-apple-surface-muted">
-            <div className="max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-16 sm:py-24 lg:py-28">
-              <p className="text-[10px] sm:text-[11px] font-normal uppercase tracking-[0.24em] text-alignment-accent/50">
-                Early users
-              </p>
-              <h2
-                id="early-users-heading"
-                className="mt-4 sm:mt-6 font-display text-[2rem] sm:text-[2.35rem] md:text-[2.75rem] font-medium text-alignment-accent leading-[1.15] tracking-tight max-w-3xl text-balance"
-              >
-                What changes when the structure{' '}
-                <span className="italic font-normal text-alignment-accent/80">holds.</span>
-              </h2>
-
-              <div className="mt-12 sm:mt-14 grid gap-5 sm:gap-6 md:grid-cols-3">
-                {earlyUserQuotes.map((t) => (
-                  <figure
-                    key={t.name}
-                    className="flex flex-col bg-alignment-surfaceSoft border border-alignment-accent/10 rounded-xl p-6 sm:p-8 text-left shadow-sm transition-shadow duration-300 ease-out motion-reduce:transition-none hover:shadow-md hover:border-alignment-accent/12"
-                  >
-                    <blockquote className="font-display text-base sm:text-[1.05rem] italic text-alignment-accent/85 leading-relaxed flex-1">
-                      <p>&ldquo;{t.quote}&rdquo;</p>
-                    </blockquote>
-                    <figcaption className="mt-8 pt-6 border-t border-alignment-accent/[0.08]">
-                      <p className="text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.18em] text-alignment-accent/55">
-                        {t.name}
-                      </p>
-                      <p className="mt-1.5 text-xs text-alignment-accent/45">{t.meta}</p>
-                    </figcaption>
-                  </figure>
-                ))}
-              </div>
             </div>
           </div>
         </section>
@@ -604,7 +418,7 @@ export default function LandingPage() {
               <div className="max-w-xs">
                 <BrandLogo iconHeightPx={44} />
                 <p className="mt-4 text-xs text-alignment-accent/45 leading-relaxed">
-                  Human alignment software — measure six domains, close the gap, compound the gains.
+                  Human alignment software.
                 </p>
               </div>
               <SiteMarketingFooterNav className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-3 text-[9px] sm:text-[10px] font-normal uppercase tracking-[0.14em] lg:flex-1" />

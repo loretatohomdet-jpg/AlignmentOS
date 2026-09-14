@@ -17,55 +17,22 @@ import { SiteSecondaryFooterNav } from '../components/SiteFooterNav';
 const focusRing =
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2 focus-visible:ring-offset-alignment-foundation';
 
-const foundationFree = [
-  '24-question diagnostic',
-  'Score across six domains',
-  'Alignment Type named',
-  'Primary gap identified',
-  'Three habits previewed',
-];
+const foundationFree = ['24-question diagnostic', 'Score + alignment type', 'Three habits previewed'];
 
 const foundationHabit = [
-  'Everything in Free',
-  'Full 7-screen dashboard',
-  'Three habits tracked daily',
-  'Weekly review — stored',
-  'Quarterly reset ceremony',
-  'Score history + alignment map',
+  'Full dashboard',
+  'Daily habit tracking',
+  'Weekly + quarterly reviews',
+  'Score history',
 ];
 
 const foundationJourney = [
-  '6 formation modules · 6 weeks',
-  'Identity, mission & life architecture',
-  'Personal rule of life',
-  'Habit Engine — lifetime access (replaces monthly subscription)',
-  'Before & after Alignment Score',
+  '6-week formation course',
+  'Life architecture + rule of life',
+  'Lifetime Habit Engine access',
 ];
 
-const consultationFeatures = [
-  'Full score review across all six domains',
-  'Formation conversation — identity, direction, obstacles',
-  'Clear next step recommended',
-  'Written follow-up within 24 hours',
-];
-
-const faqBlocks = [
-  {
-    title: 'The diagnostic (Step 1)',
-    body:
-      'Free forever — no card, no trial window. Your score shows how the six domains cohere today and which gap to address first.',
-  },
-  {
-    title: 'Habit Engine (Step 2)',
-    body:
-      'Monthly or yearly billing through Stripe. Cancel any time. Daily habits, stored weekly reviews, and quarterly reset rhythm.',
-  },
-  {
-    title: 'Journey & cohort (Steps 3–5)',
-    body:
-      'Journey to Purpose (self-guided) is one payment with lifetime access. Guided cohort is limited enrolment; resources and consultation are optional add-ons whenever you are ready.',
-  },
-];
+const consultationFeatures = ['60-min session', 'Score review', 'Written follow-up'];
 
 function CheckList({ items, checkClass = 'text-alignment-primary' }) {
   return (
@@ -175,8 +142,8 @@ export default function PricingPage() {
               <br />
               <span className="text-alignment-primary">Go deeper when ready.</span>
             </h1>
-            <p className="mt-8 text-sm sm:text-base text-alignment-accent/65 max-w-lg mx-auto leading-relaxed">
-              Five steps. Each earns the next. Nothing is required before you are ready.
+            <p className="mt-6 text-sm sm:text-base text-alignment-accent/65 max-w-lg mx-auto leading-relaxed">
+              Start free. Upgrade when you are ready.
             </p>
             {checkoutError && (
               <p className="mt-4 text-sm text-red-800 bg-red-50 border border-red-200 rounded-lg px-4 py-3 max-w-md mx-auto" role="alert">
@@ -325,42 +292,32 @@ export default function PricingPage() {
           </div>
         </section>
 
-        {/* Steps 4–5 */}
+        {/* Optional add-ons */}
         <section className="w-full border-t border-alignment-accent/[0.06] bg-apple-surface-muted">
-          <div className="max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-16 sm:py-24">
-            <p className="text-center text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.22em] text-alignment-accent/50">
-              Steps 4 – 5 · Go further
-            </p>
+          <div className="max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12 sm:py-16">
+            <h2 className="text-center font-display text-xl sm:text-2xl font-medium text-alignment-accent tracking-tight">
+              Optional add-ons
+            </h2>
 
-            <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-              <div className="flex flex-col border border-alignment-accent/[0.1] bg-alignment-surface p-6 sm:p-8 shadow-sm">
-                <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-alignment-primary">Step 4</span>
-                <span className="mt-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-alignment-primary/90">Formation resources</span>
-                <h2 className="mt-5 font-display text-xl sm:text-2xl font-medium text-alignment-accent tracking-tight">
-                  Planners, workbooks & short courses
-                </h2>
-                <p className="mt-5 font-display text-3xl sm:text-4xl font-medium text-alignment-accent tabular-nums">$19 – $97</p>
-                <p className="mt-1 text-xs text-alignment-accent/50">One-time · digital · instant access</p>
-                <p className="mt-5 text-sm text-alignment-accent/70 leading-relaxed">
-                  Standalone tools built to deepen the work already underway — a daily planner, quarterly workbook, vision clarity guide,
-                  and short formation courses rooted in the six-domain framework. Each connects back to your Alignment Score.
-                </p>
+            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
+              <div className="flex flex-col border border-alignment-accent/[0.1] bg-alignment-surface p-6 shadow-sm">
+                <h3 className="font-display text-lg font-medium text-alignment-accent">Formation resources</h3>
+                <p className="mt-2 font-display text-2xl font-medium text-alignment-accent tabular-nums">$19 – $97</p>
+                <p className="mt-1 text-xs text-alignment-accent/50">Planners, workbooks, short courses</p>
                 <div className="flex-1" />
                 <a
                   href={resourcesHref}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`mt-8 w-full sm:w-auto inline-flex items-center justify-center rounded-sm border border-alignment-primary/40 px-6 py-3.5 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] text-alignment-primary transition-colors hover:bg-alignment-primary/[0.06] ${focusRing}`}
+                  className={`mt-6 w-full sm:w-auto inline-flex items-center justify-center rounded-sm border border-alignment-primary/40 px-6 py-3 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] text-alignment-primary transition-colors hover:bg-alignment-primary/[0.06] ${focusRing}`}
                 >
-                  Browse resources <span aria-hidden className="ml-2">→</span>
+                  Browse <span aria-hidden className="ml-2">→</span>
                 </a>
               </div>
 
-              <div className="flex flex-col border border-alignment-accent/[0.1] bg-alignment-surface p-6 sm:p-8 shadow-sm">
-                <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-alignment-primary">Optional · any stage</span>
-                <span className="mt-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-alignment-primary/90">One-to-one · one-time</span>
-                <h2 className="mt-5 font-display text-xl sm:text-2xl font-medium text-alignment-accent tracking-tight">Formation consultation</h2>
-                <p className="mt-5 font-display text-3xl sm:text-4xl font-medium text-alignment-accent tabular-nums">$127</p>
+              <div className="flex flex-col border border-alignment-accent/[0.1] bg-alignment-surface p-6 shadow-sm">
+                <h3 className="font-display text-lg font-medium text-alignment-accent">Formation consultation</h3>
+                <p className="mt-2 font-display text-2xl font-medium text-alignment-accent tabular-nums">$127</p>
                 <p className="mt-1 text-xs text-alignment-accent/50">60 minutes · one session</p>
                 <CheckList items={consultationFeatures} />
                 <div className="flex-1" />
@@ -369,76 +326,54 @@ export default function PricingPage() {
                     href={bookingUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`mt-8 w-full sm:w-auto inline-flex items-center justify-center rounded-sm border border-alignment-primary/40 px-6 py-3.5 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] text-alignment-primary transition-colors hover:bg-alignment-primary/[0.06] ${focusRing}`}
+                    className={`mt-6 w-full sm:w-auto inline-flex items-center justify-center rounded-sm border border-alignment-primary/40 px-6 py-3 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] text-alignment-primary transition-colors hover:bg-alignment-primary/[0.06] ${focusRing}`}
                   >
-                    Book a session <span aria-hidden className="ml-2">→</span>
+                    Book <span aria-hidden className="ml-2">→</span>
                   </a>
                 ) : (
                   <Link
                     to="/business"
-                    className={`mt-8 w-full sm:w-auto inline-flex items-center justify-center rounded-sm border border-alignment-primary/40 px-6 py-3.5 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] text-alignment-primary transition-colors hover:bg-alignment-primary/[0.06] ${focusRing}`}
+                    className={`mt-6 w-full sm:w-auto inline-flex items-center justify-center rounded-sm border border-alignment-primary/40 px-6 py-3 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] text-alignment-primary transition-colors hover:bg-alignment-primary/[0.06] ${focusRing}`}
                   >
-                    Book a session <span aria-hidden className="ml-2">→</span>
+                    Book <span aria-hidden className="ml-2">→</span>
                   </Link>
                 )}
-                <p className="mt-4 text-[11px] text-alignment-accent/45">With Kylie Heins · Jack Beers · Roxane de Vera</p>
               </div>
             </div>
 
-            <div className="mt-8 border border-alignment-accent/[0.1] bg-alignment-surface p-6 sm:p-8 lg:p-10 shadow-sm">
-              <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
-                <div className="max-w-2xl">
-                  <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-alignment-primary">Step 5</span>
-                  <span className="mt-2 block text-[10px] font-semibold uppercase tracking-[0.2em] text-alignment-primary/90">
-                    Guided cohort · small group
-                  </span>
-                  <h2 className="mt-5 font-display text-xl sm:text-2xl md:text-[1.65rem] font-medium text-alignment-accent tracking-tight">
-                    Journey to Purpose — Guided
-                  </h2>
-                  <p className="mt-4 text-sm sm:text-base text-alignment-accent/70 leading-relaxed">
-                    The full six-week programme with a formation guide, a small cohort of peers, live sessions, and built-in accountability.
-                    For those who want to do the work — together.
-                  </p>
-                  <p className="mt-4 text-xs sm:text-sm italic text-alignment-primary/90">
-                    Includes lifetime Habit Engine access · Before & after Alignment Score
-                  </p>
-                </div>
-                <div className="flex flex-col items-start lg:items-end shrink-0 gap-4">
-                  <div className="text-left lg:text-right">
-                    <p className="font-display text-4xl sm:text-[2.75rem] font-medium text-alignment-accent tabular-nums">$997</p>
-                    <p className="mt-1 text-xs text-alignment-accent/50">Per person · cohort enrolment</p>
-                  </div>
-                  {cohortApplyUrl ? (
-                    <a
-                      href={cohortApplyUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`inline-flex items-center justify-center rounded-sm bg-alignment-primary text-white px-6 py-3.5 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] transition-colors hover:bg-alignment-primary/90 ${focusRing}`}
-                    >
-                      Apply for cohort <span aria-hidden className="ml-2">→</span>
-                    </a>
-                  ) : (
-                    <Link
-                      to="/business"
-                      className={`inline-flex items-center justify-center rounded-sm bg-alignment-primary text-white px-6 py-3.5 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] transition-colors hover:bg-alignment-primary/90 ${focusRing}`}
-                    >
-                      Apply for cohort <span aria-hidden className="ml-2">→</span>
-                    </Link>
-                  )}
-                  <p className="text-[11px] text-alignment-accent/45 lg:text-right">Limited places per cohort</p>
-                </div>
+            <div className="mt-6 border border-alignment-accent/[0.1] bg-alignment-surface p-6 shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div>
+                <h3 className="font-display text-lg font-medium text-alignment-accent">Guided cohort</h3>
+                <p className="mt-1 text-xs text-alignment-accent/50">Six weeks · small group · limited places</p>
+              </div>
+              <div className="flex flex-col sm:items-end gap-3 shrink-0">
+                <p className="font-display text-2xl font-medium text-alignment-accent tabular-nums">$997</p>
+                {cohortApplyUrl ? (
+                  <a
+                    href={cohortApplyUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`inline-flex items-center justify-center rounded-sm bg-alignment-primary text-white px-6 py-3 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] transition-colors hover:bg-alignment-primary/90 ${focusRing}`}
+                  >
+                    Apply <span aria-hidden className="ml-2">→</span>
+                  </a>
+                ) : (
+                  <Link
+                    to="/business"
+                    className={`inline-flex items-center justify-center rounded-sm bg-alignment-primary text-white px-6 py-3 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] transition-colors hover:bg-alignment-primary/90 ${focusRing}`}
+                  >
+                    Apply <span aria-hidden className="ml-2">→</span>
+                  </Link>
+                )}
               </div>
             </div>
 
-            <div className="mt-14 sm:mt-16 text-center max-w-xl mx-auto">
-              <p className="text-sm sm:text-base text-alignment-accent/65 leading-relaxed">
-                Not sure where to begin? The diagnostic is always first. Your score determines everything else.
-              </p>
+            <div className="mt-10 text-center">
               <Link
                 to="/assessment"
-                className={`mt-6 inline-flex items-center justify-center text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.2em] text-alignment-primary border-b border-alignment-primary/30 pb-0.5 hover:border-alignment-primary/60 transition-colors ${focusRing} rounded-sm`}
+                className={`inline-flex items-center justify-center text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.2em] text-alignment-primary border-b border-alignment-primary/30 pb-0.5 hover:border-alignment-primary/60 transition-colors ${focusRing} rounded-sm`}
               >
-                Take the diagnostic — free <span aria-hidden className="ml-2">→</span>
+                Start with the diagnostic — free <span aria-hidden className="ml-2">→</span>
               </Link>
             </div>
           </div>
@@ -446,35 +381,20 @@ export default function PricingPage() {
 
         {/* Institutions */}
         <section className="w-full border-t border-alignment-accent/[0.06] bg-alignment-surface">
-          <div className="max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-16 sm:py-20">
-            <p className="text-[10px] sm:text-[11px] font-normal uppercase tracking-[0.24em] text-alignment-accent/50">Beyond the individual</p>
-            <h2 className="mt-4 font-display text-2xl sm:text-[2.15rem] font-medium text-alignment-accent leading-[1.15] tracking-tight max-w-2xl text-balance">
-              For leaders, organizations, and <span className="italic font-normal text-alignment-accent/80">institutions.</span>
+          <div className="max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12 sm:py-16">
+            <h2 className="font-display text-xl sm:text-2xl font-medium text-alignment-accent tracking-tight">
+              For teams & institutions
             </h2>
-            <p className="mt-5 text-sm sm:text-base text-alignment-accent/65 max-w-2xl leading-relaxed">
-              Organizational and institutional pricing is by conversation — every engagement is scoped to fit.
+            <p className="mt-3 text-sm text-alignment-accent/65 max-w-xl">
+              Custom programmes for leaders, organizations, and schools.
             </p>
-            <div className="mt-10 grid gap-6 md:grid-cols-3">
-              {[
-                { label: 'Leaders', title: 'Leadership Alignment Programme', body: 'Identity, decision architecture, culture, and execution rhythms for teams.' },
-                { label: 'Organizations', title: 'Organizational Alignment OS', body: 'Diagnostic, platform, and formation for mission-driven companies.' },
-                { label: 'Institutions', title: 'Institutional access', body: 'Cohorts and programmes for networks, schools, and mission fields.' },
-              ].map((card) => (
-                <div key={card.label} className="border border-alignment-accent/[0.08] bg-apple-surface-muted/50 p-6 flex flex-col">
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-alignment-accent/45">{card.label}</p>
-                  <h3 className="mt-3 font-display text-lg font-semibold text-alignment-accent">{card.title}</h3>
-                  <p className="mt-3 text-sm text-alignment-accent/65 leading-relaxed flex-1">{card.body}</p>
-                  <Link
-                    to="/business"
-                    className="mt-6 text-[10px] font-medium uppercase tracking-[0.18em] text-alignment-accent/55 hover:text-alignment-accent border-b border-alignment-accent/20 pb-0.5 self-start transition-colors"
-                  >
-                    Learn more <span aria-hidden>→</span>
-                  </Link>
-                </div>
-              ))}
-            </div>
-            <p className="mt-12 text-center text-sm text-alignment-accent/50">
-              Contact{' '}
+            <Link
+              to="/business"
+              className={`mt-6 inline-flex text-[10px] font-medium uppercase tracking-[0.18em] text-alignment-primary border-b border-alignment-primary/30 pb-0.5 hover:border-alignment-primary/60 transition-colors ${focusRing} rounded-sm`}
+            >
+              Learn more <span aria-hidden>→</span>
+            </Link>
+            <p className="mt-6 text-sm text-alignment-accent/50">
               <a
                 href="mailto:organizations@alignmentos.com"
                 className="text-alignment-accent/70 underline underline-offset-2 hover:text-alignment-accent"
@@ -482,24 +402,6 @@ export default function PricingPage() {
                 organizations@alignmentos.com
               </a>
             </p>
-          </div>
-        </section>
-
-        {/* FAQ */}
-        <section className="w-full border-t border-alignment-accent/[0.06] bg-apple-surface-muted">
-          <div className="max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-16 sm:py-24">
-            <p className="text-[10px] sm:text-[11px] font-normal uppercase tracking-[0.24em] text-alignment-accent/50">Common questions</p>
-            <h2 className="mt-4 font-display text-2xl sm:text-3xl font-medium text-alignment-accent tracking-tight max-w-2xl text-balance">
-              How the five steps fit together
-            </h2>
-            <div className="mt-10 grid gap-px bg-alignment-primary/15 border border-alignment-primary/15 sm:grid-cols-2 lg:grid-cols-3">
-              {faqBlocks.map((block) => (
-                <div key={block.title} className="bg-apple-surface-muted p-6 sm:p-8">
-                  <h3 className="text-sm font-semibold text-alignment-accent">{block.title}</h3>
-                  <p className="mt-3 text-sm text-alignment-accent/65 leading-relaxed">{block.body}</p>
-                </div>
-              ))}
-            </div>
           </div>
         </section>
 
@@ -515,7 +417,7 @@ export default function PricingPage() {
             >
               Begin free <span aria-hidden className="ml-2">→</span>
             </Link>
-            <p className="mt-8 text-xs sm:text-sm text-white/45">24 questions · ~12 minutes · Free forever · No card required</p>
+            <p className="mt-8 text-xs sm:text-sm text-white/45">Free · ~12 min · No card</p>
           </div>
         </section>
       </main>

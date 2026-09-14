@@ -14,11 +14,11 @@ function isConfigured() {
 async function postJson(path, body) {
   const apiKey = process.env.CONVERTKIT_API_KEY;
   if (!apiKey) return null;
-  const url = `${API_BASE}${path}?api_key=${encodeURIComponent(apiKey)}`;
+  const url = `${API_BASE}${path}`;
   const res = await fetch(url, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
+    headers: { 'Content-Type': 'application/json; charset=utf-8' },
+    body: JSON.stringify({ api_key: apiKey, ...body }),
   });
   if (!res.ok) {
     const text = await res.text().catch(() => '');
@@ -40,10 +40,11 @@ async function subscribeTag(tagId, email) {
  * Add or update a subscriber on the default form, optionally apply tag IDs.
  * @param {{ email: string, firstName?: string, tags?: string[], source?: string }} opts
  */
+/** @returns {Promise<boolean>} true when subscriber was added to the form */
 async function subscribeToConvertKit({ email, firstName, tags = [], source }) {
-  if (!isConfigured()) return;
+  if (!isConfigured()) return false;
   const normalized = String(email || '').trim().toLowerCase();
-  if (!normalized) return;
+  if (!normalized) return false;
 
   const formId = process.env.CONVERTKIT_FORM_ID;
   const fields = {};
@@ -57,13 +58,14 @@ async function subscribeToConvertKit({ email, firstName, tags = [], source }) {
     });
   } catch (err) {
     console.error('ConvertKit form subscribe failed:', err.message);
-    return;
+    return false;
   }
 
   const tagIds = [...new Set(tags.filter(Boolean))];
   for (const tagId of tagIds) {
     await subscribeTag(tagId, normalized);
   }
+  return true;
 }
 
 /** Lead capture (lander, diagnostic email gate, etc.) */

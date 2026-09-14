@@ -147,7 +147,7 @@ function TodayPracticeCard({ habit, fallback, onComplete, token, API_BASE, focus
           >
             {completing ? '…' : 'Mark done'}
           </button>
-          <p className="mt-3 text-xs text-alignment-accent/70">One aligned action is enough.</p>
+          <p className="mt-3 text-xs text-alignment-accent/70">Optional</p>
         </>
       ) : (
         <Link to="/assessment" className="mt-4 inline-block rounded-full bg-alignment-primary text-white px-5 py-2.5 text-sm font-medium hover:bg-alignment-primary/90 transition-colors">
@@ -386,7 +386,6 @@ export default function DashboardPage() {
               <section className="rounded-2.5xl bg-alignment-surface border border-alignment-accent/[0.06] shadow-apple p-6 sm:p-8 flex flex-col items-center justify-between gap-4 h-full min-h-0">
                 <div className="w-full text-center lg:text-left">
                   <p className="text-xs font-medium text-alignment-accent/70 uppercase tracking-wider mb-1">Alignment Score</p>
-                  <p className="text-alignment-accent/70 text-sm">Your AQ score from your last assessment.</p>
                 </div>
                 <ScoreGauge score={result?.score} label={result?.label} />
                 {result ? (
@@ -506,9 +505,7 @@ export default function DashboardPage() {
                   <>
                     <div>
                       <p className="text-xs font-medium text-alignment-accent/70 uppercase tracking-wider mb-2">Quarterly reassessment</p>
-                      <p className="text-sm text-alignment-accent/70 leading-relaxed">
-                        It’s been about 3 months since your last check-in. Retake to measure progress and adjust habits.
-                      </p>
+                      <p className="text-sm text-alignment-accent/70">Retake to measure progress</p>
                     </div>
                     <Link
                       to="/assessment"
@@ -521,7 +518,7 @@ export default function DashboardPage() {
                   <>
                     <div>
                       <p className="text-xs font-medium text-alignment-accent/70 uppercase tracking-wider mb-2">Weekly review</p>
-                      <p className="text-sm text-alignment-accent/70 leading-relaxed">Reflect on what held and what drifted — about 10 minutes.</p>
+                      <p className="text-sm text-alignment-accent/70">~10 min reflection</p>
                     </div>
                     <Link
                       to="/reflect"
@@ -534,10 +531,9 @@ export default function DashboardPage() {
               </section>
 
               <section className="rounded-2.5xl bg-alignment-surface border border-alignment-accent/[0.06] shadow-apple p-6 flex flex-col h-full min-h-0">
-                <h2 className="text-sm font-semibold text-alignment-accent tracking-tight">Other micro-habits</h2>
-                <p className="text-alignment-accent/70 text-xs mt-1 mb-4">Small steps today. One habit at a time.</p>
+                <h2 className="text-sm font-semibold text-alignment-accent tracking-tight">Other habits</h2>
                 {habits.length > 1 ? (
-                  <div className="space-y-0 flex-1 min-h-0 overflow-y-auto max-h-[280px] lg:max-h-none">
+                  <div className="mt-4 space-y-0 flex-1 min-h-0 overflow-y-auto max-h-[280px] lg:max-h-none">
                     {habits.slice(1).map((h) => (
                       <HabitRow
                         key={h.id}
@@ -549,83 +545,42 @@ export default function DashboardPage() {
                     ))}
                   </div>
                 ) : (
-                  <p className="text-sm text-alignment-accent/55 flex-1">
-                    More habits appear after your assessment. Your primary practice is in the first column.
+                  <p className="mt-4 text-sm text-alignment-accent/55 flex-1">
+                    More habits appear after your assessment.
                   </p>
                 )}
               </section>
             </div>
 
-            {/* Row 3: two columns */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-6 xl:gap-8 lg:items-stretch">
-              <div className="rounded-2.5xl bg-alignment-surface border border-alignment-accent/[0.06] shadow-apple p-5 sm:p-6">
-                <p className="text-xs font-medium text-alignment-accent/70 uppercase tracking-wider mb-4">Your path</p>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-                  <Link
-                    to="/assessment"
-                    className="rounded-xl border border-alignment-accent/[0.06] bg-apple-surface-muted p-4 hover:shadow-apple transition-shadow"
-                  >
-                    <span className="inline-flex h-9 w-9 rounded-full bg-alignment-accent/5 text-alignment-accent items-center justify-center text-sm font-semibold">
-                      1
-                    </span>
-                    <p className="mt-3 font-medium text-alignment-accent text-sm">Assessment</p>
-                    <p className="mt-1 text-xs text-alignment-accent/70">24 questions, 5–7 min</p>
-                  </Link>
-                  <Link
-                    to="/results"
-                    className="rounded-xl border border-alignment-accent/[0.06] bg-apple-surface-muted p-4 hover:shadow-apple transition-shadow"
-                  >
-                    <span className="inline-flex h-9 w-9 rounded-full bg-alignment-accent/5 text-alignment-accent items-center justify-center text-sm font-semibold">
-                      2
-                    </span>
-                    <p className="mt-3 font-medium text-alignment-accent text-sm">Results</p>
-                    <p className="mt-1 text-xs text-alignment-accent/70">Score, pillars, archetype</p>
-                  </Link>
-                  <Link
-                    to="/progress"
-                    className="rounded-xl border border-alignment-accent/[0.06] bg-apple-surface-muted p-4 hover:shadow-apple transition-shadow"
-                  >
-                    <span className="inline-flex h-9 w-9 rounded-full bg-alignment-accent/5 text-alignment-accent items-center justify-center text-sm font-semibold">
-                      3
-                    </span>
-                    <p className="mt-3 font-medium text-alignment-accent text-sm">Progress</p>
-                    <p className="mt-1 text-xs text-alignment-accent/70">Track over time</p>
-                  </Link>
-                </div>
+            {/* Go deeper */}
+            <div className="rounded-2.5xl border border-alignment-accent/[0.08] bg-alignment-surface px-6 py-6 shadow-apple flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div>
+                <p className="text-xs font-medium text-alignment-accent/70 uppercase tracking-wider mb-1">Go deeper</p>
+                <p className="font-medium text-alignment-accent">Habit Engine & Journey</p>
               </div>
-
-              <div className="rounded-2.5xl border border-alignment-accent/[0.08] bg-alignment-surface px-6 py-8 shadow-apple flex flex-col justify-between h-full min-h-[11rem]">
-                <div>
-                  <p className="text-xs font-medium text-alignment-accent/70 uppercase tracking-wider mb-2">Go deeper</p>
-                  <p className="text-lg font-semibold text-alignment-accent tracking-tight">Habit Engine & Journey</p>
-                  <p className="mt-2 text-sm text-alignment-accent/60 leading-relaxed">
-                    Daily tracking, weekly review, and structured formation — or the full 90-day architecture program.
-                  </p>
-                </div>
-                <div className="mt-6 flex flex-wrap gap-2">
-                  <Link
-                    to="/pricing"
-                    className="inline-flex rounded-full bg-alignment-primary text-white px-5 py-2.5 text-sm font-medium hover:bg-alignment-primary/90 transition-colors"
-                  >
-                    View pricing →
-                  </Link>
-                  {creatorHref && (
-                    <a
-                      href={creatorHref}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex rounded-full border border-alignment-accent/15 bg-alignment-surface px-5 py-2.5 text-sm font-medium text-alignment-accent hover:bg-alignment-accent/5 transition-colors"
-                    >
-                      Continue to Creator →
-                    </a>
-                  )}
-                  <Link
-                    to="/results"
+              <div className="flex flex-wrap gap-2 shrink-0">
+                <Link
+                  to="/pricing"
+                  className="inline-flex rounded-full bg-alignment-primary text-white px-5 py-2.5 text-sm font-medium hover:bg-alignment-primary/90 transition-colors"
+                >
+                  Pricing →
+                </Link>
+                {creatorHref && (
+                  <a
+                    href={creatorHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="inline-flex rounded-full border border-alignment-accent/15 bg-alignment-surface px-5 py-2.5 text-sm font-medium text-alignment-accent hover:bg-alignment-accent/5 transition-colors"
                   >
-                    Latest results →
-                  </Link>
-                </div>
+                    Creator →
+                  </a>
+                )}
+                <Link
+                  to="/results"
+                  className="inline-flex rounded-full border border-alignment-accent/15 bg-alignment-surface px-5 py-2.5 text-sm font-medium text-alignment-accent hover:bg-alignment-accent/5 transition-colors"
+                >
+                  Results →
+                </Link>
               </div>
             </div>
           </div>
