@@ -16,8 +16,9 @@ function readLoggedIn() {
 }
 
 /**
- * Site header. Logged-in users always get Dashboard · Practice · Review and Today,
- * including on Home, Pricing, and other marketing pages.
+ * Site header. Logged-in users always get Dashboard · Practice · Review
+ * including on Home, Pricing, and other marketing pages. The olive button
+ * stays the primary action: Begin free when logged out, Practice when in.
  */
 export default function SiteMarketingHeader({ appendDesktop = null, authDrawer }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -36,7 +37,7 @@ export default function SiteMarketingHeader({ appendDesktop = null, authDrawer }
 
   const navLinks = isLoggedIn ? siteNavSignedInLinks : siteNavMainLinks;
   const primaryCta = isLoggedIn
-    ? { to: '/practice', label: 'Today' }
+    ? { to: '/practice', label: 'Practice' }
     : { to: '/assessment', label: 'Begin free' };
 
   const handleLogout = () => {

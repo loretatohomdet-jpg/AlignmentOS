@@ -19,6 +19,20 @@ function authMiddleware(req, res, next) {
   }
 }
 
+function optionalAuth(req, res, next) {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return next();
+  }
+  const token = authHeader.split(' ')[1];
+  try {
+    req.user = jwt.verify(token, JWT_SECRET);
+  } catch (_) {
+    // Guest flow still proceeds; signed-in report lookup requires a valid token.
+  }
+  next();
+}
+
 function requireAdmin(req, res, next) {
   if (req.user?.role !== 'ADMIN') {
     return res.status(403).json({ message: 'Admin access required' });
@@ -26,5 +40,5 @@ function requireAdmin(req, res, next) {
   next();
 }
 
-module.exports = { authMiddleware, requireAdmin };
+module.exports = { authMiddleware, optionalAuth, requireAdmin };
 

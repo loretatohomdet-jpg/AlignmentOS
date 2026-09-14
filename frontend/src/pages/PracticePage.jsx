@@ -10,14 +10,16 @@ function authHeaders() {
   return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
-function WeekDots({ last7Days }) {
+function WeekDots({ last7Days, large }) {
   return (
     <div className="flex items-center gap-1.5" aria-label="Last seven days">
       {(last7Days || []).map((d) => (
         <span
           key={d.date}
           title={d.date}
-          className={`h-2 w-2 rounded-full ${d.done ? 'bg-alignment-primary' : 'bg-alignment-accent/15'}`}
+          className={`rounded-full ${large ? 'h-2.5 w-2.5' : 'h-1.5 w-1.5'} ${
+            d.done ? 'bg-alignment-primary' : 'bg-transparent ring-1 ring-inset ring-alignment-accent/20'
+          }`}
         />
       ))}
     </div>
@@ -83,119 +85,138 @@ export default function PracticePage() {
     }
   };
 
+  const focusId =
+    prompt?.habitId || habits.find((h) => !h.completedToday)?.id || habits[0]?.id || null;
+
   if (loading) {
     return (
-      <div className="max-w-3xl mx-auto px-6 sm:px-8 py-12 sm:py-16">
-        <p className="text-alignment-accent/70">Loading your habits…</p>
+      <div className="max-w-2xl mx-auto px-6 sm:px-8 py-16 sm:py-24">
+        <p className="font-display italic text-alignment-accent/50">Loading today’s structure…</p>
       </div>
     );
   }
 
   return (
-    <div className="max-w-3xl mx-auto px-6 sm:px-8 py-12 sm:py-16">
-      <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-alignment-primary/80">Habit Engine</p>
-      <h1 className="mt-3 text-headline font-semibold text-alignment-accent tracking-tight">Today’s structure</h1>
-      <p className="mt-2 text-sm text-alignment-accent/70 leading-relaxed max-w-xl">
-        Three practices from your lowest domain. The engine notices what is holding and what needs a smaller hold.
+    <div className="max-w-2xl mx-auto px-6 sm:px-8 py-14 sm:py-20">
+      <p className="text-[10px] font-medium uppercase tracking-[0.28em] text-alignment-primary/70">Today</p>
+      <h1 className="mt-4 font-display text-[2rem] sm:text-[2.55rem] font-medium text-alignment-accent tracking-tight leading-[1.15]">
+        Today’s structure
+      </h1>
+      <p className="mt-4 font-display italic text-lg text-alignment-primary/90 leading-snug max-w-md">
+        Three practices. One hold.
       </p>
 
       {error && (
-        <p className="mt-6 text-sm text-red-800 bg-red-50 border border-red-200 rounded-lg px-4 py-3" role="alert">
+        <p className="mt-8 text-sm text-red-800 bg-red-50 border border-red-200 rounded-lg px-4 py-3" role="alert">
           {error}
         </p>
       )}
 
       {prompt && (
-        <section className="mt-8 rounded-2xl border border-alignment-primary/20 bg-alignment-primary/[0.06] p-6 sm:p-7">
-          <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-primary">
+        <section className="mt-12 border-l-[2px] border-alignment-primary pl-5 sm:pl-6">
+          <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-alignment-primary/80">
             {prompt.kind === 'adjust' ? 'Needs adjustment' : prompt.kind === 'hold' ? 'Holding' : 'Prompt'}
           </p>
-          <h2 className="mt-3 font-display text-xl sm:text-[1.35rem] font-medium text-alignment-accent tracking-tight">
+          <h2 className="mt-3 font-display text-[1.45rem] sm:text-[1.7rem] font-medium text-alignment-accent tracking-tight leading-snug">
             {prompt.title}
           </h2>
-          <p className="mt-2 text-sm text-alignment-accent/75 leading-relaxed">{prompt.body}</p>
+          <p className="mt-3 text-sm text-alignment-accent/70 leading-relaxed max-w-lg">{prompt.body}</p>
         </section>
       )}
 
       {!paid && (
-        <div className="mt-6 rounded-2xl border border-alignment-accent/10 bg-alignment-surface p-6">
-          <p className="font-medium text-alignment-accent">Hold the three. Reviews unlock with the plan.</p>
-          <p className="mt-2 text-sm text-alignment-accent/70 leading-relaxed">
-            Daily check-in is included. Weekly review, quarterly reflection, and follow-up emails are on the $12/month
-            Habit Engine.
-          </p>
-          <Link
-            to="/pricing"
-            className="mt-5 inline-flex rounded-full bg-alignment-primary text-white px-5 py-2.5 text-sm font-medium hover:bg-alignment-primary/90"
-          >
-            See the plan
+        <p className="mt-10 text-sm text-alignment-accent/55 leading-relaxed max-w-lg">
+          Daily check-in is included.{' '}
+          <Link to="/pricing" className="text-alignment-accent underline-offset-4 hover:underline">
+            Weekly review is on the plan.
           </Link>
-        </div>
+        </p>
       )}
 
-      <div className="mt-8 space-y-4">
+      <div className="mt-12 space-y-3">
         {habits.length === 0 ? (
-          <div className="rounded-2xl border border-alignment-accent/10 bg-alignment-surface p-6 sm:p-8">
-            <p className="font-medium text-alignment-accent">No habits assigned yet</p>
-            <p className="mt-2 text-sm text-alignment-accent/70">Complete the diagnostic so three practices can be installed.</p>
+          <div className="py-2">
+            <p className="font-display text-xl text-alignment-accent">No practices yet</p>
+            <p className="mt-3 text-sm text-alignment-accent/65 leading-relaxed max-w-md">
+              Finish the diagnostic while signed in. Three practices from your lowest domain will appear here.
+            </p>
             <Link
               to="/assessment"
-              className="mt-5 inline-flex rounded-full bg-alignment-primary text-white px-5 py-2.5 text-sm font-medium hover:bg-alignment-primary/90"
+              className="mt-8 inline-flex rounded-sm bg-alignment-primary text-white text-[10px] font-medium uppercase tracking-[0.18em] px-6 py-3 hover:bg-alignment-primary/90"
             >
               Take diagnostic
             </Link>
           </div>
         ) : (
-          habits.map((habit) => (
-            <article
-              key={habit.id}
-              className={`rounded-2xl border bg-alignment-surface p-6 shadow-apple ${
-                prompt?.habitId === habit.id ? 'border-alignment-primary/30' : 'border-alignment-accent/[0.06]'
-              }`}
-            >
-              <div className="flex flex-wrap items-start justify-between gap-3">
-                <div className="min-w-0">
-                  <p className="text-xs font-medium uppercase tracking-wider text-alignment-accent/50">
-                    {DOMAIN_LABELS[habit.pillar] || habit.pillar} · Level {habit.level}
-                  </p>
-                  <h3 className="mt-1.5 font-medium text-alignment-accent">{habit.title}</h3>
-                  {habit.description && (
-                    <p className="mt-1.5 text-sm text-alignment-accent/70 leading-relaxed">{habit.description}</p>
-                  )}
-                </div>
-                <button
+          habits.map((habit) => {
+            const focused = habit.id === focusId;
+            const held = habit.completedToday;
+            return (
+              <article
+                key={habit.id}
+                className={
+                  focused
+                    ? 'rounded-sm border border-alignment-accent/[0.08] bg-alignment-surfaceSoft px-6 py-8 sm:px-8 sm:py-10'
+                    : 'rounded-sm px-1 py-5 sm:px-2 border-b border-alignment-accent/[0.06] last:border-b-0'
+                }
+              >
+                <div className="flex flex-wrap items-start justify-between gap-4">
+                  <div className="min-w-0 max-w-xl">
+                    <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-alignment-accent/40">
+                      {DOMAIN_LABELS[habit.pillar] || habit.pillar}
+                      {focused ? '' : ` · Level ${habit.level}`}
+                    </p>
+                    <h3
+                      className={
+                        focused
+                          ? 'mt-2 font-display text-[1.45rem] sm:text-[1.65rem] font-medium text-alignment-accent tracking-tight leading-snug'
+                          : 'mt-1.5 text-[0.95rem] font-medium text-alignment-accent/85'
+                      }
+                    >
+                      {habit.title}
+                    </h3>
+                    {habit.description && focused && (
+                      <p className="mt-3 text-sm text-alignment-accent/65 leading-relaxed">{habit.description}</p>
+                    )}
+                  </div>
+                  <button
                     type="button"
                     onClick={() => markDone(habit)}
-                    disabled={habit.completedToday || completingId === habit.id}
-                    className="shrink-0 rounded-full bg-alignment-primary text-white px-4 py-2 text-sm font-medium hover:bg-alignment-primary/90 disabled:opacity-50"
+                    disabled={held || completingId === habit.id}
+                    className={
+                      focused && !held
+                        ? 'shrink-0 rounded-sm bg-alignment-primary text-white text-[10px] font-medium uppercase tracking-[0.16em] px-5 py-2.5 hover:bg-alignment-primary/90 disabled:opacity-50'
+                        : 'shrink-0 rounded-sm border border-alignment-accent/15 text-alignment-accent/80 text-[10px] font-medium uppercase tracking-[0.16em] px-4 py-2 hover:border-alignment-primary/40 disabled:opacity-45'
+                    }
                   >
-                    {habit.completedToday ? 'Held today' : completingId === habit.id ? '…' : 'Mark done'}
+                    {held ? 'Held' : completingId === habit.id ? '…' : 'Mark done'}
                   </button>
-              </div>
-              <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-                <WeekDots last7Days={habit.last7Days} />
-                <p className="text-xs text-alignment-accent/50 tabular-nums">
-                  {habit.completedLast7}/7 this week
-                  {habit.streak > 0 ? ` · ${habit.streak}-day streak` : ''}
-                </p>
-              </div>
-            </article>
-          ))
+                </div>
+                <div className={`flex flex-wrap items-center justify-between gap-3 ${focused ? 'mt-8' : 'mt-3'}`}>
+                  <WeekDots last7Days={habit.last7Days} large={focused} />
+                  <p className="text-[11px] text-alignment-accent/40 tabular-nums">
+                    {habit.completedLast7}/7
+                    {habit.streak > 0 ? ` · ${habit.streak}-day` : ''}
+                  </p>
+                </div>
+              </article>
+            );
+          })
         )}
       </div>
 
-      <p className="mt-10 text-sm text-alignment-accent/60">
+      <p className="mt-14 text-sm text-alignment-accent/45">
         {paid ? (
-          <Link to="/reflect" className="font-medium text-alignment-accent hover:underline">
+          <Link to="/reflect" className="text-alignment-accent/70 hover:text-alignment-accent hover:underline">
             Weekly review
           </Link>
         ) : (
-          <Link to="/pricing" className="font-medium text-alignment-accent hover:underline">
-            Unlock weekly review
+          <Link to="/pricing" className="text-alignment-accent/70 hover:text-alignment-accent hover:underline">
+            Weekly review
           </Link>
         )}
-        <span className="text-alignment-accent/35"> · </span>
-        <Link to="/dashboard" className="hover:underline">
+        <span className="mx-2 text-alignment-accent/25">·</span>
+        <Link to="/dashboard" className="hover:text-alignment-accent hover:underline">
           Dashboard
         </Link>
       </p>

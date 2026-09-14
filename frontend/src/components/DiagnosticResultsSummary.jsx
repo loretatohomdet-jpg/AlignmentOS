@@ -32,6 +32,7 @@ export default function DiagnosticResultsSummary({
   const [email, setEmail] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
+  const [emailed, setEmailed] = useState(false);
   const [anchors, setAnchors] = useState({ a1: '', a2: '', a3: '' });
   const [anchorsSaved, setAnchorsSaved] = useState(false);
 
@@ -59,11 +60,17 @@ export default function DiagnosticResultsSummary({
     }
     setSubmitting(true);
     try {
-      await axios.post(`${API_BASE}/lead`, {
-        email: email.trim(),
-        source: 'diagnostic-results',
-      });
+      const token = localStorage.getItem('accessToken');
+      const res = await axios.post(
+        `${API_BASE}/assessment/email-report`,
+        {
+          email: email.trim(),
+          source: 'diagnostic-results',
+        },
+        token ? { headers: { Authorization: `Bearer ${token}` } } : {}
+      );
       setUnlocked(true);
+      setEmailed(Boolean(res.data?.emailed));
       onEmailUnlock?.();
     } catch (err) {
       setError(err.response?.data?.message || 'Could not save. Try again.');
@@ -118,8 +125,7 @@ export default function DiagnosticResultsSummary({
         <div className="mt-12 sm:mt-14">
           <h2 className={`${resultsUi.heading} text-xl sm:text-2xl text-center leading-snug`}>See your full diagnostic.</h2>
           <p className="mt-5 text-sm text-alignment-accent/55 text-center leading-relaxed px-1">
-            Enter your email to unlock your domain breakdown, Identity Anchors, three habits, and 90-day projection. No spam —
-            unsubscribe any time.
+            Enter your email to unlock your domain breakdown and receive this report in your inbox.
           </p>
           <form onSubmit={handleUnlock} className="mt-9 space-y-4">
             <input
@@ -137,7 +143,7 @@ export default function DiagnosticResultsSummary({
               disabled={submitting}
               className="w-full rounded-lg py-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-white bg-alignment-primary hover:bg-alignment-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {submitting ? 'Unlocking…' : 'Unlock full results →'}
+              {submitting ? 'Sending…' : 'Email my results →'}
             </button>
           </form>
           <p className="mt-5 text-center text-[11px] text-alignment-accent/40 leading-relaxed">
@@ -150,6 +156,12 @@ export default function DiagnosticResultsSummary({
             </Link>
           </p>
         </div>
+      )}
+
+      {showExtended && emailed && (
+        <p className="mt-10 text-sm text-alignment-accent/60 text-center leading-relaxed">
+          We sent a copy of this diagnostic to {email.trim()}.
+        </p>
       )}
 
       {showExtended && pillarScores && typeof pillarScores === 'object' && (

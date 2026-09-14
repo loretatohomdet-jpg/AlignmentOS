@@ -1,9 +1,50 @@
 const { ZodError } = require('zod');
 const { prisma } = require('../prismaClient');
-const { submitAssessmentSchema } = require('../validation/assessmentSchemas');
+const { submitAssessmentSchema, emailReportSchema } = require('../validation/assessmentSchemas');
 const { computeAQ, getAlignmentTypeSubtitle } = require('../services/aqScore');
 const { syncActiveHabits } = require('../services/habitAssignment');
 const { resolveActiveAssessmentWithQuestions } = require('../services/assessmentEnsureQuestions');
+const { sendAssessmentReportEmail } = require('../services/assessmentReportEmail');
+const { subscribeLead } = require('../services/convertkit');
+
+function reportFromComputed(computed) {
+  const { aqScore, pillarScores, primaryDomain, alignmentTypeTitle, alignmentTypeSubtitle } = computed;
+  return {
+    score: aqScore,
+    label: buildAlignmentLabel(aqScore),
+    alignmentTypeTitle,
+    alignmentTypeSubtitle,
+    primaryStrainLabel: primaryDomain ? DOMAIN_LABELS[primaryDomain] : null,
+    primaryStrainDescription: 'Your primary structural gap — where habit installation begins.',
+    pillarScores,
+  };
+}
+
+function reportFromProfile(profile) {
+  const scores = profile.pillarScores && typeof profile.pillarScores === 'object' ? profile.pillarScores : {};
+  return {
+    score: profile.aqScore,
+    label: buildAlignmentLabel(profile.aqScore),
+    alignmentTypeTitle: profile.archetype || 'The Developing Person',
+    alignmentTypeSubtitle: getAlignmentTypeSubtitle(profile.archetype),
+    primaryStrainLabel: profile.primaryDomain ? DOMAIN_LABELS[profile.primaryDomain] : null,
+    primaryStrainDescription: 'Your primary structural gap — where habit installation begins.',
+    pillarScores: scores,
+  };
+}
+
+async function persistDiagnosticLead(email, source) {
+  try {
+    await prisma.lead.create({ data: { email, source } });
+  } catch (err) {
+    console.error('Lead DB save failed:', err.message);
+  }
+  try {
+    await subscribeLead(email, source);
+  } catch (err) {
+    console.error('ConvertKit lead subscribe failed:', err.message);
+  }
+}
 
 const DOMAIN_LABELS = {
   IDENTITY: 'Identity',
@@ -359,6 +400,56 @@ async function getReport(req, res, next) {
   }
 }
 
+async function emailAssessmentReport(req, res, next) {
+  try {
+    const parsed = emailReportSchema.parse(req.body);
+    const email = parsed.email.trim().toLowerCase();
+    const source = parsed.source || 'diagnostic-report';
+    let report = null;
+
+    if (parsed.assessmentId && parsed.responses?.length) {
+      let payload;
+      try {
+        payload = await computeAssessmentFromResponses(parsed.assessmentId, parsed.responses);
+      } catch (e) {
+        if (e.statusCode === 400) {
+          return res.status(400).json({ message: e.message });
+        }
+        throw e;
+      }
+      report = reportFromComputed(payload.computed);
+    } else if (req.user?.sub) {
+      const profile = await prisma.alignmentProfile.findUnique({
+        where: { userId: req.user.sub },
+      });
+      if (!profile) {
+        return res.status(404).json({ message: 'Complete an assessment first.' });
+      }
+      report = reportFromProfile(profile);
+    } else {
+      return res.status(400).json({
+        message: 'Include your diagnostic answers, or sign in after saving a score.',
+      });
+    }
+
+    await persistDiagnosticLead(email, source);
+
+    let emailed = false;
+    try {
+      emailed = await sendAssessmentReportEmail({ to: email, report });
+    } catch (err) {
+      console.error('Assessment report email failed:', err.message);
+    }
+
+    res.status(201).json({ email, emailed });
+  } catch (err) {
+    if (err instanceof ZodError) {
+      return res.status(400).json({ message: 'Enter a valid email', errors: err.errors });
+    }
+    next(err);
+  }
+}
+
 module.exports = {
   getActiveAssessment,
   previewAssessment,
@@ -366,5 +457,6 @@ module.exports = {
   getLatestResult,
   getScoreHistory,
   getReport,
+  emailAssessmentReport,
 };
 

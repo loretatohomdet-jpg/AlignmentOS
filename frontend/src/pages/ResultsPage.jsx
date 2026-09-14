@@ -317,8 +317,8 @@ export default function ResultsPage() {
                   <section className={`${resultsUi.panel} h-full flex flex-col`}>
                     <p className={resultsUi.label}>Who should know their score?</p>
                     <p className="mt-2 text-xs text-alignment-accent/50 leading-relaxed">
-                      Add someone who might take the diagnostic next. We save this as a lead for follow-up — scores aren’t emailed
-                      automatically yet.
+                      Add someone who might take the diagnostic next. We save this as a lead for follow-up — we don’t email their
+                      score.
                     </p>
                     <form onSubmit={handleShareSend} className="mt-4 flex flex-col gap-3 flex-1 min-h-0">
                       <input

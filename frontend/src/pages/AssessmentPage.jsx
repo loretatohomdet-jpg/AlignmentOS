@@ -48,6 +48,7 @@ export default function AssessmentPage() {
   const [guestEmail, setGuestEmail] = useState('');
   const [guestLeadError, setGuestLeadError] = useState(null);
   const [guestLeadSubmitting, setGuestLeadSubmitting] = useState(false);
+  const [guestEmailed, setGuestEmailed] = useState(false);
   const [previewLoading, setPreviewLoading] = useState(false);
 
   useEffect(() => {
@@ -148,6 +149,7 @@ export default function AssessmentPage() {
     setGuestUnlocked(false);
     setGuestEmail('');
     setGuestLeadError(null);
+    setGuestEmailed(false);
   };
 
   const handleRevealScore = async () => {
@@ -194,11 +196,18 @@ export default function AssessmentPage() {
     }
     setGuestLeadSubmitting(true);
     try {
-      await axios.post(`${API_BASE}/lead`, {
+      const responses = questions.map((q) => ({
+        questionId: q.id,
+        value: answers[q.id],
+      }));
+      const res = await axios.post(`${API_BASE}/assessment/email-report`, {
         email: guestEmail.trim(),
         source: 'diagnostic-assessment-preview',
+        assessmentId: assessment.id,
+        responses,
       });
       setGuestUnlocked(true);
+      setGuestEmailed(Boolean(res.data?.emailed));
     } catch (err) {
       setGuestLeadError(err.response?.data?.message || 'Could not save. Try again.');
     } finally {
@@ -491,7 +500,7 @@ export default function AssessmentPage() {
             <p className={`mt-2 text-sm ${diagRun.reviewMuted}`}>
               {localStorage.getItem('accessToken')
                 ? 'Submit to save your alignment score to your account.'
-                : 'Reveal your score below, then enter your email to see the full six-domain breakdown.'}
+                : 'Reveal your score below, then enter your email to see the six-domain breakdown and receive a copy in your inbox.'}
             </p>
             <div className="mt-4 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6">
               <button
@@ -588,7 +597,7 @@ export default function AssessmentPage() {
                     See your full diagnostic
                   </h2>
                   <p className="mt-3 text-sm text-alignment-accent/55 text-center leading-relaxed">
-                    Enter your email to unlock the six-domain breakdown. No spam — unsubscribe any time.
+                    Enter your email to unlock the six-domain breakdown and receive this report in your inbox.
                   </p>
                   <form onSubmit={handleGuestUnlockEmail} className="mt-6 space-y-4">
                     <input
@@ -606,12 +615,17 @@ export default function AssessmentPage() {
                       disabled={guestLeadSubmitting}
                       className="w-full rounded-lg py-3.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-white bg-alignment-primary hover:bg-alignment-primary/90 disabled:opacity-50"
                     >
-                      {guestLeadSubmitting ? 'Unlocking…' : 'Unlock full results →'}
+                      {guestLeadSubmitting ? 'Sending…' : 'Email my results →'}
                     </button>
                   </form>
                 </div>
               ) : (
                 <>
+                  <p className="text-sm text-alignment-accent/60 text-center leading-relaxed">
+                    {guestEmailed
+                      ? `We sent a copy of this diagnostic to ${guestEmail.trim()}.`
+                      : `Your results are below. If an email doesn’t arrive at ${guestEmail.trim()}, keep this page.`}
+                  </p>
                   <div className="rounded-2xl border border-alignment-accent/10 bg-alignment-surface px-5 py-8 shadow-apple">
                     <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-alignment-accent/55 text-center">
                       Six domains

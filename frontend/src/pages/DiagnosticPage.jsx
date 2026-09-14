@@ -95,8 +95,8 @@ export default function DiagnosticPage() {
               habits tend to move the needle first.
             </li>
             <li>
-              <strong className="text-alignment-accent font-medium">Email to see the full result</strong> — domain-by-domain breakdown, alignment
-              type, and the rest of your diagnostic lives behind a simple email step (no spam; you can unsubscribe any time).
+              <strong className="text-alignment-accent font-medium">Email to see and receive the full result</strong> — domain-by-domain
+              breakdown, alignment type, and a copy of this report in your inbox (no spam; you can unsubscribe any time).
             </li>
             <li>
               You&apos;ll land on <strong className="text-alignment-accent font-medium">Results</strong> after submit — not back on this intro — so

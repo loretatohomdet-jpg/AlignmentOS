@@ -1,5 +1,6 @@
 const express = require('express');
-const { authMiddleware } = require('../middleware/auth');
+const rateLimit = require('express-rate-limit');
+const { authMiddleware, optionalAuth } = require('../middleware/auth');
 const {
   getActiveAssessment,
   previewAssessment,
@@ -7,15 +8,26 @@ const {
   getLatestResult,
   getScoreHistory,
   getReport,
+  emailAssessmentReport,
 } = require('../controllers/assessmentController');
 
 const router = express.Router();
+
+const emailReportLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 // Get the currently active assessment with questions
 router.get('/active', getActiveAssessment);
 
 // Anonymous preview: score + pillars + type (no persistence)
 router.post('/preview', previewAssessment);
+
+// Email a copy of the diagnostic (guest answers, or signed-in saved profile)
+router.post('/email-report', emailReportLimiter, optionalAuth, emailAssessmentReport);
 
 // Submit responses and calculate Alignment Index / AQ
 router.post('/submit', authMiddleware, submitAssessment);
