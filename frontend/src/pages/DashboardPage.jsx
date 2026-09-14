@@ -28,7 +28,13 @@ const PILLAR_LABELS = {
   EXECUTION: 'Execution',
 };
 
-function HabitRow({ habit, onComplete, token, API_BASE, locked }) {
+function completeMessage(err) {
+  if (err?.response?.status === 402) return 'paywall';
+  return err?.response?.data?.message || 'Could not save today’s practice.';
+}
+
+function HabitRow({ habit, onComplete, token, API_BASE, locked, onFail }) {
+  const navigate = useNavigate();
   const [completing, setCompleting] = useState(false);
   const handleDone = async () => {
     if (completing || locked) return;
@@ -36,7 +42,10 @@ function HabitRow({ habit, onComplete, token, API_BASE, locked }) {
     try {
       await axios.post(`${API_BASE}/habits/complete`, { activeHabitId: habit.id }, { headers: { Authorization: `Bearer ${token}` } });
       onComplete?.();
-    } catch (_) {}
+    } catch (err) {
+      if (completeMessage(err) === 'paywall') navigate('/pricing');
+      else onFail?.(completeMessage(err));
+    }
     setCompleting(false);
   };
   return (
@@ -69,7 +78,8 @@ function HabitRow({ habit, onComplete, token, API_BASE, locked }) {
 
 const TODAY_RESPONSE_KEY = (habitId, dateStr) => `today_response_${habitId}_${dateStr}`;
 
-function TodayPracticeCard({ habit, onComplete, token, API_BASE, focusPillar, locked }) {
+function TodayPracticeCard({ habit, onComplete, token, API_BASE, focusPillar, locked, onFail }) {
+  const navigate = useNavigate();
   const todayStr = new Date().toISOString().slice(0, 10);
   const storageKey = habit ? TODAY_RESPONSE_KEY(habit.id, todayStr) : null;
   const [response, setResponse] = useState(() => {
@@ -100,7 +110,10 @@ function TodayPracticeCard({ habit, onComplete, token, API_BASE, focusPillar, lo
       await axios.post(`${API_BASE}/habits/complete`, { activeHabitId: habit.id }, { headers: { Authorization: `Bearer ${token}` } });
       setShowCompleteMoment(true);
       onComplete?.();
-    } catch (_) {}
+    } catch (err) {
+      if (completeMessage(err) === 'paywall') navigate('/pricing');
+      else onFail?.(completeMessage(err));
+    }
     setCompleting(false);
   };
 
@@ -431,6 +444,7 @@ export default function DashboardPage() {
                   API_BASE={API_BASE}
                   focusPillar={result?.primaryDomain ? PILLAR_LABELS[result.primaryDomain] || result.primaryDomain : null}
                   locked={!paid}
+                  onFail={setError}
                 />
               </section>
 
@@ -463,7 +477,10 @@ export default function DashboardPage() {
                       try {
                         await axios.post(`${API_BASE}/habits/complete`, { activeHabitId: primaryHabit.id }, { headers: authHeaders });
                         await refreshHabits();
-                      } catch (_) {}
+                      } catch (err) {
+                        if (completeMessage(err) === 'paywall') navigate('/pricing');
+                        else setError(completeMessage(err));
+                      }
                     }}
                     className="mt-4 w-full rounded-full bg-alignment-primary text-white px-5 py-2.5 text-sm font-medium hover:bg-alignment-primary/90 transition-colors lg:mt-5"
                   >
@@ -593,6 +610,7 @@ export default function DashboardPage() {
                         token={token}
                         API_BASE={API_BASE}
                         locked={!paid}
+                        onFail={setError}
                       />
                     ))}
                   </div>
