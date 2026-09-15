@@ -16,8 +16,8 @@ const defaultSteps = [
   },
   {
     n: '03',
-    title: 'Do your weekly review on Sunday',
-    body: '10 minutes. The most important habit in the system. We will remind you.',
+    title: 'Open Review when you need the map',
+    body: 'The practice library — few, and chosen. Today is where the day is held.',
     to: '/reflect',
   },
 ];

@@ -5,7 +5,7 @@ const { subscribeLead, isConfigured } = require('../services/convertkit');
 
 async function sendWelcomeEmailIfConfigured(email) {
   const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.RESEND_FROM || 'Alignment Index <onboarding@resend.dev>';
+  const from = process.env.RESEND_FROM || 'Alignment OS <onboarding@resend.dev>';
   if (!apiKey) return;
   try {
     const { Resend } = require('resend');
@@ -15,11 +15,11 @@ async function sendWelcomeEmailIfConfigured(email) {
       to: email,
       subject: "You're in — here's your next step",
       html: `
-        <p>Thanks for your interest in the Alignment Index.</p>
-        <p>Take the short assessment to get your score and see how your work aligns with what matters to you:</p>
-        <p><a href="${process.env.APP_URL || 'https://yourapp.com'}/assessment">Take the assessment</a></p>
+        <p>Thanks for your interest in Alignment OS.</p>
+        <p>Take the short diagnostic to get your score and see where your life holds — and where it strains:</p>
+        <p><a href="${process.env.APP_URL || 'https://www.alignmentos.co'}/assessment">Take the diagnostic</a></p>
         <p>We'll send tips and updates from time to time. Unsubscribe anytime.</p>
-        <p>— Alignment Index</p>
+        <p>— Alignment OS</p>
       `,
     });
   } catch (err) {

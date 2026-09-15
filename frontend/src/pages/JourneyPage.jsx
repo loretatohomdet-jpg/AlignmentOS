@@ -5,6 +5,7 @@ import { API_BASE, networkErrorUserMessage } from '../config/apiBase';
 import { DOMAIN_LABELS, DOMAIN_ORDER } from '../constants/domains';
 import { domainScoresToDisplayPct } from '../utils/domainScores';
 import { collectLocalArchive, formatArchiveDay } from '../utils/engineStorage';
+import { fetchRitualArchive } from '../utils/engineRitualsApi';
 import { copper, enginePrimaryBtn } from '../utils/engineUi';
 import { usePageTitle } from '../hooks/usePageTitle';
 
@@ -26,6 +27,7 @@ export default function JourneyPage() {
   const [result, setResult] = useState(null);
   const [hasPractices, setHasPractices] = useState(false);
   const [reflections, setReflections] = useState([]);
+  const [ritualArchive, setRitualArchive] = useState([]);
   const [localArchive] = useState(() => collectLocalArchive());
 
   useEffect(() => {
@@ -38,11 +40,13 @@ export default function JourneyPage() {
       axios.get(`${API_BASE}/assessment/result`, { headers: authHeaders() }).catch(() => ({ data: null })),
       axios.get(`${API_BASE}/me/reflections`, { headers: authHeaders() }).catch(() => ({ data: [] })),
       axios.get(`${API_BASE}/habits/stats`, { headers: authHeaders() }).catch(() => ({ data: null })),
+      fetchRitualArchive().catch(() => []),
     ])
-      .then(([resultRes, reflectionRes, statsRes]) => {
+      .then(([resultRes, reflectionRes, statsRes, ritualRows]) => {
         setResult(resultRes.data ?? null);
         setReflections(Array.isArray(reflectionRes.data) ? reflectionRes.data : []);
         setHasPractices(Array.isArray(statsRes.data?.habits) && statsRes.data.habits.length > 0);
+        setRitualArchive(Array.isArray(ritualRows) ? ritualRows : []);
       })
       .catch((e) => {
         if (e.response?.status === 401) {
@@ -66,10 +70,18 @@ export default function JourneyPage() {
       kind: row.type === 'WEEKLY' ? 'Weekly review' : row.type === 'QUARTERLY' ? 'Quarterly review' : 'Reflection',
       excerpt: Array.isArray(row.answers) ? filledText(row.answers.find(Boolean)) : null,
     }));
-    return [...localArchive, ...fromReflections]
+    const fromRituals = ritualArchive.map((row) => ({
+      id: row.id,
+      day: row.day,
+      kind: row.kind,
+      excerpt: filledText(row.excerpt),
+    }));
+    const seen = new Set(fromRituals.map((item) => `${item.day}|${item.kind}`));
+    const fromLocal = localArchive.filter((item) => !seen.has(`${item.day}|${item.kind}`));
+    return [...fromRituals, ...fromLocal, ...fromReflections]
       .filter((item) => item.day)
       .sort((a, b) => b.day.localeCompare(a.day));
-  }, [localArchive, reflections]);
+  }, [localArchive, reflections, ritualArchive]);
 
   const latestExcerpt = archive[0]?.excerpt || null;
 

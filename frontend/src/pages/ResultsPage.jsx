@@ -282,17 +282,17 @@ export default function ResultsPage() {
 
                   <section className={`${resultsUi.panel} flex flex-col h-full justify-between`}>
                     <div>
-                      <p className={resultsUi.label}>Weekly review</p>
-                      <p className="mt-2 text-sm text-alignment-accent font-medium">10 minutes</p>
+                      <p className={resultsUi.label}>Review</p>
+                      <p className="mt-2 text-sm text-alignment-accent font-medium">Few, and chosen.</p>
                       <p className="mt-2 text-xs text-alignment-accent/50 leading-relaxed">
-                        Reflect on what held and what drifted.
+                        The practice library — not a Sunday form.
                       </p>
                     </div>
                     <Link
                       to="/reflect"
                       className="mt-5 text-[10px] font-semibold uppercase tracking-[0.18em] text-alignment-accent/60 hover:text-alignment-accent"
                     >
-                      Weekly review →
+                      Open the library →
                     </Link>
                   </section>
                 </div>
@@ -369,7 +369,7 @@ export default function ResultsPage() {
                   <section className="rounded-xl border border-alignment-accent/[0.08] bg-alignment-surface px-6 py-8 shadow-apple h-full flex flex-col">
                     <h3 className={`${resultsUi.heading} text-xl sm:text-2xl`}>Go deeper when you are ready</h3>
                     <p className="mt-4 text-sm text-alignment-accent/60 leading-relaxed flex-1">
-                      Weekly review, quarterly reflection, and the $12/month plan. Practice is already open.
+                      The Habit Engine is $12/month. Journey is $297, one time. Practice is already open.
                     </p>
                     <Link to="/pricing" className={`mt-6 inline-flex ${resultsUi.btnOutline} px-8 py-3 self-start`}>
                       See plans

@@ -129,7 +129,7 @@ export default function CharterCohortPage() {
               <p className="mt-5 text-[15px] sm:text-base text-alignment-accent/45 leading-relaxed">
                 Not the right season?{' '}
                 <Link to="/pricing" className="underline underline-offset-2 hover:text-alignment-accent">
-                  Begin alone with the digital system — $49.
+                  Begin with the Habit Engine — $12/mo — or the Journey — $297.
                 </Link>
               </p>
             </div>

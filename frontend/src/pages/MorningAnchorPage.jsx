@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_BASE } from '../config/apiBase';
-import { utcDayStamp } from '../utils/engineStorage';
+import { mergeDraft, utcDayStamp } from '../utils/engineStorage';
+import { fetchDayRituals, saveDayRitual } from '../utils/engineRitualsApi';
 import { copper, engineGhostBtn, enginePrimaryBtn, engineTextarea } from '../utils/engineUi';
 import { usePageTitle } from '../hooks/usePageTitle';
 
@@ -68,6 +69,7 @@ export default function MorningAnchorPage() {
   const [habitId, setHabitId] = useState(null);
   const [pillar, setPillar] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -77,21 +79,35 @@ export default function MorningAnchorPage() {
   }, [day, draft]);
 
   useEffect(() => {
+    if (!hydrated) return undefined;
+    const t = setTimeout(() => {
+      const hasText = Object.values(draft).some((value) => String(value || '').trim());
+      if (!hasText) return;
+      saveDayRitual({ day, kind: 'morning', answers: draft, held: false }).catch(() => {});
+    }, 1200);
+    return () => clearTimeout(t);
+  }, [day, draft, hydrated]);
+
+  useEffect(() => {
     const token = localStorage.getItem('accessToken');
     if (!token) {
       navigate('/login?returnTo=/practice/morning', { replace: true });
       return;
     }
-    axios
-      .get(`${API_BASE}/habits/stats`, { headers: authHeaders() })
-      .then(({ data }) => {
-        const habits = Array.isArray(data?.habits) ? data.habits : [];
+    Promise.all([
+      axios.get(`${API_BASE}/habits/stats`, { headers: authHeaders() }).catch(() => ({ data: null })),
+      fetchDayRituals(day).catch(() => null),
+    ])
+      .then(([statsRes, ritualsRes]) => {
+        const habits = Array.isArray(statsRes.data?.habits) ? statsRes.data.habits : [];
         const morning = habits.find((h) => /morning|anchor/i.test(h.title || '')) || null;
         setHabitId(morning && !morning.completedToday ? morning.id : null);
         setPillar(morning?.pillar || habits[0]?.pillar || null);
+        const serverAnswers = ritualsRes?.rituals?.morning?.answers;
+        setDraft((prev) => mergeDraft(emptyDraft(), prev, serverAnswers));
       })
-      .catch(() => {});
-  }, [navigate]);
+      .finally(() => setHydrated(true));
+  }, [day, navigate]);
 
   const setField = (key) => (value) => setDraft((prev) => ({ ...prev, [key]: value }));
   const hint = PRACTICE_HINT[pillar] || PRACTICE_HINT.HABITS;
@@ -100,6 +116,11 @@ export default function MorningAnchorPage() {
     e.preventDefault();
     setSaving(true);
     setError(null);
+    try {
+      await saveDayRitual({ day, kind: 'morning', answers: draft, held: true });
+    } catch (_) {
+      /* draft stays on this device if the server is down */
+    }
     try {
       if (habitId) {
         await axios.post(`${API_BASE}/habits/complete`, { activeHabitId: habitId }, { headers: authHeaders() });

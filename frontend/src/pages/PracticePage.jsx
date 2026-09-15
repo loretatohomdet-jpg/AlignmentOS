@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_BASE, networkErrorUserMessage } from '../config/apiBase';
 import { loadRituals, utcDayStamp } from '../utils/engineStorage';
+import { pushHeldLocalRituals } from '../utils/engineRitualsApi';
 import { copper, engineGhostBtn, engineHeldBtn, enginePrimaryBtn } from '../utils/engineUi';
 import { usePageTitle } from '../hooks/usePageTitle';
 
@@ -61,7 +62,7 @@ export default function PracticePage() {
   const [completingId, setCompletingId] = useState(null);
   const [now] = useState(() => new Date());
   const day = utcDayStamp(now);
-  const [rituals] = useState(() => loadRituals(day));
+  const [rituals, setRituals] = useState(() => loadRituals(day));
 
   const load = useCallback(async () => {
     const token = localStorage.getItem('accessToken');
@@ -73,6 +74,8 @@ export default function PracticePage() {
     try {
       const statsRes = await axios.get(`${API_BASE}/habits/stats`, { headers: authHeaders() });
       setHabits(Array.isArray(statsRes.data?.habits) ? statsRes.data.habits : []);
+      const held = await pushHeldLocalRituals(day);
+      setRituals(held);
     } catch (e) {
       if (e.response?.status === 401) {
         navigate('/login?returnTo=/practice', { replace: true });
@@ -85,7 +88,7 @@ export default function PracticePage() {
     } finally {
       setLoading(false);
     }
-  }, [navigate]);
+  }, [day, navigate]);
 
   useEffect(() => {
     load();

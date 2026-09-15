@@ -30,6 +30,17 @@ export function markRitualHeld(day, key) {
   saveRituals(day, { ...current, [key]: true });
 }
 
+export function mergeDraft(empty, local, serverAnswers) {
+  const out = { ...empty };
+  const server = serverAnswers && typeof serverAnswers === 'object' ? serverAnswers : {};
+  for (const key of Object.keys(empty)) {
+    const localVal = filledText(local?.[key]);
+    const serverVal = filledText(server[key]);
+    out[key] = localVal || serverVal || '';
+  }
+  return out;
+}
+
 function filledText(value) {
   const t = String(value || '').trim();
   return t || null;

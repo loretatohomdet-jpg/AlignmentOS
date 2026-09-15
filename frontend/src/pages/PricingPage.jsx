@@ -24,8 +24,8 @@ const foundationFree = [
 ];
 
 const foundationHabit = [
-  'Weekly + quarterly reviews',
-  'Sunday review rhythm',
+  'Daily rooms — morning, midday, close',
+  'Practice library',
   'Score history',
 ];
 

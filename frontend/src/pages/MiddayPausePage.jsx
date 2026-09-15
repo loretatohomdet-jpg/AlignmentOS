@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { markRitualHeld, utcDayStamp } from '../utils/engineStorage';
+import { mergeDraft, markRitualHeld, utcDayStamp } from '../utils/engineStorage';
+import { fetchDayRituals, saveDayRitual } from '../utils/engineRitualsApi';
 import { copper, engineGhostBtn, enginePrimaryBtn, engineTextarea } from '../utils/engineUi';
 import { usePageTitle } from '../hooks/usePageTitle';
 
@@ -28,6 +29,7 @@ export default function MiddayPausePage() {
   const day = utcDayStamp();
   const [draft, setDraft] = useState(() => loadDraft(day));
   const [saving, setSaving] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
     if (!localStorage.getItem('accessToken')) {
@@ -41,11 +43,36 @@ export default function MiddayPausePage() {
     } catch (_) {}
   }, [day, draft]);
 
+  useEffect(() => {
+    if (!localStorage.getItem('accessToken')) return undefined;
+    fetchDayRituals(day)
+      .then((data) => {
+        setDraft((prev) => mergeDraft(emptyDraft(), prev, data?.rituals?.midday?.answers));
+      })
+      .catch(() => {})
+      .finally(() => setHydrated(true));
+  }, [day]);
+
+  useEffect(() => {
+    if (!hydrated) return undefined;
+    const t = setTimeout(() => {
+      const hasText = Object.values(draft).some((value) => String(value || '').trim());
+      if (!hasText) return;
+      saveDayRitual({ day, kind: 'midday', answers: draft, held: false }).catch(() => {});
+    }, 1200);
+    return () => clearTimeout(t);
+  }, [day, draft, hydrated]);
+
   const setField = (key) => (value) => setDraft((prev) => ({ ...prev, [key]: value }));
 
-  const saveAndContinue = (e) => {
+  const saveAndContinue = async (e) => {
     e.preventDefault();
     setSaving(true);
+    try {
+      await saveDayRitual({ day, kind: 'midday', answers: draft, held: true });
+    } catch (_) {
+      /* local cache still holds the day if the server is down */
+    }
     markRitualHeld(day, 'midday');
     navigate('/practice', { replace: true });
   };

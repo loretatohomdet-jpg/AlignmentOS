@@ -31,10 +31,10 @@ const offerings = [
     href: shopUrl,
   },
   {
-    title: 'The digital system',
-    price: '$49',
-    body: 'All three tools, together. The complete practice, today.',
-    action: 'See the system',
+    title: 'The Habit Engine',
+    price: '$12/mo',
+    body: 'The day, held — rooms, library, score history. The 6-week Journey is $297, one time.',
+    action: 'See pricing',
     to: '/pricing',
   },
   {

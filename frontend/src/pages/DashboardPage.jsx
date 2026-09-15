@@ -17,7 +17,6 @@ import {
 } from 'recharts';
 import { API_BASE } from '../config/apiBase';
 import { creatorHandoffUrl } from '../config/externalLinks';
-import { isPaidPlan } from '../utils/plan';
 
 const PILLAR_LABELS = {
   IDENTITY: 'Identity',
@@ -357,7 +356,6 @@ export default function DashboardPage() {
   }
 
   const firstName = user?.name?.split(/\s+/)[0] || 'there';
-  const paid = isPaidPlan(user?.plan);
   const todayStr = new Date().toLocaleDateString(undefined, { weekday: 'long', month: 'short', day: 'numeric' });
   const primaryHabit = habits[0] ?? null;
   const lastTakenAt = result?.createdAt ? new Date(result.createdAt) : null;
@@ -583,14 +581,14 @@ export default function DashboardPage() {
                 ) : (
                   <>
                     <div>
-                      <p className="text-xs font-medium text-alignment-accent/70 uppercase tracking-wider mb-2">Weekly review</p>
-                      <p className="text-sm text-alignment-accent/70">~10 min reflection</p>
+                      <p className="text-xs font-medium text-alignment-accent/70 uppercase tracking-wider mb-2">Today</p>
+                      <p className="text-sm text-alignment-accent/70">Morning, midday, close.</p>
                     </div>
                     <Link
-                      to={paid ? '/reflect' : '/pricing'}
+                      to="/practice"
                       className="mt-4 w-full text-center rounded-full bg-alignment-primary text-white px-5 py-2.5 text-sm font-medium hover:bg-alignment-primary/90 transition-colors"
                     >
-                      {paid ? 'Do it now' : 'Unlock reviews'}
+                      Open Practice
                     </Link>
                   </>
                 )}

@@ -10,7 +10,7 @@ function appOrigin() {
 function buildNudgeHtml({ firstName, prompt, sunday }) {
   const practiceUrl = `${appOrigin()}/practice`;
   const sundayLine = sunday
-    ? `<p>It is Sunday — ten minutes on your <a href="${appOrigin()}/reflect">weekly review</a> is the most important hold in the system.</p>`
+    ? `<p>It is Sunday — hold the day in <a href="${practiceUrl}">Practice</a>. Review is the library when you need the map.</p>`
     : '';
   return `
     <p>${firstName ? `Hi ${firstName},` : 'Hi,'}</p>
