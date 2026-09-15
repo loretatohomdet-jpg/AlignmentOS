@@ -19,13 +19,13 @@ export default function SuccessPage() {
       <div className="mt-10 flex flex-col sm:flex-row items-center gap-3">
         <Link
           to="/dashboard"
-          className="inline-flex items-center justify-center rounded-sm bg-alignment-primary text-white text-xs font-medium uppercase tracking-[0.14em] px-6 py-3 hover:bg-alignment-primary/90"
+          className="inline-flex items-center justify-center rounded-full bg-alignment-primary text-white text-xs font-medium uppercase tracking-[0.14em] px-6 py-3 hover:bg-alignment-primary/90"
         >
           Open app
         </Link>
         <Link
           to="/assessment"
-          className="inline-flex items-center justify-center rounded-sm border border-alignment-accent/15 text-alignment-accent text-xs font-medium uppercase tracking-[0.14em] px-6 py-3 hover:bg-alignment-accent/[0.03]"
+          className="inline-flex items-center justify-center rounded-full border border-alignment-accent/15 text-alignment-accent text-xs font-medium uppercase tracking-[0.14em] px-6 py-3 hover:bg-alignment-accent/[0.03]"
         >
           Diagnostic
         </Link>

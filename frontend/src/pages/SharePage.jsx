@@ -112,7 +112,7 @@ export default function SharePage() {
       <div className="mt-12 flex flex-col sm:flex-row gap-3">
         <Link
           to="/results"
-          className="inline-flex items-center justify-center rounded-sm bg-alignment-surface border border-alignment-accent/15 text-alignment-accent text-xs font-medium uppercase tracking-[0.14em] px-6 py-3 hover:bg-alignment-accent/[0.03]"
+          className="inline-flex items-center justify-center rounded-full bg-alignment-surface border border-alignment-accent/15 text-alignment-accent text-xs font-medium uppercase tracking-[0.14em] px-6 py-3 hover:bg-alignment-accent/[0.03]"
         >
           View results
         </Link>

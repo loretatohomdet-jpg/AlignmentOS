@@ -141,7 +141,7 @@ export default function DiagnosticResultsSummary({
             <button
               type="submit"
               disabled={submitting}
-              className="w-full rounded-lg py-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-white bg-alignment-primary hover:bg-alignment-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full rounded-full py-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-white bg-alignment-primary hover:bg-alignment-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {submitting ? 'Sending…' : 'Email my results →'}
             </button>

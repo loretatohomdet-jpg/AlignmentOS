@@ -74,9 +74,9 @@ export const resultsUi = {
   label: 'text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.22em] text-alignment-accent/45',
   panel: `rounded-xl border ${diag.border} ${diag.card} px-5 py-6 sm:px-7 sm:py-7 shadow-apple`,
   heading: 'font-display text-alignment-accent',
-  btnPrimary: `${diag.btn} ${diag.btnHover} inline-flex items-center justify-center rounded-sm px-5 py-2.5 text-[10px] font-semibold uppercase tracking-[0.14em] transition-colors`,
+  btnPrimary: `${diag.btn} ${diag.btnHover} inline-flex items-center justify-center rounded-full px-5 py-2.5 text-[10px] font-semibold uppercase tracking-[0.14em] transition-colors`,
   btnOutline:
-    'inline-flex items-center justify-center rounded-sm border border-alignment-accent/15 bg-alignment-surfaceSoft text-alignment-accent text-[10px] font-semibold uppercase tracking-[0.14em] px-5 py-2.5 hover:bg-alignment-accent/[0.03] transition-colors',
+    'inline-flex items-center justify-center rounded-full border border-alignment-accent/15 bg-alignment-surfaceSoft text-alignment-accent text-[10px] font-semibold uppercase tracking-[0.14em] px-5 py-2.5 hover:bg-alignment-accent/[0.03] transition-colors',
   input:
     'w-full rounded-xl border border-alignment-accent/12 bg-alignment-surfaceSoft px-4 py-3 text-sm text-alignment-accent placeholder:text-alignment-accent/40 focus:border-alignment-primary/40 focus:outline-none focus:ring-2 focus:ring-alignment-primary/15',
 };

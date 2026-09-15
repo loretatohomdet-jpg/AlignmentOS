@@ -142,7 +142,7 @@ export default function PracticePage() {
             </p>
             <Link
               to="/assessment"
-              className="mt-8 inline-flex rounded-sm bg-alignment-primary text-white text-[10px] font-medium uppercase tracking-[0.18em] px-6 py-3 hover:bg-alignment-primary/90"
+              className="mt-8 inline-flex rounded-full bg-alignment-primary text-white text-[10px] font-medium uppercase tracking-[0.18em] px-6 py-3 hover:bg-alignment-primary/90"
             >
               Take diagnostic
             </Link>
@@ -185,8 +185,8 @@ export default function PracticePage() {
                     disabled={held || completingId === habit.id}
                     className={
                       focused && !held
-                        ? 'shrink-0 rounded-sm bg-alignment-primary text-white text-[10px] font-medium uppercase tracking-[0.16em] px-5 py-2.5 hover:bg-alignment-primary/90 disabled:opacity-50'
-                        : 'shrink-0 rounded-sm border border-alignment-accent/15 text-alignment-accent/80 text-[10px] font-medium uppercase tracking-[0.16em] px-4 py-2 hover:border-alignment-primary/40 disabled:opacity-45'
+                        ? 'shrink-0 rounded-full bg-alignment-primary text-white text-[10px] font-medium uppercase tracking-[0.16em] px-5 py-2.5 hover:bg-alignment-primary/90 disabled:opacity-50'
+                        : 'shrink-0 rounded-full border border-alignment-accent/15 text-alignment-accent/80 text-[10px] font-medium uppercase tracking-[0.16em] px-4 py-2 hover:border-alignment-primary/40 disabled:opacity-45'
                     }
                   >
                     {held ? 'Held' : completingId === habit.id ? '…' : 'Mark done'}

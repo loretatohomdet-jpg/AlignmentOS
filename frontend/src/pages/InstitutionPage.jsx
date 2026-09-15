@@ -385,7 +385,7 @@ export default function InstitutionPage() {
               <a
                 id="institution-contact-display"
                 href="mailto:organizations@alignmentos.com"
-                className="mt-2 flex w-full items-center justify-center rounded-lg border border-white/30 bg-alignment-surface/[0.07] px-4 py-3.5 text-center font-display text-base sm:text-lg text-white/95 italic underline underline-offset-[6px] decoration-white/50 hover:bg-alignment-surface/10 hover:decoration-white transition-colors"
+                className="mt-2 flex w-full items-center justify-center rounded-full border border-white/30 bg-alignment-surface/[0.07] px-4 py-3.5 text-center font-display text-base sm:text-lg text-white/95 italic underline underline-offset-[6px] decoration-white/50 hover:bg-alignment-surface/10 hover:decoration-white transition-colors"
               >
                 organizations@alignmentos.com
               </a>
@@ -394,19 +394,19 @@ export default function InstitutionPage() {
             <div className="mt-12 flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center justify-center gap-3 sm:gap-4 max-w-4xl mx-auto">
               <a
                 href="mailto:organizations@alignmentos.com?subject=Institutional%20partnership"
-                className="inline-flex min-h-[48px] flex-1 sm:flex-none items-center justify-center rounded-sm bg-alignment-surface px-6 py-3.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.14em] text-alignment-accent hover:bg-alignment-surface/90 transition-colors sm:min-w-[220px]"
+                className="inline-flex min-h-[48px] flex-1 sm:flex-none items-center justify-center rounded-full bg-alignment-surface px-6 py-3.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.14em] text-alignment-accent hover:bg-alignment-surface/90 transition-colors sm:min-w-[220px]"
               >
                 Begin the conversation →
               </a>
               <Link
                 to="/pricing#journey-tier"
-                className="inline-flex min-h-[48px] flex-1 sm:flex-none items-center justify-center rounded-sm border border-white/45 bg-transparent px-6 py-3.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.14em] text-white hover:bg-alignment-surface/10 transition-colors sm:min-w-[200px]"
+                className="inline-flex min-h-[48px] flex-1 sm:flex-none items-center justify-center rounded-full border border-white/45 bg-transparent px-6 py-3.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.14em] text-white hover:bg-alignment-surface/10 transition-colors sm:min-w-[200px]"
               >
                 The cohort model
               </Link>
               <Link
                 to="/assessment"
-                className="inline-flex min-h-[48px] flex-1 sm:flex-none items-center justify-center rounded-sm border border-white/45 bg-transparent px-6 py-3.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.14em] text-white hover:bg-alignment-surface/10 transition-colors sm:min-w-[200px]"
+                className="inline-flex min-h-[48px] flex-1 sm:flex-none items-center justify-center rounded-full border border-white/45 bg-transparent px-6 py-3.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.14em] text-white hover:bg-alignment-surface/10 transition-colors sm:min-w-[200px]"
               >
                 Try the diagnostic free
               </Link>

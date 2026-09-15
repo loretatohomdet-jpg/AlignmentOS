@@ -226,7 +226,7 @@ export default function PricingPage() {
                 <div className="flex-1" />
                 <Link
                   to="/assessment"
-                  className={`mt-10 w-full inline-flex items-center justify-center rounded-sm border border-alignment-accent/20 bg-alignment-surface px-4 py-3.5 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] text-alignment-accent transition-colors hover:bg-alignment-accent/[0.03] ${focusRing}`}
+                  className={`mt-10 w-full inline-flex items-center justify-center rounded-full border border-alignment-accent/20 bg-alignment-surface px-4 py-3.5 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] text-alignment-accent transition-colors hover:bg-alignment-accent/[0.03] ${focusRing}`}
                 >
                   Begin free <span aria-hidden className="ml-2">→</span>
                 </Link>
@@ -254,7 +254,7 @@ export default function PricingPage() {
                     href={checkoutHabitUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`mt-10 w-full inline-flex items-center justify-center rounded-sm border border-alignment-primary/40 bg-transparent px-4 py-3.5 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] text-alignment-primary transition-colors hover:bg-alignment-primary/[0.06] ${focusRing}`}
+                    className={`mt-10 w-full inline-flex items-center justify-center rounded-full border border-alignment-primary/40 bg-transparent px-4 py-3.5 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] text-alignment-primary transition-colors hover:bg-alignment-primary/[0.06] ${focusRing}`}
                   >
                     Activate <span aria-hidden className="ml-2">→</span>
                   </a>
@@ -263,7 +263,7 @@ export default function PricingPage() {
                     type="button"
                     disabled={!!checkoutLoading}
                     onClick={() => startCheckout(billing === 'yearly' ? 'habit_yearly' : 'habit_monthly')}
-                    className={`mt-10 w-full inline-flex items-center justify-center rounded-sm border border-alignment-primary/40 bg-transparent px-4 py-3.5 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] text-alignment-primary transition-colors hover:bg-alignment-primary/[0.06] disabled:opacity-60 ${focusRing}`}
+                    className={`mt-10 w-full inline-flex items-center justify-center rounded-full border border-alignment-primary/40 bg-transparent px-4 py-3.5 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] text-alignment-primary transition-colors hover:bg-alignment-primary/[0.06] disabled:opacity-60 ${focusRing}`}
                   >
                     {checkoutLoading?.startsWith('habit') ? 'Redirecting…' : 'Activate'}{' '}
                     <span aria-hidden className="ml-2">→</span>
@@ -295,7 +295,7 @@ export default function PricingPage() {
                     href={checkoutJourneyUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`mt-10 w-full inline-flex items-center justify-center rounded-sm bg-alignment-primary text-white px-4 py-3.5 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] transition-colors hover:bg-alignment-primary/90 ${focusRing}`}
+                    className={`mt-10 w-full inline-flex items-center justify-center rounded-full bg-alignment-primary text-white px-4 py-3.5 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] transition-colors hover:bg-alignment-primary/90 ${focusRing}`}
                   >
                     Begin journey <span aria-hidden className="ml-2">→</span>
                   </a>
@@ -304,7 +304,7 @@ export default function PricingPage() {
                     type="button"
                     disabled={!!checkoutLoading}
                     onClick={() => startCheckout('journey')}
-                    className={`mt-10 w-full inline-flex items-center justify-center rounded-sm bg-alignment-primary text-white px-4 py-3.5 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] transition-colors hover:bg-alignment-primary/90 disabled:opacity-60 ${focusRing}`}
+                    className={`mt-10 w-full inline-flex items-center justify-center rounded-full bg-alignment-primary text-white px-4 py-3.5 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] transition-colors hover:bg-alignment-primary/90 disabled:opacity-60 ${focusRing}`}
                   >
                     {checkoutLoading === 'journey' ? 'Redirecting…' : 'Begin journey'}{' '}
                     <span aria-hidden className="ml-2">→</span>
@@ -332,7 +332,7 @@ export default function PricingPage() {
                   href={resourcesHref}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`mt-6 w-full sm:w-auto inline-flex items-center justify-center rounded-sm border border-alignment-primary/40 px-6 py-3 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] text-alignment-primary transition-colors hover:bg-alignment-primary/[0.06] ${focusRing}`}
+                  className={`mt-6 w-full sm:w-auto inline-flex items-center justify-center rounded-full border border-alignment-primary/40 px-6 py-3 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] text-alignment-primary transition-colors hover:bg-alignment-primary/[0.06] ${focusRing}`}
                 >
                   Browse <span aria-hidden className="ml-2">→</span>
                 </a>
@@ -349,14 +349,14 @@ export default function PricingPage() {
                     href={bookingUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`mt-6 w-full sm:w-auto inline-flex items-center justify-center rounded-sm border border-alignment-primary/40 px-6 py-3 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] text-alignment-primary transition-colors hover:bg-alignment-primary/[0.06] ${focusRing}`}
+                    className={`mt-6 w-full sm:w-auto inline-flex items-center justify-center rounded-full border border-alignment-primary/40 px-6 py-3 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] text-alignment-primary transition-colors hover:bg-alignment-primary/[0.06] ${focusRing}`}
                   >
                     Book <span aria-hidden className="ml-2">→</span>
                   </a>
                 ) : (
                   <Link
                     to="/business"
-                    className={`mt-6 w-full sm:w-auto inline-flex items-center justify-center rounded-sm border border-alignment-primary/40 px-6 py-3 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] text-alignment-primary transition-colors hover:bg-alignment-primary/[0.06] ${focusRing}`}
+                    className={`mt-6 w-full sm:w-auto inline-flex items-center justify-center rounded-full border border-alignment-primary/40 px-6 py-3 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] text-alignment-primary transition-colors hover:bg-alignment-primary/[0.06] ${focusRing}`}
                   >
                     Book <span aria-hidden className="ml-2">→</span>
                   </Link>
@@ -376,14 +376,14 @@ export default function PricingPage() {
                     href={cohortApplyUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`inline-flex items-center justify-center rounded-sm bg-alignment-primary text-white px-6 py-3 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] transition-colors hover:bg-alignment-primary/90 ${focusRing}`}
+                    className={`inline-flex items-center justify-center rounded-full bg-alignment-primary text-white px-6 py-3 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] transition-colors hover:bg-alignment-primary/90 ${focusRing}`}
                   >
                     Apply <span aria-hidden className="ml-2">→</span>
                   </a>
                 ) : (
                   <Link
                     to="/business"
-                    className={`inline-flex items-center justify-center rounded-sm bg-alignment-primary text-white px-6 py-3 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] transition-colors hover:bg-alignment-primary/90 ${focusRing}`}
+                    className={`inline-flex items-center justify-center rounded-full bg-alignment-primary text-white px-6 py-3 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] transition-colors hover:bg-alignment-primary/90 ${focusRing}`}
                   >
                     Apply <span aria-hidden className="ml-2">→</span>
                   </Link>
@@ -436,7 +436,7 @@ export default function PricingPage() {
             </h2>
             <Link
               to="/assessment"
-              className="mt-10 inline-flex items-center justify-center rounded-sm bg-alignment-surface text-alignment-accent text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.2em] px-8 py-3.5 transition-colors hover:bg-alignment-foundation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-alignment-primary"
+              className="mt-10 inline-flex items-center justify-center rounded-full bg-alignment-surface text-alignment-accent text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.2em] px-8 py-3.5 transition-colors hover:bg-alignment-foundation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-alignment-primary"
             >
               Begin free <span aria-hidden className="ml-2">→</span>
             </Link>

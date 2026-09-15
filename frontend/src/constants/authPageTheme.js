@@ -16,7 +16,7 @@ export const authFocusRingClass =
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2 focus-visible:ring-offset-alignment-foundation';
 
 /** Full-page auth primary button — matches Pricing “Begin free” / landing diagnostics CTA */
-export const authPrimaryButtonMarketingClass = `w-full inline-flex items-center justify-center rounded-sm bg-alignment-primary text-white text-[10px] sm:text-[11px] font-sans font-medium uppercase tracking-[0.16em] py-3.5 transition-colors duration-200 hover:bg-alignment-primary/90 disabled:opacity-50 disabled:cursor-not-allowed ${authFocusRingClass}`;
+export const authPrimaryButtonMarketingClass = `w-full inline-flex items-center justify-center rounded-full bg-alignment-primary text-white text-[10px] sm:text-[11px] font-sans font-medium uppercase tracking-[0.16em] py-3.5 transition-colors duration-200 hover:bg-alignment-primary/90 disabled:opacity-50 disabled:cursor-not-allowed ${authFocusRingClass}`;
 
 /** Modal / compact auth — smaller control, sentence case */
 export const authPrimaryButtonCompactClass =

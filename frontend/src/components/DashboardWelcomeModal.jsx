@@ -96,7 +96,7 @@ export default function DashboardWelcomeModal({ open, onDismiss, hasScore = fals
         <button
           type="button"
           onClick={onDismiss}
-          className="mt-10 w-full inline-flex items-center justify-center rounded-sm bg-alignment-primary text-white text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.22em] py-4 transition-colors hover:bg-alignment-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2 focus-visible:ring-offset-alignment-foundation"
+          className="mt-10 w-full inline-flex items-center justify-center rounded-full bg-alignment-primary text-white text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.22em] py-4 transition-colors hover:bg-alignment-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2 focus-visible:ring-offset-alignment-foundation"
         >
           Enter dashboard <span aria-hidden className="ml-2">→</span>
         </button>

@@ -258,7 +258,7 @@ export default function FrameworkPage() {
         <section className={`border-t border-alignment-accent/[0.08] bg-alignment-surface ${sectionClass} py-16 sm:py-20 text-center`}>
           <Link
             to="/assessment"
-            className={`inline-flex min-h-[48px] items-center justify-center rounded-sm bg-alignment-primary px-8 py-3.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.14em] text-white transition-colors hover:bg-alignment-primary/90 ${focusRing}`}
+            className={`inline-flex min-h-[48px] items-center justify-center rounded-full bg-alignment-primary px-8 py-3.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.14em] text-white transition-colors hover:bg-alignment-primary/90 ${focusRing}`}
           >
             Take the free diagnostic <span aria-hidden className="ml-1">→</span>
           </Link>

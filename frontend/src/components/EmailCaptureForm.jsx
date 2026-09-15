@@ -50,7 +50,7 @@ export default function EmailCaptureForm({
 
   const inputClass =
     'min-w-0 flex-1 rounded-sm border border-alignment-accent/15 bg-alignment-surface px-4 py-3.5 text-sm text-alignment-accent placeholder-alignment-accent/40 focus:border-alignment-accent focus:ring-2 focus:ring-alignment-accent/10 outline-none transition-all';
-  const buttonClass = `shrink-0 rounded-sm bg-alignment-primary text-white text-xs sm:text-sm font-medium uppercase tracking-[0.12em] px-6 sm:px-8 py-3.5 transition-colors hover:bg-alignment-primary/90 disabled:opacity-50 ${focusRing}`;
+  const buttonClass = `shrink-0 rounded-full bg-alignment-primary text-white text-xs sm:text-sm font-medium uppercase tracking-[0.12em] px-6 sm:px-8 py-3.5 transition-colors hover:bg-alignment-primary/90 disabled:opacity-50 ${focusRing}`;
 
   if (done && !redirectTo) {
     return <p className="text-sm text-alignment-accent/70">You&apos;re on the list. Check your inbox.</p>;

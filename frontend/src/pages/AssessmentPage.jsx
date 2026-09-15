@@ -613,7 +613,7 @@ export default function AssessmentPage() {
                     <button
                       type="submit"
                       disabled={guestLeadSubmitting}
-                      className="w-full rounded-lg py-3.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-white bg-alignment-primary hover:bg-alignment-primary/90 disabled:opacity-50"
+                      className="w-full rounded-full py-3.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-white bg-alignment-primary hover:bg-alignment-primary/90 disabled:opacity-50"
                     >
                       {guestLeadSubmitting ? 'Sending…' : 'Email my results →'}
                     </button>

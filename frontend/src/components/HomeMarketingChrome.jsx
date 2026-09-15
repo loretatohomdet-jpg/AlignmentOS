@@ -1,0 +1,167 @@
+import { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import BrandLogo from './BrandLogo';
+import HeaderUserMenu from './HeaderUserMenu';
+import MobileDrawer from './MobileDrawer';
+
+export const hairline = 'border-alignment-accent/[0.10]';
+export const focusRing =
+  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary/40 focus-visible:ring-offset-2 focus-visible:ring-offset-alignment-foundation';
+export const pillPrimary = `inline-flex items-center justify-center rounded-full bg-alignment-primary text-white text-[15px] font-medium px-8 py-3.5 hover:bg-alignment-primary/90 transition-colors min-h-12 ${focusRing}`;
+export const pillGhost = `inline-flex items-center justify-center rounded-full border border-alignment-accent/15 bg-alignment-foundation text-alignment-accent text-[15px] px-8 py-3.5 hover:border-alignment-primary/40 hover:bg-alignment-surfaceSoft transition-colors min-h-12 ${focusRing}`;
+export const pillHeader = `inline-flex items-center justify-center rounded-full bg-alignment-primary text-white text-sm font-medium px-5 py-2 hover:bg-alignment-primary/90 transition-colors min-h-10 ${focusRing}`;
+export const pageWidth = 'mx-auto w-full max-w-6xl px-5 sm:px-8 lg:px-12';
+export const copper = 'text-[#b08968]';
+
+const homeNav = [
+  { href: '/#cohort', label: 'Cohort' },
+  { href: '/#leaders', label: 'For Leaders' },
+  { to: '/about', label: 'About' },
+];
+
+function readLoggedIn() {
+  return typeof window !== 'undefined' && !!localStorage.getItem('accessToken');
+}
+
+export function HomeHeader() {
+  const { pathname } = useLocation();
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(readLoggedIn);
+
+  useEffect(() => {
+    const sync = () => setIsLoggedIn(readLoggedIn());
+    window.addEventListener('alignment-auth', sync);
+    window.addEventListener('storage', sync);
+    return () => {
+      window.removeEventListener('alignment-auth', sync);
+      window.removeEventListener('storage', sync);
+    };
+  }, []);
+
+  const handleLogout = () => {
+    try {
+      localStorage.removeItem('accessToken');
+    } catch (_) {}
+    window.dispatchEvent(new Event('alignment-auth'));
+    setIsLoggedIn(false);
+    window.location.href = '/';
+  };
+
+  const cta = isLoggedIn
+    ? { to: '/practice', label: 'Practice' }
+    : { to: '/assessment', label: 'Begin free' };
+
+  const navClass = (active) =>
+    `text-[15px] transition-colors ${active ? 'text-alignment-accent' : 'text-alignment-accent/70 hover:text-alignment-accent'}`;
+
+  return (
+    <>
+      <header className="sticky top-0 z-50 w-full border-b border-alignment-accent/[0.08] bg-alignment-foundation/95 backdrop-blur-md pt-[max(0px,env(safe-area-inset-top))]">
+        <div className={`relative flex min-h-16 items-center justify-between gap-4 ${pageWidth}`}>
+          <BrandLogo
+            compact
+            className="rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary/40"
+          />
+          <nav className="hidden md:flex items-center gap-7 lg:gap-9" aria-label="Primary">
+            {homeNav.map((item) =>
+              item.to ? (
+                <Link key={item.label} to={item.to} className={navClass(pathname === item.to)}>
+                  {item.label}
+                </Link>
+              ) : (
+                <a key={item.label} href={item.href} className={navClass(false)}>
+                  {item.label}
+                </a>
+              )
+            )}
+            {!isLoggedIn ? (
+              <Link to="/login" className="text-[15px] text-alignment-accent/55 hover:text-alignment-accent transition-colors">
+                Sign in
+              </Link>
+            ) : null}
+            <Link to={cta.to} className={pillHeader}>
+              {cta.label}
+            </Link>
+            {isLoggedIn ? <HeaderUserMenu isLoggedIn onLogout={handleLogout} /> : null}
+          </nav>
+          <div className="flex md:hidden items-center gap-2">
+            <Link to={cta.to} className={`${pillHeader} text-[13px] px-4 py-1.5`}>
+              {cta.label}
+            </Link>
+            <button
+              type="button"
+              onClick={() => setDrawerOpen(true)}
+              className="flex h-11 w-11 items-center justify-center rounded-full text-alignment-accent hover:bg-alignment-accent/[0.06]"
+              aria-label="Open menu"
+              aria-expanded={drawerOpen}
+            >
+              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 7h16M4 12h16M4 17h16" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </header>
+      <MobileDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)}>
+        {homeNav.map((item) =>
+          item.to ? (
+            <Link
+              key={item.label}
+              to={item.to}
+              className="block px-4 py-3.5 text-base text-alignment-accent"
+              onClick={() => setDrawerOpen(false)}
+            >
+              {item.label}
+            </Link>
+          ) : (
+            <a
+              key={item.label}
+              href={item.href}
+              className="block px-4 py-3.5 text-base text-alignment-accent"
+              onClick={() => setDrawerOpen(false)}
+            >
+              {item.label}
+            </a>
+          )
+        )}
+        <Link to={cta.to} className="block px-4 py-3.5 text-base text-alignment-accent" onClick={() => setDrawerOpen(false)}>
+          {cta.label}
+        </Link>
+        {isLoggedIn ? (
+          <Link to="/practice" className="block px-4 py-3.5 text-base text-alignment-accent" onClick={() => setDrawerOpen(false)}>
+            Practice
+          </Link>
+        ) : (
+          <Link to="/login" className="block px-4 py-3.5 text-base text-alignment-accent" onClick={() => setDrawerOpen(false)}>
+            Sign in
+          </Link>
+        )}
+      </MobileDrawer>
+    </>
+  );
+}
+
+export function HomeFooter() {
+  return (
+    <footer className={`border-t ${hairline} pb-[max(2rem,env(safe-area-inset-bottom))]`}>
+      <div className={`${pageWidth} py-12 sm:py-14`}>
+        <p className="font-display italic text-xl text-alignment-accent/70">Alignment OS</p>
+        <p className="mt-2 text-[15px] text-alignment-accent/45">A life is formed by what is repeated.</p>
+        <nav className="mt-8 flex flex-wrap gap-x-6 gap-y-3 text-[15px] text-alignment-accent/55" aria-label="Footer">
+          <Link to="/" className="hover:text-alignment-accent min-h-11 inline-flex items-center">
+            Home
+          </Link>
+          <a href="/#cohort" className="hover:text-alignment-accent min-h-11 inline-flex items-center">
+            Cohort
+          </a>
+          <a href="/#leaders" className="hover:text-alignment-accent min-h-11 inline-flex items-center">
+            For Leaders
+          </a>
+          <Link to="/about" className="hover:text-alignment-accent min-h-11 inline-flex items-center">
+            About
+          </Link>
+        </nav>
+      </div>
+    </footer>
+  );
+}

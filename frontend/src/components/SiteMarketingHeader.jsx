@@ -101,7 +101,7 @@ export default function SiteMarketingHeader({ appendDesktop = null, authDrawer }
           <button
             type="button"
             onClick={() => setDrawerOpen(true)}
-            className="lg:hidden absolute right-[max(0.5rem,env(safe-area-inset-right))] top-1/2 z-[60] -translate-y-1/2 flex h-11 w-11 items-center justify-center rounded-lg text-alignment-accent hover:bg-alignment-accent/[0.07] active:bg-alignment-accent/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2 touch-manipulation"
+            className="lg:hidden absolute right-[max(0.5rem,env(safe-area-inset-right))] top-1/2 z-[60] -translate-y-1/2 flex h-11 w-11 items-center justify-center rounded-full text-alignment-accent hover:bg-alignment-accent/[0.07] active:bg-alignment-accent/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2 touch-manipulation"
             aria-label="Open menu"
             aria-expanded={drawerOpen}
           >

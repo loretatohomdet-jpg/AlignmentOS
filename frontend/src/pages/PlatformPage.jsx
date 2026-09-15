@@ -15,10 +15,10 @@ const sectionClass = 'max-w-3xl lg:max-w-4xl mx-auto px-6 sm:px-8 lg:px-10';
 const mutedSurface = 'bg-apple-surface-muted';
 
 const btnPrimary =
-  'inline-flex items-center justify-center rounded-sm bg-alignment-primary text-white text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.14em] px-6 py-3.5 transition-colors hover:bg-alignment-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2';
+  'inline-flex items-center justify-center rounded-full bg-alignment-primary text-white text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.14em] px-6 py-3.5 transition-colors hover:bg-alignment-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2';
 
 const btnSecondary =
-  'inline-flex items-center justify-center rounded-sm border border-alignment-accent/15 bg-alignment-surface text-alignment-accent text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.14em] px-6 py-3.5 transition-colors hover:border-alignment-accent/25 hover:bg-alignment-accent/[0.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2';
+  'inline-flex items-center justify-center rounded-full border border-alignment-accent/15 bg-alignment-surface text-alignment-accent text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.14em] px-6 py-3.5 transition-colors hover:border-alignment-accent/25 hover:bg-alignment-accent/[0.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2';
 
 const foundations = [
   {
@@ -196,7 +196,7 @@ export default function PlatformPage() {
             </h2>
             <Link
               to="/assessment"
-              className="mt-10 inline-flex min-h-[48px] items-center justify-center rounded-sm bg-alignment-surface px-8 py-3.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.14em] text-alignment-accent transition-colors hover:bg-alignment-surface/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-alignment-foundation"
+              className="mt-10 inline-flex min-h-[48px] items-center justify-center rounded-full bg-alignment-surface px-8 py-3.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.14em] text-alignment-accent transition-colors hover:bg-alignment-surface/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-alignment-foundation"
             >
               Begin free <span aria-hidden className="ml-1">→</span>
             </Link>
