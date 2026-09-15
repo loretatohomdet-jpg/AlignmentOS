@@ -1,39 +1,67 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_BASE, networkErrorUserMessage } from '../config/apiBase';
-import { DOMAIN_LABELS } from '../constants/domains';
-import { isPaidPlan } from '../utils/plan';
+import { loadRituals, utcDayStamp } from '../utils/engineStorage';
+import { copper, engineGhostBtn, engineHeldBtn, enginePrimaryBtn } from '../utils/engineUi';
+import { usePageTitle } from '../hooks/usePageTitle';
+
+const STARTER = [
+  { id: 'starter-morning', title: 'Morning anchor — before the phone' },
+  { id: 'starter-priority', title: 'One priority named before work begins' },
+  { id: 'starter-screens', title: 'Screens down thirty minutes before sleep' },
+];
+
+const SEASON_THEME = 'Order the ordinary.';
 
 function authHeaders() {
   const token = localStorage.getItem('accessToken');
   return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
-function WeekDots({ last7Days, large }) {
+function greetingForHour(hour) {
+  if (hour < 12) return 'Good morning.';
+  if (hour < 17) return 'Good afternoon.';
+  return 'Good evening.';
+}
+
+function formatEngineDate(date) {
+  return date
+    .toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' })
+    .toUpperCase();
+}
+
+function isMorningHabit(habit) {
+  return /morning|anchor/i.test(habit?.title || '');
+}
+
+function Checkbox({ checked }) {
   return (
-    <div className="flex items-center gap-1.5" aria-label="Last seven days">
-      {(last7Days || []).map((d) => (
-        <span
-          key={d.date}
-          title={d.date}
-          className={`rounded-full ${large ? 'h-2.5 w-2.5' : 'h-1.5 w-1.5'} ${
-            d.done ? 'bg-alignment-primary' : 'bg-transparent ring-1 ring-inset ring-alignment-accent/20'
-          }`}
-        />
-      ))}
-    </div>
+    <span
+      className={`mt-0.5 flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-[3px] border ${
+        checked ? 'border-alignment-accent bg-alignment-accent' : 'border-alignment-accent/25 bg-transparent'
+      }`}
+      aria-hidden
+    >
+      {checked ? (
+        <svg className="h-3 w-3 text-white" viewBox="0 0 12 12" fill="none">
+          <path d="M2.5 6.2 4.8 8.5 9.5 3.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      ) : null}
+    </span>
   );
 }
 
 export default function PracticePage() {
   const navigate = useNavigate();
+  usePageTitle('Today — Alignment OS');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [paid, setPaid] = useState(false);
   const [habits, setHabits] = useState([]);
-  const [prompt, setPrompt] = useState(null);
   const [completingId, setCompletingId] = useState(null);
+  const [now] = useState(() => new Date());
+  const day = utcDayStamp(now);
+  const [rituals] = useState(() => loadRituals(day));
 
   const load = useCallback(async () => {
     const token = localStorage.getItem('accessToken');
@@ -43,13 +71,8 @@ export default function PracticePage() {
     }
     setError(null);
     try {
-      const [meRes, statsRes] = await Promise.all([
-        axios.get(`${API_BASE}/me`, { headers: authHeaders() }),
-        axios.get(`${API_BASE}/habits/stats`, { headers: authHeaders() }),
-      ]);
-      setPaid(isPaidPlan(meRes.data?.plan));
+      const statsRes = await axios.get(`${API_BASE}/habits/stats`, { headers: authHeaders() });
       setHabits(Array.isArray(statsRes.data?.habits) ? statsRes.data.habits : []);
-      setPrompt(statsRes.data?.prompt || null);
     } catch (e) {
       if (e.response?.status === 401) {
         navigate('/login?returnTo=/practice', { replace: true });
@@ -57,7 +80,7 @@ export default function PracticePage() {
       }
       setError(
         e.response?.data?.message ||
-          (e.code === 'ERR_NETWORK' ? networkErrorUserMessage() : 'Could not load the Habit Engine.')
+          (e.code === 'ERR_NETWORK' ? networkErrorUserMessage() : 'Could not load today’s practices.')
       );
     } finally {
       setLoading(false);
@@ -68,7 +91,30 @@ export default function PracticePage() {
     load();
   }, [load]);
 
+  const liveHabits = habits.length > 0;
+  const rows = liveHabits ? habits : STARTER;
+  const morningPending = rows.some((h) => isMorningHabit(h) && !h.completedToday);
+  const allPracticesHeld = liveHabits && habits.every((h) => h.completedToday);
+
+  const primary = useMemo(() => {
+    if (!liveHabits) return { to: '/assessment', label: 'Take the Alignment Score' };
+    if (morningPending) return { to: '/practice/morning', label: 'Begin the morning anchor' };
+    if (!rituals.midday) return { to: '/practice/midday', label: 'Begin the midday pause' };
+    if (!rituals.close) return { to: '/practice/close', label: 'Close the day' };
+    return null;
+  }, [liveHabits, morningPending, rituals.close, rituals.midday]);
+
+  const dayHeld = allPracticesHeld && rituals.midday && rituals.close;
+
   const markDone = async (habit) => {
+    if (isMorningHabit(habit)) {
+      navigate('/practice/morning');
+      return;
+    }
+    if (!liveHabits) {
+      navigate('/assessment');
+      return;
+    }
     if (habit.completedToday || completingId) return;
     setCompletingId(habit.id);
     try {
@@ -85,26 +131,30 @@ export default function PracticePage() {
     }
   };
 
-  const focusId =
-    prompt?.habitId || habits.find((h) => !h.completedToday)?.id || habits[0]?.id || null;
+  const greeting = useMemo(() => greetingForHour(now.getHours()), [now]);
+  const dateLabel = useMemo(() => formatEngineDate(now), [now]);
 
   if (loading) {
     return (
-      <div className="max-w-2xl mx-auto px-6 sm:px-8 py-16 sm:py-24">
-        <p className="font-display italic text-alignment-accent/50">Loading today’s structure…</p>
+      <div className="mx-auto max-w-xl px-6 py-20 text-center">
+        <p className="font-display italic text-alignment-accent/45">Loading today…</p>
       </div>
     );
   }
 
   return (
-    <div className="max-w-2xl mx-auto px-6 sm:px-8 py-14 sm:py-20">
-      <p className="text-[10px] font-medium uppercase tracking-[0.28em] text-alignment-primary/70">Today</p>
-      <h1 className="mt-4 font-display text-[2rem] sm:text-[2.55rem] font-medium text-alignment-accent tracking-tight leading-[1.15]">
-        Today’s structure
-      </h1>
-      <p className="mt-4 font-display italic text-lg text-alignment-primary/90 leading-snug max-w-md">
-        Three practices. One hold.
+    <div className="mx-auto w-full max-w-xl px-6 pb-28 pt-10 sm:pt-14">
+      <p className="text-center text-[10px] font-medium uppercase tracking-[0.22em] text-alignment-accent/40">
+        {dateLabel}
       </p>
+      <h1 className="mt-4 text-center font-display italic font-normal text-[2.15rem] sm:text-[2.45rem] leading-tight text-alignment-accent">
+        {greeting}
+      </h1>
+      {!liveHabits && (
+        <p className="mt-3 text-center text-[15px] text-alignment-accent/55 leading-relaxed">
+          Take the Alignment Score to shape this around your season.
+        </p>
+      )}
 
       {error && (
         <p className="mt-8 text-sm text-red-800 bg-red-50 border border-red-200 rounded-lg px-4 py-3" role="alert">
@@ -112,114 +162,65 @@ export default function PracticePage() {
         </p>
       )}
 
-      {prompt && (
-        <section className="mt-12 border-l-[2px] border-alignment-primary pl-5 sm:pl-6">
-          <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-alignment-primary/80">
-            {prompt.kind === 'adjust' ? 'Needs adjustment' : prompt.kind === 'hold' ? 'Holding' : 'Prompt'}
-          </p>
-          <h2 className="mt-3 font-display text-[1.45rem] sm:text-[1.7rem] font-medium text-alignment-accent tracking-tight leading-snug">
-            {prompt.title}
-          </h2>
-          <p className="mt-3 text-sm text-alignment-accent/70 leading-relaxed max-w-lg">{prompt.body}</p>
-        </section>
-      )}
-
-      {!paid && (
-        <p className="mt-10 text-sm text-alignment-accent/55 leading-relaxed max-w-lg">
-          Daily check-in is included.{' '}
-          <Link to="/pricing" className="text-alignment-accent underline-offset-4 hover:underline">
-            Weekly review is on the plan.
-          </Link>
+      <div className="mt-10 bg-alignment-surfaceSoft/80 px-6 py-7 sm:px-8">
+        <p className={`text-[10px] font-medium uppercase tracking-[0.2em] ${copper}`}>This season’s theme</p>
+        <p className="mt-3 font-display italic text-[1.45rem] sm:text-[1.6rem] leading-snug text-alignment-accent">
+          {SEASON_THEME}
         </p>
-      )}
-
-      <div className="mt-12 space-y-3">
-        {habits.length === 0 ? (
-          <div className="py-2">
-            <p className="font-display text-xl text-alignment-accent">No practices yet</p>
-            <p className="mt-3 text-sm text-alignment-accent/65 leading-relaxed max-w-md">
-              Finish the diagnostic while signed in. Three practices from your lowest domain will appear here.
-            </p>
-            <Link
-              to="/assessment"
-              className="mt-8 inline-flex rounded-full bg-alignment-primary text-white text-[10px] font-medium uppercase tracking-[0.18em] px-6 py-3 hover:bg-alignment-primary/90"
-            >
-              Take diagnostic
-            </Link>
-          </div>
-        ) : (
-          habits.map((habit) => {
-            const focused = habit.id === focusId;
-            const held = habit.completedToday;
-            return (
-              <article
-                key={habit.id}
-                className={
-                  focused
-                    ? 'rounded-sm border border-alignment-accent/[0.08] bg-alignment-surfaceSoft px-6 py-8 sm:px-8 sm:py-10'
-                    : 'rounded-sm px-1 py-5 sm:px-2 border-b border-alignment-accent/[0.06] last:border-b-0'
-                }
-              >
-                <div className="flex flex-wrap items-start justify-between gap-4">
-                  <div className="min-w-0 max-w-xl">
-                    <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-alignment-accent/40">
-                      {DOMAIN_LABELS[habit.pillar] || habit.pillar}
-                      {focused ? '' : ` · Level ${habit.level}`}
-                    </p>
-                    <h3
-                      className={
-                        focused
-                          ? 'mt-2 font-display text-[1.45rem] sm:text-[1.65rem] font-medium text-alignment-accent tracking-tight leading-snug'
-                          : 'mt-1.5 text-[0.95rem] font-medium text-alignment-accent/85'
-                      }
-                    >
-                      {habit.title}
-                    </h3>
-                    {habit.description && focused && (
-                      <p className="mt-3 text-sm text-alignment-accent/65 leading-relaxed">{habit.description}</p>
-                    )}
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => markDone(habit)}
-                    disabled={held || completingId === habit.id}
-                    className={
-                      focused && !held
-                        ? 'shrink-0 rounded-full bg-alignment-primary text-white text-[10px] font-medium uppercase tracking-[0.16em] px-5 py-2.5 hover:bg-alignment-primary/90 disabled:opacity-50'
-                        : 'shrink-0 rounded-full border border-alignment-accent/15 text-alignment-accent/80 text-[10px] font-medium uppercase tracking-[0.16em] px-4 py-2 hover:border-alignment-primary/40 disabled:opacity-45'
-                    }
-                  >
-                    {held ? 'Held' : completingId === habit.id ? '…' : 'Mark done'}
-                  </button>
-                </div>
-                <div className={`flex flex-wrap items-center justify-between gap-3 ${focused ? 'mt-8' : 'mt-3'}`}>
-                  <WeekDots last7Days={habit.last7Days} large={focused} />
-                  <p className="text-[11px] text-alignment-accent/40 tabular-nums">
-                    {habit.completedLast7}/7
-                    {habit.streak > 0 ? ` · ${habit.streak}-day` : ''}
-                  </p>
-                </div>
-              </article>
-            );
-          })
-        )}
       </div>
 
-      <p className="mt-14 text-sm text-alignment-accent/45">
-        {paid ? (
-          <Link to="/reflect" className="text-alignment-accent/70 hover:text-alignment-accent hover:underline">
-            Weekly review
-          </Link>
-        ) : (
-          <Link to="/pricing" className="text-alignment-accent/70 hover:text-alignment-accent hover:underline">
-            Weekly review
+      {primary ? (
+        <Link to={primary.to} className={`mt-6 ${enginePrimaryBtn}`}>
+          {primary.label}
+        </Link>
+      ) : dayHeld ? (
+        <p className="mt-6 text-center text-sm text-alignment-accent/50">The day is held.</p>
+      ) : allPracticesHeld ? (
+        <p className="mt-6 text-center text-sm text-alignment-accent/50">All three held today.</p>
+      ) : null}
+
+      {!liveHabits && (
+        <Link to="/practice/morning" className={`mt-2.5 ${engineGhostBtn}`}>
+          Or begin the morning anchor
+        </Link>
+      )}
+
+      <div className="mt-10 border-t border-alignment-accent/[0.08] pt-8">
+        <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-accent/40">Today’s practices</p>
+        <ul className="mt-4 divide-y divide-alignment-accent/[0.08]">
+          {rows.map((habit) => {
+            const held = Boolean(habit.completedToday);
+            return (
+              <li key={habit.id}>
+                <button
+                  type="button"
+                  onClick={() => markDone(habit)}
+                  disabled={(!isMorningHabit(habit) && held) || completingId === habit.id}
+                  className="flex w-full items-start gap-3 py-3.5 text-left disabled:opacity-70"
+                >
+                  <Checkbox checked={held} />
+                  <span className={`text-[15px] leading-snug ${held ? 'text-alignment-accent/45 line-through' : 'text-alignment-accent'}`}>
+                    {habit.title}
+                  </span>
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+
+      <div className="mt-6 space-y-2.5">
+        {primary?.to !== '/practice/midday' && (
+          <Link to="/practice/midday" className={rituals.midday ? engineHeldBtn : engineGhostBtn}>
+            {rituals.midday ? 'Midday pause held' : 'Midday pause'}
           </Link>
         )}
-        <span className="mx-2 text-alignment-accent/25">·</span>
-        <Link to="/dashboard" className="hover:text-alignment-accent hover:underline">
-          Dashboard
-        </Link>
-      </p>
+        {primary?.to !== '/practice/close' && (
+          <Link to="/practice/close" className={rituals.close ? engineHeldBtn : engineGhostBtn}>
+            {rituals.close ? 'Day closed' : 'Close the day'}
+          </Link>
+        )}
+      </div>
     </div>
   );
 }

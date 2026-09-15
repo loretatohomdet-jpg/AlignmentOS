@@ -1,158 +1,76 @@
-import { Link } from 'react-router-dom';
-import {
-  programHubUrl,
-  courseLibraryUrl,
-  bookingUrl,
-  formationExploreUrl,
-} from '../config/externalLinks';
+import { Link, useNavigate } from 'react-router-dom';
+import { courseLibraryUrl } from '../config/externalLinks';
+import { copper } from '../utils/engineUi';
+import { usePageTitle } from '../hooks/usePageTitle';
 
 const rowClass =
-  'flex items-center justify-between px-6 py-4 border-b border-alignment-accent/5 last:border-0 hover:bg-alignment-accent/5 transition-colors';
+  'flex w-full items-center justify-between gap-4 py-4 text-left border-b border-alignment-accent/[0.08] last:border-0 hover:text-alignment-primary transition-colors';
 
-const Section = ({ title, children }) => (
-  <div className="mt-10 first:mt-0">
-    <p className="px-1 text-xs font-medium text-alignment-accent/45 uppercase tracking-wider">{title}</p>
-    <div className="mt-3 rounded-2.5xl bg-alignment-surface border border-alignment-accent/[0.06] shadow-apple overflow-hidden">{children}</div>
-  </div>
-);
+function Row({ to, href, onClick, label, note }) {
+  const inner = (
+    <>
+      <span className="text-[15px] text-alignment-accent">{label}</span>
+      {note ? <span className="text-[13px] text-alignment-accent/40">{note}</span> : null}
+    </>
+  );
+  if (onClick) {
+    return (
+      <button type="button" onClick={onClick} className={rowClass}>
+        {inner}
+      </button>
+    );
+  }
+  if (href) {
+    return (
+      <a href={href} className={rowClass} target="_blank" rel="noopener noreferrer">
+        {inner}
+      </a>
+    );
+  }
+  return (
+    <Link to={to} className={rowClass}>
+      {inner}
+    </Link>
+  );
+}
 
 export default function MorePage() {
+  const navigate = useNavigate();
+  usePageTitle('More — Alignment OS');
+
+  const signOut = () => {
+    try {
+      localStorage.removeItem('accessToken');
+    } catch (_) {}
+    window.dispatchEvent(new Event('alignment-auth'));
+    navigate('/', { replace: true });
+    window.location.reload();
+  };
+
   return (
-    <div className="max-w-3xl mx-auto px-6 sm:px-8 py-12 sm:py-16">
-      <h1 className="text-headline font-semibold text-alignment-accent tracking-tight">More</h1>
-      <p className="mt-2 text-alignment-accent/70">App shortcuts, story, and account.</p>
+    <div className="mx-auto w-full max-w-xl px-6 pb-28 pt-10 sm:pt-12">
+      <p className={`text-[10px] font-medium uppercase tracking-[0.2em] ${copper}`}>Account</p>
+      <h1 className="mt-4 font-display italic font-normal text-[2.15rem] sm:text-[2.55rem] leading-[1.15] text-alignment-accent">
+        More, quietly.
+      </h1>
+      <p className="mt-3 text-[17px] text-alignment-accent/55 leading-relaxed">
+        Settings, the record, and the door out.
+      </p>
 
-      <Section title="Your alignment">
-        <Link to="/practice" className={rowClass}>
-          <span className="font-medium text-alignment-accent">Habit Engine</span>
-          <span className="text-sm text-alignment-accent/45">Today’s practices</span>
-        </Link>
-        <Link to="/results" className={rowClass}>
-          <span className="font-medium text-alignment-accent">Results</span>
-          <span className="text-alignment-accent/70">→</span>
-        </Link>
-        <Link to="/assessment" className={rowClass}>
-          <span className="font-medium text-alignment-accent">Diagnostic</span>
-          <span className="text-alignment-accent/70">→</span>
-        </Link>
-        <Link to="/share" className={rowClass}>
-          <span className="font-medium text-alignment-accent">Share</span>
-          <span className="text-sm text-alignment-accent/45">Score card</span>
-        </Link>
-        <Link to="/progress" className={rowClass}>
-          <span className="font-medium text-alignment-accent">Progress</span>
-          <span className="text-alignment-accent/70">→</span>
-        </Link>
-        <Link to="/alignment-map" className={rowClass}>
-          <span className="font-medium text-alignment-accent">Alignment map</span>
-          <span className="text-sm text-alignment-accent/45">Full map · preview</span>
-        </Link>
-      </Section>
+      <div className="mt-10 border-t border-alignment-accent/[0.08]">
+        <Row to="/profile" label="Profile" note="Name & photo" />
+        <Row to="/results" label="Results" note="Your score" />
+        <Row to="/journey" label="The archive" note="What is forming" />
+        <Row onClick={signOut} label="Sign out" />
+      </div>
 
-      {(programHubUrl || courseLibraryUrl || bookingUrl) && (
-        <Section title="Programs & formation">
-          {programHubUrl && (
-            <a href={programHubUrl} className={rowClass} target="_blank" rel="noopener noreferrer">
-              <span className="font-medium text-alignment-accent">Program hub</span>
-              <span className="text-alignment-accent/70">↗</span>
-            </a>
-          )}
-          {courseLibraryUrl && (
-            <a href={courseLibraryUrl} className={rowClass} target="_blank" rel="noopener noreferrer">
-              <span className="font-medium text-alignment-accent">Course library</span>
-              <span className="text-sm text-alignment-accent/45">Teachable</span>
-            </a>
-          )}
-          {bookingUrl && (
-            <a href={bookingUrl} className={rowClass} target="_blank" rel="noopener noreferrer">
-              <span className="font-medium text-alignment-accent">Book a mentor call</span>
-              <span className="text-alignment-accent/70">↗</span>
-            </a>
-          )}
-        </Section>
-      )}
-
-      <Section title="Story & pricing">
-        <Link to="/platform" className={rowClass}>
-          <span className="font-medium text-alignment-accent">Platform</span>
-          <span className="text-alignment-accent/70">→</span>
-        </Link>
-        <Link to="/framework" className={rowClass}>
-          <span className="font-medium text-alignment-accent">Framework</span>
-          <span className="text-alignment-accent/70">→</span>
-        </Link>
-        <Link to="/about" className={rowClass}>
-          <span className="font-medium text-alignment-accent">About</span>
-          <span className="text-alignment-accent/70">→</span>
-        </Link>
-        <Link to="/ethics" className={rowClass}>
-          <span className="font-medium text-alignment-accent">Wholeness</span>
-          <span className="text-alignment-accent/70">→</span>
-        </Link>
-        <Link to="/pricing" className={rowClass}>
-          <span className="font-medium text-alignment-accent">Pricing</span>
-          <span className="text-alignment-accent/70">→</span>
-        </Link>
-        <Link to="/pricing#journey-tier" className={rowClass}>
-          <span className="font-medium text-alignment-accent">Journey</span>
-          <span className="text-sm text-alignment-accent/45">Journey to Purpose</span>
-        </Link>
-        <Link to="/start" className={rowClass}>
-          <span className="font-medium text-alignment-accent">Becoming</span>
-          <span className="text-sm text-alignment-accent/45">Start</span>
-        </Link>
-      </Section>
-
-      <Section title="Organizations">
-        <Link to="/leaders" className={rowClass}>
-          <span className="font-medium text-alignment-accent">Leaders</span>
-          <span className="text-sm text-alignment-accent/45">Hub coming · links inside</span>
-        </Link>
-        <Link to="/organizations" className={rowClass}>
-          <span className="font-medium text-alignment-accent">Organizations</span>
-          <span className="text-sm text-alignment-accent/45">Hub coming · links inside</span>
-        </Link>
-        <Link to="/institution" className={rowClass}>
-          <span className="font-medium text-alignment-accent">Institutions</span>
-          <span className="text-alignment-accent/70">→</span>
-        </Link>
-        <Link to="/business" className={rowClass}>
-          <span className="font-medium text-alignment-accent">Team alignment overview</span>
-          <span className="text-alignment-accent/70">→</span>
-        </Link>
-        <a href="mailto:organizations@alignmentos.com" className={rowClass}>
-          <span className="font-medium text-alignment-accent">Cohorts (email)</span>
-          <span className="text-alignment-accent/70">→</span>
-        </a>
-      </Section>
-
-      <Section title="Account & help">
-        <Link to="/agent" className={rowClass}>
-          <span className="font-medium text-alignment-accent">AI Agent</span>
-          <span className="text-alignment-accent/70">→</span>
-        </Link>
-        <Link to="/profile" className={rowClass}>
-          <span className="font-medium text-alignment-accent">Account</span>
-          <span className="text-alignment-accent/70">→</span>
-        </Link>
-        <Link to="/privacy" className={rowClass}>
-          <span className="font-medium text-alignment-accent">Data & Privacy</span>
-          <span className="text-alignment-accent/70">→</span>
-        </Link>
-        <a
-          href="mailto:support@alignmentos.com"
-          className={rowClass}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <span className="font-medium text-alignment-accent">Support</span>
-          <span className="text-alignment-accent/70">→</span>
-        </a>
-        <a href={formationExploreUrl()} className={rowClass} target="_blank" rel="noopener noreferrer">
-          <span className="font-medium text-alignment-accent">Explore formation</span>
-          <span className="text-alignment-accent/70">↗</span>
-        </a>
-      </Section>
+      <p className="mt-10 text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-accent/40">The system</p>
+      <div className="mt-3 border-t border-alignment-accent/[0.08]">
+        <Row to="/pricing" label="Pricing" />
+        <Row to="/cohort" label="The Charter Cohort" />
+        {courseLibraryUrl ? <Row href={courseLibraryUrl} label="Courses" note="↗" /> : null}
+        <Row to="/about" label="About" />
+      </div>
     </div>
   );
 }

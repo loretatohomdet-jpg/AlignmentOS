@@ -12,6 +12,7 @@ function RequireAuth({ children }) {
   return children;
 }
 import LandingPage from './pages/LandingPage';
+import CharterCohortPage from './pages/CharterCohortPage';
 import DashboardPage from './pages/DashboardPage';
 import AssessmentPage from './pages/AssessmentPage';
 import DiagnosticPage from './pages/DiagnosticPage';
@@ -41,6 +42,10 @@ import AdminAssessmentEditPage from './pages/admin/AdminAssessmentEditPage';
 import BusinessAlignmentPage from './pages/BusinessAlignmentPage';
 import ProgressPage from './pages/ProgressPage';
 import PracticePage from './pages/PracticePage';
+import MorningAnchorPage from './pages/MorningAnchorPage';
+import MiddayPausePage from './pages/MiddayPausePage';
+import EveningClosePage from './pages/EveningClosePage';
+import JourneyPage from './pages/JourneyPage';
 import ReflectPage from './pages/ReflectPage';
 import MorePage from './pages/MorePage';
 import AgentPage from './pages/AgentPage';
@@ -52,6 +57,7 @@ import SharePublicPage from './pages/SharePublicPage';
 import HeaderUserMenu from './components/HeaderUserMenu';
 import AgentFloatingButton from './components/AgentFloatingButton';
 import BrandLogo from './components/BrandLogo';
+import EngineTabBar from './components/EngineTabBar';
 import SiteMarketingHeader from './components/SiteMarketingHeader';
 import { siteSecondaryFooter } from './config/footerNav';
 import { API_BASE } from './config/apiBase';
@@ -95,6 +101,12 @@ function Layout({ children }) {
   };
 
   const immersiveAssessment = location.pathname === '/assessment';
+  const engineShell =
+    location.pathname === '/practice' ||
+    location.pathname.startsWith('/practice/') ||
+    location.pathname === '/reflect' ||
+    location.pathname === '/journey' ||
+    location.pathname === '/more';
 
   const handleDrawerLogout = () => {
     try {
@@ -140,6 +152,15 @@ function Layout({ children }) {
     </>
   );
 
+  if (engineShell) {
+    return (
+      <div className="min-h-screen flex flex-col bg-alignment-foundation text-alignment-accent">
+        <main className="flex-1">{children}</main>
+        <EngineTabBar />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-alignment-page bg-fixed">
       <SiteMarketingHeader
@@ -176,6 +197,7 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={<LandingPage />} />
+      <Route path="/cohort" element={<CharterCohortPage />} />
       <Route path="/s/:token" element={<SharePublicPage />} />
       <Route path="/start" element={<StartPage />} />
       <Route path="/go/alignment" element={<StartPage />} />
@@ -204,7 +226,16 @@ export default function App() {
         }
       />
       <Route path="/wholeness" element={<Navigate to="/ethics" replace />} />
-      <Route path="/journey" element={<Navigate to="/pricing#journey-tier" replace />} />
+      <Route
+        path="/journey"
+        element={
+          <RequireAuth>
+            <Layout>
+              <JourneyPage />
+            </Layout>
+          </RequireAuth>
+        }
+      />
       <Route path="/success" element={<Layout><SuccessPage /></Layout>} />
       <Route
         path="/share"
@@ -252,6 +283,36 @@ export default function App() {
           <RequireAuth>
             <Layout>
               <PracticePage />
+            </Layout>
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/practice/morning"
+        element={
+          <RequireAuth>
+            <Layout>
+              <MorningAnchorPage />
+            </Layout>
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/practice/midday"
+        element={
+          <RequireAuth>
+            <Layout>
+              <MiddayPausePage />
+            </Layout>
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/practice/close"
+        element={
+          <RequireAuth>
+            <Layout>
+              <EveningClosePage />
             </Layout>
           </RequireAuth>
         }

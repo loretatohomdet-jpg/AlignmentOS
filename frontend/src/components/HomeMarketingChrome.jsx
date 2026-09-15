@@ -14,7 +14,7 @@ export const pageWidth = 'mx-auto w-full max-w-6xl px-5 sm:px-8 lg:px-12';
 export const copper = 'text-[#b08968]';
 
 const homeNav = [
-  { href: '/#cohort', label: 'Cohort' },
+  { to: '/cohort', label: 'Cohort' },
   { href: '/#leaders', label: 'For Leaders' },
   { to: '/about', label: 'About' },
 ];
@@ -151,9 +151,9 @@ export function HomeFooter() {
           <Link to="/" className="hover:text-alignment-accent min-h-11 inline-flex items-center">
             Home
           </Link>
-          <a href="/#cohort" className="hover:text-alignment-accent min-h-11 inline-flex items-center">
+          <Link to="/cohort" className="hover:text-alignment-accent min-h-11 inline-flex items-center">
             Cohort
-          </a>
+          </Link>
           <a href="/#leaders" className="hover:text-alignment-accent min-h-11 inline-flex items-center">
             For Leaders
           </a>

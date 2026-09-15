@@ -109,7 +109,7 @@ export default function HeaderUserMenu({ isLoggedIn, onLogout }) {
               onClick={() => setDropdownOpen(false)}
               role="menuitem"
             >
-              Practice
+              Today
             </NavLink>
             <NavLink
               to="/reflect"
@@ -117,7 +117,15 @@ export default function HeaderUserMenu({ isLoggedIn, onLogout }) {
               onClick={() => setDropdownOpen(false)}
               role="menuitem"
             >
-              Weekly review
+              Review
+            </NavLink>
+            <NavLink
+              to="/journey"
+              className="block px-4 py-2.5 text-sm text-alignment-accent hover:bg-alignment-accent/5 transition-colors"
+              onClick={() => setDropdownOpen(false)}
+              role="menuitem"
+            >
+              Journey
             </NavLink>
             <NavLink
               to="/profile"

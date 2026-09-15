@@ -1,358 +1,162 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_BASE, networkErrorUserMessage } from '../config/apiBase';
-import { isPaidPlan } from '../utils/plan';
-import { Link } from 'react-router-dom';
+import { DOMAIN_LABELS, DOMAIN_ORDER } from '../constants/domains';
 
-const LOCAL_KEY = 'savedReflections';
+import { copper } from '../utils/engineUi';
+import { usePageTitle } from '../hooks/usePageTitle';
+
+const LIBRARY = {
+  IDENTITY: [
+    'Write your one-sentence mission.',
+    'Review your commitments against it.',
+    'Say one true thing you would normally soften.',
+  ],
+  PURPOSE: [
+    'Name what this season is for.',
+    'Choose one meaningful task before the day starts.',
+    'Revisit the season monthly.',
+  ],
+  MINDSET: [
+    'Write the sentence you tell yourself when something fails.',
+    'Ask where it came from.',
+    'Replace it with the accurate version.',
+  ],
+  HABITS: [
+    'Keep one repetition for thirty days.',
+    'Anchor it to something already fixed.',
+    'Note weekly what it makes easier.',
+  ],
+  ENVIRONMENT: [
+    'Reset one surface each evening.',
+    'A walk without the phone.',
+    'One room that stays quiet.',
+    'Phone outside the bedroom.',
+  ],
+  EXECUTION: [
+    'Protect the good hour.',
+    'Finish before starting.',
+    'Sunday calendar review.',
+    'Name tomorrow’s first task tonight.',
+  ],
+};
 
 function authHeaders() {
   const token = localStorage.getItem('accessToken');
-  return { Authorization: `Bearer ${token}` };
-}
-
-function loadLocalSaved() {
-  try {
-    const raw = localStorage.getItem(LOCAL_KEY);
-    const parsed = raw ? JSON.parse(raw) : [];
-    return Array.isArray(parsed) ? parsed : [];
-  } catch (_) {
-    return [];
-  }
-}
-
-/** Maps legacy UI strings or API enums to POST body type. */
-function typeApiFromLegacy(type) {
-  const u = String(type || '').toUpperCase();
-  if (u === 'WEEKLY' || type === 'Weekly') return 'WEEKLY';
-  if (u === 'QUARTERLY' || type === 'Quarterly') return 'QUARTERLY';
-  return null;
-}
-
-function typeDisplay(apiType) {
-  return apiType === 'WEEKLY' ? 'Weekly' : 'Quarterly';
+  return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
 export default function ReflectPage() {
-  const [mode, setMode] = useState('hub'); // hub | weekly | quarterly | saved
-  const [weekly1, setWeekly1] = useState('');
-  const [weekly2, setWeekly2] = useState('');
-  const [q1, setQ1] = useState('');
-  const [q2, setQ2] = useState('');
-  const [saved, setSaved] = useState([]);
+  const navigate = useNavigate();
+  usePageTitle('Review — Alignment OS');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [saving, setSaving] = useState(false);
-  const [paid, setPaid] = useState(false);
-  const [enginePrompt, setEnginePrompt] = useState(null);
-
-  const fetchReflections = useCallback(async () => {
-    const token = localStorage.getItem('accessToken');
-    if (!token) {
-      setSaved([]);
-      setLoading(false);
-      return;
-    }
-    setError(null);
-    try {
-      const [meRes, { data }, statsRes] = await Promise.all([
-        axios.get(`${API_BASE}/me`, { headers: authHeaders() }).catch(() => ({ data: null })),
-        axios.get(`${API_BASE}/me/reflections`, { headers: authHeaders() }),
-        axios.get(`${API_BASE}/habits/stats`, { headers: authHeaders() }).catch(() => ({ data: null })),
-      ]);
-      setPaid(isPaidPlan(meRes.data?.plan));
-      setEnginePrompt(statsRes.data?.prompt || null);
-      const list = Array.isArray(data) ? data : [];
-
-      if (list.length === 0 && isPaidPlan(meRes.data?.plan)) {
-        const local = loadLocalSaved();
-        if (local.length > 0) {
-          let anyOk = false;
-          for (const entry of local) {
-            const t = typeApiFromLegacy(entry.type);
-            if (!t || !Array.isArray(entry.answers)) continue;
-            try {
-              await axios.post(
-                `${API_BASE}/me/reflections`,
-                { type: t, answers: entry.answers },
-                { headers: authHeaders() }
-              );
-              anyOk = true;
-            } catch (_) {
-              /* single row failure — keep trying others */
-            }
-          }
-          if (anyOk) localStorage.removeItem(LOCAL_KEY);
-          const { data: again } = await axios.get(`${API_BASE}/me/reflections`, { headers: authHeaders() });
-          setSaved(Array.isArray(again) ? again : []);
-        } else {
-          setSaved([]);
-        }
-      } else {
-        setSaved(list);
-      }
-    } catch (e) {
-      const msg =
-        e.response?.data?.message ||
-        (e.code === 'ERR_NETWORK' ? networkErrorUserMessage() : 'Could not load reflections.');
-      setError(msg);
-      setSaved([]);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+  const [primaryDomain, setPrimaryDomain] = useState(null);
 
   useEffect(() => {
-    fetchReflections();
-  }, [fetchReflections]);
-
-  const sortedSaved = useMemo(() => {
-    return [...saved].sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
-  }, [saved]);
-
-  const persist = async (legacyType, answers) => {
     const token = localStorage.getItem('accessToken');
-    if (!token) return false;
-    if (!paid) {
-      setError('Weekly and quarterly reviews unlock with Habit Engine.');
-      return false;
+    if (!token) {
+      navigate('/login?returnTo=/reflect', { replace: true });
+      return;
     }
-    const type = typeApiFromLegacy(legacyType);
-    if (!type) return false;
-    setSaving(true);
-    setError(null);
-    try {
-      const { data } = await axios.post(
-        `${API_BASE}/me/reflections`,
-        { type, answers },
-        { headers: authHeaders() }
-      );
-      setSaved((prev) => [data, ...prev]);
-      return true;
-    } catch (e) {
-      const msg =
-        e.response?.data?.message ||
-        (e.code === 'ERR_NETWORK' ? networkErrorUserMessage() : 'Could not save reflection.');
-      setError(msg);
-      return false;
-    } finally {
-      setSaving(false);
-    }
-  };
+    Promise.all([
+      axios.get(`${API_BASE}/assessment/result`, { headers: authHeaders() }).catch((e) => {
+        if (e.response?.status === 404) return { data: null };
+        throw e;
+      }),
+      axios.get(`${API_BASE}/habits/stats`, { headers: authHeaders() }).catch(() => ({ data: null })),
+    ])
+      .then(([resultRes, statsRes]) => {
+        const fromScore = String(resultRes.data?.primaryDomain || '').toUpperCase();
+        const fromHabits = String(statsRes.data?.habits?.[0]?.pillar || '').toUpperCase();
+        const key = DOMAIN_ORDER.includes(fromScore) ? fromScore : fromHabits;
+        setPrimaryDomain(DOMAIN_ORDER.includes(key) ? key : null);
+      })
+      .catch((e) => {
+        if (e.response?.status === 401) {
+          navigate('/login?returnTo=/reflect', { replace: true });
+          return;
+        }
+        if (e.response?.status !== 404) {
+          setError(
+            e.response?.data?.message ||
+              (e.code === 'ERR_NETWORK' ? networkErrorUserMessage() : 'Could not load your primary gap.')
+          );
+        }
+      })
+      .finally(() => setLoading(false));
+  }, [navigate]);
 
-  const errorBanner =
-    error && (
-      <div
-        className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-900 mb-6"
-        role="alert"
-      >
-        {error}
-      </div>
-    );
-
-  if (mode === 'weekly') {
+  if (loading) {
     return (
-      <div className="max-w-3xl mx-auto px-6 sm:px-8 py-12 sm:py-16">
-        <div className="flex items-center justify-between gap-4">
-          <h1 className="text-headline font-semibold text-alignment-accent tracking-tight">Weekly Reflection</h1>
-          <button type="button" onClick={() => setMode('hub')} className="text-sm font-medium text-alignment-accent hover:underline">
-            Back
-          </button>
-        </div>
-
-        {errorBanner}
-
-        {enginePrompt && (
-          <div className="mt-6 rounded-2xl border border-alignment-primary/20 bg-alignment-primary/[0.06] p-5">
-            <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-primary">This week’s engine</p>
-            <p className="mt-2 font-medium text-alignment-accent">{enginePrompt.title}</p>
-            <p className="mt-1 text-sm text-alignment-accent/70 leading-relaxed">{enginePrompt.body}</p>
-          </div>
-        )}
-
-        <div className="mt-8 rounded-2xl bg-alignment-surface border border-alignment-accent/5 shadow-apple p-6 sm:p-8 space-y-5">
-          <div>
-            <p className="text-sm font-medium text-alignment-accent">Where did clarity feel natural this week?</p>
-            <textarea
-              value={weekly1}
-              onChange={(e) => setWeekly1(e.target.value)}
-              className="mt-2 w-full rounded-2xl border border-alignment-accent/10 bg-alignment-surface px-4 py-3 text-alignment-accent focus:border-alignment-accent focus:ring-2 focus:ring-alignment-accent/20 outline-none transition-all min-h-[96px]"
-            />
-          </div>
-          <div>
-            <p className="text-sm font-medium text-alignment-accent">Where did resistance appear?</p>
-            <textarea
-              value={weekly2}
-              onChange={(e) => setWeekly2(e.target.value)}
-              className="mt-2 w-full rounded-2xl border border-alignment-accent/10 bg-alignment-surface px-4 py-3 text-alignment-accent focus:border-alignment-accent focus:ring-2 focus:ring-alignment-accent/20 outline-none transition-all min-h-[96px]"
-            />
-          </div>
-
-          <button
-            type="button"
-            disabled={saving}
-            onClick={async () => {
-              const ok = await persist('Weekly', [weekly1.trim(), weekly2.trim()]);
-              if (ok) {
-                setWeekly1('');
-                setWeekly2('');
-                setMode('saved');
-              }
-            }}
-            className="w-full rounded-full bg-alignment-primary text-white py-3.5 text-sm font-medium hover:bg-alignment-primary/90 transition-colors disabled:opacity-60"
-          >
-            {saving ? 'Saving…' : 'Save'}
-          </button>
-        </div>
+      <div className="mx-auto max-w-xl px-6 py-20 text-center">
+        <p className="font-display italic text-alignment-accent/45">Loading the library…</p>
       </div>
     );
   }
 
-  if (mode === 'quarterly') {
-    return (
-      <div className="max-w-3xl mx-auto px-6 sm:px-8 py-12 sm:py-16">
-        <div className="flex items-center justify-between gap-4">
-          <h1 className="text-headline font-semibold text-alignment-accent tracking-tight">Quarterly Reflection</h1>
-          <button type="button" onClick={() => setMode('hub')} className="text-sm font-medium text-alignment-accent hover:underline">
-            Back
-          </button>
-        </div>
-
-        {errorBanner}
-
-        <div className="mt-8 rounded-2xl bg-alignment-surface border border-alignment-accent/5 shadow-apple p-6 sm:p-8 space-y-5">
-          <div>
-            <p className="text-sm font-medium text-alignment-accent">What has shifted since the last quarter?</p>
-            <textarea
-              value={q1}
-              onChange={(e) => setQ1(e.target.value)}
-              className="mt-2 w-full rounded-2xl border border-alignment-accent/10 bg-alignment-surface px-4 py-3 text-alignment-accent focus:border-alignment-accent focus:ring-2 focus:ring-alignment-accent/20 outline-none transition-all min-h-[96px]"
-            />
-          </div>
-          <div>
-            <p className="text-sm font-medium text-alignment-accent">What feels more ordered now? (optional)</p>
-            <textarea
-              value={q2}
-              onChange={(e) => setQ2(e.target.value)}
-              className="mt-2 w-full rounded-2xl border border-alignment-accent/10 bg-alignment-surface px-4 py-3 text-alignment-accent focus:border-alignment-accent focus:ring-2 focus:ring-alignment-accent/20 outline-none transition-all min-h-[96px]"
-            />
-          </div>
-
-          <button
-            type="button"
-            disabled={saving}
-            onClick={async () => {
-              const ok = await persist('Quarterly', [q1.trim(), q2.trim()]);
-              if (ok) {
-                setQ1('');
-                setQ2('');
-                setMode('saved');
-              }
-            }}
-            className="w-full rounded-full bg-alignment-primary text-white py-3.5 text-sm font-medium hover:bg-alignment-primary/90 transition-colors disabled:opacity-60"
-          >
-            {saving ? 'Saving…' : 'Save'}
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  if (mode === 'saved') {
-    return (
-      <div className="max-w-3xl mx-auto px-6 sm:px-8 py-12 sm:py-16">
-        <div className="flex items-center justify-between gap-4">
-          <h1 className="text-headline font-semibold text-alignment-accent tracking-tight">Saved Reflections</h1>
-          <button type="button" onClick={() => setMode('hub')} className="text-sm font-medium text-alignment-accent hover:underline">
-            Back
-          </button>
-        </div>
-
-        {errorBanner}
-
-        <div className="mt-8 rounded-2xl bg-alignment-surface border border-alignment-accent/5 shadow-apple p-6 sm:p-8">
-          {loading ? (
-            <p className="text-alignment-accent/70">Loading…</p>
-          ) : sortedSaved.length === 0 ? (
-            <p className="text-alignment-accent/70">No reflections yet.</p>
-          ) : (
-            <div className="space-y-4">
-              {sortedSaved.map((r) => (
-                <div key={r.id} className="rounded-2xl bg-alignment-accent/[0.04] border border-alignment-accent/5 p-5">
-                  <div className="flex items-center justify-between gap-3">
-                    <p className="text-sm font-medium text-alignment-accent">{typeDisplay(r.type)} reflection</p>
-                    <p className="text-xs text-alignment-accent/70">{r.createdAt ? new Date(r.createdAt).toLocaleDateString() : ''}</p>
-                  </div>
-                  <div className="mt-3 space-y-2 text-sm text-alignment-accent">
-                    {(r.answers || []).filter(Boolean).map((a, idx) => (
-                      <p key={idx} className="leading-relaxed">
-                        {a}
-                      </p>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-    );
-  }
+  const gapLabel = primaryDomain ? DOMAIN_LABELS[primaryDomain] : null;
 
   return (
-    <div className="max-w-4xl mx-auto px-6 sm:px-8 py-12 sm:py-16">
-      <div className="flex items-baseline justify-between gap-4">
-        <h1 className="text-headline font-semibold text-alignment-accent tracking-tight">Reflect</h1>
-        <p className="text-sm text-alignment-accent/70">Integration.</p>
-      </div>
+    <div className="mx-auto w-full max-w-xl px-6 pb-28 pt-10 sm:pt-12">
+      <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-accent/40">Practice library</p>
+      <h1 className="mt-4 font-display italic font-normal text-[2.15rem] sm:text-[2.55rem] leading-[1.15] text-alignment-accent">
+        Few, and chosen.
+      </h1>
+      <p className="mt-3 text-[17px] text-alignment-accent/55 leading-relaxed">
+        One or two at a time. The system prescribes less, better.
+      </p>
 
-      {errorBanner}
-
-      {!loading && !paid && (
-        <div className="mt-8 rounded-2xl border border-alignment-accent/10 bg-alignment-surface p-6 sm:p-8">
-          <p className="font-medium text-alignment-accent">Reviews are part of the Habit Engine</p>
-          <p className="mt-2 text-sm text-alignment-accent/70 leading-relaxed">
-            Weekly and quarterly reflection save to your account after you activate. $12/month or $120/year.
-          </p>
-          <Link
-            to="/pricing"
-            className="mt-5 inline-flex rounded-full bg-alignment-primary text-white px-5 py-2.5 text-sm font-medium hover:bg-alignment-primary/90"
-          >
-            Activate Habit Engine
-          </Link>
-        </div>
+      {error && (
+        <p className="mt-6 text-sm text-red-800 bg-red-50 border border-red-200 rounded-lg px-4 py-3" role="alert">
+          {error}
+        </p>
       )}
 
-      {loading ? (
-        <p className="mt-8 text-alignment-accent/70">Loading reflections…</p>
-      ) : paid ? (
-        <>
-          <div className="mt-8 grid sm:grid-cols-2 gap-4">
-            <button
-              type="button"
-              onClick={() => setMode('weekly')}
-              className="rounded-2xl bg-alignment-surface border border-alignment-accent/5 shadow-apple p-6 text-left hover:shadow-apple-lg transition-shadow"
-            >
-              <p className="font-medium text-alignment-accent">Weekly Reflection</p>
-              <p className="mt-2 text-sm text-alignment-accent/70">Optional, visible, and private.</p>
-            </button>
-            <button
-              type="button"
-              onClick={() => setMode('quarterly')}
-              className="rounded-2xl bg-alignment-surface border border-alignment-accent/5 shadow-apple p-6 text-left hover:shadow-apple-lg transition-shadow"
-            >
-              <p className="font-medium text-alignment-accent">Quarterly Reflection</p>
-              <p className="mt-2 text-sm text-alignment-accent/70">A quieter check-in every 3 months.</p>
-            </button>
-          </div>
+      <div className="mt-8 border-l-2 border-[#b08968] bg-alignment-surfaceSoft/80 px-5 py-5">
+        {gapLabel ? (
+          <p className="text-[16px] leading-relaxed text-alignment-accent/70">
+            Your primary gap is <span className="font-semibold text-alignment-accent">{gapLabel}.</span> Start there, with
+            one practice.{' '}
+            <Link to="/practice" className="underline underline-offset-2 hover:text-alignment-accent">
+              Begin today.
+            </Link>
+          </p>
+        ) : (
+          <p className="text-[16px] leading-relaxed text-alignment-accent/70">
+            Take the Alignment Score to name your primary gap.{' '}
+            <Link to="/assessment" className="underline underline-offset-2 hover:text-alignment-accent">
+              Begin free.
+            </Link>
+          </p>
+        )}
+      </div>
 
-          <div className="mt-6">
-            <button type="button" onClick={() => setMode('saved')} className="text-sm font-medium text-alignment-accent hover:underline">
-              View saved reflections →
-            </button>
-          </div>
-        </>
-      ) : null}
+      {DOMAIN_ORDER.map((key) => {
+        const isFocus = key === primaryDomain;
+        return (
+          <section key={key} className="mt-10">
+            <p
+              className={`text-[10px] font-medium uppercase tracking-[0.2em] ${
+                isFocus ? copper : 'text-alignment-accent/40'
+              }`}
+            >
+              {DOMAIN_LABELS[key]}
+            </p>
+            <ul className="mt-3 border-t border-alignment-accent/[0.10]">
+              {LIBRARY[key].map((line) => (
+                <li
+                  key={line}
+                  className="border-b border-alignment-accent/[0.10] py-4 text-[16px] leading-snug text-alignment-accent"
+                >
+                  {line}
+                </li>
+              ))}
+            </ul>
+          </section>
+        );
+      })}
     </div>
   );
 }

@@ -9,11 +9,10 @@ import {
   pillGhost,
   pillPrimary,
 } from '../components/HomeMarketingChrome';
-import { bookingUrl, cohortApplyUrl, formationExploreUrl } from '../config/externalLinks';
+import { bookingUrl, formationExploreUrl } from '../config/externalLinks';
 
 const shopUrl = formationExploreUrl();
 const conversationUrl = bookingUrl || 'mailto:organizations@alignmentos.com';
-const cohortUrl = cohortApplyUrl || '#cohort';
 
 const offerings = [
   {
@@ -43,7 +42,7 @@ const offerings = [
     price: '$997',
     body: 'Six weeks, twelve people, led personally. The whole system, lived.',
     action: 'Learn about the cohort',
-    href: cohortUrl,
+    to: '/cohort',
     id: 'cohort',
   },
 ];
@@ -130,9 +129,9 @@ export default function LandingPage() {
               <Link to="/assessment" className={pillPrimary}>
                 Begin free diagnostic
               </Link>
-              <a href="#cohort" className={pillGhost}>
+              <Link to="/cohort" className={pillGhost}>
                 The cohort
-              </a>
+              </Link>
             </div>
             <p className="mt-5 text-sm text-alignment-accent/45">Twelve minutes. No account. No card.</p>
           </div>
