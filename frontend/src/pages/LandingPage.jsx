@@ -185,24 +185,24 @@ export default function LandingPage() {
             <div className="relative flex flex-1 flex-col justify-center px-6 sm:px-8 lg:px-12 pt-12 pb-8 sm:pt-16 sm:pb-10">
             <div className="max-w-2xl mx-auto text-center">
               <h1 className={type.h1Hero}>
-                A life is formed
+                Recover the art
                 <br />
-                by what is repeated.
+                of living well.
               </h1>
-              <p className="mt-7 sm:mt-9 text-base sm:text-lg text-alignment-accent/60 leading-relaxed max-w-xl mx-auto">
-                See where your life holds. Close the gap.
-                <br />
-                Keep it.
+              <p className="mt-7 sm:mt-9 font-display italic text-xl sm:text-2xl text-alignment-primary leading-snug">
+                A system for becoming whole.
               </p>
-              <div className="mt-9 sm:mt-11 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3">
+              <div className="mt-9 sm:mt-11 flex flex-col items-center gap-3">
                 <Link to="/assessment" className={pillPrimary}>
-                  Begin free diagnostic
+                  Take the free assessment
                 </Link>
-                <Link to="/cohort" className={pillGhost}>
-                  The cohort
-                </Link>
+                <a href="#how-it-works" className={pillGhost}>
+                  How it works
+                </a>
               </div>
-              <p className="mt-5 text-sm text-alignment-accent/45">Twelve minutes. No account. No card.</p>
+              <p className="mt-8 text-sm sm:text-base text-alignment-accent/40 leading-relaxed max-w-sm mx-auto">
+                Six domains. One Alignment Score. A clearer path forward.
+              </p>
             </div>
             </div>
           </div>
@@ -240,7 +240,7 @@ export default function LandingPage() {
         </section>
 
         {/* The compounding loop — four steps */}
-        <section className="w-full border-t border-alignment-accent/[0.06] bg-apple-surface-muted">
+        <section id="how-it-works" className="w-full border-t border-alignment-accent/[0.06] bg-apple-surface-muted scroll-mt-20">
           <div className="max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12 sm:py-16">
             <h2 className={`${type.h2} max-w-xl text-balance`}>
               Four steps. <span className="italic font-normal text-alignment-accent/80">One system.</span>
