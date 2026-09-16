@@ -33,7 +33,7 @@ export default function AgentFloatingButton() {
     <button
       type="button"
       onClick={go}
-      className={`agent-fab fixed right-4 md:right-8 z-[45] flex h-14 w-14 items-center justify-center rounded-full bg-alignment-primary text-white shadow-apple-lg ring-1 ring-alignment-primary/15 transition-transform hover:scale-105 active:scale-95 animate-agent-pop ${bottomClass}`}
+      className={`agent-fab fixed right-[max(1rem,env(safe-area-inset-right))] md:right-8 z-[45] flex h-14 w-14 items-center justify-center rounded-full bg-alignment-primary text-white shadow-apple-lg ring-1 ring-alignment-primary/15 transition-transform hover:scale-105 active:scale-95 animate-agent-pop ${bottomClass}`}
       aria-label={hasToken ? 'Open AI agent' : 'Sign in to use the AI agent'}
       title="AI agent"
     >

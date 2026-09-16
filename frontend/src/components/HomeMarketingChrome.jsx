@@ -148,15 +148,15 @@ export function HomeFooter() {
 /** Same footer as the homepage. */
 export function SitePageFooter({ extra = null }) {
   return (
-    <footer className="w-full border-t border-alignment-accent/[0.08] bg-alignment-surfaceSoft/95 backdrop-blur-[2px] pb-[max(1rem,env(safe-area-inset-bottom))] mt-auto">
-      <div className="w-full max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-8 sm:py-10">
+    <footer className="w-full min-w-0 max-w-full overflow-x-hidden border-t border-alignment-accent/[0.08] bg-alignment-surfaceSoft/95 backdrop-blur-[2px] pb-[max(1rem,env(safe-area-inset-bottom))] mt-auto">
+      <div className="w-full min-w-0 max-w-6xl xl:max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 py-8 sm:py-10">
         <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between lg:gap-12">
           <div className="max-w-xs">
             <BrandLogo iconHeightPx={44} />
             <p className="mt-4 text-xs text-alignment-accent/45 leading-relaxed">Human alignment software.</p>
           </div>
           <div className="flex flex-col gap-3 lg:flex-1">
-            <SiteMarketingFooterNav className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-3 text-[9px] sm:text-[10px] font-normal uppercase tracking-[0.14em]" />
+            <SiteMarketingFooterNav className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-4 sm:gap-x-8 gap-y-3 min-w-0 text-[9px] sm:text-[10px] font-normal uppercase tracking-[0.14em]" />
             {extra}
           </div>
         </div>

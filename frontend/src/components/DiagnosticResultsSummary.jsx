@@ -100,13 +100,13 @@ export default function DiagnosticResultsSummary({
       </div>
 
       <div className="mt-10 grid grid-cols-2 gap-0 overflow-hidden rounded-xl border border-alignment-accent/[0.08] bg-alignment-surface shadow-apple max-w-2xl mx-auto">
-        <div className="border-r border-alignment-accent/[0.08] p-5 sm:p-6 text-center">
+        <div className="min-w-0 border-r border-alignment-accent/[0.08] p-4 sm:p-6 text-center">
           <p className={resultsUi.label}>Alignment type</p>
-          <p className="mt-4 font-display text-lg sm:text-xl text-alignment-accent leading-snug">{alignmentTypeTitle || '—'}</p>
+          <p className="mt-4 font-display text-base sm:text-xl text-alignment-accent leading-snug break-words">{alignmentTypeTitle || '—'}</p>
         </div>
-        <div className="p-5 sm:p-6 text-center">
+        <div className="min-w-0 p-4 sm:p-6 text-center">
           <p className={resultsUi.label}>Primary strain</p>
-          <p className="mt-4 font-display text-lg sm:text-xl text-alignment-accent leading-snug">{primaryStrainLabel || '—'}</p>
+          <p className="mt-4 font-display text-base sm:text-xl text-alignment-accent leading-snug break-words">{primaryStrainLabel || '—'}</p>
         </div>
       </div>
 

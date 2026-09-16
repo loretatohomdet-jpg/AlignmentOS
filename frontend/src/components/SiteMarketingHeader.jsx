@@ -69,11 +69,11 @@ export default function SiteMarketingHeader({ appendDesktop = null, authDrawer }
 
   return (
     <>
-      <header className="sticky top-0 z-50 w-full border-b border-alignment-accent/[0.07] bg-alignment-foundation/88 backdrop-blur-md supports-[backdrop-filter]:bg-alignment-foundation/78 relative overflow-visible pt-[max(0px,env(safe-area-inset-top))]">
-        <div className="relative w-full max-w-6xl mx-auto px-3 sm:px-6 lg:px-10 min-h-14 sm:min-h-16 py-1.5 sm:py-0 flex items-center justify-between gap-2 min-w-0 pr-[max(5rem,env(safe-area-inset-right))] lg:pr-10">
+      <header className="sticky top-0 z-50 w-full max-w-full overflow-x-hidden border-b border-alignment-accent/[0.07] bg-alignment-foundation/88 backdrop-blur-md supports-[backdrop-filter]:bg-alignment-foundation/78 pt-[max(0px,env(safe-area-inset-top))]">
+        <div className="flex w-full max-w-6xl mx-auto min-w-0 items-center gap-2 px-3 sm:px-6 lg:px-10 min-h-14 sm:min-h-16 py-1.5 sm:py-0">
           <BrandLogo
             compact
-            className="min-w-0 shrink max-w-[min(100%,40vw)] sm:max-w-[min(100%,46vw)] lg:max-w-none rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2"
+            className="min-w-0 flex-1 overflow-hidden max-w-[9.5rem] sm:max-w-[12rem] lg:max-w-[14rem] rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2"
           />
           <nav className="hidden lg:flex items-center gap-5 lg:gap-8 flex-1 justify-center min-w-0" aria-label="Primary">
             {navLinks.map(({ to, label }) => (
@@ -86,10 +86,10 @@ export default function SiteMarketingHeader({ appendDesktop = null, authDrawer }
               </NavLink>
             ))}
           </nav>
-          <div className="flex items-center justify-end gap-2 sm:gap-3 min-w-0 shrink-0 max-lg:mr-1">
+          <div className="flex items-center justify-end gap-1 sm:gap-2 shrink-0">
             <Link
               to={primaryCta.to}
-              className={`${beginFreeHeaderButtonClass} shrink min-w-0 touch-manipulation max-lg:px-2.5 max-lg:py-1.5`}
+              className={`${beginFreeHeaderButtonClass} shrink-0 touch-manipulation max-lg:px-3 max-lg:py-1.5`}
             >
               {primaryCta.label}{' '}
               <span aria-hidden className="ml-0.5 sm:ml-1">
@@ -97,18 +97,18 @@ export default function SiteMarketingHeader({ appendDesktop = null, authDrawer }
               </span>
             </Link>
             {accountDesktop}
+            <button
+              type="button"
+              onClick={() => setDrawerOpen(true)}
+              className="lg:hidden flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-alignment-accent hover:bg-alignment-accent/[0.07] active:bg-alignment-accent/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2 touch-manipulation"
+              aria-label="Open menu"
+              aria-expanded={drawerOpen}
+            >
+              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
           </div>
-          <button
-            type="button"
-            onClick={() => setDrawerOpen(true)}
-            className="lg:hidden absolute right-[max(0.5rem,env(safe-area-inset-right))] top-1/2 z-[60] -translate-y-1/2 flex h-11 w-11 items-center justify-center rounded-full text-alignment-accent hover:bg-alignment-accent/[0.07] active:bg-alignment-accent/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2 touch-manipulation"
-            aria-label="Open menu"
-            aria-expanded={drawerOpen}
-          >
-            <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
         </div>
       </header>
       <MobileDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)}>

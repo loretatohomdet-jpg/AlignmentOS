@@ -146,7 +146,7 @@ function Layout({ children }) {
   );
 
   return (
-    <div className="min-h-screen flex flex-col bg-alignment-page bg-fixed">
+    <div className="min-h-screen min-w-0 max-w-full overflow-x-hidden flex flex-col bg-alignment-page">
       <SiteMarketingHeader
         appendDesktop={appendDesktop}
         authDrawer={{
@@ -154,7 +154,7 @@ function Layout({ children }) {
           onLogout: handleDrawerLogout,
         }}
       />
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 min-w-0 max-w-full overflow-x-hidden">{children}</main>
       {!immersiveAssessment && <AgentFloatingButton />}
       <SitePageFooter
         extra={

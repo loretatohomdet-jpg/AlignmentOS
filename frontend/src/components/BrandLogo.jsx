@@ -22,11 +22,11 @@ export default function BrandLogo({
       <img
         src={wordmarkSrc}
         alt=""
-        width={1024}
-        height={171}
-        style={compact ? undefined : { height: iconHeightPx, width: 'auto' }}
-        className={`block w-auto max-w-full object-contain object-left select-none pointer-events-none ${
-          compact ? 'h-7 sm:h-8 md:h-9 max-h-9' : ''
+        width={240}
+        height={40}
+        style={compact ? undefined : { height: iconHeightPx, width: 'auto', maxWidth: '100%' }}
+        className={`block h-auto max-w-full object-contain object-left select-none pointer-events-none ${
+          compact ? 'h-7 sm:h-8 md:h-9 max-h-9 w-auto' : ''
         }`}
         decoding="async"
         draggable={false}

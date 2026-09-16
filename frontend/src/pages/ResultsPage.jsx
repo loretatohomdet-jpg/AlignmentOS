@@ -150,7 +150,7 @@ export default function ResultsPage() {
   }
 
   return (
-    <div className={`max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 ${resultsUi.wrap} min-h-[calc(100vh-6rem)]`}>
+    <div className={`max-w-6xl mx-auto w-full min-w-0 overflow-x-hidden px-4 sm:px-6 lg:px-8 py-10 sm:py-12 ${resultsUi.wrap} min-h-[calc(100vh-6rem)]`}>
       <div className="max-w-6xl mx-auto w-full">
         {loading && !result && <p className={`${diag.muted} text-center`}>Loading...</p>}
 
