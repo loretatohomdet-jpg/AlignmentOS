@@ -1,6 +1,6 @@
 /**
  * Canonical footer + marketing links.
- * Leaders, Organizations, and Alignment map use placeholder pages until dedicated routes ship.
+ * Leaders and Organizations use placeholder pages until dedicated routes ship.
  */
 
 export const siteMarketingFooter = [

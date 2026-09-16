@@ -28,6 +28,7 @@ import InstitutionPage from './pages/InstitutionPage';
 import PlatformPage from './pages/PlatformPage';
 import FrameworkPage from './pages/FrameworkPage';
 import ComingSoonPage from './pages/ComingSoonPage';
+import AlignmentMapPage from './pages/AlignmentMapPage';
 import PrivacyPage from './pages/PrivacyPage';
 import TermsPage from './pages/TermsPage';
 import ProfilePage from './pages/ProfilePage';
@@ -192,7 +193,7 @@ export default function App() {
       <Route path="/institution" element={<InstitutionPage />} />
       <Route path="/leaders" element={<ComingSoonPage variant="leaders" />} />
       <Route path="/organizations" element={<ComingSoonPage variant="organizations" />} />
-      <Route path="/alignment-map" element={<ComingSoonPage variant="alignment-map" />} />
+      <Route path="/alignment-map" element={<AlignmentMapPage />} />
       <Route path="/map" element={<Navigate to="/alignment-map" replace />} />
       <Route path="/ethics" element={<Layout><EthicsPage /></Layout>} />
       <Route path="/how-it-works" element={<Navigate to="/pricing" replace />} />

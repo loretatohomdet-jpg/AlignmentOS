@@ -26,15 +26,4 @@ export const comingSoonVariants = {
       { to: '/pricing', label: 'Pricing', note: 'Habit Engine & Journey' },
     ],
   },
-  'alignment-map': {
-    kicker: 'Alignment map',
-    title: 'Your formation trajectory — full map',
-    body:
-      'The standalone Alignment Map page (score history across domains, export, and share) is in development. Today, your trajectory appears on the Dashboard after you sign in, and the diagnostic overview explains how the six domains combine into your score.',
-    links: [
-      { to: '/dashboard', label: 'Open Dashboard', note: 'Requires sign-in · score history & habits' },
-      { to: '/diagnostic', label: 'How the diagnostic works', note: 'Six domains & scoring' },
-      { to: '/assessment', label: 'Take or retake the diagnostic', note: '12 minutes · free' },
-    ],
-  },
 };

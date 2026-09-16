@@ -69,6 +69,8 @@ export default function MorningAnchorPage() {
   const [draft, setDraft] = useState(() => loadDraft(day));
   const [habitId, setHabitId] = useState(null);
   const [pillar, setPillar] = useState(null);
+  const [enginePrompt, setEnginePrompt] = useState(null);
+  const [engineActive, setEngineActive] = useState(false);
   const [saving, setSaving] = useState(false);
   const [hydrated, setHydrated] = useState(false);
   const [error, setError] = useState(null);
@@ -101,9 +103,14 @@ export default function MorningAnchorPage() {
     ])
       .then(([statsRes, ritualsRes]) => {
         const habits = Array.isArray(statsRes.data?.habits) ? statsRes.data.habits : [];
+        const prompt = statsRes.data?.prompt || null;
+        setEnginePrompt(prompt);
+        setEngineActive(Boolean(statsRes.data?.engineActive));
+        const prompted = prompt?.habitId ? habits.find((h) => h.id === prompt.habitId) : null;
         const morning = habits.find((h) => /morning|anchor/i.test(h.title || '')) || null;
-        setHabitId(morning && !morning.completedToday ? morning.id : null);
-        setPillar(morning?.pillar || habits[0]?.pillar || null);
+        const hold = prompted || morning || habits[0] || null;
+        setHabitId(hold && !hold.completedToday ? hold.id : null);
+        setPillar(hold?.pillar || habits[0]?.pillar || null);
         const serverAnswers = ritualsRes?.rituals?.morning?.answers;
         setDraft((prev) => mergeDraft(emptyDraft(), prev, serverAnswers));
       })
@@ -111,7 +118,12 @@ export default function MorningAnchorPage() {
   }, [day, navigate]);
 
   const setField = (key) => (value) => setDraft((prev) => ({ ...prev, [key]: value }));
-  const hint = PRACTICE_HINT[pillar] || PRACTICE_HINT.HABITS;
+  const hint =
+    engineActive && enginePrompt?.body
+      ? enginePrompt.body
+      : PRACTICE_HINT[pillar] || PRACTICE_HINT.HABITS;
+  const practicePrompt =
+    engineActive && enginePrompt?.habitTitle ? `Today’s hold: ${enginePrompt.habitTitle}` : null;
 
   const holdMorning = async (e) => {
     e.preventDefault();
@@ -171,6 +183,7 @@ export default function MorningAnchorPage() {
         />
         <FieldCard
           kicker="Today’s practice · one small exercise"
+          italicPrompt={practicePrompt}
           label="Today’s practice"
           hint={hint}
           value={draft.practice}

@@ -21,7 +21,7 @@ export const routeMap = {
   Journey: { path: '/journey', visibility: visibility.auth, note: 'Habit Engine record · signed in' },
   Leaders: { path: '/leaders', visibility: visibility.public, note: 'Placeholder → links to business & platform' },
   Organizations: { path: '/organizations', visibility: visibility.public, note: 'Placeholder → business & institutions' },
-  AlignmentMap: { path: '/alignment-map', visibility: visibility.public, note: 'Placeholder → dashboard & diagnostic' },
+  AlignmentMap: { path: '/alignment-map', visibility: visibility.public, note: 'Six-domain hex · personal scores when signed in' },
   BusinessAlignment: { path: '/business', visibility: visibility.public, note: 'Team / org alignment overview' },
   Institutions: { path: '/institution', visibility: visibility.public, note: 'Formation programmes' },
   Cohorts: { path: '/cohort', visibility: visibility.public, note: 'Charter cohort · six weeks' },

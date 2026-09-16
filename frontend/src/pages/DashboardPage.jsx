@@ -225,15 +225,15 @@ export default function DashboardPage() {
             )}
           </div>
 
-          {habitStats?.prompt && (
+          {habitStats?.engineActive && habitStats?.prompt && (
             <div className="mt-6 rounded-2xl border border-alignment-primary/20 bg-alignment-primary/[0.06] p-5 sm:p-6">
               <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-primary">
-                {habitStats.prompt.kind === 'adjust' ? 'Needs adjustment' : 'Habit Engine'}
+                Today’s hold
               </p>
               <p className="mt-2 font-medium text-alignment-accent">{habitStats.prompt.title}</p>
               <p className="mt-1 text-sm text-alignment-accent/70 leading-relaxed">{habitStats.prompt.body}</p>
               <Link to="/practice" className="mt-3 inline-block text-sm font-medium text-alignment-accent hover:underline">
-                Open Habit Engine →
+                Open Practice →
               </Link>
             </div>
           )}
@@ -393,7 +393,10 @@ export default function DashboardPage() {
                 <p className="mt-3 text-sm text-alignment-accent/60 leading-relaxed flex-1">
                   Score, type, and strain live here. Completing the day happens in Practice.
                 </p>
-                <Link to="/results" className="mt-4 text-sm font-medium text-alignment-accent hover:underline">
+                <Link to="/alignment-map" className="mt-4 text-sm font-medium text-alignment-accent hover:underline">
+                  Alignment map →
+                </Link>
+                <Link to="/results" className="mt-2 text-sm font-medium text-alignment-accent hover:underline">
                   View results →
                 </Link>
                 <Link to="/progress" className="mt-2 text-sm font-medium text-alignment-accent hover:underline">

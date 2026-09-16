@@ -35,6 +35,8 @@ export default function PracticePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [habits, setHabits] = useState([]);
+  const [prompt, setPrompt] = useState(null);
+  const [engineActive, setEngineActive] = useState(false);
   const [now] = useState(() => new Date());
   const day = utcDayStamp(now);
   const [rituals, setRituals] = useState(() => loadRituals(day));
@@ -49,6 +51,8 @@ export default function PracticePage() {
     try {
       const statsRes = await axios.get(`${API_BASE}/habits/stats`, { headers: authHeaders() });
       setHabits(Array.isArray(statsRes.data?.habits) ? statsRes.data.habits : []);
+      setPrompt(statsRes.data?.prompt || null);
+      setEngineActive(Boolean(statsRes.data?.engineActive));
       const held = await pushHeldLocalRituals(day);
       setRituals(held);
     } catch (e) {
@@ -126,6 +130,30 @@ export default function PracticePage() {
         <p className="mt-8 text-sm text-red-800 bg-red-50 border border-red-200 rounded-lg px-4 py-3" role="alert">
           {error}
         </p>
+      )}
+
+      {engineActive && prompt && (
+        <div className="mt-10 rounded-2xl border border-alignment-primary/20 bg-alignment-primary/[0.06] px-6 py-6">
+          <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-primary">Today’s hold</p>
+          <p className="mt-3 font-display text-xl font-medium text-alignment-accent leading-snug">{prompt.title}</p>
+          <p className="mt-2 text-sm text-alignment-accent/70 leading-relaxed">{prompt.body}</p>
+          <p className="mt-4 text-[11px] text-alignment-accent/45 leading-relaxed">
+            This is the Habit Engine. The same line is emailed if this hold is still open.
+          </p>
+        </div>
+      )}
+
+      {!engineActive && (
+        <div className="mt-10 rounded-2xl border border-alignment-accent/10 bg-alignment-surface px-6 py-6">
+          <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-primary">Habit Engine</p>
+          <p className="mt-3 font-medium text-alignment-accent">A daily hold, named for you.</p>
+          <p className="mt-2 text-sm text-alignment-accent/65 leading-relaxed">
+            The engine picks one of your three practices each day, shows it here, and emails it if it is still open. The three rooms stay available either way.
+          </p>
+          <Link to="/pricing" className={`${pillGhost} mt-5`}>
+            Activate
+          </Link>
+        </div>
       )}
 
       {!liveHabits && (
