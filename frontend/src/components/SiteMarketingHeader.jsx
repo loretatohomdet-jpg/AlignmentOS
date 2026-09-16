@@ -123,13 +123,15 @@ export default function SiteMarketingHeader({ appendDesktop = null, authDrawer }
             {label}
           </NavLink>
         ))}
-        <Link
-          to={primaryCta.to}
-          className={siteNavDrawerRowClass}
-          onClick={() => setDrawerOpen(false)}
-        >
-          {primaryCta.label}
-        </Link>
+        {!navLinks.some((link) => link.to === primaryCta.to) && (
+          <Link
+            to={primaryCta.to}
+            className={siteNavDrawerRowClass}
+            onClick={() => setDrawerOpen(false)}
+          >
+            {primaryCta.label}
+          </Link>
+        )}
         <p className="px-4 pt-4 pb-1 text-xs font-medium text-alignment-accent/70 uppercase tracking-wider">Account</p>
         {drawerAuth.isLoggedIn ? (
           <>

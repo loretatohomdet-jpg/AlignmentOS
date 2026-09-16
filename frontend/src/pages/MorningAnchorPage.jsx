@@ -139,7 +139,7 @@ export default function MorningAnchorPage() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-xl px-6 pb-28 pt-10 sm:pt-12">
+    <div className="mx-auto w-full max-w-xl px-6 pb-16 pt-10 sm:pt-12">
       <p className={type.kicker}>
         Morning anchor · about five minutes
       </p>

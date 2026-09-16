@@ -104,6 +104,7 @@ model Lead {
   id        String   @id @default(uuid())
   email     String
   source    String?  @default("lander")
+  pendingReport Json?
   createdAt DateTime @default(now())
 
   @@index([email, source])

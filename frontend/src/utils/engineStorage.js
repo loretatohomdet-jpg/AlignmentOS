@@ -11,11 +11,12 @@ export function loadRituals(day) {
     const raw = localStorage.getItem(ritualStorageKey(day));
     const parsed = raw ? JSON.parse(raw) : {};
     return {
+      morning: Boolean(parsed.morning),
       midday: Boolean(parsed.midday),
       close: Boolean(parsed.close),
     };
   } catch (_) {
-    return { midday: false, close: false };
+    return { morning: false, midday: false, close: false };
   }
 }
 

@@ -29,7 +29,14 @@ export default function SignupPage() {
     try {
       const { data } = await axios.post(`${API_BASE}/auth/register`, payload);
       localStorage.setItem('accessToken', data.token);
-      navigate(returnTo.startsWith('/') ? returnTo : `/${returnTo}`, { replace: true });
+      window.dispatchEvent(new Event('alignment-auth'));
+      const claimed = Boolean(data?.claimedDiagnostic);
+      const dest = returnTo.startsWith('/') ? returnTo : `/${returnTo}`;
+      if (claimed && (dest === '/assessment' || dest === '/signup')) {
+        navigate('/dashboard', { replace: true });
+      } else {
+        navigate(dest, { replace: true });
+      }
     } catch (err) {
       const msg = err.response?.data?.message;
       const errors = err.response?.data?.errors;
@@ -123,7 +130,10 @@ export default function SignupPage() {
 
         <p className="mt-8 text-center text-sm text-alignment-accent/70">
           Already have an account?{' '}
-          <NavLink to="/login" className="font-medium text-alignment-accent hover:underline">
+          <NavLink
+            to={`/login?returnTo=${encodeURIComponent(returnTo)}`}
+            className="font-medium text-alignment-accent hover:underline"
+          >
             Sign in
           </NavLink>
         </p>

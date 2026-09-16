@@ -126,7 +126,7 @@ export default function DiagnosticResultsSummary({
         <div className="mt-12 sm:mt-14">
           <h2 className={`${resultsUi.heading} text-xl sm:text-2xl text-center leading-snug`}>See your full diagnostic.</h2>
           <p className="mt-5 text-sm text-alignment-accent/55 text-center leading-relaxed px-1">
-            Enter your email to unlock your domain breakdown. We’ll send this report, and an invite to upgrade to the Habit Engine.
+            Enter your email to unlock your domain breakdown. We’ll send this report, then invite you to upgrade.
           </p>
           <form onSubmit={handleUnlock} className="mt-9 space-y-4">
             <input
@@ -161,7 +161,7 @@ export default function DiagnosticResultsSummary({
 
       {showExtended && emailed && (
         <p className="mt-10 text-sm text-alignment-accent/60 text-center leading-relaxed">
-          We sent this diagnostic to {email.trim()}, with an invite to upgrade to the Habit Engine.
+          We sent this diagnostic to {email.trim()}, with an invite to upgrade.
         </p>
       )}
 
@@ -236,12 +236,12 @@ export default function DiagnosticResultsSummary({
       {showExtended && lockBreakdownUntilEmail && (
         <div className={`${resultsUi.panel} mt-8 text-center`}>
           <p className={resultsUi.label}>Next step</p>
-          <p className="mt-4 font-display text-xl sm:text-2xl font-medium text-alignment-accent">Upgrade to the Habit Engine</p>
+          <p className="mt-4 font-display text-xl sm:text-2xl font-medium text-alignment-accent">Upgrade</p>
           <p className="mt-3 text-sm text-alignment-accent/60 leading-relaxed">
-            Close the gap with morning, midday, and evening rooms. This is a paid upgrade — Stripe checkout after you create an account.
+            The Habit Engine holds the day. Journey to Purpose is the formation course. See pricing, then create an account or sign in.
           </p>
-          <Link to="/signup?returnTo=/pricing" className={`${pillPrimary} mt-6`}>
-            Upgrade to the Habit Engine →
+          <Link to="/pricing" className={`${pillPrimary} mt-6`}>
+            See pricing →
           </Link>
         </div>
       )}

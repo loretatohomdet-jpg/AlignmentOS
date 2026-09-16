@@ -42,6 +42,7 @@ export async function fetchRitualArchive() {
 
 export function cacheHeldRituals(day, rituals) {
   saveRituals(day, {
+    morning: Boolean(rituals?.morning?.held),
     midday: Boolean(rituals?.midday?.held),
     close: Boolean(rituals?.close?.held),
   });
@@ -56,7 +57,7 @@ export async function pushHeldLocalRituals(day) {
   } catch (_) {
     return loadRituals(day);
   }
-  const kinds = ['midday', 'close'];
+  const kinds = ['morning', 'midday', 'close'];
   await Promise.all(
     kinds.map(async (kind) => {
       if (!local[kind] || server[kind]?.held) return;
@@ -73,6 +74,7 @@ export async function pushHeldLocalRituals(day) {
   );
   cacheHeldRituals(day, server);
   return {
+    morning: Boolean(server.morning?.held || local.morning),
     midday: Boolean(server.midday?.held || local.midday),
     close: Boolean(server.close?.held || local.close),
   };

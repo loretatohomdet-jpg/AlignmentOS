@@ -34,7 +34,11 @@ export default function LoginForm({
       const { data } = await axios.post(`${API_BASE}/auth/login`, { email, password });
       localStorage.setItem('accessToken', data.token);
       window.dispatchEvent(new Event('alignment-auth'));
-      const path = returnTo.startsWith('/') ? returnTo : `/${returnTo}`;
+      const claimed = Boolean(data?.claimedDiagnostic);
+      let path = returnTo.startsWith('/') ? returnTo : `/${returnTo}`;
+      if (claimed && (path === '/assessment' || path === '/login' || path === '/signup')) {
+        path = '/dashboard';
+      }
       if (onSuccess) {
         onSuccess(path);
       } else {
@@ -117,7 +121,10 @@ export default function LoginForm({
 
       <p className={`${compact ? 'mt-6' : 'mt-6'} text-center font-sans text-sm text-alignment-accent/70`}>
         Don&apos;t have an account?{' '}
-        <NavLink to="/signup" className="font-medium text-alignment-accent hover:underline">
+        <NavLink
+          to={`/signup?returnTo=${encodeURIComponent(returnTo)}`}
+          className="font-medium text-alignment-accent hover:underline"
+        >
           Sign up
         </NavLink>
       </p>

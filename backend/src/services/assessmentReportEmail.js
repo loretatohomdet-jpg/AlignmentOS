@@ -45,7 +45,7 @@ function domainScoresToDisplayPct(pillarScores, key) {
 function buildAssessmentReportHtml(report) {
   const score = Math.round(Math.min(100, Math.max(0, Number(report.score) || 0)));
   const origin = appOrigin();
-  const upgradeUrl = `${origin}/signup?returnTo=${encodeURIComponent('/pricing')}`;
+  const upgradeUrl = `${origin}/pricing`;
   const rows = DOMAIN_ORDER.map((key) => {
     if (report.pillarScores?.[key] == null) return '';
     const pct = domainScoresToDisplayPct(report.pillarScores, key);
@@ -77,27 +77,20 @@ function buildAssessmentReportHtml(report) {
         <table style="width:100%;border-collapse:collapse;">${rows}</table>
         <div style="margin:32px 0 0;padding:24px;border:1px solid #E7E4DC;border-radius:16px;">
           <p style="margin:0 0 6px;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#6E7158;">Next step</p>
-          <p style="margin:0 0 10px;font-size:22px;font-weight:500;line-height:1.25;">Upgrade to the Habit Engine</p>
+          <p style="margin:0 0 10px;font-size:22px;font-weight:500;line-height:1.25;">Upgrade</p>
           <p style="margin:0 0 20px;font-size:15px;line-height:1.55;color:#5a5c54;">
-            This report shows where life holds and where it strains. The Habit Engine is how you close the gap — morning, midday, and evening rooms, installed on your lowest domain. It is a paid upgrade.
+            The diagnostic is free. To close the gap, upgrade to the Habit Engine — morning, midday, and evening rooms — or to Journey to Purpose, the formation course. See pricing, then create an account or sign in to continue.
           </p>
           <table role="presentation" cellspacing="0" cellpadding="0" border="0">
             <tr>
               <td style="border-radius:999px;background:#6E7158;">
                 <a href="${upgradeUrl}" style="display:inline-block;padding:14px 26px;color:#ffffff;text-decoration:none;font-size:15px;line-height:1;">
-                  Upgrade to the Habit Engine →
+                  See pricing →
                 </a>
               </td>
             </tr>
           </table>
-          <p style="margin:14px 0 0;font-size:13px;line-height:1.5;color:#6E7158;">
-            $12/month · Stripe checkout · create an account to pay
-          </p>
         </div>
-        <p style="margin:22px 0 0;font-size:14px;line-height:1.55;color:#5a5c54;">
-          Prefer to save this score first?
-          <a href="${origin}/signup?returnTo=${encodeURIComponent('/assessment')}" style="color:#6E7158;">Create a free account</a>.
-        </p>
         <p style="margin:20px 0 0;font-size:14px;color:#6E7158;">— Alignment OS</p>
       </div>
     </div>

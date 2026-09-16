@@ -81,89 +81,39 @@ function AnimatedProofStat({ target, prefix = '', suffix = '', label }) {
 }
 
 function FinalCtaClosing() {
-  const ref = useRef(null);
-  const [started, setStarted] = useState(false);
-  const [n24, setN24] = useState(0);
-  const [n6, setN6] = useState(0);
-  const [n12, setN12] = useState(0);
-  const prefersReducedMotion = usePrefersReducedMotion();
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setStarted(true);
-          io.disconnect();
-        }
-      },
-      { threshold: 0.15, rootMargin: '0px 0px -8% 0px' }
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (!started) return;
-    if (prefersReducedMotion) {
-      setN24(24);
-      setN6(6);
-      setN12(12);
-      return;
-    }
-    let rafId = 0;
-    const duration = 2000;
-    const t0 = performance.now();
-
-    const tick = (now) => {
-      const t = Math.min(1, (now - t0) / duration);
-      const eased = 1 - (1 - t) ** 3;
-      setN24(Math.round(24 * eased));
-      setN6(Math.round(6 * eased));
-      setN12(Math.round(12 * eased));
-      if (t < 1) rafId = requestAnimationFrame(tick);
-      else {
-        setN24(24);
-        setN6(6);
-        setN12(12);
-      }
-    };
-    rafId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(rafId);
-  }, [started, prefersReducedMotion]);
-
   return (
     <section
       className="w-full bg-alignment-foundation border-t border-alignment-neutral/25"
       aria-labelledby="final-cta-heading"
     >
-      <div ref={ref} className="max-w-2xl mx-auto px-6 py-20 sm:py-28 lg:py-32 text-center">
-        <p className={type.kicker}>
-          Begin today
-        </p>
-          <h2
-            id="final-cta-heading"
-            className={`mt-6 ${type.h2}`}
-          >
-          Your score is waiting.
+      <div className="max-w-2xl mx-auto px-6 py-20 sm:py-28 lg:py-32 text-center">
+        <p className={type.kicker}>The Alignment Reset</p>
+        <h2 id="final-cta-heading" className={`mt-6 ${type.h2}`}>
+          Get the guide.
         </h2>
         <p className="mt-6 text-sm sm:text-base text-alignment-accent/75 leading-relaxed">
-          <span className="font-semibold text-alignment-accent tabular-nums">{n24}</span> questions ·{' '}
-          <span className="font-semibold text-alignment-accent tabular-nums">{n6}</span> domains ·{' '}
-          <span className="font-semibold text-alignment-accent tabular-nums">{n12}</span> min · free
+          A short letter on where life holds, where it strains, and how to begin. We’ll send it to your inbox.
         </p>
 
         <div className="mt-8 w-full max-w-sm mx-auto text-left">
           <EmailCaptureForm
-            source="home-footer-cta"
-            redirectTo="/assessment"
+            source="home-reset-guide"
+            redirectTo={null}
             layout="stacked"
-            buttonText="Get free score"
+            buttonText="Get the Alignment Reset guide"
             helperText="No spam. Unsubscribe any time."
+            successText="The Alignment Reset guide is on its way to your inbox."
           />
         </div>
         <p className="mt-5 text-center">
+          <Link
+            to="/assessment"
+            className="text-[11px] sm:text-xs text-alignment-accent/50 transition-colors duration-200 hover:text-alignment-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-alignment-primary/30 rounded-sm px-0.5"
+          >
+            Prefer the diagnostic? Begin free <span aria-hidden>→</span>
+          </Link>
+        </p>
+        <p className="mt-3 text-center">
           <Link
             to="/dashboard"
             className="text-[11px] sm:text-xs text-alignment-accent/50 transition-colors duration-200 hover:text-alignment-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-alignment-primary/30 rounded-sm px-0.5"

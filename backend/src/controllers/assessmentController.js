@@ -1,11 +1,16 @@
 const { ZodError } = require('zod');
 const { prisma } = require('../prismaClient');
 const { submitAssessmentSchema, emailReportSchema } = require('../validation/assessmentSchemas');
-const { computeAQ, getAlignmentTypeSubtitle } = require('../services/aqScore');
-const { syncActiveHabits } = require('../services/habitAssignment');
+const { getAlignmentTypeSubtitle } = require('../services/aqScore');
 const { resolveActiveAssessmentWithQuestions } = require('../services/assessmentEnsureQuestions');
 const { sendAssessmentReportEmail } = require('../services/assessmentReportEmail');
 const { subscribeLeadQuietly } = require('../services/convertkit');
+const {
+  DOMAIN_LABELS,
+  buildAlignmentLabel,
+  computeAssessmentFromResponses,
+  saveAssessmentForUser,
+} = require('../services/persistAssessment');
 
 function reportFromComputed(computed) {
   const { aqScore, pillarScores, primaryDomain, alignmentTypeTitle, alignmentTypeSubtitle } = computed;
@@ -33,9 +38,15 @@ function reportFromProfile(profile) {
   };
 }
 
-async function persistDiagnosticLead(email, source) {
+async function persistDiagnosticLead(email, source, pendingReport = null) {
   try {
-    await prisma.lead.create({ data: { email, source } });
+    await prisma.lead.create({
+      data: {
+        email,
+        source,
+        ...(pendingReport ? { pendingReport } : {}),
+      },
+    });
   } catch (err) {
     console.error('Lead DB save failed:', err.message);
   }
@@ -44,105 +55,6 @@ async function persistDiagnosticLead(email, source) {
   } catch (err) {
     console.error('ConvertKit lead subscribe failed:', err.message);
   }
-}
-
-const DOMAIN_LABELS = {
-  IDENTITY: 'Identity',
-  PURPOSE: 'Purpose',
-  MINDSET: 'Mindset',
-  HABITS: 'Habits',
-  ENVIRONMENT: 'Environment',
-  EXECUTION: 'Execution',
-};
-
-function buildAlignmentLabel(score) {
-  const s = Number(score);
-  if (s >= 90) return 'High coherence';
-  if (s >= 75) return 'Strong alignment';
-  if (s >= 60) return 'Moderate alignment';
-  if (s >= 40) return 'Some structure, significant drift';
-  return 'Significant misalignment';
-}
-
-/**
- * Load questions, validate responses, compute AQ (no DB writes). Used by submit and public preview.
- */
-async function computeAssessmentFromResponses(assessmentId, responses) {
-  const questions = await prisma.question.findMany({
-    where: { assessmentId },
-  });
-
-  if (questions.length === 0) {
-    const err = new Error('Assessment has no questions or does not exist');
-    err.statusCode = 400;
-    throw err;
-  }
-
-  const questionMap = new Map(questions.map((q) => [q.id, q]));
-
-  const expectedIds = new Set(questions.map((q) => q.id));
-  if (responses.length !== questions.length) {
-    const err = new Error('Each question must be answered exactly once.');
-    err.statusCode = 400;
-    throw err;
-  }
-  const responseIds = new Set(responses.map((r) => r.questionId));
-  if (responseIds.size !== questions.length || ![...expectedIds].every((id) => responseIds.has(id))) {
-    const err = new Error('Each question must be answered exactly once.');
-    err.statusCode = 400;
-    throw err;
-  }
-
-  for (const r of responses) {
-    const q = questionMap.get(r.questionId);
-    if (!q) {
-      const err = new Error(`Invalid questionId: ${r.questionId}`);
-      err.statusCode = 400;
-      throw err;
-    }
-    if (r.value < q.scaleMin || r.value > q.scaleMax) {
-      const err = new Error(
-        `Value for question ${r.questionId} must be between ${q.scaleMin} and ${q.scaleMax}`
-      );
-      err.statusCode = 400;
-      throw err;
-    }
-  }
-
-  const questionMeta = {};
-  for (const q of questions) {
-    questionMeta[q.id] = {
-      scaleMin: q.scaleMin,
-      scaleMax: q.scaleMax,
-      pillar: q.pillar,
-      questionType: q.questionType,
-    };
-  }
-  const responsesForAQ = responses.map((r) => ({
-    questionId: r.questionId,
-    value: r.value,
-  }));
-
-  let computed;
-  try {
-    computed = computeAQ(
-      responsesForAQ.map((r) => ({
-        ...r,
-        pillar: questionMap.get(r.questionId)?.pillar,
-        questionType: questionMap.get(r.questionId)?.questionType,
-      })),
-      questionMeta
-    );
-  } catch (e) {
-    if (e.code === 'INCOMPLETE_ASSESSMENT') {
-      const err = new Error(e.message || 'All questions must be answered.');
-      err.statusCode = 400;
-      throw err;
-    }
-    throw e;
-  }
-
-  return { computed, questions };
 }
 
 async function getActiveAssessment(req, res, next) {
@@ -213,89 +125,15 @@ async function submitAssessment(req, res, next) {
     const parsed = submitAssessmentSchema.parse(req.body);
     const userId = req.user.sub;
     const { assessmentId, responses } = parsed;
-
-    let payload;
     try {
-      payload = await computeAssessmentFromResponses(assessmentId, responses);
+      const saved = await saveAssessmentForUser(userId, assessmentId, responses);
+      res.status(201).json(saved);
     } catch (e) {
       if (e.statusCode === 400) {
         return res.status(400).json({ message: e.message });
       }
       throw e;
     }
-
-    const { computed, questions } = payload;
-    const questionMap = new Map(questions.map((q) => [q.id, q]));
-
-    const { aqScore, pillarScores, primaryDomain, archetype, alignmentTypeTitle, alignmentTypeSubtitle } =
-      computed;
-
-    const scoreRecord = await prisma.$transaction(async (tx) => {
-      await tx.response.deleteMany({
-        where: { userId, assessmentId },
-      });
-
-      await tx.response.createMany({
-        data: responses.map((r) => ({
-          userId,
-          assessmentId,
-          questionId: r.questionId,
-          value: r.value,
-        })),
-      });
-
-      return await tx.alignmentIndexScore.create({
-        data: {
-          userId,
-          assessmentId,
-          score: aqScore,
-        },
-      });
-    });
-
-    const profile = await prisma.alignmentProfile.upsert({
-      where: { userId },
-      create: {
-        userId,
-        assessmentId,
-        aqScore,
-        primaryDomain: primaryDomain ?? null,
-        archetype: archetype ?? null,
-        pillarScores: pillarScores ?? {},
-      },
-      update: {
-        assessmentId,
-        aqScore,
-        primaryDomain: primaryDomain ?? null,
-        archetype: archetype ?? null,
-        pillarScores: pillarScores ?? {},
-      },
-    });
-
-    const label = buildAlignmentLabel(aqScore);
-
-    let habits = [];
-    try {
-      habits = await syncActiveHabits(userId, profile.id);
-    } catch (assignErr) {
-      console.error('Habit assignment failed:', assignErr.message);
-    }
-
-    res.status(201).json({
-      score: aqScore,
-      label,
-      createdAt: scoreRecord.createdAt,
-      pillarScores,
-      primaryDomain,
-      archetype,
-      profileId: profile.id,
-      alignmentTypeTitle,
-      alignmentTypeSubtitle,
-      primaryStrainLabel: primaryDomain ? DOMAIN_LABELS[primaryDomain] : null,
-      primaryStrainDescription:
-        'Your primary structural gap — where habit installation begins.',
-      habits,
-    });
   } catch (err) {
     if (err instanceof ZodError) {
       return res.status(400).json({ message: 'Invalid data', errors: err.errors });
@@ -432,7 +270,13 @@ async function emailAssessmentReport(req, res, next) {
       });
     }
 
-    await persistDiagnosticLead(email, source);
+    await persistDiagnosticLead(
+      email,
+      source,
+      parsed.assessmentId && parsed.responses?.length
+        ? { assessmentId: parsed.assessmentId, responses: parsed.responses }
+        : null
+    );
 
     let emailed = false;
     try {

@@ -77,6 +77,7 @@ export default function PricingPage() {
   const [checkoutLoading, setCheckoutLoading] = useState(null);
   const [checkoutError, setCheckoutError] = useState(null);
   const [billingReady, setBillingReady] = useState(null);
+  const [needAccount, setNeedAccount] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -96,7 +97,10 @@ export default function PricingPage() {
   const startCheckout = async (priceKey) => {
     const token = localStorage.getItem('accessToken');
     if (!token) {
-      navigate(`/login?returnTo=${encodeURIComponent('/pricing')}`);
+      setNeedAccount(true);
+      requestAnimationFrame(() => {
+        document.getElementById('account-to-upgrade')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
       return;
     }
     setCheckoutError(null);
@@ -250,26 +254,15 @@ export default function PricingPage() {
                 </p>
                 <CheckList items={foundationHabit} />
                 <div className="flex-1" />
-                {checkoutHabitUrl && !localStorage.getItem('accessToken') ? (
-                  <a
-                    href={checkoutHabitUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`${pillOutline} mt-10 w-full`}
-                  >
-                    Activate <span aria-hidden className="ml-2">→</span>
-                  </a>
-                ) : (
-                  <button
-                    type="button"
-                    disabled={!!checkoutLoading}
-                    onClick={() => startCheckout(billing === 'yearly' ? 'habit_yearly' : 'habit_monthly')}
-                    className={`${pillOutline} mt-10 w-full disabled:opacity-60`}
-                  >
-                    {checkoutLoading?.startsWith('habit') ? 'Redirecting…' : 'Activate'}{' '}
-                    <span aria-hidden className="ml-2">→</span>
-                  </button>
-                )}
+                <button
+                  type="button"
+                  disabled={!!checkoutLoading}
+                  onClick={() => startCheckout(billing === 'yearly' ? 'habit_yearly' : 'habit_monthly')}
+                  className={`${pillOutline} mt-10 w-full disabled:opacity-60`}
+                >
+                  {checkoutLoading?.startsWith('habit') ? 'Redirecting…' : 'Activate'}{' '}
+                  <span aria-hidden className="ml-2">→</span>
+                </button>
                 <p className="mt-3 text-center text-[11px] text-alignment-accent/45">
                   {billingReady === false
                     ? 'Stripe checkout is being connected. You can still begin free.'
@@ -291,29 +284,38 @@ export default function PricingPage() {
                 <p className="mt-1 text-xs text-alignment-accent/50">Self-guided · lifetime access</p>
                 <CheckList items={foundationJourney} />
                 <div className="flex-1" />
-                {checkoutJourneyUrl && !localStorage.getItem('accessToken') ? (
-                  <a
-                    href={checkoutJourneyUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`${pillPrimary} mt-10 w-full`}
-                  >
-                    Begin journey <span aria-hidden className="ml-2">→</span>
-                  </a>
-                ) : (
-                  <button
-                    type="button"
-                    disabled={!!checkoutLoading}
-                    onClick={() => startCheckout('journey')}
-                    className={`${pillPrimary} mt-10 w-full disabled:opacity-60`}
-                  >
-                    {checkoutLoading === 'journey' ? 'Redirecting…' : 'Begin journey'}{' '}
-                    <span aria-hidden className="ml-2">→</span>
-                  </button>
-                )}
+                <button
+                  type="button"
+                  disabled={!!checkoutLoading}
+                  onClick={() => startCheckout('journey')}
+                  className={`${pillPrimary} mt-10 w-full disabled:opacity-60`}
+                >
+                  {checkoutLoading === 'journey' ? 'Redirecting…' : 'Begin journey'}{' '}
+                  <span aria-hidden className="ml-2">→</span>
+                </button>
               </div>
             </div>
           </div>
+          {needAccount && (
+            <div
+              id="account-to-upgrade"
+              className="max-w-xl mx-auto px-6 sm:px-8 pb-16 text-center"
+            >
+              <p className={type.kicker}>To continue</p>
+              <p className={`mt-4 ${type.h3}`}>Create an account or sign in</p>
+              <p className="mt-3 text-sm text-alignment-accent/60 leading-relaxed">
+                Then you’ll return here to complete checkout.
+              </p>
+              <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+                <Link to="/signup?returnTo=/pricing" className={pillPrimary}>
+                  Create an account
+                </Link>
+                <Link to="/login?returnTo=/pricing" className={pillGhost}>
+                  Sign in
+                </Link>
+              </div>
+            </div>
+          )}
         </section>
 
         {/* Optional add-ons */}

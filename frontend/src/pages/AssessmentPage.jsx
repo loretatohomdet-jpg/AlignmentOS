@@ -595,7 +595,7 @@ export default function AssessmentPage() {
                     See your full diagnostic
                   </h2>
                   <p className="mt-3 text-sm text-alignment-accent/55 text-center leading-relaxed">
-                    Enter your email to unlock the six-domain breakdown. We’ll send this report to your inbox, with the next step: upgrade to the Habit Engine.
+                    Enter your email to unlock the six-domain breakdown. We’ll send this report, then invite you to upgrade.
                   </p>
                   <form onSubmit={handleGuestUnlockEmail} className="mt-6 space-y-4">
                     <input
@@ -621,7 +621,7 @@ export default function AssessmentPage() {
                 <>
                   <p className="text-sm text-alignment-accent/60 text-center leading-relaxed">
                     {guestEmailed
-                      ? `We sent this diagnostic to ${guestEmail.trim()}, with an invite to upgrade to the Habit Engine.`
+                      ? `We sent this diagnostic to ${guestEmail.trim()}, with an invite to upgrade.`
                       : `Your results are below. If an email doesn’t arrive at ${guestEmail.trim()}, keep this page.`}
                   </p>
                   <div className="rounded-2xl border border-alignment-accent/10 bg-alignment-surface px-5 py-8 shadow-apple">
@@ -658,26 +658,13 @@ export default function AssessmentPage() {
                   </div>
                   <div className="rounded-2xl border border-alignment-accent/10 bg-alignment-surface px-6 py-6 text-center shadow-apple">
                     <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-alignment-primary/70">Next step</p>
-                    <p className="mt-3 text-sm font-medium text-alignment-accent">Upgrade to the Habit Engine</p>
+                    <p className="mt-3 text-sm font-medium text-alignment-accent">Upgrade</p>
                     <p className="mt-2 text-sm text-alignment-accent/55">
-                      Close the gap with morning, midday, and evening rooms. This is a paid upgrade — Stripe checkout after you create an account.
+                      The Habit Engine holds the day. Journey to Purpose is the formation course. See pricing, then create an account or sign in.
                     </p>
-                    <Link
-                      to="/signup?returnTo=/pricing"
-                      className={`${pillPrimary} mt-5`}
-                    >
-                      Upgrade to the Habit Engine →
+                    <Link to="/pricing" className={`${pillPrimary} mt-5`}>
+                      See pricing →
                     </Link>
-                    <p className="mt-4 text-xs text-alignment-accent/45">
-                      Want to save this score first?{' '}
-                      <Link to="/signup?returnTo=/assessment" className="font-medium text-alignment-accent underline underline-offset-2">
-                        Create a free account
-                      </Link>
-                      {' · '}
-                      <Link to="/login?returnTo=/pricing" className="font-medium text-alignment-accent underline underline-offset-2">
-                        Sign in
-                      </Link>
-                    </p>
                   </div>
                 </>
               )}

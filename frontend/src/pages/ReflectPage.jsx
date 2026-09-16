@@ -99,7 +99,7 @@ export default function ReflectPage() {
   const gapLabel = primaryDomain ? DOMAIN_LABELS[primaryDomain] : null;
 
   return (
-    <div className="mx-auto w-full max-w-xl px-6 pb-28 pt-10 sm:pt-12">
+    <div className="mx-auto w-full max-w-xl px-6 pb-16 pt-10 sm:pt-12">
       <p className={type.kicker}>Practice library</p>
       <h1 className={`mt-4 ${type.h1}`}>
         Few, and chosen.

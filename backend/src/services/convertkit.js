@@ -68,7 +68,7 @@ async function subscribeToConvertKit({ email, firstName, tags = [], source }) {
   return true;
 }
 
-/** Lead capture (homepage Reset guide, etc.) — uses the Kit form and its confirmation email. */
+/** Form subscribe — sends Kit’s form confirmation. Do not use for homepage or diagnostic capture. */
 function subscribeLead(email, source = 'lander') {
   return subscribeToConvertKit({
     email,

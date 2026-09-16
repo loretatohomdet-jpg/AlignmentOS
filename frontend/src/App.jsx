@@ -21,6 +21,7 @@ import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
+import ResetGuidePage from './pages/ResetGuidePage';
 import PricingPage from './pages/PricingPage';
 import AboutPage from './pages/AboutPage';
 import InstitutionPage from './pages/InstitutionPage';
@@ -56,7 +57,6 @@ import SharePage from './pages/SharePage';
 import SharePublicPage from './pages/SharePublicPage';
 import HeaderUserMenu from './components/HeaderUserMenu';
 import AgentFloatingButton from './components/AgentFloatingButton';
-import EngineTabBar from './components/EngineTabBar';
 import SiteMarketingHeader from './components/SiteMarketingHeader';
 import { SitePageFooter } from './components/HomeMarketingChrome';
 import { API_BASE } from './config/apiBase';
@@ -100,12 +100,6 @@ function Layout({ children }) {
   };
 
   const immersiveAssessment = location.pathname === '/assessment';
-  const engineShell =
-    location.pathname === '/practice' ||
-    location.pathname.startsWith('/practice/') ||
-    location.pathname === '/reflect' ||
-    location.pathname === '/journey' ||
-    location.pathname === '/more';
 
   const handleDrawerLogout = () => {
     try {
@@ -151,15 +145,6 @@ function Layout({ children }) {
     </>
   );
 
-  if (engineShell) {
-    return (
-      <div className="min-h-screen flex flex-col bg-alignment-foundation text-alignment-accent">
-        <main className="flex-1">{children}</main>
-        <EngineTabBar />
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen flex flex-col bg-alignment-page bg-fixed">
       <SiteMarketingHeader
@@ -199,6 +184,7 @@ export default function App() {
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />
+      <Route path="/reset-guide" element={<ResetGuidePage />} />
       <Route path="/pricing" element={<PricingPage />} />
       <Route path="/about" element={<AboutPage />} />
       <Route path="/platform" element={<PlatformPage />} />

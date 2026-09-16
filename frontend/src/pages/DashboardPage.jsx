@@ -19,184 +19,6 @@ import { API_BASE } from '../config/apiBase';
 import { type } from '../config/siteType';
 import { creatorHandoffUrl } from '../config/externalLinks';
 
-const PILLAR_LABELS = {
-  IDENTITY: 'Identity',
-  PURPOSE: 'Purpose',
-  MINDSET: 'Mindset',
-  HABITS: 'Habits',
-  ENVIRONMENT: 'Environment',
-  EXECUTION: 'Execution',
-};
-
-function completeMessage(err) {
-  if (err?.response?.status === 402) return 'paywall';
-  return err?.response?.data?.message || 'Could not save today’s practice.';
-}
-
-function HabitRow({ habit, onComplete, token, API_BASE, locked, onFail }) {
-  const navigate = useNavigate();
-  const [completing, setCompleting] = useState(false);
-  const handleDone = async () => {
-    if (completing || locked) return;
-    setCompleting(true);
-    try {
-      await axios.post(`${API_BASE}/habits/complete`, { activeHabitId: habit.id }, { headers: { Authorization: `Bearer ${token}` } });
-      onComplete?.();
-    } catch (err) {
-      if (completeMessage(err) === 'paywall') navigate('/pricing');
-      else onFail?.(completeMessage(err));
-    }
-    setCompleting(false);
-  };
-  return (
-    <div className="flex items-start justify-between gap-4 py-2 border-b border-alignment-accent/5 last:border-0">
-      <div>
-        <p className="font-medium text-alignment-accent">{habit.title}</p>
-        {habit.description && <p className="text-sm text-alignment-accent/70 mt-0.5">{habit.description}</p>}
-        <span className="inline-block mt-1 text-xs text-alignment-accent/70 rounded-full bg-alignment-surface px-2 py-0.5">Level {habit.level}</span>
-      </div>
-      {locked ? (
-        <Link
-          to="/pricing"
-          className="shrink-0 rounded-full bg-alignment-primary text-white px-4 py-2 text-sm font-medium hover:bg-alignment-primary/90"
-        >
-          Unlock
-        </Link>
-      ) : (
-        <button
-          type="button"
-          onClick={handleDone}
-          disabled={completing || habit.completedToday}
-          className="shrink-0 rounded-full bg-alignment-primary text-white px-4 py-2 text-sm font-medium hover:bg-alignment-primary/90 disabled:opacity-50"
-        >
-          {habit.completedToday ? 'Held' : completing ? '…' : 'Done'}
-        </button>
-      )}
-    </div>
-  );
-}
-
-const TODAY_RESPONSE_KEY = (habitId, dateStr) => `today_response_${habitId}_${dateStr}`;
-
-function TodayPracticeCard({ habit, onComplete, token, API_BASE, focusPillar, locked, onFail }) {
-  const navigate = useNavigate();
-  const todayStr = new Date().toISOString().slice(0, 10);
-  const storageKey = habit ? TODAY_RESPONSE_KEY(habit.id, todayStr) : null;
-  const [response, setResponse] = useState(() => {
-    if (!storageKey || typeof window === 'undefined') return '';
-    try {
-      return localStorage.getItem(storageKey) || '';
-    } catch (_) {
-      return '';
-    }
-  });
-  const [completing, setCompleting] = useState(false);
-  const [showCompleteMoment, setShowCompleteMoment] = useState(false);
-
-  const saveResponse = (value) => {
-    setResponse(value);
-    if (storageKey) {
-      try {
-        if (value.trim()) localStorage.setItem(storageKey, value.trim());
-        else localStorage.removeItem(storageKey);
-      } catch (_) {}
-    }
-  };
-
-  const handleDone = async () => {
-    if (completing || !habit || locked) return;
-    setCompleting(true);
-    try {
-      await axios.post(`${API_BASE}/habits/complete`, { activeHabitId: habit.id }, { headers: { Authorization: `Bearer ${token}` } });
-      setShowCompleteMoment(true);
-      onComplete?.();
-    } catch (err) {
-      if (completeMessage(err) === 'paywall') navigate('/pricing');
-      else onFail?.(completeMessage(err));
-    }
-    setCompleting(false);
-  };
-
-  if (showCompleteMoment) {
-    return (
-      <div className="rounded-2.5xl bg-alignment-surface border border-alignment-accent/[0.06] shadow-apple p-8 sm:p-12 text-center animate-fade-in">
-        <p className="text-2xl sm:text-3xl font-semibold text-alignment-accent tracking-tight">Complete.</p>
-        <p className="mt-2 text-alignment-accent/70">Order was restored today.</p>
-        <button
-          type="button"
-          onClick={() => setShowCompleteMoment(false)}
-          className="mt-6 rounded-full bg-alignment-primary text-white px-6 py-2.5 text-sm font-medium hover:bg-alignment-primary/90 transition-colors"
-        >
-          Return to Today
-        </button>
-      </div>
-    );
-  }
-
-  return (
-    <div className="rounded-2.5xl bg-alignment-surface border border-alignment-accent/[0.06] shadow-apple p-6 sm:p-8">
-      {focusPillar && (
-        <span className="inline-block rounded-full bg-alignment-accent/5 text-alignment-accent text-sm font-medium px-3 py-1 mb-4">
-          {focusPillar}
-        </span>
-      )}
-      <p className="text-xs font-medium text-alignment-accent/70 uppercase tracking-wider mb-3">Your practice</p>
-      {habit ? (
-        <>
-          <p className="text-lg font-semibold text-alignment-accent tracking-tight">{habit.title}</p>
-          {habit.description && <p className="mt-2 text-alignment-accent/70 text-sm">{habit.description}</p>}
-        </>
-      ) : (
-        <>
-          <p className="text-lg font-semibold text-alignment-accent tracking-tight">No practices yet</p>
-          <p className="mt-2 text-alignment-accent/70 text-sm">
-            Finish the diagnostic while signed in. Three practices from your lowest domain will appear here and on Practice.
-          </p>
-        </>
-      )}
-      {habit ? (
-        <>
-          <label htmlFor="today-practice-response" className="mt-4 block text-sm font-medium text-alignment-accent">
-            Your response (optional)
-          </label>
-          <textarea
-            id="today-practice-response"
-            value={response}
-            onChange={(e) => saveResponse(e.target.value)}
-            placeholder="e.g. Ship the proposal, or have one calm conversation with my team."
-            rows={3}
-            className="mt-2 w-full rounded-xl border border-alignment-accent/[0.08] bg-alignment-surface px-4 py-3 text-alignment-accent placeholder-alignment-accent/45 focus:border-alignment-accent focus:ring-2 focus:ring-alignment-accent/10 outline-none transition-all resize-none"
-          />
-          {locked ? (
-            <Link
-              to="/pricing"
-              className="mt-4 inline-block rounded-full bg-alignment-primary text-white px-5 py-2.5 text-sm font-medium hover:bg-alignment-primary/90 transition-colors"
-            >
-              Activate Habit Engine
-            </Link>
-          ) : (
-            <button
-              type="button"
-              onClick={handleDone}
-              disabled={completing || habit.completedToday}
-              className="mt-4 rounded-full bg-alignment-primary text-white px-5 py-2.5 text-sm font-medium hover:bg-alignment-primary/90 disabled:opacity-50 transition-colors"
-            >
-              {habit.completedToday ? 'Held today' : completing ? '…' : 'Mark done'}
-            </button>
-          )}
-          <p className="mt-3 text-xs text-alignment-accent/70">
-            {locked ? 'Daily tracking unlocks with Habit Engine.' : 'Optional'}
-          </p>
-        </>
-      ) : (
-        <Link to="/assessment" className="mt-4 inline-block rounded-full bg-alignment-primary text-white px-5 py-2.5 text-sm font-medium hover:bg-alignment-primary/90 transition-colors">
-          Take the assessment to get habits
-        </Link>
-      )}
-    </div>
-  );
-}
-
 function ScoreGauge({ score, label }) {
   const value = score != null ? Math.min(100, Math.max(0, score)) : 0;
   return (
@@ -358,27 +180,13 @@ export default function DashboardPage() {
 
   const firstName = user?.name?.split(/\s+/)[0] || 'there';
   const todayStr = new Date().toLocaleDateString(undefined, { weekday: 'long', month: 'short', day: 'numeric' });
-  const primaryHabit = habits[0] ?? null;
   const lastTakenAt = result?.createdAt ? new Date(result.createdAt) : null;
   const daysSinceAssessment = lastTakenAt ? Math.floor((Date.now() - lastTakenAt.getTime()) / (1000 * 60 * 60 * 24)) : null;
   const isQuarterlyDue = daysSinceAssessment !== null && daysSinceAssessment >= 90;
 
-  const refreshHabits = async () => {
-    try {
-      const [habitsRes, statsRes] = await Promise.all([
-        axios.get(`${API_BASE}/habits/active`, { headers: authHeaders }),
-        axios.get(`${API_BASE}/habits/stats`, { headers: authHeaders }).catch(() => ({ data: null })),
-      ]);
-      setHabits(Array.isArray(habitsRes.data) ? habitsRes.data : []);
-      if (statsRes.data) setHabitStats(statsRes.data);
-    } catch (_) {}
-  };
-
   const nextStep = !result
-    ? { label: 'Take the assessment', to: '/assessment', cta: 'Start →', isHabit: false }
-    : habits.length > 0
-      ? { label: primaryHabit.title, to: null, cta: 'Mark done', isHabit: true }
-      : { label: 'View your results and insights', to: '/results', cta: 'View →', isHabit: false };
+    ? { label: 'Take the assessment', to: '/assessment', cta: 'Start →' }
+    : { label: 'The day has three rooms.', to: '/practice', cta: 'Open Practice →' };
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 relative">
@@ -433,16 +241,20 @@ export default function DashboardPage() {
           <div className="mt-8 lg:mt-10 space-y-6 lg:space-y-8 animate-slide-up">
             {/* Row 1: three columns */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-6 xl:gap-8 lg:items-stretch">
-              <section className="min-h-0">
-                <TodayPracticeCard
-                  habit={primaryHabit}
-                  onComplete={refreshHabits}
-                  token={token}
-                  API_BASE={API_BASE}
-                  focusPillar={result?.primaryDomain ? PILLAR_LABELS[result.primaryDomain] || result.primaryDomain : null}
-                  locked={false}
-                  onFail={setError}
-                />
+              <section className="rounded-2.5xl bg-alignment-surface border border-alignment-accent/[0.06] shadow-apple p-6 sm:p-8 flex flex-col justify-between h-full min-h-0">
+                <div>
+                  <p className="text-xs font-medium text-alignment-accent/70 uppercase tracking-wider mb-2">The day</p>
+                  <p className="font-medium text-alignment-accent">Morning, midday, close.</p>
+                  <p className="mt-2 text-sm text-alignment-accent/60 leading-relaxed">
+                    Practice is where the day is held. This page is the record.
+                  </p>
+                </div>
+                <Link
+                  to="/practice"
+                  className="mt-6 inline-flex items-center justify-center rounded-full bg-alignment-primary text-white px-5 py-2.5 text-sm font-medium hover:bg-alignment-primary/90"
+                >
+                  Open Practice →
+                </Link>
               </section>
 
               <section className="rounded-2.5xl bg-alignment-surface border border-alignment-accent/[0.06] shadow-apple p-6 sm:p-8 flex flex-col items-center justify-between gap-4 h-full min-h-0">
@@ -466,31 +278,12 @@ export default function DashboardPage() {
                   <p className="text-xs font-medium text-alignment-accent/70 uppercase tracking-wider mb-2">Next Step</p>
                   <p className="font-medium text-alignment-accent">{nextStep.label}</p>
                 </div>
-                {nextStep.isHabit ? (
-                  <button
-                    type="button"
-                    onClick={async () => {
-                      if (!primaryHabit) return;
-                      try {
-                        await axios.post(`${API_BASE}/habits/complete`, { activeHabitId: primaryHabit.id }, { headers: authHeaders });
-                        await refreshHabits();
-                      } catch (err) {
-                        if (completeMessage(err) === 'paywall') navigate('/pricing');
-                        else setError(completeMessage(err));
-                      }
-                    }}
-                    className="mt-4 w-full rounded-full bg-alignment-primary text-white px-5 py-2.5 text-sm font-medium hover:bg-alignment-primary/90 transition-colors lg:mt-5"
-                  >
-                    {nextStep.cta}
-                  </button>
-                ) : (
-                  <Link
+                <Link
                     to={nextStep.to}
                     className="mt-4 block w-full text-center rounded-full bg-alignment-primary text-white px-5 py-2.5 text-sm font-medium hover:bg-alignment-primary/90 transition-colors lg:mt-5"
                   >
                     {nextStep.cta}
                   </Link>
-                )}
               </section>
             </div>
 
@@ -596,26 +389,16 @@ export default function DashboardPage() {
               </section>
 
               <section className="rounded-2.5xl bg-alignment-surface border border-alignment-accent/[0.06] shadow-apple p-6 flex flex-col h-full min-h-0">
-                <h2 className="text-sm font-semibold text-alignment-accent tracking-tight">Other habits</h2>
-                {habits.length > 1 ? (
-                  <div className="mt-4 space-y-0 flex-1 min-h-0 overflow-y-auto max-h-[280px] lg:max-h-none">
-                    {habits.slice(1).map((h) => (
-                      <HabitRow
-                        key={h.id}
-                        habit={h}
-                        onComplete={refreshHabits}
-                        token={token}
-                        API_BASE={API_BASE}
-                        locked={false}
-                        onFail={setError}
-                      />
-                    ))}
-                  </div>
-                ) : (
-                  <p className="mt-4 text-sm text-alignment-accent/55 flex-1">
-                    More habits appear after your assessment.
-                  </p>
-                )}
+                <h2 className="text-sm font-semibold text-alignment-accent tracking-tight">Your record</h2>
+                <p className="mt-3 text-sm text-alignment-accent/60 leading-relaxed flex-1">
+                  Score, type, and strain live here. Completing the day happens in Practice.
+                </p>
+                <Link to="/results" className="mt-4 text-sm font-medium text-alignment-accent hover:underline">
+                  View results →
+                </Link>
+                <Link to="/progress" className="mt-2 text-sm font-medium text-alignment-accent hover:underline">
+                  Progress →
+                </Link>
               </section>
             </div>
 

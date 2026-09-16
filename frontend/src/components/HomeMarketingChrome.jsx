@@ -131,11 +131,7 @@ export function HomeHeader() {
         <Link to={cta.to} className="block px-4 py-3.5 text-base text-alignment-accent" onClick={() => setDrawerOpen(false)}>
           {cta.label}
         </Link>
-        {isLoggedIn ? (
-          <Link to="/practice" className="block px-4 py-3.5 text-base text-alignment-accent" onClick={() => setDrawerOpen(false)}>
-            Practice
-          </Link>
-        ) : (
+        {isLoggedIn ? null : (
           <Link to="/login" className="block px-4 py-3.5 text-base text-alignment-accent" onClick={() => setDrawerOpen(false)}>
             Sign in
           </Link>

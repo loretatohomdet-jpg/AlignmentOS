@@ -95,7 +95,7 @@ export default function JourneyPage() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-xl px-6 pb-28 pt-10 sm:pt-12">
+    <div className="mx-auto w-full max-w-xl px-6 pb-16 pt-10 sm:pt-12">
       <p className={type.kicker}>Your journey</p>
       <h1 className={`mt-4 ${type.h1}`}>
         What is forming.

@@ -4,9 +4,10 @@ const { ZodError } = require('zod');
 const { prisma } = require('../prismaClient');
 const { registerSchema, loginSchema, forgotPasswordSchema, resetPasswordSchema } = require('../validation/authSchemas');
 const { subscribeRegistered } = require('../services/convertkit');
+const { claimGuestDiagnostic } = require('../services/persistAssessment');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-me';
-const TOKEN_EXPIRES_IN = '1h';
+const TOKEN_EXPIRES_IN = '30d';
 const APP_URL = process.env.APP_URL || 'http://localhost:5173';
 
 async function sendPasswordResetEmail(email, resetToken) {
@@ -72,8 +73,11 @@ async function register(req, res, next) {
       console.error('ConvertKit signup subscribe failed:', err.message)
     );
 
+    const claimedDiagnostic = await claimGuestDiagnostic(user.id, user.email);
+
     res.status(201).json({
       token,
+      claimedDiagnostic,
       user: {
         id: user.id,
         email: user.email,
@@ -117,9 +121,11 @@ async function login(req, res, next) {
     }
 
     const token = signToken(user);
+    const claimedDiagnostic = await claimGuestDiagnostic(user.id, user.email);
 
     res.json({
       token,
+      claimedDiagnostic,
       user: {
         id: user.id,
         email: user.email,

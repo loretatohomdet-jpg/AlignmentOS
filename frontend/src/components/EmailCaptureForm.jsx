@@ -7,14 +7,15 @@ const focusRing =
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2 focus-visible:ring-offset-alignment-foundation';
 
 /**
- * POST /api/lead — stored in DB + ConvertKit when configured.
+ * POST /api/lead — stores the email, adds it to the list quietly, and sends the Alignment Reset guide.
  */
 export default function EmailCaptureForm({
   source = 'lander',
   redirectTo = '/assessment',
-  buttonText = 'Get free score',
+  buttonText = 'Subscribe',
   placeholder = 'your@email.com',
   helperText = 'No spam. Unsubscribe any time.',
+  successText = 'Check your inbox.',
   layout = 'stacked',
   className = '',
   onSuccess,
@@ -53,7 +54,7 @@ export default function EmailCaptureForm({
   const buttonClass = `shrink-0 inline-flex items-center justify-center rounded-full bg-alignment-primary text-white text-[15px] font-medium px-8 py-3.5 min-h-12 transition-colors hover:bg-alignment-primary/90 disabled:opacity-50 ${focusRing}`;
 
   if (done && !redirectTo) {
-    return <p className="text-sm text-alignment-accent/70">You&apos;re on the list. Check your inbox.</p>;
+    return <p className="text-sm text-alignment-accent/70">{successText}</p>;
   }
 
   return (

@@ -13,14 +13,14 @@ export default function SuccessPage() {
       <h1 className={`mt-4 ${type.h1}`}>You&apos;re set</h1>
       <p className={`mt-4 ${type.body}`}>
         {from === 'checkout'
-          ? 'Payment received. Your Habit Engine access is active — open the dashboard to begin today’s practice.'
+          ? 'Payment received. Your Habit Engine is active. Open Today and begin the next room.'
           : from === 'signup'
             ? 'Your account is ready. Continue to the app or take the diagnostic.'
             : 'Next step: sign in to save progress, or take the diagnostic if you haven’t yet.'}
       </p>
       <div className="mt-10 flex flex-col sm:flex-row items-center gap-3">
-        <Link to="/dashboard" className={pillPrimary}>
-          Open app
+        <Link to={from === 'checkout' ? '/practice' : '/dashboard'} className={pillPrimary}>
+          {from === 'checkout' ? 'Open Today' : 'Open app'}
         </Link>
         <Link to="/assessment" className={pillGhost}>
           Diagnostic
