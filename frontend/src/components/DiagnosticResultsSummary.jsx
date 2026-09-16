@@ -6,6 +6,7 @@ import DomainPillarIcon from './DomainPillarIcon';
 import { domainScoresToDisplayPct } from '../utils/domainScores';
 import { diag, resultsUi } from '../constants/diagnosticTheme';
 import { API_BASE } from '../config/apiBase';
+import { pillPrimary } from './HomeMarketingChrome';
 
 const DEFAULT_SCORE_REVEALS =
   'Your score is a composite across Identity, Purpose, Mindset, Habits, Environment, and Execution. It reflects how aligned your interior structure is today — not moral worth. The lowest domain is your primary strain: where habit installation begins first.';
@@ -141,7 +142,7 @@ export default function DiagnosticResultsSummary({
             <button
               type="submit"
               disabled={submitting}
-              className="w-full rounded-full py-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-white bg-alignment-primary hover:bg-alignment-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className={`${pillPrimary} w-full disabled:opacity-50`}
             >
               {submitting ? 'Sending…' : 'Email my results →'}
             </button>

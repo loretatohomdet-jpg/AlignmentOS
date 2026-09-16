@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { type } from '../config/siteType';
+import { pillPrimary } from './HomeMarketingChrome';
 
 const defaultSteps = [
   {
@@ -45,14 +47,9 @@ export default function DashboardWelcomeModal({ open, onDismiss, hasScore = fals
       aria-labelledby="dashboard-welcome-title"
     >
       <div className="relative w-full max-w-lg rounded-2xl border border-alignment-accent/12 bg-alignment-foundation shadow-apple-lg px-6 py-8 sm:px-10 sm:py-10 animate-fade-in">
-        <p className="text-[10px] sm:text-[11px] font-normal uppercase tracking-[0.28em] text-alignment-primary/85">
-          Welcome to your dashboard
-        </p>
+        <p className={type.kicker}>Welcome to your dashboard</p>
 
-        <h2
-          id="dashboard-welcome-title"
-          className="mt-6 font-display text-[1.65rem] sm:text-[2rem] font-medium text-alignment-accent leading-[1.2] tracking-tight"
-        >
+        <h2 id="dashboard-welcome-title" className={`mt-6 ${type.h2}`}>
           {hasHabits ? 'Your practices are installed.' : hasScore ? 'Your score is in.' : 'Here is the loop.'}
         </h2>
         <p className="mt-3 font-display text-[1.35rem] sm:text-[1.5rem] italic font-normal text-alignment-primary leading-snug">
@@ -96,7 +93,7 @@ export default function DashboardWelcomeModal({ open, onDismiss, hasScore = fals
         <button
           type="button"
           onClick={onDismiss}
-          className="mt-10 w-full inline-flex items-center justify-center rounded-full bg-alignment-primary text-white text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.22em] py-4 transition-colors hover:bg-alignment-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2 focus-visible:ring-offset-alignment-foundation"
+          className={`${pillPrimary} mt-10 w-full`}
         >
           Enter dashboard <span aria-hidden className="ml-2">→</span>
         </button>

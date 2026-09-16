@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { API_BASE } from '../config/apiBase';
+import { type } from '../config/siteType';
 
 function Avatar({ user, className = '' }) {
   const sizeClass = className || 'w-20 h-20';
@@ -152,10 +153,10 @@ export default function ProfilePage() {
 
   return (
     <div className="max-w-xl mx-auto px-6 sm:px-8 py-12 sm:py-16">
-      <h1 className="text-headline font-semibold text-alignment-accent tracking-tight">
+      <h1 className={type.h1}>
         Account
       </h1>
-      <p className="mt-2 text-alignment-accent/70">
+      <p className={`mt-2 ${type.body}`}>
         Update your profile and preferences.
       </p>
 

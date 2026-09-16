@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { courseLibraryUrl } from '../config/externalLinks';
-import { copper } from '../utils/engineUi';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { type } from '../config/siteType';
 
 const rowClass =
   'flex w-full items-center justify-between gap-4 py-4 text-left border-b border-alignment-accent/[0.08] last:border-0 hover:text-alignment-primary transition-colors';
@@ -49,11 +49,11 @@ export default function MorePage() {
 
   return (
     <div className="mx-auto w-full max-w-xl px-6 pb-28 pt-10 sm:pt-12">
-      <p className={`text-[10px] font-medium uppercase tracking-[0.2em] ${copper}`}>Account</p>
-      <h1 className="mt-4 font-display italic font-normal text-[2.15rem] sm:text-[2.55rem] leading-[1.15] text-alignment-accent">
+      <p className={type.kicker}>Account</p>
+      <h1 className={`mt-4 ${type.h1}`}>
         More, quietly.
       </h1>
-      <p className="mt-3 text-[17px] text-alignment-accent/55 leading-relaxed">
+      <p className={`mt-3 ${type.body}`}>
         Settings, the record, and the door out.
       </p>
 
@@ -64,7 +64,7 @@ export default function MorePage() {
         <Row onClick={signOut} label="Sign out" />
       </div>
 
-      <p className="mt-10 text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-accent/40">The system</p>
+      <p className={`mt-10 ${type.kicker}`}>The system</p>
       <div className="mt-3 border-t border-alignment-accent/[0.08]">
         <Row to="/pricing" label="Pricing" />
         <Row to="/cohort" label="The Charter Cohort" />

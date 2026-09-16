@@ -12,6 +12,7 @@ import {
   Line,
 } from 'recharts';
 import { API_BASE } from '../config/apiBase';
+import { type } from '../config/siteType';
 
 export default function ProgressPage() {
   const navigate = useNavigate();
@@ -69,8 +70,8 @@ export default function ProgressPage() {
 
   return (
     <div className="max-w-3xl mx-auto px-6 sm:px-8 py-12 sm:py-16">
-      <h1 className="text-headline font-semibold text-alignment-accent tracking-tight">Progress</h1>
-      <p className="mt-2 text-alignment-accent/70">Awareness, not performance. Clarity over time.</p>
+      <h1 className={type.h1}>Progress</h1>
+      <p className={`mt-2 ${type.body}`}>Awareness, not performance. Clarity over time.</p>
 
       <div className="mt-10 space-y-6">
         {/* Alignment Score — quarterly awareness */}

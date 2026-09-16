@@ -1,18 +1,20 @@
 import { Link } from 'react-router-dom';
 import SiteMarketingHeader from '../components/SiteMarketingHeader';
 import EmailCaptureForm from '../components/EmailCaptureForm';
+import { SitePageFooter } from '../components/HomeMarketingChrome';
+import { type } from '../config/siteType';
 
 export default function StartPage() {
   return (
-    <div className="min-h-screen bg-alignment-surface flex flex-col">
+    <div className={type.page}>
       <SiteMarketingHeader />
 
       <main className="flex-1 flex items-center justify-center px-6 py-16">
         <div className="w-full max-w-md text-center">
-          <h1 className="text-headline font-semibold text-alignment-accent tracking-tight">
+          <h1 className={type.h1}>
             Get your free Alignment OS
           </h1>
-          <p className="mt-4 text-lg text-alignment-accent/70">
+          <p className={`mt-4 ${type.body}`}>
             One number across six domains. Takes about 12 minutes.
           </p>
           <div className="mt-8 text-left">
@@ -31,6 +33,7 @@ export default function StartPage() {
           </p>
         </div>
       </main>
+      <SitePageFooter />
     </div>
   );
 }

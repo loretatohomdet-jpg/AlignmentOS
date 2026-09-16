@@ -1,10 +1,12 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import BrandLogo from '../components/BrandLogo';
 import SiteMarketingHeader from '../components/SiteMarketingHeader';
-import { SiteSecondaryFooterNav } from '../components/SiteFooterNav';
-
-const focusRing = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2';
+import {
+  pillGhostOnOlive,
+  pillOnOlive,
+  SitePageFooter,
+} from '../components/HomeMarketingChrome';
+import { type } from '../config/siteType';
 
 const sectionClass = 'max-w-3xl lg:max-w-4xl mx-auto px-6 sm:px-8 lg:px-10';
 
@@ -18,7 +20,7 @@ export default function InstitutionPage() {
   }, []);
 
   return (
-    <div className="min-h-screen w-full bg-alignment-surface flex flex-col">
+    <div className={type.page}>
       <a href="#institution-main" className="skip-to-main">
         Skip to main content
       </a>
@@ -27,19 +29,19 @@ export default function InstitutionPage() {
       <main id="institution-main" className="flex-1 w-full scroll-mt-16" tabIndex={-1}>
         {/* Hero */}
         <section className={`${sectionClass} pt-12 sm:pt-16 pb-16 sm:pb-20`}>
-          <p className="text-center text-[10px] sm:text-[11px] font-normal uppercase tracking-[0.24em] text-alignment-accent/45">
+          <p className={`text-center ${type.kicker}`}>
             Institutions · Mission groups · Formation programmes
           </p>
-          <h1 className="mt-8 sm:mt-10 font-display text-[2rem] sm:text-[2.5rem] md:text-[2.75rem] font-medium text-alignment-accent leading-[1.15] tracking-tight text-center text-balance">
+          <h1 className={`mt-8 sm:mt-10 ${type.h1} text-center text-balance`}>
             <span className="italic font-normal text-alignment-accent/90">Formation</span> that holds{' '}
             <span className="italic font-normal text-alignment-accent/90">after the programme ends.</span>
           </h1>
-          <p className="mt-8 text-base sm:text-lg text-alignment-accent/70 leading-relaxed text-center max-w-2xl mx-auto font-sans">
+          <p className={`mt-8 ${type.body} text-center max-w-2xl mx-auto`}>
             Most formation programmes inspire people deeply. Few give them the structure to sustain what was awakened.
             Alignment OS is the continuation layer — the daily architecture that allows formation to compound.
           </p>
           <blockquote className="mt-12 sm:mt-14 pl-5 sm:pl-6 border-l-[3px] border-alignment-accent/20 max-w-2xl mx-auto">
-            <p className="font-display text-lg sm:text-xl md:text-[1.35rem] text-alignment-accent/90 italic leading-snug">
+            <p className={`${type.quote} italic`}>
               Formation awakens a calling. Alignment builds the life required to live it.
             </p>
           </blockquote>
@@ -83,7 +85,7 @@ export default function InstitutionPage() {
 
         {/* Who this is built for */}
         <section className={`${sectionClass} py-16 sm:py-20`}>
-          <h2 className="font-display text-2xl sm:text-3xl md:text-[2rem] font-medium text-alignment-accent text-center tracking-tight">
+          <h2 className={`${type.h2} text-center`}>
             Who this is built for
           </h2>
           <p className="mt-4 text-base text-alignment-accent/60 text-center max-w-2xl mx-auto leading-relaxed">
@@ -125,7 +127,7 @@ export default function InstitutionPage() {
 
         {/* The full offering */}
         <section className={`${sectionClass} py-16 sm:py-20 border-t border-alignment-accent/[0.08]`}>
-          <h2 className="font-display text-2xl sm:text-3xl font-medium text-alignment-accent text-center">The full offering</h2>
+          <h2 className={`${type.h2} text-center`}>The full offering</h2>
           <p className="mt-4 text-base text-alignment-accent/60 text-center max-w-2xl mx-auto leading-relaxed">
             Every member in an institutional partnership receives the complete Alignment OS system. There are no partial access
             tiers — the value of the platform is its integration.
@@ -200,7 +202,7 @@ export default function InstitutionPage() {
 
         {/* What formation leaders see */}
         <section className={`${sectionClass} py-16 sm:py-20 border-t border-alignment-accent/[0.08] bg-apple-surface-muted`}>
-          <h2 className="font-display text-2xl sm:text-3xl font-medium text-alignment-accent text-center">
+          <h2 className={`${type.h2} text-center`}>
             What formation leaders see
           </h2>
           <p className="mt-4 text-base text-alignment-accent/60 text-center max-w-2xl mx-auto">
@@ -252,7 +254,7 @@ export default function InstitutionPage() {
 
         {/* Onboarding */}
         <section className={`${sectionClass} py-16 sm:py-20 border-t border-alignment-accent/[0.08]`}>
-          <h2 className="font-display text-2xl sm:text-3xl font-medium text-alignment-accent text-center">How onboarding works</h2>
+          <h2 className={`${type.h2} text-center`}>How onboarding works</h2>
           <p className="mt-4 text-base text-alignment-accent/60 text-center max-w-2xl mx-auto">
             We work directly with your organisation to ensure the platform integrates naturally into your existing formation
             structure — without adding administrative burden.
@@ -369,7 +371,7 @@ export default function InstitutionPage() {
           <div className="max-w-3xl mx-auto text-center">
             <h2
               id="institution-cta-heading"
-              className="font-display text-2xl sm:text-3xl md:text-[2rem] font-medium text-white leading-tight"
+              className="font-display text-2xl sm:text-3xl font-medium text-white leading-tight"
             >
               Bring this to your community
             </h2>
@@ -394,19 +396,19 @@ export default function InstitutionPage() {
             <div className="mt-12 flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center justify-center gap-3 sm:gap-4 max-w-4xl mx-auto">
               <a
                 href="mailto:organizations@alignmentos.com?subject=Institutional%20partnership"
-                className="inline-flex min-h-[48px] flex-1 sm:flex-none items-center justify-center rounded-full bg-alignment-surface px-6 py-3.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.14em] text-alignment-accent hover:bg-alignment-surface/90 transition-colors sm:min-w-[220px]"
+                className={`${pillOnOlive} flex-1 sm:flex-none sm:min-w-[220px]`}
               >
                 Begin the conversation →
               </a>
               <Link
                 to="/pricing#journey-tier"
-                className="inline-flex min-h-[48px] flex-1 sm:flex-none items-center justify-center rounded-full border border-white/45 bg-transparent px-6 py-3.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.14em] text-white hover:bg-alignment-surface/10 transition-colors sm:min-w-[200px]"
+                className={`${pillGhostOnOlive} flex-1 sm:flex-none sm:min-w-[200px]`}
               >
                 The cohort model
               </Link>
               <Link
                 to="/assessment"
-                className="inline-flex min-h-[48px] flex-1 sm:flex-none items-center justify-center rounded-full border border-white/45 bg-transparent px-6 py-3.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.14em] text-white hover:bg-alignment-surface/10 transition-colors sm:min-w-[200px]"
+                className={`${pillGhostOnOlive} flex-1 sm:flex-none sm:min-w-[200px]`}
               >
                 Try the diagnostic free
               </Link>
@@ -415,17 +417,7 @@ export default function InstitutionPage() {
         </section>
       </main>
 
-      <footer className="w-full border-t border-alignment-accent/[0.08] bg-alignment-surface mt-auto">
-        <div className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-10 py-8 flex flex-col gap-6 sm:gap-8">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
-            <BrandLogo iconHeightPx={44} />
-            <Link to="/" className={`text-sm text-alignment-accent/70 hover:text-alignment-accent ${focusRing} rounded-sm sm:text-right`}>
-              ← Back to home
-            </Link>
-          </div>
-          <SiteSecondaryFooterNav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 sm:justify-end" />
-        </div>
-      </footer>
+      <SitePageFooter />
     </div>
   );
 }

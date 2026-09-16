@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import { DOMAIN_ORDER, DOMAIN_LABELS } from '../constants/domains';
 import DomainPillarIcon from '../components/DomainPillarIcon';
 import { diag } from '../constants/diagnosticTheme';
+import { type } from '../config/siteType';
+import { pillGhost, pillPrimary } from '../components/HomeMarketingChrome';
 
 /** One-line description per domain — matches six-domain AQ model */
 const DOMAIN_BLURBS = {
@@ -17,13 +19,13 @@ export default function DiagnosticPage() {
   const hasToken = typeof window !== 'undefined' && !!localStorage.getItem('accessToken');
 
   return (
-    <div className={`max-w-3xl mx-auto px-6 sm:px-8 py-12 sm:py-16 ${diag.bg} min-h-[calc(100vh-6rem)] rounded-2xl sm:rounded-3xl`}>
+    <div className="max-w-3xl mx-auto px-6 sm:px-8 py-12 sm:py-16">
       <div className="max-w-2xl mx-auto">
-        <p className={`text-center text-[10px] sm:text-[11px] font-normal uppercase tracking-[0.28em] ${diag.subtle}`}>Alignment OS</p>
-        <h1 className="mt-5 font-display text-[1.75rem] sm:text-[2.25rem] md:text-[2.5rem] font-medium text-alignment-accent leading-tight text-center tracking-tight">
+        <p className={`text-center ${type.kicker}`}>Alignment OS</p>
+        <h1 className={`mt-5 ${type.h1} text-center`}>
           The Alignment Diagnostic
         </h1>
-        <p className={`mt-5 text-center text-base sm:text-lg ${diag.muted} leading-relaxed`}>
+        <p className={`mt-5 text-center ${type.body}`}>
           A structured check-in across six domains of life and work. It measures how aligned your actions are with who you are
           and what matters — not how busy you are.
         </p>
@@ -124,17 +126,11 @@ export default function DiagnosticPage() {
         )}
 
         <div className="mt-12 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-4">
-          <Link
-            to="/assessment"
-            className={`inline-flex justify-center items-center rounded-full px-8 py-3.5 text-sm font-semibold ${diag.btn} ${diag.btnHover} transition-colors`}
-          >
+          <Link to="/assessment" className={pillPrimary}>
             Begin diagnostic
           </Link>
           {hasToken && (
-            <Link
-              to="/results"
-              className="inline-flex justify-center items-center rounded-full px-8 py-3.5 text-sm font-medium text-alignment-accent border border-alignment-accent/15 bg-alignment-surface hover:bg-apple-surface-muted transition-colors"
-            >
+            <Link to="/results" className={pillGhost}>
               View my results
             </Link>
           )}

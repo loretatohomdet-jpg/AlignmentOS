@@ -4,8 +4,9 @@ import axios from 'axios';
 import { API_BASE, networkErrorUserMessage } from '../config/apiBase';
 import { loadRituals, utcDayStamp } from '../utils/engineStorage';
 import { pushHeldLocalRituals } from '../utils/engineRitualsApi';
-import { copper, engineGhostBtn, engineHeldBtn, enginePrimaryBtn } from '../utils/engineUi';
+import { engineGhostBtn, engineHeldBtn, enginePrimaryBtn } from '../utils/engineUi';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { type } from '../config/siteType';
 
 const STARTER = [
   { id: 'starter-morning', title: 'Morning anchor — before the phone' },
@@ -150,7 +151,7 @@ export default function PracticePage() {
       <p className="text-center text-[10px] font-medium uppercase tracking-[0.22em] text-alignment-accent/40">
         {dateLabel}
       </p>
-      <h1 className="mt-4 text-center font-display italic font-normal text-[2.15rem] sm:text-[2.45rem] leading-tight text-alignment-accent">
+      <h1 className={`mt-4 text-center ${type.h1}`}>
         {greeting}
       </h1>
       {!liveHabits && (
@@ -166,7 +167,7 @@ export default function PracticePage() {
       )}
 
       <div className="mt-10 bg-alignment-surfaceSoft/80 px-6 py-7 sm:px-8">
-        <p className={`text-[10px] font-medium uppercase tracking-[0.2em] ${copper}`}>This season’s theme</p>
+        <p className={type.kicker}>This season’s theme</p>
         <p className="mt-3 font-display italic text-[1.45rem] sm:text-[1.6rem] leading-snug text-alignment-accent">
           {SEASON_THEME}
         </p>

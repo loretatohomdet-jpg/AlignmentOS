@@ -3,7 +3,9 @@ import { useNavigate, useSearchParams, NavLink } from 'react-router-dom';
 import axios from 'axios';
 import { API_BASE, networkErrorUserMessage } from '../config/apiBase';
 import SiteMarketingHeader from '../components/SiteMarketingHeader';
-import { authHeadingClass, authLeadClass } from '../constants/authPageTheme';
+import { authHeadingClass, authLeadClass, authPrimaryButtonMarketingClass } from '../constants/authPageTheme';
+import { type } from '../config/siteType';
+import { SitePageFooter } from '../components/HomeMarketingChrome';
 
 export default function SignupPage() {
   const navigate = useNavigate();
@@ -45,7 +47,7 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen bg-alignment-surface flex flex-col font-sans antialiased">
+    <div className={`${type.page} font-sans antialiased`}>
       <SiteMarketingHeader />
       <div className="flex-1 flex flex-col items-center justify-center px-6 py-16">
       <div className="w-full max-w-[400px] animate-fade-in">
@@ -113,7 +115,7 @@ export default function SignupPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-full bg-alignment-primary text-white py-3.5 text-sm font-medium hover:bg-alignment-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+            className={authPrimaryButtonMarketingClass}
           >
             {loading ? 'Creating account...' : 'Create account'}
           </button>
@@ -127,6 +129,7 @@ export default function SignupPage() {
         </p>
       </div>
       </div>
+      <SitePageFooter />
     </div>
   );
 }

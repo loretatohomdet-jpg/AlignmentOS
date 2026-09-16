@@ -8,6 +8,8 @@ import { API_BASE, networkErrorUserMessage } from '../config/apiBase';
 import { domainScoresToDisplayPct } from '../utils/domainScores';
 import DomainPillarIcon from '../components/DomainPillarIcon';
 import { buildGuestPreviewPayload } from '../utils/assessmentPreview';
+import { type } from '../config/siteType';
+import { pillPrimary } from '../components/HomeMarketingChrome';
 const DRAFT_KEY = 'alignment_assessment_draft';
 /** Handoff to /results after submit (score + strain + email gate); cleared when read */
 const FRESH_RESULT_KEY = 'alignment_os_fresh_result';
@@ -282,7 +284,7 @@ export default function AssessmentPage() {
           >
             Alignment OS
           </p>
-          <h1 className="mt-6 font-display text-[1.65rem] sm:text-[2rem] md:text-[2.25rem] font-medium text-alignment-accent leading-tight text-center tracking-tight">
+          <h1 className={`mt-6 ${type.h1} text-center`}>
             Your Alignment Score is waiting.
           </h1>
           <p className={`mt-4 text-center text-sm sm:text-base ${diagRun.muted}`}>
@@ -476,8 +478,8 @@ export default function AssessmentPage() {
               type="button"
               onClick={goNext}
               disabled={answers[currentQuestion.id] == null}
-              className={`inline-flex items-center justify-center rounded-full px-6 py-3.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.18em] transition-colors ${
-                answers[currentQuestion.id] == null ? diagRun.primaryBtnDisabled : `${diagRun.primaryBtn}`
+              className={`${pillPrimary} ${
+                answers[currentQuestion.id] == null ? 'opacity-50 cursor-not-allowed' : ''
               }`}
             >
               {isLastQuestion ? 'Review & submit →' : 'Continue →'}
@@ -534,9 +536,7 @@ export default function AssessmentPage() {
               <button
                 type="submit"
                 disabled={submitting}
-                className={`rounded-full px-8 py-3.5 text-[11px] font-semibold uppercase tracking-[0.16em] transition-colors ${
-                  submitting ? diagRun.primaryBtnDisabled : diagRun.primaryBtn
-                }`}
+                className={`${pillPrimary} disabled:opacity-50`}
               >
                 {submitting ? 'Submitting…' : 'Submit & view results'}
               </button>
@@ -547,9 +547,7 @@ export default function AssessmentPage() {
                 type="button"
                 onClick={handleRevealScore}
                 disabled={previewLoading}
-                className={`rounded-full px-8 py-3.5 text-[11px] font-semibold uppercase tracking-[0.16em] transition-colors ${
-                  previewLoading ? diagRun.primaryBtnDisabled : diagRun.primaryBtn
-                }`}
+                className={`${pillPrimary} disabled:opacity-50`}
               >
                 {previewLoading ? 'Calculating…' : 'Reveal my score'}
               </button>
@@ -613,7 +611,7 @@ export default function AssessmentPage() {
                     <button
                       type="submit"
                       disabled={guestLeadSubmitting}
-                      className="w-full rounded-full py-3.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-white bg-alignment-primary hover:bg-alignment-primary/90 disabled:opacity-50"
+                      className={`${pillPrimary} w-full disabled:opacity-50`}
                     >
                       {guestLeadSubmitting ? 'Sending…' : 'Email my results →'}
                     </button>
@@ -665,7 +663,7 @@ export default function AssessmentPage() {
                     </p>
                     <Link
                       to="/signup?returnTo=/assessment"
-                      className="mt-5 inline-flex rounded-full px-6 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] bg-alignment-primary text-white hover:bg-alignment-primary/90"
+                      className={`${pillPrimary} mt-5`}
                     >
                       Create free account →
                     </Link>

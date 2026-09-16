@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { HomeFooter, HomeHeader, pageWidth, pillPrimary } from '../components/HomeMarketingChrome';
+import SiteMarketingHeader from '../components/SiteMarketingHeader';
+import { pageWidth, pillPrimary, SitePageFooter } from '../components/HomeMarketingChrome';
+import { type } from '../config/siteType';
 
 export default function AboutPage() {
   useEffect(() => {
@@ -12,23 +14,23 @@ export default function AboutPage() {
   }, []);
 
   return (
-    <div className="min-h-screen w-full bg-alignment-foundation text-alignment-accent flex flex-col">
+    <div className={type.page}>
       <a href="#about-main" className="skip-to-main">
         Skip to main content
       </a>
-      <HomeHeader />
+      <SiteMarketingHeader />
 
       <main id="about-main" className="flex-1" tabIndex={-1}>
         <section>
           <div className={`${pageWidth} pt-16 sm:pt-24 pb-10 sm:pb-14`}>
             <div className="max-w-xl">
-              <p className="text-[11px] uppercase tracking-[0.22em] text-alignment-accent/40">Why this exists</p>
-              <h1 className="mt-6 font-display italic font-normal text-[2.15rem] sm:text-[2.65rem] md:text-[2.85rem] leading-[1.18] tracking-tight">
+              <p className={type.kicker}>Why this exists</p>
+              <h1 className={`mt-6 ${type.h1}`}>
                 Most people are productive.
                 <br />
                 Few are coherent.
               </h1>
-              <div className="mt-10 sm:mt-12 space-y-6 text-[15px] sm:text-base text-alignment-accent/60 leading-relaxed">
+              <div className={`mt-10 sm:mt-12 space-y-6 ${type.body}`}>
                 <p>
                   Modern life pulls people in a hundred directions. The fix is not more effort. It is structure
                   beneath the effort — a few things, repeated, until a life holds together.
@@ -46,10 +48,10 @@ export default function AboutPage() {
           <div className={`${pageWidth} py-16 sm:py-24`}>
             <div className="max-w-xl">
               <blockquote>
-                <p className="font-display italic font-normal text-[1.85rem] sm:text-[2.35rem] md:text-[2.55rem] leading-[1.2] tracking-tight">
-                  Peace is the tranquility of order.
+                <p className={type.quote}>
+                  Peace is the <em className="italic text-alignment-accent/70">tranquility of order.</em>
                 </p>
-                <footer className="mt-6 text-[15px] sm:text-base text-alignment-accent/55 leading-relaxed">
+                <footer className={`mt-6 ${type.body}`}>
                   — Augustine. The order is the work; the peace is what it makes room for.
                 </footer>
               </blockquote>
@@ -60,9 +62,7 @@ export default function AboutPage() {
         <section>
           <div className={`${pageWidth} pb-20 sm:pb-28`}>
             <div className="max-w-xl">
-              <h2 className="font-display italic font-normal text-[1.85rem] sm:text-[2.35rem] md:text-[2.55rem] leading-[1.2] tracking-tight">
-                See where your life holds.
-              </h2>
+              <h2 className={type.h2}>See where your life holds.</h2>
               <Link to="/assessment" className={`${pillPrimary} mt-8`}>
                 Begin free
               </Link>
@@ -71,7 +71,7 @@ export default function AboutPage() {
         </section>
       </main>
 
-      <HomeFooter />
+      <SitePageFooter />
     </div>
   );
 }

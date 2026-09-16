@@ -3,15 +3,19 @@ import { Link, useLocation } from 'react-router-dom';
 import BrandLogo from './BrandLogo';
 import HeaderUserMenu from './HeaderUserMenu';
 import MobileDrawer from './MobileDrawer';
+import { SiteMarketingFooterNav } from './SiteFooterNav';
 
 export const hairline = 'border-alignment-accent/[0.10]';
 export const focusRing =
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary/40 focus-visible:ring-offset-2 focus-visible:ring-offset-alignment-foundation';
 export const pillPrimary = `inline-flex items-center justify-center rounded-full bg-alignment-primary text-white text-[15px] font-medium px-8 py-3.5 hover:bg-alignment-primary/90 transition-colors min-h-12 ${focusRing}`;
 export const pillGhost = `inline-flex items-center justify-center rounded-full border border-alignment-accent/15 bg-alignment-foundation text-alignment-accent text-[15px] px-8 py-3.5 hover:border-alignment-primary/40 hover:bg-alignment-surfaceSoft transition-colors min-h-12 ${focusRing}`;
+export const pillOutline = `inline-flex items-center justify-center rounded-full border border-alignment-primary/40 bg-transparent text-alignment-primary text-[15px] font-medium px-8 py-3.5 hover:bg-alignment-primary/[0.06] transition-colors min-h-12 ${focusRing}`;
+export const pillOnOlive = `inline-flex items-center justify-center rounded-full bg-alignment-foundation text-alignment-accent text-[15px] font-medium px-8 py-3.5 hover:bg-white transition-colors min-h-12 ${focusRing}`;
+export const pillGhostOnOlive = `inline-flex items-center justify-center rounded-full border border-white/45 bg-transparent text-white text-[15px] px-8 py-3.5 hover:bg-white/10 transition-colors min-h-12 ${focusRing}`;
 export const pillHeader = `inline-flex items-center justify-center rounded-full bg-alignment-primary text-white text-sm font-medium px-5 py-2 hover:bg-alignment-primary/90 transition-colors min-h-10 ${focusRing}`;
 export const pageWidth = 'mx-auto w-full max-w-6xl px-5 sm:px-8 lg:px-12';
-export const copper = 'text-[#b08968]';
+export const copper = 'text-alignment-primary';
 
 const homeNav = [
   { to: '/cohort', label: 'Cohort' },
@@ -142,25 +146,24 @@ export function HomeHeader() {
 }
 
 export function HomeFooter() {
+  return <SitePageFooter />;
+}
+
+/** Same footer as the homepage. */
+export function SitePageFooter({ extra = null }) {
   return (
-    <footer className={`border-t ${hairline} pb-[max(2rem,env(safe-area-inset-bottom))]`}>
-      <div className={`${pageWidth} py-12 sm:py-14`}>
-        <p className="font-display italic text-xl text-alignment-accent/70">Alignment OS</p>
-        <p className="mt-2 text-[15px] text-alignment-accent/45">A life is formed by what is repeated.</p>
-        <nav className="mt-8 flex flex-wrap gap-x-6 gap-y-3 text-[15px] text-alignment-accent/55" aria-label="Footer">
-          <Link to="/" className="hover:text-alignment-accent min-h-11 inline-flex items-center">
-            Home
-          </Link>
-          <Link to="/cohort" className="hover:text-alignment-accent min-h-11 inline-flex items-center">
-            Cohort
-          </Link>
-          <a href="/#leaders" className="hover:text-alignment-accent min-h-11 inline-flex items-center">
-            For Leaders
-          </a>
-          <Link to="/about" className="hover:text-alignment-accent min-h-11 inline-flex items-center">
-            About
-          </Link>
-        </nav>
+    <footer className="w-full border-t border-alignment-accent/[0.08] bg-alignment-surfaceSoft/95 backdrop-blur-[2px] pb-[max(1rem,env(safe-area-inset-bottom))] mt-auto">
+      <div className="w-full max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-8 sm:py-10">
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between lg:gap-12">
+          <div className="max-w-xs">
+            <BrandLogo iconHeightPx={44} />
+            <p className="mt-4 text-xs text-alignment-accent/45 leading-relaxed">Human alignment software.</p>
+          </div>
+          <div className="flex flex-col gap-3 lg:flex-1">
+            <SiteMarketingFooterNav className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-3 text-[9px] sm:text-[10px] font-normal uppercase tracking-[0.14em]" />
+            {extra}
+          </div>
+        </div>
       </div>
     </footer>
   );

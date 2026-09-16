@@ -6,8 +6,9 @@ import { DOMAIN_LABELS, DOMAIN_ORDER } from '../constants/domains';
 import { domainScoresToDisplayPct } from '../utils/domainScores';
 import { collectLocalArchive, formatArchiveDay } from '../utils/engineStorage';
 import { fetchRitualArchive } from '../utils/engineRitualsApi';
-import { copper, enginePrimaryBtn } from '../utils/engineUi';
+import { enginePrimaryBtn } from '../utils/engineUi';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { type } from '../config/siteType';
 
 function authHeaders() {
   const token = localStorage.getItem('accessToken');
@@ -95,8 +96,8 @@ export default function JourneyPage() {
 
   return (
     <div className="mx-auto w-full max-w-xl px-6 pb-28 pt-10 sm:pt-12">
-      <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-accent/40">Your journey</p>
-      <h1 className="mt-4 font-display italic font-normal text-[2.15rem] sm:text-[2.55rem] leading-[1.15] text-alignment-accent">
+      <p className={type.kicker}>Your journey</p>
+      <h1 className={`mt-4 ${type.h1}`}>
         What is forming.
       </h1>
       <p className="mt-3 text-[17px] text-alignment-accent/55 leading-relaxed">
@@ -111,7 +112,7 @@ export default function JourneyPage() {
 
       {showBeginLoop && (
         <div className="mt-8 bg-alignment-surfaceSoft/80 px-5 py-6 sm:px-6">
-          <p className={`text-[10px] font-medium uppercase tracking-[0.18em] ${copper}`}>Begin the loop</p>
+          <p className={type.kicker}>Begin the loop</p>
           <p className="mt-3 text-[16px] leading-relaxed text-alignment-accent/70">
             Take the Alignment Score to set your starting point. Everything here shapes itself around your result, and in
             ninety days you will be able to see what changed.
@@ -122,7 +123,7 @@ export default function JourneyPage() {
         </div>
       )}
 
-      <div className={`${showBeginLoop ? 'mt-3' : 'mt-8'} border-l-2 border-[#b08968] bg-alignment-surfaceSoft/80 px-5 py-5 sm:px-6`}>
+      <div className={`${showBeginLoop ? 'mt-3' : 'mt-8'} border-l-2 border-alignment-primary bg-alignment-surfaceSoft/80 px-5 py-5 sm:px-6`}>
         <p className="text-[16px] leading-relaxed text-alignment-accent/70">
           {latestExcerpt
             ? latestExcerpt
@@ -145,7 +146,7 @@ export default function JourneyPage() {
                   className="flex items-baseline justify-between gap-4 border-b border-alignment-accent/[0.06] py-3 last:border-0"
                 >
                   <span className="text-[15px] text-alignment-accent">{DOMAIN_LABELS[key]}</span>
-                  <span className={`text-[13px] tabular-nums ${copper}`}>{pct}</span>
+                  <span className={`text-[13px] tabular-nums text-alignment-primary`}>{pct}</span>
                 </li>
               );
             })}
@@ -168,7 +169,7 @@ export default function JourneyPage() {
           <ul className="mt-5 space-y-5">
             {archive.map((item) => (
               <li key={item.id}>
-                <p className={`text-[10px] font-medium uppercase tracking-[0.16em] ${copper}`}>
+                <p className={type.kicker}>
                   {item.kind}
                   {' · '}
                   {formatArchiveDay(item.day)}

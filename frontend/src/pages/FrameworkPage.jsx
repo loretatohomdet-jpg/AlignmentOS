@@ -1,18 +1,13 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import BrandLogo from '../components/BrandLogo';
 import SiteMarketingHeader from '../components/SiteMarketingHeader';
 import DomainPillarIcon from '../components/DomainPillarIcon';
-import { SiteSecondaryFooterNav } from '../components/SiteFooterNav';
+import { pillPrimary, SitePageFooter } from '../components/HomeMarketingChrome';
+import { type } from '../config/siteType';
 
-const focusRing = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2';
-
-const labelClass =
-  'text-[10px] sm:text-[11px] font-normal uppercase tracking-[0.24em] text-alignment-accent/45';
+const labelClass = type.kicker;
 
 const sectionClass = 'max-w-3xl lg:max-w-4xl mx-auto px-6 sm:px-8 lg:px-10';
-
-const mutedSurface = 'bg-apple-surface-muted';
 
 /** Clockwise from top: Identity → Purpose → Execution → Habits → Environment → Mindset */
 const HEX_DOMAINS = [
@@ -200,7 +195,7 @@ export default function FrameworkPage() {
   }, []);
 
   return (
-    <div className={`min-h-screen w-full ${mutedSurface} flex flex-col`}>
+    <div className={type.page}>
       <a href="#framework-main" className="skip-to-main">
         Skip to main content
       </a>
@@ -209,11 +204,10 @@ export default function FrameworkPage() {
       <main id="framework-main" className="flex-1 w-full scroll-mt-16" tabIndex={-1}>
         <section className={`${sectionClass} pt-12 sm:pt-16 pb-12 sm:pb-16 text-center`}>
           <p className={labelClass}>The framework</p>
-          <h1 className="mt-6 font-display text-[2rem] sm:text-[2.5rem] md:text-[2.75rem] font-medium text-alignment-accent leading-[1.12] tracking-tight text-balance max-w-2xl mx-auto">
-            The Human Alignment{' '}
-            <span className="italic font-normal text-alignment-accent/80">Framework.</span>
+          <h1 className={`mt-6 ${type.h1} text-balance max-w-2xl mx-auto`}>
+            The Human Alignment Framework.
           </h1>
-          <p className="mt-6 text-sm sm:text-base text-alignment-accent/65 leading-relaxed max-w-xl mx-auto font-sans">
+          <p className={`mt-6 ${type.body} max-w-xl mx-auto text-center`}>
             Six domains. Every one matters. Neglect any one — the others cannot hold.
           </p>
         </section>
@@ -241,7 +235,7 @@ export default function FrameworkPage() {
           </ul>
         </section>
 
-        <section className={`border-t border-alignment-accent/[0.08] ${mutedSurface} ${sectionClass} py-14 sm:py-16`}>
+        <section className={`border-t border-alignment-accent/[0.08] bg-alignment-page ${sectionClass} py-14 sm:py-16`}>
           <p className={labelClass}>The primary formation axis</p>
           <div className="mt-8 rounded-2xl border border-alignment-accent/[0.08] bg-alignment-surface px-5 py-2 sm:px-8 sm:py-3 max-w-3xl mx-auto">
             <ul className="divide-y divide-alignment-accent/[0.08]">
@@ -256,10 +250,7 @@ export default function FrameworkPage() {
         </section>
 
         <section className={`border-t border-alignment-accent/[0.08] bg-alignment-surface ${sectionClass} py-16 sm:py-20 text-center`}>
-          <Link
-            to="/assessment"
-            className={`inline-flex min-h-[48px] items-center justify-center rounded-full bg-alignment-primary px-8 py-3.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.14em] text-white transition-colors hover:bg-alignment-primary/90 ${focusRing}`}
-          >
+          <Link to="/assessment" className={`${pillPrimary} mt-2`}>
             Take the free diagnostic <span aria-hidden className="ml-1">→</span>
           </Link>
           <p className="mt-5 text-sm text-alignment-accent/50 max-w-md mx-auto">
@@ -268,17 +259,7 @@ export default function FrameworkPage() {
         </section>
       </main>
 
-      <footer className="w-full border-t border-alignment-accent/[0.08] bg-alignment-surface mt-auto">
-        <div className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-10 py-8 flex flex-col gap-6 sm:gap-8">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
-            <BrandLogo iconHeightPx={44} />
-            <Link to="/" className={`text-sm text-alignment-accent/70 hover:text-alignment-accent ${focusRing} rounded-sm sm:text-right`}>
-              ← Back to home
-            </Link>
-          </div>
-          <SiteSecondaryFooterNav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 sm:justify-end" />
-        </div>
-      </footer>
+      <SitePageFooter />
     </div>
   );
 }

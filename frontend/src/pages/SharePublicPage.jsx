@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
-import BrandLogo from '../components/BrandLogo';
 import { API_BASE } from '../config/apiBase';
+import SiteMarketingHeader from '../components/SiteMarketingHeader';
+import { SitePageFooter, pillPrimary } from '../components/HomeMarketingChrome';
+import { type } from '../config/siteType';
 
 export default function SharePublicPage() {
   const { token } = useParams();
@@ -34,53 +36,41 @@ export default function SharePublicPage() {
   }, [token]);
 
   return (
-    <div className="min-h-screen bg-alignment-surface flex flex-col">
-      <header className="border-b border-alignment-accent/[0.06] px-6 py-4 flex items-center justify-between">
-        <Link to="/" className="inline-flex items-center gap-2 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary">
-          <BrandLogo compact iconHeightPx={32} />
-        </Link>
-        <Link
-          to="/assessment"
-          className="text-sm font-medium text-alignment-accent/80 hover:text-alignment-accent"
-        >
-          Take the diagnostic
-        </Link>
-      </header>
+    <div className={type.page}>
+      <SiteMarketingHeader />
 
       <main className="flex-1 max-w-lg mx-auto px-6 py-12 w-full">
-        {loading && <p className="text-alignment-accent/70">Loading…</p>}
+        {loading && <p className={type.body}>Loading…</p>}
         {error && (
           <div className="rounded-2xl border border-alignment-accent/15 bg-alignment-surface px-5 py-4 text-sm text-alignment-accent">
             {error}
           </div>
         )}
         {data && !error && (
-          <div className="rounded-3xl border border-alignment-accent/10 bg-alignment-surface shadow-apple p-8 text-center">
-            <p className="text-xs font-medium uppercase tracking-[0.2em] text-alignment-accent/45">Alignment snapshot</p>
-            <p className="mt-4 text-lg font-semibold text-alignment-accent">{data.displayName}</p>
+          <div className="text-center py-8">
+            <p className={type.kicker}>Alignment snapshot</p>
+            <h1 className={`mt-6 ${type.h1}`}>{data.displayName}</h1>
             {data.archetype && (
-              <p className="mt-2 text-sm text-alignment-accent/80">{data.archetype}</p>
+              <p className={`mt-3 ${type.body}`}>{data.archetype}</p>
             )}
             <div className="mt-8 flex flex-col items-center gap-1">
-              <span className="text-4xl font-semibold tabular-nums text-alignment-accent">
+              <span className="font-display text-4xl sm:text-5xl font-medium tabular-nums text-alignment-accent">
                 {typeof data.aqScore === 'number' ? Math.round(data.aqScore) : '—'}
               </span>
-              <span className="text-xs uppercase tracking-wider text-alignment-accent/50">AQ</span>
+              <span className={type.muted}>AQ</span>
             </div>
             {data.primaryDomain && (
-              <p className="mt-6 text-sm text-alignment-accent/70">
+              <p className={`mt-6 ${type.body}`}>
                 Primary focus: <span className="text-alignment-accent font-medium">{data.primaryDomain}</span>
               </p>
             )}
-            <Link
-              to="/signup"
-              className="mt-10 inline-flex items-center justify-center rounded-full bg-alignment-primary text-white text-sm font-medium px-6 py-3 hover:bg-alignment-primary/90"
-            >
+            <Link to="/signup" className={`${pillPrimary} mt-10`}>
               Get your own results
             </Link>
           </div>
         )}
       </main>
+      <SitePageFooter />
     </div>
   );
 }

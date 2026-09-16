@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import BrandLogo from '../components/BrandLogo';
 import { API_BASE, networkErrorUserMessage } from '../config/apiBase';
 import {
   bookingUrl,
@@ -12,7 +11,14 @@ import {
   formationExploreUrl,
 } from '../config/externalLinks';
 import SiteMarketingHeader from '../components/SiteMarketingHeader';
-import { SiteSecondaryFooterNav } from '../components/SiteFooterNav';
+import {
+  pillGhost,
+  pillOnOlive,
+  pillOutline,
+  pillPrimary,
+  SitePageFooter,
+} from '../components/HomeMarketingChrome';
+import { type } from '../config/siteType';
 
 const focusRing =
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2 focus-visible:ring-offset-alignment-foundation';
@@ -144,7 +150,7 @@ export default function PricingPage() {
   const toggleIdle = 'text-alignment-accent/50 hover:text-alignment-accent/80';
 
   return (
-    <div className="min-h-screen w-full bg-alignment-surface text-alignment-accent flex flex-col overflow-x-hidden">
+    <div className={type.page}>
       <a href="#pricing-main" className="skip-to-main">
         Skip to main content
       </a>
@@ -155,13 +161,13 @@ export default function PricingPage() {
         {/* Hero */}
         <section className="w-full border-t border-alignment-accent/[0.06] bg-apple-surface-muted">
           <div className="max-w-3xl mx-auto px-6 sm:px-8 lg:px-12 py-20 sm:py-28 lg:py-32 text-center">
-            <p className="text-[10px] sm:text-[11px] font-normal uppercase tracking-[0.24em] text-alignment-accent/50">Pricing</p>
-            <h1 className="mt-6 font-display text-[2rem] sm:text-[2.5rem] md:text-[2.85rem] font-medium text-alignment-accent leading-[1.15] tracking-tight text-balance">
-              <em className="italic font-medium">Begin</em> free.
+            <p className={type.kicker}>Pricing</p>
+            <h1 className={`mt-6 ${type.h1} text-center text-balance`}>
+              Begin free.
               <br />
-              <span className="text-alignment-primary">Go deeper when ready.</span>
+              Go deeper when ready.
             </h1>
-            <p className="mt-6 text-sm sm:text-base text-alignment-accent/65 max-w-lg mx-auto leading-relaxed">
+            <p className={`mt-6 ${type.body} max-w-lg mx-auto`}>
               Start free. Upgrade when you are ready.
             </p>
             {checkoutError && (
@@ -175,9 +181,7 @@ export default function PricingPage() {
         {/* Habit Engine billing + Steps 1–3 */}
         <section className="w-full border-t border-alignment-accent/[0.06] bg-alignment-surface">
           <div className="max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-14 sm:py-20">
-            <p className="text-center text-[10px] sm:text-[11px] font-normal uppercase tracking-[0.22em] text-alignment-accent/45">
-              Habit Engine billing
-            </p>
+            <p className={`text-center ${type.kicker}`}>Habit Engine billing</p>
 
             <div className="mt-6 flex flex-col items-center gap-2">
               <div
@@ -219,15 +223,12 @@ export default function PricingPage() {
                   <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-alignment-primary">Step 1</span>
                   <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-alignment-accent/55">Free · forever</span>
                 </div>
-                <h2 className="mt-6 font-display text-xl sm:text-2xl font-medium text-alignment-accent tracking-tight">Alignment Diagnostic</h2>
+                <h2 className={`mt-6 ${type.h3}`}>Alignment Diagnostic</h2>
                 <p className="mt-5 font-display text-4xl sm:text-[2.75rem] font-medium text-alignment-accent tabular-nums">$0</p>
                 <p className="mt-1 text-xs text-alignment-accent/50">No card required</p>
                 <CheckList items={foundationFree} />
                 <div className="flex-1" />
-                <Link
-                  to="/assessment"
-                  className={`mt-10 w-full inline-flex items-center justify-center rounded-full border border-alignment-accent/20 bg-alignment-surface px-4 py-3.5 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] text-alignment-accent transition-colors hover:bg-alignment-accent/[0.03] ${focusRing}`}
-                >
+                <Link to="/assessment" className={`${pillGhost} mt-10 w-full`}>
                   Begin free <span aria-hidden className="ml-2">→</span>
                 </Link>
               </div>
@@ -240,7 +241,7 @@ export default function PricingPage() {
                     {billing === 'yearly' ? 'Yearly subscription' : 'Monthly subscription'}
                   </span>
                 </div>
-                <h2 className="mt-6 font-display text-xl sm:text-2xl font-medium text-alignment-accent tracking-tight">Habit Engine</h2>
+                <h2 className={`mt-6 ${type.h3}`}>Habit Engine</h2>
                 <p className="mt-5 font-display text-4xl sm:text-[2.75rem] font-medium text-alignment-accent tabular-nums">
                   {billing === 'yearly' ? `$${habitYearly}` : `$${habitMonthly}`}
                 </p>
@@ -254,7 +255,7 @@ export default function PricingPage() {
                     href={checkoutHabitUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`mt-10 w-full inline-flex items-center justify-center rounded-full border border-alignment-primary/40 bg-transparent px-4 py-3.5 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] text-alignment-primary transition-colors hover:bg-alignment-primary/[0.06] ${focusRing}`}
+                    className={`${pillOutline} mt-10 w-full`}
                   >
                     Activate <span aria-hidden className="ml-2">→</span>
                   </a>
@@ -263,7 +264,7 @@ export default function PricingPage() {
                     type="button"
                     disabled={!!checkoutLoading}
                     onClick={() => startCheckout(billing === 'yearly' ? 'habit_yearly' : 'habit_monthly')}
-                    className={`mt-10 w-full inline-flex items-center justify-center rounded-full border border-alignment-primary/40 bg-transparent px-4 py-3.5 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] text-alignment-primary transition-colors hover:bg-alignment-primary/[0.06] disabled:opacity-60 ${focusRing}`}
+                    className={`${pillOutline} mt-10 w-full disabled:opacity-60`}
                   >
                     {checkoutLoading?.startsWith('habit') ? 'Redirecting…' : 'Activate'}{' '}
                     <span aria-hidden className="ml-2">→</span>
@@ -285,7 +286,7 @@ export default function PricingPage() {
                   <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-alignment-primary">Step 3</span>
                   <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-alignment-accent/55">Course · one-time</span>
                 </div>
-                <h2 className="mt-6 font-display text-xl sm:text-2xl font-medium text-alignment-accent tracking-tight">Journey to Purpose</h2>
+                <h2 className={`mt-6 ${type.h3}`}>Journey to Purpose</h2>
                 <p className="mt-5 font-display text-4xl sm:text-[2.75rem] font-medium text-alignment-accent tabular-nums">$297</p>
                 <p className="mt-1 text-xs text-alignment-accent/50">Self-guided · lifetime access</p>
                 <CheckList items={foundationJourney} />
@@ -295,7 +296,7 @@ export default function PricingPage() {
                     href={checkoutJourneyUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`mt-10 w-full inline-flex items-center justify-center rounded-full bg-alignment-primary text-white px-4 py-3.5 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] transition-colors hover:bg-alignment-primary/90 ${focusRing}`}
+                    className={`${pillPrimary} mt-10 w-full`}
                   >
                     Begin journey <span aria-hidden className="ml-2">→</span>
                   </a>
@@ -304,7 +305,7 @@ export default function PricingPage() {
                     type="button"
                     disabled={!!checkoutLoading}
                     onClick={() => startCheckout('journey')}
-                    className={`mt-10 w-full inline-flex items-center justify-center rounded-full bg-alignment-primary text-white px-4 py-3.5 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] transition-colors hover:bg-alignment-primary/90 disabled:opacity-60 ${focusRing}`}
+                    className={`${pillPrimary} mt-10 w-full disabled:opacity-60`}
                   >
                     {checkoutLoading === 'journey' ? 'Redirecting…' : 'Begin journey'}{' '}
                     <span aria-hidden className="ml-2">→</span>
@@ -318,9 +319,7 @@ export default function PricingPage() {
         {/* Optional add-ons */}
         <section className="w-full border-t border-alignment-accent/[0.06] bg-apple-surface-muted">
           <div className="max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12 sm:py-16">
-            <h2 className="text-center font-display text-xl sm:text-2xl font-medium text-alignment-accent tracking-tight">
-              Optional add-ons
-            </h2>
+            <h2 className={`text-center ${type.h2}`}>Optional add-ons</h2>
 
             <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
               <div className="flex flex-col border border-alignment-accent/[0.1] bg-alignment-surface p-6 shadow-sm">
@@ -332,7 +331,7 @@ export default function PricingPage() {
                   href={resourcesHref}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`mt-6 w-full sm:w-auto inline-flex items-center justify-center rounded-full border border-alignment-primary/40 px-6 py-3 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] text-alignment-primary transition-colors hover:bg-alignment-primary/[0.06] ${focusRing}`}
+                  className={`${pillOutline} mt-6 w-full sm:w-auto`}
                 >
                   Browse <span aria-hidden className="ml-2">→</span>
                 </a>
@@ -349,14 +348,14 @@ export default function PricingPage() {
                     href={bookingUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`mt-6 w-full sm:w-auto inline-flex items-center justify-center rounded-full border border-alignment-primary/40 px-6 py-3 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] text-alignment-primary transition-colors hover:bg-alignment-primary/[0.06] ${focusRing}`}
+                    className={`${pillOutline} mt-6 w-full sm:w-auto`}
                   >
                     Book <span aria-hidden className="ml-2">→</span>
                   </a>
                 ) : (
                   <Link
                     to="/business"
-                    className={`mt-6 w-full sm:w-auto inline-flex items-center justify-center rounded-full border border-alignment-primary/40 px-6 py-3 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] text-alignment-primary transition-colors hover:bg-alignment-primary/[0.06] ${focusRing}`}
+                    className={`${pillOutline} mt-6 w-full sm:w-auto`}
                   >
                     Book <span aria-hidden className="ml-2">→</span>
                   </Link>
@@ -376,14 +375,14 @@ export default function PricingPage() {
                     href={cohortApplyUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`inline-flex items-center justify-center rounded-full bg-alignment-primary text-white px-6 py-3 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] transition-colors hover:bg-alignment-primary/90 ${focusRing}`}
+                    className={pillPrimary}
                   >
                     Apply <span aria-hidden className="ml-2">→</span>
                   </a>
                 ) : (
                   <Link
                     to="/business"
-                    className={`inline-flex items-center justify-center rounded-full bg-alignment-primary text-white px-6 py-3 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] transition-colors hover:bg-alignment-primary/90 ${focusRing}`}
+                    className={pillPrimary}
                   >
                     Apply <span aria-hidden className="ml-2">→</span>
                   </Link>
@@ -405,10 +404,8 @@ export default function PricingPage() {
         {/* Institutions */}
         <section className="w-full border-t border-alignment-accent/[0.06] bg-alignment-surface">
           <div className="max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12 sm:py-16">
-            <h2 className="font-display text-xl sm:text-2xl font-medium text-alignment-accent tracking-tight">
-              For teams & institutions
-            </h2>
-            <p className="mt-3 text-sm text-alignment-accent/65 max-w-xl">
+            <h2 className={type.h2}>For teams & institutions</h2>
+            <p className={`mt-3 ${type.body} max-w-xl`}>
               Custom programmes for leaders, organizations, and schools.
             </p>
             <Link
@@ -431,12 +428,12 @@ export default function PricingPage() {
         {/* Closing */}
         <section className="w-full border-t border-white/15 bg-alignment-primary">
           <div className="max-w-xl mx-auto px-6 py-20 sm:py-28 text-center">
-            <h2 className="font-display text-[1.75rem] sm:text-2xl md:text-[2.25rem] font-medium text-white leading-snug text-balance">
+            <h2 className="font-display text-2xl sm:text-3xl font-medium text-white leading-snug text-balance">
               The diagnostic <span className="italic font-normal text-white/90">costs nothing.</span>
             </h2>
             <Link
               to="/assessment"
-              className="mt-10 inline-flex items-center justify-center rounded-full bg-alignment-surface text-alignment-accent text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.2em] px-8 py-3.5 transition-colors hover:bg-alignment-foundation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-alignment-primary"
+              className={`${pillOnOlive} mt-10`}
             >
               Begin free <span aria-hidden className="ml-2">→</span>
             </Link>
@@ -445,17 +442,7 @@ export default function PricingPage() {
         </section>
       </main>
 
-      <footer className="w-full border-t border-alignment-accent/[0.08] bg-alignment-surface mt-auto">
-        <div className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-10 py-8 flex flex-col gap-6 sm:gap-8">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
-            <BrandLogo iconHeightPx={44} />
-            <Link to="/" className={`text-sm text-alignment-accent/70 hover:text-alignment-accent ${focusRing} rounded-sm sm:text-right`}>
-              ← Home
-            </Link>
-          </div>
-          <SiteSecondaryFooterNav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 sm:justify-end" />
-        </div>
-      </footer>
+      <SitePageFooter />
     </div>
   );
 }

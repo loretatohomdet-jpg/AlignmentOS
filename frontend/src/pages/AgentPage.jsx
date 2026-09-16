@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { API_BASE } from '../config/apiBase';
+import { type } from '../config/siteType';
 
 export default function AgentPage() {
   const [messages, setMessages] = useState([]);
@@ -66,7 +67,7 @@ export default function AgentPage() {
 
   return (
     <div className="max-w-3xl mx-auto px-6 sm:px-8 py-12 sm:py-16 flex flex-col h-[calc(100vh-8rem)] md:h-[calc(100vh-6rem)]">
-      <h1 className="text-headline font-semibold text-alignment-accent tracking-tight">AI Agent</h1>
+      <h1 className={type.h1}>AI Agent</h1>
       <p className="mt-2 text-alignment-accent/70">Ask about alignment, your AQ score, daily practice, or reflection.</p>
 
       {statusChecked && !agentEnabled && (

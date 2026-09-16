@@ -1,240 +1,412 @@
+import { useState, useEffect, Fragment, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import {
-  HomeFooter,
-  HomeHeader,
-  copper,
-  focusRing,
-  hairline,
-  pageWidth,
-  pillGhost,
-  pillPrimary,
-} from '../components/HomeMarketingChrome';
-import { bookingUrl, formationExploreUrl } from '../config/externalLinks';
+import AgentFloatingButton from '../components/AgentFloatingButton';
+import EmailCaptureForm from '../components/EmailCaptureForm';
+import SiteMarketingHeader from '../components/SiteMarketingHeader';
+import DomainPillarIcon from '../components/DomainPillarIcon';
+import { pillGhost, pillPrimary, SitePageFooter } from '../components/HomeMarketingChrome';
+import { type } from '../config/siteType';
 
-const shopUrl = formationExploreUrl();
-const conversationUrl = bookingUrl || 'mailto:organizations@alignmentos.com';
+function usePrefersReducedMotion() {
+  const [reduced, setReduced] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setReduced(mq.matches);
+    const onChange = () => setReduced(mq.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
+  return reduced;
+}
 
-const offerings = [
-  {
-    title: 'The Alignment Score',
-    price: 'Free',
-    accent: true,
-    body: 'Twelve minutes. Names where you cohere, and where you strain.',
-    action: 'Begin free',
-    to: '/assessment',
-  },
-  {
-    title: 'The three tools',
-    price: '$27–48',
-    body: 'Clarity, Reset, Daily. Digital or paper. Close the named gap.',
-    action: 'See the tools',
-    href: shopUrl,
-  },
-  {
-    title: 'The Habit Engine',
-    price: '$12/mo',
-    body: 'The day, held — rooms, library, score history. The 6-week Journey is $297, one time.',
-    action: 'See pricing',
-    to: '/pricing',
-  },
-  {
-    title: 'The Charter Cohort',
-    price: '$997',
-    body: 'Six weeks, twelve people, led personally. The whole system, lived.',
-    action: 'Learn about the cohort',
-    to: '/cohort',
-    id: 'cohort',
-  },
-];
+/** Shared focus ring for primary actions (matches global focus-visible outline) */
+const focusRingBtn =
+  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2 focus-visible:ring-offset-alignment-foundation';
 
-const domains = [
-  { title: 'Identity', line: 'who you are' },
-  { title: 'Purpose', line: 'what you’re for' },
-  { title: 'Mindset', line: 'how you think' },
-  { title: 'Habits', line: 'what you repeat' },
-  { title: 'Environment', line: 'what surrounds you' },
-  { title: 'Execution', line: 'how you follow through' },
-];
+function AnimatedProofStat({ target, prefix = '', suffix = '', label }) {
+  const ref = useRef(null);
+  const [started, setStarted] = useState(false);
+  const [value, setValue] = useState(0);
+  const prefersReducedMotion = usePrefersReducedMotion();
 
-function OfferRow({ item }) {
-  const inner = (
-    <>
-      <div className="min-w-0 sm:pr-6">
-        <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-          <h3 className="font-display italic text-[1.55rem] sm:text-[1.75rem] text-alignment-accent leading-tight group-hover:text-alignment-primary transition-colors">
-            {item.title}
-          </h3>
-          <p className={`sm:hidden font-display italic text-lg ${item.accent ? copper : 'text-alignment-accent/45'}`}>
-            {item.price}
-          </p>
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setStarted(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.2, rootMargin: '0px 0px -5% 0px' }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!started) return;
+    if (prefersReducedMotion) {
+      setValue(target);
+      return;
+    }
+    let rafId = 0;
+    const duration = 2000;
+    const t0 = performance.now();
+
+    const tick = (now) => {
+      const t = Math.min(1, (now - t0) / duration);
+      const eased = 1 - (1 - t) ** 3;
+      setValue(Math.round(target * eased));
+      if (t < 1) rafId = requestAnimationFrame(tick);
+      else setValue(target);
+    };
+    rafId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafId);
+  }, [started, target, prefersReducedMotion]);
+
+  return (
+    <div ref={ref} className="bg-alignment-primary px-4 py-8 sm:py-10 md:py-12 text-center">
+      <p className="font-display text-[clamp(1.35rem,7vw,2.75rem)] sm:text-4xl md:text-[2.75rem] font-medium text-white leading-none tracking-tight tabular-nums px-1">
+        {prefix}
+        {value}
+        {suffix}
+      </p>
+      <p className="mt-3 text-[10px] sm:text-[11px] font-normal uppercase tracking-[0.22em] text-white/55">
+        {label}
+      </p>
+    </div>
+  );
+}
+
+function FinalCtaClosing() {
+  const ref = useRef(null);
+  const [started, setStarted] = useState(false);
+  const [n24, setN24] = useState(0);
+  const [n6, setN6] = useState(0);
+  const [n12, setN12] = useState(0);
+  const prefersReducedMotion = usePrefersReducedMotion();
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setStarted(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -8% 0px' }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!started) return;
+    if (prefersReducedMotion) {
+      setN24(24);
+      setN6(6);
+      setN12(12);
+      return;
+    }
+    let rafId = 0;
+    const duration = 2000;
+    const t0 = performance.now();
+
+    const tick = (now) => {
+      const t = Math.min(1, (now - t0) / duration);
+      const eased = 1 - (1 - t) ** 3;
+      setN24(Math.round(24 * eased));
+      setN6(Math.round(6 * eased));
+      setN12(Math.round(12 * eased));
+      if (t < 1) rafId = requestAnimationFrame(tick);
+      else {
+        setN24(24);
+        setN6(6);
+        setN12(12);
+      }
+    };
+    rafId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafId);
+  }, [started, prefersReducedMotion]);
+
+  return (
+    <section
+      className="w-full bg-alignment-foundation border-t border-alignment-neutral/25"
+      aria-labelledby="final-cta-heading"
+    >
+      <div ref={ref} className="max-w-2xl mx-auto px-6 py-20 sm:py-28 lg:py-32 text-center">
+        <p className={type.kicker}>
+          Begin today
+        </p>
+          <h2
+            id="final-cta-heading"
+            className={`mt-6 ${type.h2}`}
+          >
+          Your score is waiting.
+        </h2>
+        <p className="mt-6 text-sm sm:text-base text-alignment-accent/75 leading-relaxed">
+          <span className="font-semibold text-alignment-accent tabular-nums">{n24}</span> questions ·{' '}
+          <span className="font-semibold text-alignment-accent tabular-nums">{n6}</span> domains ·{' '}
+          <span className="font-semibold text-alignment-accent tabular-nums">{n12}</span> min · free
+        </p>
+
+        <div className="mt-8 w-full max-w-sm mx-auto text-left">
+          <EmailCaptureForm
+            source="home-footer-cta"
+            redirectTo="/assessment"
+            layout="stacked"
+            buttonText="Get free score"
+            helperText="No spam. Unsubscribe any time."
+          />
         </div>
-        <p className="mt-2.5 text-[15px] sm:text-base text-alignment-accent/60 leading-relaxed max-w-2xl">{item.body}</p>
-        <p className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-medium text-alignment-primary">
-          {item.action}
-          <span aria-hidden className="transition-transform group-hover:translate-x-0.5">
-            →
-          </span>
+        <p className="mt-5 text-center">
+          <Link
+            to="/dashboard"
+            className="text-[11px] sm:text-xs text-alignment-accent/50 transition-colors duration-200 hover:text-alignment-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-alignment-primary/30 rounded-sm px-0.5"
+          >
+            Already have an account? Dashboard <span aria-hidden>→</span>
+          </Link>
         </p>
       </div>
-      <p className={`hidden sm:block shrink-0 font-display italic text-xl ${item.accent ? copper : 'text-alignment-accent/40'}`}>
-        {item.price}
-      </p>
-    </>
-  );
-
-  const rowClass = `group flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 rounded-2xl px-4 sm:px-5 py-7 sm:py-8 -mx-4 sm:-mx-5 scroll-mt-28 transition-colors hover:bg-alignment-surfaceSoft ${focusRing}`;
-
-  if (item.to) {
-    return (
-      <Link to={item.to} id={item.id} className={rowClass}>
-        {inner}
-      </Link>
-    );
-  }
-  const external = item.href && !item.href.startsWith('#');
-  return (
-    <a
-      href={item.href}
-      id={item.id}
-      className={rowClass}
-      {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-    >
-      {inner}
-    </a>
+    </section>
   );
 }
 
 export default function LandingPage() {
+  /** Six domains — olive bar marquee (white / grey dots only). */
+  const heroDomains = [
+    { label: 'Identity', dot: 'bg-alignment-surface' },
+    { label: 'Purpose', dot: 'bg-alignment-surface/70' },
+    { label: 'Mindset', dot: 'bg-alignment-surface' },
+    { label: 'Habits', dot: 'bg-alignment-surface/70' },
+    { label: 'Environment', dot: 'bg-alignment-surface' },
+    { label: 'Execution', dot: 'bg-alignment-surface/70' },
+  ];
+
+  const compoundingSteps = [
+    { n: 1, title: 'Diagnostic' },
+    { n: 2, title: 'Identity anchors' },
+    { n: 3, title: 'Habit engine' },
+    { n: 4, title: 'Weekly review' },
+  ];
+
+  const sixDomains = [
+    { pillar: 'IDENTITY', title: 'Identity' },
+    { pillar: 'PURPOSE', title: 'Purpose' },
+    { pillar: 'MINDSET', title: 'Mindset' },
+    { pillar: 'HABITS', title: 'Habits' },
+    { pillar: 'ENVIRONMENT', title: 'Environment' },
+    { pillar: 'EXECUTION', title: 'Execution' },
+  ];
+
+  const proofStats = [
+    { target: 24, label: 'Questions' },
+    { target: 6, label: 'Life domains' },
+    { target: 90, label: 'Day cycles' },
+    { target: 0, prefix: '$', label: 'To begin' },
+  ];
+
+  const domainRow = (
+    <ul className="flex shrink-0 items-center gap-x-10 sm:gap-x-14 md:gap-x-16 pr-10 sm:pr-14">
+      {heroDomains.map(({ label, dot }) => (
+        <li key={label} className="flex items-center gap-2 text-[9px] sm:text-[10px] font-medium uppercase tracking-[0.2em] whitespace-nowrap">
+          <span className={`h-1.5 w-1.5 rounded-full shrink-0 ${dot}`} aria-hidden />
+          {label}
+        </li>
+      ))}
+    </ul>
+  );
+
   return (
-    <div className="min-h-screen w-full bg-alignment-foundation text-alignment-accent flex flex-col">
+    <div className={`${type.page} overflow-x-hidden`}>
       <a href="#main-content" className="skip-to-main">
         Skip to main content
       </a>
-      <HomeHeader />
+      <SiteMarketingHeader />
 
-      <main id="main-content" className="flex-1" tabIndex={-1}>
-        <section>
-          <div className={`${pageWidth} pt-16 sm:pt-24 pb-20 sm:pb-28 text-center`}>
-            <h1 className="font-display italic font-normal text-[2.25rem] sm:text-[3.15rem] md:text-[3.45rem] leading-[1.18] tracking-tight text-balance">
-              A life is formed
-              <br />
-              by what is repeated.
-            </h1>
-            <p className="mt-7 sm:mt-9 text-base sm:text-lg text-alignment-accent/60 leading-relaxed max-w-xl mx-auto">
-              See where your life holds. Close the gap.
-              <br />
-              Keep it.
-            </p>
-            <div className="mt-9 sm:mt-11 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3">
-              <Link to="/assessment" className={pillPrimary}>
-                Begin free diagnostic
-              </Link>
-              <Link to="/cohort" className={pillGhost}>
-                The cohort
-              </Link>
+      <main id="main-content" className="flex-1 w-full scroll-mt-16" tabIndex={-1}>
+        {/* First fold — full-bleed hero (no inset card / frame) */}
+        <section className="flex w-full flex-col bg-alignment-foundation min-h-[calc(100vh-5.5rem)] sm:min-h-[calc(100vh-6rem)]">
+          <div className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
+            <div className="relative flex flex-1 flex-col justify-center px-6 sm:px-8 lg:px-12 pt-12 pb-8 sm:pt-16 sm:pb-10">
+            <div className="max-w-2xl mx-auto text-center">
+              <h1 className={type.h1Hero}>
+                A life is formed
+                <br />
+                by what is repeated.
+              </h1>
+              <p className="mt-7 sm:mt-9 text-base sm:text-lg text-alignment-accent/60 leading-relaxed max-w-xl mx-auto">
+                See where your life holds. Close the gap.
+                <br />
+                Keep it.
+              </p>
+              <div className="mt-9 sm:mt-11 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3">
+                <Link to="/assessment" className={pillPrimary}>
+                  Begin free diagnostic
+                </Link>
+                <Link to="/cohort" className={pillGhost}>
+                  The cohort
+                </Link>
+              </div>
+              <p className="mt-5 text-sm text-alignment-accent/45">Twelve minutes. No account. No card.</p>
             </div>
-            <p className="mt-5 text-sm text-alignment-accent/45">Twelve minutes. No account. No card.</p>
+            </div>
+          </div>
+
+          <div
+            className="relative w-full shrink-0 bg-alignment-primary text-white overflow-hidden"
+            role="region"
+            aria-label="Six alignment domains"
+          >
+            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 sm:w-20 bg-gradient-to-r from-alignment-primary to-transparent" aria-hidden />
+            <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 sm:w-20 bg-gradient-to-l from-alignment-primary to-transparent" aria-hidden />
+            <div className="flex w-max motion-safe:animate-marquee-domains motion-reduce:animate-none py-3 sm:py-3.5 will-change-transform">
+              {domainRow}
+              <ul className="flex shrink-0 items-center gap-x-10 sm:gap-x-14 md:gap-x-16 pr-10 sm:pr-14" aria-hidden>
+                {heroDomains.map(({ label, dot }) => (
+                  <li key={`dup-${label}`} className="flex items-center gap-2 text-[9px] sm:text-[10px] font-medium uppercase tracking-[0.2em] whitespace-nowrap">
+                    <span className={`h-1.5 w-1.5 rounded-full shrink-0 ${dot}`} aria-hidden />
+                    {label}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </section>
 
-        <section className="pb-10 sm:pb-14">
-          <div className={pageWidth}>
-            <p className="text-[11px] uppercase tracking-[0.22em] text-alignment-primary/80">Where to begin</p>
-            <p className="mt-3 text-[15px] text-alignment-accent/55 leading-relaxed">
-              Start with the score. Everything after that is a choice.
-            </p>
-            <div className={`mt-6 border-t ${hairline} divide-y divide-alignment-accent/[0.10]`}>
-              {offerings.map((item) => (
-                <OfferRow key={item.title} item={item} />
-              ))}
-            </div>
+        {/* Second section — quote */}
+        <section className="w-full border-t border-alignment-accent/[0.06] bg-alignment-surfaceSoft/90">
+          <div className="max-w-xl mx-auto px-6 sm:px-8 py-12 sm:py-16 text-center">
+            <blockquote className={type.quote}>
+              <p>
+                You need <em className="italic text-alignment-accent/70">structure beneath</em> the effort — not more effort.
+              </p>
+            </blockquote>
           </div>
         </section>
 
-        <section className="py-16 sm:py-24 bg-alignment-surfaceSoft/80">
-          <div className={pageWidth}>
-            <h2 className="font-display italic font-normal text-[1.75rem] sm:text-[2.35rem] md:text-[2.6rem] leading-[1.3] tracking-tight text-balance max-w-4xl">
-              The diagnostic measures the repetition. The tools build it. The cohort keeps it.
+        {/* The compounding loop — four steps */}
+        <section className="w-full border-t border-alignment-accent/[0.06] bg-apple-surface-muted">
+          <div className="max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12 sm:py-16">
+            <h2 className={`${type.h2} max-w-xl text-balance`}>
+              Four steps. <span className="italic font-normal text-alignment-accent/80">One system.</span>
             </h2>
-            <p className="mt-6 text-base sm:text-[17px] text-alignment-accent/60 leading-relaxed max-w-2xl">
-              One idea, at every level. That is why it holds together.
-            </p>
+            <div className="mt-10 sm:mt-12">
+              <ol className="flex flex-col gap-0 lg:hidden">
+                {compoundingSteps.map((step, idx) => (
+                  <li key={step.n} className="list-none">
+                    <div className="flex flex-col">
+                      <span
+                        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-alignment-accent/20 text-sm font-medium text-alignment-accent/70"
+                        aria-hidden
+                      >
+                        {step.n}
+                      </span>
+                      <h3 className="mt-4 text-base font-semibold text-alignment-accent tracking-tight">{step.title}</h3>
+                    </div>
+                    {idx < 3 && (
+                      <div className="flex justify-start pl-3 py-5" aria-hidden="true">
+                        <svg className="h-5 w-5 text-alignment-accent/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </div>
+                    )}
+                  </li>
+                ))}
+              </ol>
+
+              {/** Desktop: 7-col grid — equal step columns + fixed arrow gutters so chevrons align with badge row */}
+              <div className="hidden lg:grid lg:grid-cols-[minmax(0,1fr)_2.5rem_minmax(0,1fr)_2.5rem_minmax(0,1fr)_2.5rem_minmax(0,1fr)] lg:items-start">
+                {compoundingSteps.map((step, idx) => (
+                  <Fragment key={`desktop-${step.n}`}>
+                    <div className="min-w-0 flex flex-col">
+                      <span
+                        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-alignment-accent/20 text-sm font-medium text-alignment-accent/70"
+                        aria-hidden
+                      >
+                        {step.n}
+                      </span>
+                      <h3 className="mt-6 text-base font-semibold text-alignment-accent tracking-tight">{step.title}</h3>
+                    </div>
+                    {idx < 3 && (
+                      <div
+                        className="flex h-11 w-full shrink-0 items-center justify-center text-alignment-accent/30"
+                        aria-hidden="true"
+                      >
+                        <svg className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </div>
+                    )}
+                  </Fragment>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-10 max-w-xl">
+              <Link
+                to="/assessment"
+                className={`inline-block rounded-sm text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.2em] text-alignment-accent border-b border-alignment-accent/25 pb-1 transition-colors duration-200 hover:border-alignment-accent focus-visible:border-alignment-accent ${focusRingBtn}`}
+              >
+                Start free <span aria-hidden>→</span>
+              </Link>
+            </div>
           </div>
         </section>
 
-        <section className="py-16 sm:py-20">
-          <div className={pageWidth}>
-            <p className="text-[11px] uppercase tracking-[0.22em] text-alignment-primary/80">What it measures</p>
-            <p className="mt-3 text-[15px] text-alignment-accent/55 leading-relaxed">Six domains. One picture of where you hold.</p>
-            <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-              {domains.map((d) => (
+        {/* Six domains */}
+        <section className="w-full border-t border-alignment-accent/[0.06] bg-alignment-surfaceSoft/90">
+          <div className="max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12 sm:py-16">
+            <h2 className={type.h2}>
+              Six domains
+            </h2>
+
+            <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+              {sixDomains.map((domain) => (
                 <div
-                  key={d.title}
-                  className="rounded-2xl border border-alignment-accent/[0.08] bg-alignment-foundationBright px-5 py-6 sm:px-6 sm:py-7"
+                  key={domain.pillar}
+                  className="group flex items-center gap-3 rounded-xl border border-alignment-accent/10 bg-alignment-foundationBright/95 px-4 py-3 transition-colors duration-200 hover:border-alignment-primary hover:bg-alignment-primary"
                 >
-                  <h3 className="font-display italic text-[1.45rem] sm:text-[1.6rem] leading-tight">{d.title}</h3>
-                  <p className="mt-1.5 text-[15px] text-alignment-accent/50">{d.line}</p>
+                  <DomainPillarIcon
+                    pillar={domain.pillar}
+                    className="h-6 w-6 shrink-0 text-alignment-primary transition-colors duration-200 group-hover:text-white"
+                  />
+                  <h3 className="text-sm font-semibold text-alignment-accent transition-colors duration-200 group-hover:text-white">
+                    {domain.title}
+                  </h3>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        <section id="leaders" className="scroll-mt-28 py-6 sm:py-8">
-          <div className={`${pageWidth}`}>
-            <div className="rounded-2xl border border-alignment-accent/[0.08] bg-alignment-surfaceSoft/90 px-6 py-10 sm:px-10 sm:py-12">
-              <h2 className="font-display italic text-[1.55rem] sm:text-[1.75rem] leading-tight">Alignment OS for Leaders</h2>
-              <p className="mt-4 text-base text-alignment-accent/60 leading-relaxed max-w-2xl">
-                Formation for teams — helping leaders become who the mission requires them to be.
-              </p>
-              <a
-                href={conversationUrl}
-                className={`mt-6 inline-flex min-h-11 items-center text-[15px] font-medium ${copper} hover:opacity-80`}
-                {...(conversationUrl.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-              >
-                By conversation →
-              </a>
+        {/* Proof stats */}
+        <section className="w-full border-t border-alignment-accent/[0.06]">
+          <div className="w-full bg-alignment-primary">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-px bg-white/25">
+              {proofStats.map((s) => (
+                <AnimatedProofStat
+                  key={s.label}
+                  target={s.target}
+                  prefix={s.prefix ?? ''}
+                  suffix={s.suffix ?? ''}
+                  label={s.label}
+                />
+              ))}
             </div>
           </div>
         </section>
 
-        <section className="py-6 sm:py-8">
-          <div className={pageWidth}>
-            <a
-              href={shopUrl}
-              className={`rounded-2xl border border-alignment-accent/[0.08] bg-alignment-foundationBright px-6 py-10 sm:px-10 sm:py-12 block group hover:border-alignment-primary/25 transition-colors ${focusRing}`}
-              {...(shopUrl.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-            >
-              <h2 className="font-display italic text-[1.55rem] sm:text-[1.75rem] leading-tight group-hover:text-alignment-primary transition-colors">
-                The original edition
-              </h2>
-              <p className="mt-4 text-base text-alignment-accent/60 leading-relaxed max-w-2xl">
-                Alignment OS began as the Life of Purpose Planner. The last of the original, while it lasts.
-              </p>
-              <p className="mt-5 text-[15px] text-alignment-accent/45">$42, or boxed in leather $168.</p>
-            </a>
-          </div>
-        </section>
+        {/* Final CTA — closing */}
+        <FinalCtaClosing />
 
-        <section className="py-16 sm:py-24">
-          <div className={pageWidth}>
-            <div className="rounded-3xl bg-alignment-primary px-6 py-12 sm:px-12 sm:py-16 text-white">
-              <h2 className="font-display italic font-normal text-[1.85rem] sm:text-[2.5rem] leading-[1.22] tracking-tight text-balance max-w-3xl">
-                See where your life holds — in twelve minutes.
-              </h2>
-              <Link
-                to="/assessment"
-                className={`mt-8 inline-flex items-center justify-center rounded-full bg-white text-alignment-accent text-[15px] font-medium px-8 py-3.5 min-h-12 hover:bg-alignment-foundationBright transition-colors ${focusRing}`}
-              >
-                Begin free
-              </Link>
-              <p className="mt-5 text-[15px] text-white/70">No account. No card.</p>
-            </div>
-          </div>
-        </section>
+        <SitePageFooter />
+        <AgentFloatingButton />
       </main>
-
-      <HomeFooter />
     </div>
   );
 }

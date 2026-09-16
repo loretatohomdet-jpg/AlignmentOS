@@ -4,8 +4,8 @@ import axios from 'axios';
 import { API_BASE, networkErrorUserMessage } from '../config/apiBase';
 import { DOMAIN_LABELS, DOMAIN_ORDER } from '../constants/domains';
 
-import { copper } from '../utils/engineUi';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { type } from '../config/siteType';
 
 const LIBRARY = {
   IDENTITY: [
@@ -100,11 +100,11 @@ export default function ReflectPage() {
 
   return (
     <div className="mx-auto w-full max-w-xl px-6 pb-28 pt-10 sm:pt-12">
-      <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-accent/40">Practice library</p>
-      <h1 className="mt-4 font-display italic font-normal text-[2.15rem] sm:text-[2.55rem] leading-[1.15] text-alignment-accent">
+      <p className={type.kicker}>Practice library</p>
+      <h1 className={`mt-4 ${type.h1}`}>
         Few, and chosen.
       </h1>
-      <p className="mt-3 text-[17px] text-alignment-accent/55 leading-relaxed">
+      <p className={`mt-3 ${type.body}`}>
         One or two at a time. The system prescribes less, better.
       </p>
 
@@ -114,7 +114,7 @@ export default function ReflectPage() {
         </p>
       )}
 
-      <div className="mt-8 border-l-2 border-[#b08968] bg-alignment-surfaceSoft/80 px-5 py-5">
+      <div className="mt-8 border-l-2 border-alignment-primary bg-alignment-surfaceSoft/80 px-5 py-5">
         {gapLabel ? (
           <p className="text-[16px] leading-relaxed text-alignment-accent/70">
             Your primary gap is <span className="font-semibold text-alignment-accent">{gapLabel}.</span> Start there, with
@@ -139,7 +139,7 @@ export default function ReflectPage() {
           <section key={key} className="mt-10">
             <p
               className={`text-[10px] font-medium uppercase tracking-[0.2em] ${
-                isFocus ? copper : 'text-alignment-accent/40'
+                isFocus ? 'text-alignment-primary' : 'text-alignment-accent/40'
               }`}
             >
               {DOMAIN_LABELS[key]}

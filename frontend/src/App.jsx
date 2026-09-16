@@ -56,10 +56,9 @@ import SharePage from './pages/SharePage';
 import SharePublicPage from './pages/SharePublicPage';
 import HeaderUserMenu from './components/HeaderUserMenu';
 import AgentFloatingButton from './components/AgentFloatingButton';
-import BrandLogo from './components/BrandLogo';
 import EngineTabBar from './components/EngineTabBar';
 import SiteMarketingHeader from './components/SiteMarketingHeader';
-import { siteSecondaryFooter } from './config/footerNav';
+import { SitePageFooter } from './components/HomeMarketingChrome';
 import { API_BASE } from './config/apiBase';
 
 function Layout({ children }) {
@@ -172,23 +171,18 @@ function Layout({ children }) {
       />
       <main className="flex-1">{children}</main>
       {!immersiveAssessment && <AgentFloatingButton />}
-      <footer className="border-t border-alignment-accent/[0.07] mt-auto bg-alignment-surfaceSoft/80 backdrop-blur-[2px]">
-        <div className="max-w-5xl mx-auto px-6 sm:px-8 py-5 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between text-sm text-alignment-accent/70">
-          <BrandLogo iconHeightPx={40} className="shrink-0" />
-          <nav className="flex flex-wrap items-center gap-x-4 gap-y-2" aria-label="Footer">
-            {siteSecondaryFooter.map((item) => (
-              <NavLink key={item.to} to={item.to} className="hover:text-alignment-accent">
-                {item.label}
-              </NavLink>
-            ))}
-            {userRole === 'ADMIN' && (
-              <NavLink to="/admin/overview" className="hover:text-alignment-accent">
-                Admin
-              </NavLink>
-            )}
-          </nav>
-        </div>
-      </footer>
+      <SitePageFooter
+        extra={
+          userRole === 'ADMIN' ? (
+            <NavLink
+              to="/admin/overview"
+              className="text-[9px] sm:text-[10px] font-normal uppercase tracking-[0.14em] text-alignment-accent/45 hover:text-alignment-accent"
+            >
+              Admin
+            </NavLink>
+          ) : null
+        }
+      />
     </div>
   );
 }

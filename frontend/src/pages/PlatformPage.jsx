@@ -1,24 +1,20 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import BrandLogo from '../components/BrandLogo';
 import SiteMarketingHeader from '../components/SiteMarketingHeader';
 import DomainPillarIcon from '../components/DomainPillarIcon';
-import { SiteSecondaryFooterNav } from '../components/SiteFooterNav';
+import { pillGhost, pillOnOlive, pillPrimary, SitePageFooter } from '../components/HomeMarketingChrome';
+import { type } from '../config/siteType';
 
 const focusRing = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2';
 
-const labelClass =
-  'text-[10px] sm:text-[11px] font-normal uppercase tracking-[0.24em] text-alignment-accent/45';
+const labelClass = type.kicker;
 
 const sectionClass = 'max-w-3xl lg:max-w-4xl mx-auto px-6 sm:px-8 lg:px-10';
 
-const mutedSurface = 'bg-apple-surface-muted';
+const mutedSurface = 'bg-alignment-page bg-fixed';
 
-const btnPrimary =
-  'inline-flex items-center justify-center rounded-full bg-alignment-primary text-white text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.14em] px-6 py-3.5 transition-colors hover:bg-alignment-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2';
-
-const btnSecondary =
-  'inline-flex items-center justify-center rounded-full border border-alignment-accent/15 bg-alignment-surface text-alignment-accent text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.14em] px-6 py-3.5 transition-colors hover:border-alignment-accent/25 hover:bg-alignment-accent/[0.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2';
+const btnPrimary = pillPrimary;
+const btnSecondary = pillGhost;
 
 const foundations = [
   {
@@ -67,7 +63,7 @@ export default function PlatformPage() {
   }, []);
 
   return (
-    <div className={`min-h-screen w-full ${mutedSurface} flex flex-col`}>
+    <div className={type.page}>
       <a href="#platform-main" className="skip-to-main">
         Skip to main content
       </a>
@@ -77,10 +73,10 @@ export default function PlatformPage() {
         {/* Hero */}
         <section className={`${sectionClass} pt-12 sm:pt-16 pb-16 sm:pb-20`}>
           <p className={labelClass}>The platform</p>
-          <h1 className="mt-6 font-display text-[2rem] sm:text-[2.5rem] md:text-[2.75rem] font-medium text-alignment-accent leading-[1.12] tracking-tight text-balance max-w-xl">
+          <h1 className={`mt-6 ${type.h1} text-balance max-w-xl`}>
             Human Alignment Software.
           </h1>
-          <p className="mt-6 text-sm sm:text-base text-alignment-accent/65 leading-relaxed max-w-xl font-sans">
+          <p className={`mt-6 ${type.body} max-w-xl`}>
             A diagnostic and formation system for the whole person. Not a habit tracker. Built on five disciplines, six
             domains, and the conviction that structure is the beginning of integration.
           </p>
@@ -97,10 +93,10 @@ export default function PlatformPage() {
         {/* Five foundations */}
         <section className={`border-t border-alignment-accent/[0.08] bg-alignment-surface ${sectionClass} py-16 sm:py-20`}>
           <p className={labelClass}>Five foundations</p>
-          <h2 className="mt-4 font-display text-2xl sm:text-3xl md:text-[2rem] font-medium text-alignment-accent tracking-tight max-w-xl">
+          <h2 className={`mt-4 ${type.h2} max-w-xl`}>
             Built on disciplines, not trends.
           </h2>
-          <p className="mt-5 text-sm sm:text-base text-alignment-accent/65 leading-relaxed max-w-2xl font-sans">
+          <p className={`mt-5 ${type.body} max-w-2xl`}>
             Most platforms rest on one discipline. This one integrates five. Users may not recognise the theory — they feel
             the coherence.
           </p>
@@ -113,7 +109,7 @@ export default function PlatformPage() {
                 <span className="font-display text-4xl sm:text-5xl text-alignment-accent/15 tabular-nums leading-none pt-1">{n}</span>
                 <div>
                   <h3 className="font-semibold text-alignment-accent text-lg">{title}</h3>
-                  <p className="mt-3 text-sm sm:text-base text-alignment-accent/65 leading-relaxed">{body}</p>
+                  <p className={`mt-3 ${type.body}`}>{body}</p>
                 </div>
               </li>
             ))}
@@ -123,10 +119,10 @@ export default function PlatformPage() {
         {/* Six domains */}
         <section className={`border-t border-alignment-accent/[0.08] ${mutedSurface} ${sectionClass} py-16 sm:py-20`}>
           <p className={labelClass}>Six domains</p>
-          <h2 className="mt-4 font-display text-2xl sm:text-3xl md:text-[2rem] font-medium text-alignment-accent tracking-tight max-w-xl italic">
+          <h2 className={`mt-4 ${type.h2} max-w-xl italic`}>
             All six. Always.
           </h2>
-          <p className="mt-5 text-sm sm:text-base text-alignment-accent/65 leading-relaxed max-w-2xl font-sans">
+          <p className={`mt-5 ${type.body} max-w-2xl`}>
             Every domain that determines whether a life is coherent or scattered. The system is complete only when all six
             are in motion.
           </p>
@@ -163,12 +159,12 @@ export default function PlatformPage() {
         {/* The goal */}
         <section className={`border-t border-alignment-accent/[0.08] bg-alignment-surface ${sectionClass} py-16 sm:py-20`}>
           <p className={labelClass}>The goal</p>
-          <h2 className="mt-4 font-display text-2xl sm:text-3xl md:text-[2rem] font-medium text-alignment-accent tracking-tight max-w-xl">
+          <h2 className={`mt-4 ${type.h2} max-w-xl`}>
             Not productivity.
             <br />
             <span className="italic font-normal text-alignment-accent/90">Wholeness.</span>
           </h2>
-          <p className="mt-6 text-sm sm:text-base text-alignment-accent/65 leading-relaxed max-w-xl font-sans">
+          <p className={`mt-6 ${type.body} max-w-xl`}>
             When all six domains are present and reinforcing each other, interior and exterior unify. Action flows from
             identity. A person at home in themselves.
           </p>
@@ -190,31 +186,18 @@ export default function PlatformPage() {
           <div className="max-w-3xl mx-auto text-center">
             <h2
               id="platform-diagnostic-heading"
-              className="font-display text-2xl sm:text-3xl md:text-[2rem] font-medium text-white leading-tight"
+              className="font-display text-2xl sm:text-3xl font-medium text-white leading-tight"
             >
               Begin with <span className="italic font-normal text-white/95">the diagnostic.</span>
             </h2>
-            <Link
-              to="/assessment"
-              className="mt-10 inline-flex min-h-[48px] items-center justify-center rounded-full bg-alignment-surface px-8 py-3.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.14em] text-alignment-accent transition-colors hover:bg-alignment-surface/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-alignment-foundation"
-            >
+            <Link to="/assessment" className={`${pillOnOlive} mt-10`}>
               Begin free <span aria-hidden className="ml-1">→</span>
             </Link>
           </div>
         </section>
       </main>
 
-      <footer className="w-full border-t border-alignment-accent/[0.08] bg-alignment-surface mt-auto">
-        <div className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-10 py-8 flex flex-col gap-6 sm:gap-8">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
-            <BrandLogo iconHeightPx={44} />
-            <Link to="/" className={`text-sm text-alignment-accent/70 hover:text-alignment-accent ${focusRing} rounded-sm sm:text-right`}>
-              ← Back to home
-            </Link>
-          </div>
-          <SiteSecondaryFooterNav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 sm:justify-end" />
-        </div>
-      </footer>
+      <SitePageFooter />
     </div>
   );
 }

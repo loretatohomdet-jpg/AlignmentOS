@@ -22,8 +22,8 @@ export default function EngineTabBar() {
             to={tab.to}
             className={() => {
               const active = tab.prefix ? pathname.startsWith(tab.prefix) : pathname === tab.to;
-              return `flex min-h-14 items-center justify-center text-[10px] font-medium uppercase tracking-[0.18em] ${
-                active ? 'text-[#b08968]' : 'text-alignment-accent/35 hover:text-alignment-accent/70'
+              return `flex min-h-14 items-center justify-center text-[10px] sm:text-[11px] font-normal uppercase tracking-[0.22em] ${
+                active ? 'text-alignment-primary' : 'text-alignment-accent/35 hover:text-alignment-accent/70'
               }`;
             }}
           >

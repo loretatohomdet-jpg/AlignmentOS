@@ -16,6 +16,7 @@ import {
   RadialBar,
 } from 'recharts';
 import { API_BASE } from '../config/apiBase';
+import { type } from '../config/siteType';
 import { creatorHandoffUrl } from '../config/externalLinks';
 
 const PILLAR_LABELS = {
@@ -397,7 +398,7 @@ export default function DashboardPage() {
       {user && (
         <>
           <div className="flex flex-wrap items-baseline justify-between gap-2 animate-fade-in">
-            <h1 className="text-headline font-semibold text-alignment-accent tracking-tight">
+            <h1 className={`${type.h1} tracking-tight`}>
               Hi, {firstName}
             </h1>
             <p className="text-sm text-alignment-accent/70">{todayStr}</p>

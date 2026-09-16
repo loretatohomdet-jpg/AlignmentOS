@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { mergeDraft, markRitualHeld, utcDayStamp } from '../utils/engineStorage';
 import { fetchDayRituals, saveDayRitual } from '../utils/engineRitualsApi';
-import { copper, engineGhostBtn, enginePrimaryBtn, engineTextarea } from '../utils/engineUi';
+import { engineGhostBtn, enginePrimaryBtn, engineTextarea } from '../utils/engineUi';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { type } from '../config/siteType';
 
 function draftKey(day) {
   return `alignment_midday_pause_${day}`;
@@ -79,10 +80,10 @@ export default function MiddayPausePage() {
 
   return (
     <div className="mx-auto w-full max-w-xl px-6 pb-28 pt-10 sm:pt-12">
-      <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-accent/40">
+      <p className={type.kicker}>
         Midday pause · two minutes
       </p>
-      <h1 className="mt-4 font-display italic font-normal text-[2.15rem] sm:text-[2.55rem] leading-[1.15] text-alignment-accent">
+      <h1 className={`mt-4 ${type.h1}`}>
         Still here?
       </h1>
       <p className="mt-3 text-[17px] text-alignment-accent/55 leading-relaxed">
@@ -110,7 +111,7 @@ export default function MiddayPausePage() {
         </div>
 
         <div className="border border-alignment-accent/[0.10] bg-white px-5 py-5 sm:px-6">
-          <p className={`text-[10px] font-medium uppercase tracking-[0.18em] ${copper}`}>One adjustment</p>
+          <p className={type.kicker}>One adjustment</p>
           <textarea
             value={draft.adjustment}
             onChange={(e) => setField('adjustment')(e.target.value)}

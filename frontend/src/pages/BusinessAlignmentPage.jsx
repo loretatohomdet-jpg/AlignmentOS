@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { formationExploreUrl } from '../config/externalLinks';
 import { API_BASE } from '../config/apiBase';
+import { type } from '../config/siteType';
+import { pillGhost, pillPrimary } from '../components/HomeMarketingChrome';
 
 export default function BusinessAlignmentPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -24,24 +26,20 @@ export default function BusinessAlignmentPage() {
   const firstName = userName?.split(/\s+/)[0] || null;
 
   return (
-    <div className="min-h-screen w-full bg-alignment-surface">
+    <div className="w-full">
       <div className="w-full max-w-4xl xl:max-w-5xl 2xl:max-w-6xl mx-auto px-6 sm:px-8 lg:px-10 xl:px-12 py-12 sm:py-16">
         {/* Hero */}
-        <section className="relative text-center overflow-hidden rounded-2xl bg-alignment-surface border border-alignment-accent/10 px-6 sm:px-10 py-14 sm:py-20">
-          <div className="absolute inset-0 pointer-events-none" aria-hidden>
-            <div className="absolute top-1/4 -left-16 w-56 h-56 rounded-full bg-alignment-accent/6" />
-            <div className="absolute bottom-1/4 -right-16 w-72 h-72 rounded-full bg-alignment-accent/4" />
-          </div>
+        <section className="relative text-center overflow-hidden px-2 sm:px-6 py-10 sm:py-16">
           <div className="relative">
             {isLoggedIn && (
-              <p className="text-sm font-medium text-alignment-accent uppercase tracking-wider">
+              <p className={type.kicker}>
                 {firstName ? `Welcome back, ${firstName}` : 'Welcome back'}
               </p>
             )}
-            <h1 className="text-display font-semibold text-alignment-accent tracking-tight mt-1">
+            <h1 className={`mt-6 ${type.h1}`}>
               Business Alignment
             </h1>
-            <p className="mt-5 text-xl sm:text-2xl text-alignment-accent/70 max-w-2xl mx-auto leading-relaxed">
+            <p className={`mt-5 ${type.body} max-w-2xl mx-auto`}>
               Align your team and company goals with the same clarity that drives individual performance.
             </p>
             {isLoggedIn && (
@@ -66,10 +64,10 @@ export default function BusinessAlignmentPage() {
 
         {/* Company goals */}
         <section className="mt-14 sm:mt-20">
-          <h2 className="text-title font-semibold text-alignment-accent tracking-tight text-center">
+          <h2 className={`${type.h2} text-center`}>
             Goals that matter
           </h2>
-          <p className="mt-3 text-lg text-alignment-accent/70 text-center max-w-2xl mx-auto">
+          <p className={`mt-3 ${type.body} text-center max-w-2xl mx-auto`}>
             Use alignment as a shared language so strategy, daily work, and values stay connected.
           </p>
           <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -82,8 +80,8 @@ export default function BusinessAlignmentPage() {
                 key={title}
                 className="rounded-2xl bg-alignment-surface border border-alignment-accent/5 shadow-apple p-6 text-center sm:text-left hover:shadow-apple-lg transition-shadow"
               >
-                <h3 className="text-lg font-medium text-alignment-accent">{title}</h3>
-                <p className="mt-2 text-sm text-alignment-accent/70 leading-relaxed">{desc}</p>
+                <h3 className={type.h3}>{title}</h3>
+                <p className={`mt-2 ${type.body}`}>{desc}</p>
               </div>
             ))}
           </div>
@@ -91,7 +89,7 @@ export default function BusinessAlignmentPage() {
 
         {/* Benefits */}
         <section className="mt-14 sm:mt-20">
-          <h2 className="text-title font-semibold text-alignment-accent tracking-tight text-center">
+          <h2 className={`${type.h2} text-center`}>
             Why align as a business?
           </h2>
           <div className="mt-10 rounded-2xl bg-alignment-surface border border-alignment-accent/5 shadow-apple p-6 sm:p-8">
@@ -115,20 +113,20 @@ export default function BusinessAlignmentPage() {
 
         {/* Overview: Diagnostic & scoring */}
         <section className="mt-14 sm:mt-20">
-          <h2 className="text-title font-semibold text-alignment-accent tracking-tight text-center">
+          <h2 className={`${type.h2} text-center`}>
             Business Alignment diagnostic and scoring
           </h2>
-          <p className="mt-3 text-lg text-alignment-accent/70 text-center max-w-2xl mx-auto">
+          <p className={`mt-3 ${type.body} text-center max-w-2xl mx-auto`}>
             We use the same proven Alignment Assessment at scale. Each person gets a 0–100 Index; your organization gets a clear picture of where alignment is strong and where it’s slipping.
           </p>
         </section>
 
         {/* The Journey: 5 steps */}
         <section className="mt-10">
-          <h2 className="text-xl font-semibold text-alignment-accent tracking-tight text-center">
+          <h2 className={`${type.h2} text-center`}>
             The Business Alignment Journey
           </h2>
-          <p className="mt-2 text-alignment-accent/70 text-center max-w-xl mx-auto">
+          <p className={`mt-2 ${type.body} text-center max-w-xl mx-auto`}>
             A step-by-step path from diagnosis to sustained gap closure.
           </p>
           <div className="mt-10 space-y-6">
@@ -167,8 +165,8 @@ export default function BusinessAlignmentPage() {
                   {step}
                 </span>
                 <div>
-                  <h3 className="text-lg font-medium text-alignment-accent">{title}</h3>
-                  <p className="mt-1 text-alignment-accent/70 leading-relaxed">{body}</p>
+                  <h3 className={type.h3}>{title}</h3>
+                  <p className={`mt-1 ${type.body}`}>{body}</p>
                 </div>
               </div>
             ))}
@@ -177,10 +175,10 @@ export default function BusinessAlignmentPage() {
 
         {/* Short “How it works” summary */}
         <section className="mt-14 sm:mt-20">
-          <h2 className="text-title font-semibold text-alignment-accent tracking-tight text-center">
+          <h2 className={`${type.h2} text-center`}>
             In practice
           </h2>
-          <p className="mt-3 text-lg text-alignment-accent/70 text-center max-w-2xl mx-auto">
+          <p className={`mt-3 ${type.body} text-center max-w-2xl mx-auto`}>
             Same assessment, scaled for your organization—aggregate results, act on the report, and revisit every quarter.
           </p>
           <div className="mt-8 grid sm:grid-cols-3 gap-4">
@@ -203,24 +201,21 @@ export default function BusinessAlignmentPage() {
         {/* CTA */}
         <section className="mt-14 sm:mt-20 text-center">
           <div className="rounded-2xl bg-alignment-surface border border-alignment-accent/5 shadow-apple p-8 sm:p-12">
-            <h2 className="text-title font-semibold text-alignment-accent tracking-tight">
+            <h2 className={type.h2}>
               {isLoggedIn ? 'Bring alignment to your team' : 'Ready to align your team?'}
             </h2>
-            <p className="mt-3 text-lg text-alignment-accent/70 max-w-xl mx-auto">
+            <p className={`mt-3 ${type.body} max-w-xl mx-auto`}>
               Get the Team plan for your organization. Shared dashboard, admin controls, and priority support.
             </p>
             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link
-                to="/pricing"
-                className="w-full sm:w-auto rounded-full bg-alignment-primary text-white px-8 py-4 text-base font-medium hover:bg-alignment-primary/90 transition-colors shadow-apple"
-              >
+              <Link to="/pricing" className={`${pillPrimary} w-full sm:w-auto`}>
                 View Team plan
               </Link>
               <a
                 href={formationExploreUrl()}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto rounded-full bg-alignment-surface text-alignment-accent px-8 py-4 text-base font-medium hover:bg-alignment-accent/5 transition-colors border border-alignment-accent/5"
+                className={`${pillGhost} w-full sm:w-auto`}
               >
                 Contact us
               </a>

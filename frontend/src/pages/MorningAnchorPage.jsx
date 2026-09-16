@@ -4,8 +4,9 @@ import axios from 'axios';
 import { API_BASE } from '../config/apiBase';
 import { mergeDraft, utcDayStamp } from '../utils/engineStorage';
 import { fetchDayRituals, saveDayRitual } from '../utils/engineRitualsApi';
-import { copper, engineGhostBtn, enginePrimaryBtn, engineTextarea } from '../utils/engineUi';
+import { engineGhostBtn, enginePrimaryBtn, engineTextarea } from '../utils/engineUi';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { type } from '../config/siteType';
 
 function storageKey(day) {
   return `alignment_morning_anchor_${day}`;
@@ -47,7 +48,7 @@ function FieldCard({ kicker, hint, value, onChange, italicPrompt, label }) {
           {italicPrompt}
         </p>
       ) : (
-        <p className={`text-[10px] font-medium uppercase tracking-[0.18em] ${copper}`}>{kicker}</p>
+        <p className={type.kicker}>{kicker}</p>
       )}
       <textarea
         value={value}
@@ -139,10 +140,10 @@ export default function MorningAnchorPage() {
 
   return (
     <div className="mx-auto w-full max-w-xl px-6 pb-28 pt-10 sm:pt-12">
-      <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-accent/40">
+      <p className={type.kicker}>
         Morning anchor · about five minutes
       </p>
-      <h1 className="mt-4 font-display italic font-normal text-[2.15rem] sm:text-[2.55rem] leading-[1.15] text-alignment-accent">
+      <h1 className={`mt-4 ${type.h1}`}>
         Begin on purpose.
       </h1>
       <p className="mt-3 text-[17px] text-alignment-accent/55 leading-relaxed">

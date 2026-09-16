@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { API_BASE } from '../config/apiBase';
+import { type } from '../config/siteType';
+import { pillGhost, pillPrimary } from '../components/HomeMarketingChrome';
 
 export default function SharePage() {
   const [user, setUser] = useState(null);
@@ -54,15 +56,15 @@ export default function SharePage() {
   if (loading) {
     return (
       <div className="max-w-xl mx-auto px-6 py-16 sm:py-20">
-        <p className="text-alignment-accent/70">Loading…</p>
+        <p className={type.body}>Loading…</p>
       </div>
     );
   }
 
   return (
     <div className="max-w-xl mx-auto px-6 py-16 sm:py-20">
-      <h1 className="font-display text-2xl font-medium text-alignment-accent">Share your alignment</h1>
-      <p className="mt-4 text-sm text-alignment-accent/70 leading-relaxed">
+      <h1 className={type.h1}>Share your alignment</h1>
+      <p className={`mt-4 ${type.body}`}>
         Create a public link that shows your latest AQ snapshot and archetype—no email or full name. Anyone with the
         link can view it.
       </p>
@@ -79,7 +81,7 @@ export default function SharePage() {
             type="button"
             onClick={createOrRotate}
             disabled={creating}
-            className="rounded-full bg-alignment-primary text-white text-sm font-medium px-6 py-3 hover:bg-alignment-primary/90 disabled:opacity-50"
+            className={pillPrimary}
           >
             {creating ? 'Creating…' : 'Create share link'}
           </button>
@@ -92,7 +94,7 @@ export default function SharePage() {
               <button
                 type="button"
                 onClick={copy}
-                className="rounded-full bg-alignment-primary text-white text-sm font-medium px-6 py-2.5 hover:bg-alignment-primary/90"
+                className={pillPrimary}
               >
                 {copied ? 'Copied' : 'Copy link'}
               </button>
@@ -100,7 +102,7 @@ export default function SharePage() {
                 type="button"
                 onClick={createOrRotate}
                 disabled={creating}
-                className="rounded-full border border-alignment-accent/15 text-alignment-accent text-sm font-medium px-6 py-2.5 hover:bg-alignment-accent/[0.03] disabled:opacity-50"
+                className={`${pillGhost} disabled:opacity-50`}
               >
                 {creating ? 'Working…' : 'New link (invalidates old)'}
               </button>
@@ -112,7 +114,7 @@ export default function SharePage() {
       <div className="mt-12 flex flex-col sm:flex-row gap-3">
         <Link
           to="/results"
-          className="inline-flex items-center justify-center rounded-full bg-alignment-surface border border-alignment-accent/15 text-alignment-accent text-xs font-medium uppercase tracking-[0.14em] px-6 py-3 hover:bg-alignment-accent/[0.03]"
+          className={pillGhost}
         >
           View results
         </Link>
