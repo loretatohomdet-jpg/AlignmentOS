@@ -70,9 +70,27 @@ body {
   outline-offset: 2px;
 }
 
+@keyframes hero-caret {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.hero-caret {
+  animation: hero-caret 0.85s steps(1, end) infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .agent-fab {
     animation: none !important;
+  }
+  .hero-caret {
+    animation: none;
   }
 }
 

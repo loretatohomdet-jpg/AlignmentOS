@@ -7,6 +7,53 @@ import DomainPillarIcon from '../components/DomainPillarIcon';
 import { pillGhost, pillPrimary, SitePageFooter } from '../components/HomeMarketingChrome';
 import { type } from '../config/siteType';
 
+const HERO_LINE = 'Recover the art of living well.';
+
+function HeroTypeLine({ text }) {
+  const reduced = usePrefersReducedMotion();
+  const [shown, setShown] = useState(() =>
+    typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches ? text : ''
+  );
+
+  useEffect(() => {
+    if (reduced) {
+      setShown(text);
+      return undefined;
+    }
+    setShown('');
+    let i = 0;
+    let id = 0;
+    const tick = () => {
+      i += 1;
+      setShown(text.slice(0, i));
+      if (i < text.length) {
+        id = window.setTimeout(tick, text[i - 1] === ' ' ? 90 : 52);
+      }
+    };
+    id = window.setTimeout(tick, 280);
+    return () => window.clearTimeout(id);
+  }, [reduced, text]);
+
+  const done = shown.length >= text.length;
+
+  return (
+    <h1
+      aria-label={text}
+      className="relative font-display italic font-normal leading-[1.18] tracking-tight text-alignment-accent whitespace-nowrap text-[clamp(1.2rem,4.8vw+0.35rem,3.45rem)]"
+    >
+      <span className="invisible" aria-hidden>
+        {text}
+      </span>
+      <span className="absolute inset-0" aria-hidden>
+        {shown}
+        {!done && (
+          <span className="hero-caret ml-[0.04em] inline-block h-[0.82em] w-[0.055em] translate-y-[0.08em] bg-alignment-primary align-baseline" />
+        )}
+      </span>
+    </h1>
+  );
+}
+
 function usePrefersReducedMotion() {
   const [reduced, setReduced] = useState(false);
   useEffect(() => {
@@ -183,12 +230,8 @@ export default function LandingPage() {
         <section className="flex w-full flex-col bg-alignment-foundation min-h-[calc(100vh-5.5rem)] sm:min-h-[calc(100vh-6rem)]">
           <div className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
             <div className="relative flex flex-1 flex-col justify-center px-6 sm:px-8 lg:px-12 pt-12 pb-8 sm:pt-16 sm:pb-10">
-            <div className="max-w-2xl mx-auto text-center">
-              <h1 className={type.h1Hero}>
-                Recover the art
-                <br />
-                of living well.
-              </h1>
+            <div className="max-w-4xl mx-auto text-center px-1">
+              <HeroTypeLine text={HERO_LINE} />
               <p className="mt-7 sm:mt-9 font-display italic text-xl sm:text-2xl text-alignment-primary leading-snug">
                 A system for becoming whole.
               </p>
