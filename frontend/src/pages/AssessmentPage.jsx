@@ -595,7 +595,7 @@ export default function AssessmentPage() {
                     See your full diagnostic
                   </h2>
                   <p className="mt-3 text-sm text-alignment-accent/55 text-center leading-relaxed">
-                    Enter your email to unlock the six-domain breakdown and receive this report in your inbox.
+                    Enter your email to unlock the six-domain breakdown. We’ll send this report to your inbox, with the next step: upgrade to the Habit Engine.
                   </p>
                   <form onSubmit={handleGuestUnlockEmail} className="mt-6 space-y-4">
                     <input
@@ -621,7 +621,7 @@ export default function AssessmentPage() {
                 <>
                   <p className="text-sm text-alignment-accent/60 text-center leading-relaxed">
                     {guestEmailed
-                      ? `We sent a copy of this diagnostic to ${guestEmail.trim()}.`
+                      ? `We sent this diagnostic to ${guestEmail.trim()}, with an invite to upgrade to the Habit Engine.`
                       : `Your results are below. If an email doesn’t arrive at ${guestEmail.trim()}, keep this page.`}
                   </p>
                   <div className="rounded-2xl border border-alignment-accent/10 bg-alignment-surface px-5 py-8 shadow-apple">
@@ -657,19 +657,24 @@ export default function AssessmentPage() {
                     </div>
                   </div>
                   <div className="rounded-2xl border border-alignment-accent/10 bg-alignment-surface px-6 py-6 text-center shadow-apple">
-                    <p className="text-sm font-medium text-alignment-accent">Save this to your dashboard</p>
+                    <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-alignment-primary/70">Next step</p>
+                    <p className="mt-3 text-sm font-medium text-alignment-accent">Upgrade to the Habit Engine</p>
                     <p className="mt-2 text-sm text-alignment-accent/55">
-                      Create a free account and submit once — your answers are kept in this browser until then.
+                      Close the gap with morning, midday, and evening rooms. This is a paid upgrade — Stripe checkout after you create an account.
                     </p>
                     <Link
-                      to="/signup?returnTo=/assessment"
+                      to="/signup?returnTo=/pricing"
                       className={`${pillPrimary} mt-5`}
                     >
-                      Create free account →
+                      Upgrade to the Habit Engine →
                     </Link>
                     <p className="mt-4 text-xs text-alignment-accent/45">
-                      Already have an account?{' '}
-                      <Link to="/login?returnTo=/assessment" className="font-medium text-alignment-accent underline underline-offset-2">
+                      Want to save this score first?{' '}
+                      <Link to="/signup?returnTo=/assessment" className="font-medium text-alignment-accent underline underline-offset-2">
+                        Create a free account
+                      </Link>
+                      {' · '}
+                      <Link to="/login?returnTo=/pricing" className="font-medium text-alignment-accent underline underline-offset-2">
                         Sign in
                       </Link>
                     </p>

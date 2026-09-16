@@ -5,7 +5,7 @@ const { computeAQ, getAlignmentTypeSubtitle } = require('../services/aqScore');
 const { syncActiveHabits } = require('../services/habitAssignment');
 const { resolveActiveAssessmentWithQuestions } = require('../services/assessmentEnsureQuestions');
 const { sendAssessmentReportEmail } = require('../services/assessmentReportEmail');
-const { subscribeLead } = require('../services/convertkit');
+const { subscribeLeadQuietly } = require('../services/convertkit');
 
 function reportFromComputed(computed) {
   const { aqScore, pillarScores, primaryDomain, alignmentTypeTitle, alignmentTypeSubtitle } = computed;
@@ -40,7 +40,7 @@ async function persistDiagnosticLead(email, source) {
     console.error('Lead DB save failed:', err.message);
   }
   try {
-    await subscribeLead(email, source);
+    await subscribeLeadQuietly(email, source);
   } catch (err) {
     console.error('ConvertKit lead subscribe failed:', err.message);
   }

@@ -42,5 +42,9 @@ test('report html includes score, strain, and domains', () => {
   assert.match(html, /The Developing Person/);
   assert.match(html, /Habits/);
   assert.match(html, /48%/);
+  assert.match(html, /Upgrade to the Habit Engine/);
+  assert.match(html, /signup\?returnTo=%2Fpricing/);
+  assert.match(html, /Stripe checkout/);
+  assert.doesNotMatch(html, /Alignment Reset/i);
   assert.doesNotMatch(html, /<script/i);
 });

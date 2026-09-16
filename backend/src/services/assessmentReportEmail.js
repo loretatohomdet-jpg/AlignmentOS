@@ -45,6 +45,7 @@ function domainScoresToDisplayPct(pillarScores, key) {
 function buildAssessmentReportHtml(report) {
   const score = Math.round(Math.min(100, Math.max(0, Number(report.score) || 0)));
   const origin = appOrigin();
+  const upgradeUrl = `${origin}/signup?returnTo=${encodeURIComponent('/pricing')}`;
   const rows = DOMAIN_ORDER.map((key) => {
     if (report.pillarScores?.[key] == null) return '';
     const pct = domainScoresToDisplayPct(report.pillarScores, key);
@@ -60,7 +61,7 @@ function buildAssessmentReportHtml(report) {
       <div style="max-width:560px;margin:0 auto;background:#F7F5F0;">
         <p style="margin:0;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#6E7158;">Alignment OS</p>
         <h1 style="margin:16px 0 8px;font-size:28px;font-weight:500;line-height:1.2;">Your diagnostic</h1>
-        <p style="margin:0 0 28px;font-size:16px;color:#6E7158;font-style:italic;">A copy of the report you just unlocked.</p>
+        <p style="margin:0 0 28px;font-size:16px;color:#6E7158;font-style:italic;">A copy of the six-domain report you just unlocked.</p>
         <p style="margin:0;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#6E7158;">Alignment score</p>
         <p style="margin:8px 0 4px;font-size:56px;line-height:1;font-weight:500;">${score}</p>
         <p style="margin:0 0 24px;font-size:14px;color:#6E7158;">out of 100${report.label ? ` · ${escapeHtml(report.label)}` : ''}</p>
@@ -74,8 +75,28 @@ function buildAssessmentReportHtml(report) {
         )}</p>
         <p style="margin:0 0 8px;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#6E7158;">Six domains</p>
         <table style="width:100%;border-collapse:collapse;">${rows}</table>
-        <p style="margin:28px 0 0;font-size:15px;line-height:1.55;">
-          <a href="${origin}/signup" style="color:#6E7158;">Create a free account</a> to save this score and install three practices from your lowest domain.
+        <div style="margin:32px 0 0;padding:24px;border:1px solid #E7E4DC;border-radius:16px;">
+          <p style="margin:0 0 6px;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#6E7158;">Next step</p>
+          <p style="margin:0 0 10px;font-size:22px;font-weight:500;line-height:1.25;">Upgrade to the Habit Engine</p>
+          <p style="margin:0 0 20px;font-size:15px;line-height:1.55;color:#5a5c54;">
+            This report shows where life holds and where it strains. The Habit Engine is how you close the gap — morning, midday, and evening rooms, installed on your lowest domain. It is a paid upgrade.
+          </p>
+          <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+            <tr>
+              <td style="border-radius:999px;background:#6E7158;">
+                <a href="${upgradeUrl}" style="display:inline-block;padding:14px 26px;color:#ffffff;text-decoration:none;font-size:15px;line-height:1;">
+                  Upgrade to the Habit Engine →
+                </a>
+              </td>
+            </tr>
+          </table>
+          <p style="margin:14px 0 0;font-size:13px;line-height:1.5;color:#6E7158;">
+            $12/month · Stripe checkout · create an account to pay
+          </p>
+        </div>
+        <p style="margin:22px 0 0;font-size:14px;line-height:1.55;color:#5a5c54;">
+          Prefer to save this score first?
+          <a href="${origin}/signup?returnTo=${encodeURIComponent('/assessment')}" style="color:#6E7158;">Create a free account</a>.
         </p>
         <p style="margin:20px 0 0;font-size:14px;color:#6E7158;">— Alignment OS</p>
       </div>

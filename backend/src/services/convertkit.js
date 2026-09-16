@@ -68,13 +68,34 @@ async function subscribeToConvertKit({ email, firstName, tags = [], source }) {
   return true;
 }
 
-/** Lead capture (lander, diagnostic email gate, etc.) */
+/** Lead capture (homepage Reset guide, etc.) — uses the Kit form and its confirmation email. */
 function subscribeLead(email, source = 'lander') {
   return subscribeToConvertKit({
     email,
     tags: process.env.CONVERTKIT_TAG_LEAD ? [process.env.CONVERTKIT_TAG_LEAD] : [],
     source,
   });
+}
+
+/**
+ * Add a diagnostic lead to the list without the form’s Reset-guide confirmation.
+ * Tag subscribe creates the subscriber; it does not send that form’s incentive email.
+ */
+async function subscribeLeadQuietly(email, source = 'diagnostic-report') {
+  const tagId = process.env.CONVERTKIT_TAG_LEAD;
+  const apiKey = process.env.CONVERTKIT_API_KEY;
+  const normalized = String(email || '').trim().toLowerCase();
+  if (!normalized || !apiKey || !tagId) return false;
+  try {
+    await postJson(`/tags/${tagId}/subscribe`, {
+      email: normalized,
+      fields: source ? { source } : undefined,
+    });
+    return true;
+  } catch (err) {
+    console.error('ConvertKit quiet lead subscribe failed:', err.message);
+    return false;
+  }
 }
 
 /** New account registration */
@@ -99,6 +120,7 @@ function subscribePaid(email) {
 module.exports = {
   subscribeToConvertKit,
   subscribeLead,
+  subscribeLeadQuietly,
   subscribeRegistered,
   subscribePaid,
   isConfigured,
