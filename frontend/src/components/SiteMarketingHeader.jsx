@@ -73,7 +73,7 @@ export default function SiteMarketingHeader({ appendDesktop = null, authDrawer }
         <div className="flex w-full max-w-6xl mx-auto min-w-0 items-center gap-2 px-3 sm:px-6 lg:px-10 min-h-14 sm:min-h-16 py-1.5 sm:py-0">
           <BrandLogo
             compact
-            className="min-w-0 flex-1 overflow-hidden max-w-[9.5rem] sm:max-w-[12rem] lg:max-w-[14rem] rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2"
+            className="min-w-0 shrink overflow-hidden max-w-[9.5rem] sm:max-w-[12rem] lg:max-w-[14rem] rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2"
           />
           <nav className="hidden lg:flex items-center gap-5 lg:gap-8 flex-1 justify-center min-w-0" aria-label="Primary">
             {navLinks.map(({ to, label }) => (
@@ -86,7 +86,7 @@ export default function SiteMarketingHeader({ appendDesktop = null, authDrawer }
               </NavLink>
             ))}
           </nav>
-          <div className="flex items-center justify-end gap-1 sm:gap-2 shrink-0">
+          <div className="ml-auto flex items-center justify-end gap-1 sm:gap-2 shrink-0">
             <Link
               to={primaryCta.to}
               className={`${beginFreeHeaderButtonClass} shrink-0 touch-manipulation max-lg:px-3 max-lg:py-1.5`}

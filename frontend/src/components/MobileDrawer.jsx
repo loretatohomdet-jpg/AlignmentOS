@@ -27,7 +27,7 @@ export default function MobileDrawer({ open, onClose, children }) {
       <aside
         aria-modal="true"
         aria-label="Navigation menu"
-        className={`fixed inset-y-0 left-0 right-0 z-[510] h-[100dvh] max-h-[100dvh] w-full bg-alignment-surface shadow-apple-lg flex flex-col transition-transform duration-300 ease-out lg:hidden pt-[env(safe-area-inset-top)] ${
+        className={`fixed inset-y-0 right-0 left-auto z-[510] h-[100dvh] max-h-[100dvh] w-[min(20rem,100%)] bg-alignment-surface shadow-apple-lg flex flex-col transition-transform duration-300 ease-out lg:hidden pt-[env(safe-area-inset-top)] ${
           open ? 'translate-x-0 pointer-events-auto' : 'translate-x-full pointer-events-none'
         }`}
       >
