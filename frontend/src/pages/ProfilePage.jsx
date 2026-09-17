@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { API_BASE } from '../config/apiBase';
 import { type } from '../config/siteType';
+import AddToHomeScreen from '../components/AddToHomeScreen';
 
 function Avatar({ user, className = '' }) {
   const sizeClass = className || 'w-20 h-20';
@@ -297,6 +298,9 @@ export default function ProfilePage() {
             </button>
           </div>
         </form>
+        <div className="mt-10">
+          <AddToHomeScreen />
+        </div>
       </div>
     </div>
   );

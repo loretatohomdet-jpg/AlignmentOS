@@ -1,4 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
+import AddToHomeScreen from '../components/AddToHomeScreen';
 import { courseLibraryUrl } from '../config/externalLinks';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { type } from '../config/siteType';
@@ -70,6 +71,10 @@ export default function MorePage() {
         <Row to="/cohort" label="The Charter Cohort" />
         {courseLibraryUrl ? <Row href={courseLibraryUrl} label="Courses" note="↗" /> : null}
         <Row to="/about" label="About" />
+      </div>
+
+      <div className="mt-10">
+        <AddToHomeScreen />
       </div>
     </div>
   );

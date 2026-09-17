@@ -7,15 +7,34 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico'],
+      includeAssets: [
+        'favicon.ico',
+        'favicon-32.png',
+        'apple-touch-icon.png',
+        'pwa-192.png',
+        'pwa-512.png',
+        'pwa-512-maskable.png',
+      ],
       manifest: {
         name: 'Alignment OS',
         short_name: 'Alignment OS',
-        description: 'Work that aligns with what matters. Take the assessment, get your AQ score.',
+        description: 'See where your life holds. Close the gap. Keep it.',
         start_url: '/',
+        scope: '/',
         display: 'standalone',
-        background_color: '#fbfbfd',
-        theme_color: '#0071e3',
+        orientation: 'portrait-primary',
+        background_color: '#F7F5F0',
+        theme_color: '#F7F5F0',
+        icons: [
+          { src: '/pwa-192.png', sizes: '192x192', type: 'image/png' },
+          { src: '/pwa-512.png', sizes: '512x512', type: 'image/png' },
+          {
+            src: '/pwa-512-maskable.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'maskable',
+          },
+        ],
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
