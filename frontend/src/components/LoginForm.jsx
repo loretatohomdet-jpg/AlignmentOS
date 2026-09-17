@@ -112,14 +112,14 @@ export default function LoginForm({
       </form>
 
       {!import.meta.env.PROD && (
-        <p className="mt-8 text-center font-sans text-sm text-alignment-accent/70">
+        <p className="mt-8 text-center font-sans text-sm text-alignment-accent/90">
           Demo: <span className="font-medium text-alignment-accent">demo@alignment.local</span>
           {' / '}
           <span className="font-medium text-alignment-accent">password123</span>
         </p>
       )}
 
-      <p className={`${compact ? 'mt-6' : 'mt-6'} text-center font-sans text-sm text-alignment-accent/70`}>
+      <p className={`${compact ? 'mt-6' : 'mt-6'} text-center font-sans text-sm text-alignment-accent/90`}>
         Don&apos;t have an account?{' '}
         <NavLink
           to={`/signup?returnTo=${encodeURIComponent(returnTo)}`}

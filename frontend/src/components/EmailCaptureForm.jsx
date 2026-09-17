@@ -54,7 +54,7 @@ export default function EmailCaptureForm({
   const buttonClass = `shrink-0 inline-flex items-center justify-center rounded-full bg-alignment-primary text-white text-[15px] font-medium px-8 py-3.5 min-h-12 transition-colors hover:bg-alignment-primary/90 disabled:opacity-50 ${focusRing}`;
 
   if (done && !redirectTo) {
-    return <p className="text-sm text-alignment-accent/70">{successText}</p>;
+    return <p className="text-sm text-alignment-accent/90">{successText}</p>;
   }
 
   return (
@@ -95,7 +95,7 @@ export default function EmailCaptureForm({
           </button>
         </div>
       )}
-      {helperText && <p className="mt-3 text-[11px] sm:text-xs text-alignment-accent/45">{helperText}</p>}
+      {helperText && <p className="mt-3 text-[11px] sm:text-xs text-alignment-accent/65">{helperText}</p>}
     </form>
   );
 }

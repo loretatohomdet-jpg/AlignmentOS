@@ -35,12 +35,12 @@ export default function AdminAssessmentsPage() {
   return (
     <div>
       <h2 className="text-lg font-semibold text-alignment-accent">Assessments</h2>
-      <p className="mt-1 text-sm text-alignment-accent/65">
+      <p className="mt-1 text-sm text-alignment-accent/85">
         Edit titles, activation, and question copy. Changing wording can affect how past responses read — do so deliberately.
       </p>
 
       {!list.length ? (
-        <p className="mt-8 text-alignment-accent/70">Loading…</p>
+        <p className="mt-8 text-alignment-accent/90">Loading…</p>
       ) : (
         <ul className="mt-8 space-y-3">
           {list.map((a) => (
@@ -51,12 +51,12 @@ export default function AdminAssessmentsPage() {
               >
                 <div>
                   <p className="font-medium text-alignment-accent">{a.title}</p>
-                  <p className="mt-1 text-xs text-alignment-accent/55">
+                  <p className="mt-1 text-xs text-alignment-accent/80">
                     {a._count?.questions ?? 0} questions · {a._count?.responses ?? 0} responses ·{' '}
                     {a.isActive ? (
                       <span className="text-emerald-800/90">Active</span>
                     ) : (
-                      <span className="text-alignment-accent/50">Inactive</span>
+                      <span className="text-alignment-accent/75">Inactive</span>
                     )}
                   </p>
                 </div>

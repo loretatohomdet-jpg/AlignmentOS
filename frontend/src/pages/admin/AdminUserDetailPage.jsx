@@ -101,7 +101,7 @@ export default function AdminUserDetailPage() {
   }
 
   if (!user) {
-    return <p className="text-alignment-accent/70">Loading…</p>;
+    return <p className="text-alignment-accent/90">Loading…</p>;
   }
 
   return (
@@ -111,7 +111,7 @@ export default function AdminUserDetailPage() {
       </Link>
 
       <h2 className="mt-6 text-lg font-semibold text-alignment-accent">User detail</h2>
-      <p className="mt-1 font-mono text-xs text-alignment-accent/50 break-all">{user.id}</p>
+      <p className="mt-1 font-mono text-xs text-alignment-accent/75 break-all">{user.id}</p>
 
       {error && (
         <div className="mt-4 rounded-2xl border border-red-200/80 bg-red-50/50 px-4 py-3 text-sm text-alignment-accent">
@@ -124,29 +124,29 @@ export default function AdminUserDetailPage() {
           <h3 className="text-sm font-semibold text-alignment-accent">Account & subscription</h3>
           <dl className="mt-4 space-y-2 text-sm">
             <div>
-              <dt className="text-alignment-accent/50">Email</dt>
+              <dt className="text-alignment-accent/75">Email</dt>
               <dd className="text-alignment-accent">{user.email}</dd>
             </div>
             <div>
-              <dt className="text-alignment-accent/50">Name</dt>
+              <dt className="text-alignment-accent/75">Name</dt>
               <dd className="text-alignment-accent">{user.name}</dd>
             </div>
             <div>
-              <dt className="text-alignment-accent/50">Joined</dt>
+              <dt className="text-alignment-accent/75">Joined</dt>
               <dd className="text-alignment-accent">{new Date(user.createdAt).toLocaleString()}</dd>
             </div>
             {user._count && (
               <>
                 <div>
-                  <dt className="text-alignment-accent/50">Responses</dt>
+                  <dt className="text-alignment-accent/75">Responses</dt>
                   <dd className="text-alignment-accent tabular-nums">{user._count.responses}</dd>
                 </div>
                 <div>
-                  <dt className="text-alignment-accent/50">Profiles</dt>
+                  <dt className="text-alignment-accent/75">Profiles</dt>
                   <dd className="text-alignment-accent tabular-nums">{user._count.alignmentProfiles}</dd>
                 </div>
                 <div>
-                  <dt className="text-alignment-accent/50">Scores</dt>
+                  <dt className="text-alignment-accent/75">Scores</dt>
                   <dd className="text-alignment-accent tabular-nums">{user._count.scores}</dd>
                 </div>
               </>
@@ -155,7 +155,7 @@ export default function AdminUserDetailPage() {
 
           <div className="mt-6 space-y-4">
             <label className="block">
-              <span className="text-xs font-medium uppercase tracking-wide text-alignment-accent/55">Role</span>
+              <span className="text-xs font-medium uppercase tracking-wide text-alignment-accent/80">Role</span>
               <select
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
@@ -166,7 +166,7 @@ export default function AdminUserDetailPage() {
               </select>
             </label>
             <label className="block">
-              <span className="text-xs font-medium uppercase tracking-wide text-alignment-accent/55">Plan</span>
+              <span className="text-xs font-medium uppercase tracking-wide text-alignment-accent/80">Plan</span>
               <select
                 value={plan}
                 onChange={(e) => setPlan(e.target.value)}
@@ -200,7 +200,7 @@ export default function AdminUserDetailPage() {
 
         <section className="rounded-2xl border border-alignment-accent/10 bg-alignment-surface p-5">
           <h3 className="text-sm font-semibold text-alignment-accent">Support & moderation notes</h3>
-          <p className="mt-1 text-xs text-alignment-accent/55">
+          <p className="mt-1 text-xs text-alignment-accent/80">
             Internal-only. Visible to admins. Use for escalations, billing context, or abuse review.
           </p>
 
@@ -210,7 +210,7 @@ export default function AdminUserDetailPage() {
               onChange={(e) => setNoteBody(e.target.value)}
               rows={4}
               placeholder="Add a note…"
-              className="w-full rounded-xl border border-alignment-accent/15 bg-alignment-foundation px-3 py-2 text-sm text-alignment-accent placeholder:text-alignment-accent/35 focus:border-alignment-primary/40 focus:outline-none focus:ring-2 focus:ring-alignment-primary/15"
+              className="w-full rounded-xl border border-alignment-accent/15 bg-alignment-foundation px-3 py-2 text-sm text-alignment-accent placeholder:text-alignment-accent/45 focus:border-alignment-primary/40 focus:outline-none focus:ring-2 focus:ring-alignment-primary/15"
             />
             <button
               type="button"
@@ -224,11 +224,11 @@ export default function AdminUserDetailPage() {
 
           <ul className="mt-6 space-y-4 max-h-[420px] overflow-y-auto">
             {notes.length === 0 ? (
-              <li className="text-sm text-alignment-accent/50">No notes yet.</li>
+              <li className="text-sm text-alignment-accent/75">No notes yet.</li>
             ) : (
               notes.map((n) => (
                 <li key={n.id} className="border-t border-alignment-accent/10 pt-4 first:border-0 first:pt-0">
-                  <p className="text-xs text-alignment-accent/50">
+                  <p className="text-xs text-alignment-accent/75">
                     {n.author?.name || n.author?.email || 'Admin'} ·{' '}
                     {new Date(n.createdAt).toLocaleString()}
                   </p>

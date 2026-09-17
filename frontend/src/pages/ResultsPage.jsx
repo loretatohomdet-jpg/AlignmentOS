@@ -177,7 +177,7 @@ export default function ResultsPage() {
                   <div>
                     <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-primary">Next</p>
                     <p className="mt-2 font-medium text-alignment-accent">Hold today’s practice</p>
-                    <p className="mt-1 text-sm text-alignment-accent/70 leading-relaxed">
+                    <p className="mt-1 text-sm text-alignment-accent/90 leading-relaxed">
                       Three practices from your lowest domain. Mark one done.
                     </p>
                   </div>
@@ -190,20 +190,20 @@ export default function ResultsPage() {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-6 xl:gap-8 lg:items-stretch">
                   <section className={`${resultsUi.panel} flex flex-col h-full min-h-0`}>
                     <p className={resultsUi.label}>Your three structural habits</p>
-                    <p className="mt-3 text-sm text-alignment-accent/55 italic leading-relaxed">
+                    <p className="mt-3 text-sm text-alignment-accent/90 italic leading-relaxed">
                       These three habits are drawn from your primary gap domain. Begin with one. Hold it for 21 days. Then add
                       the second.
                     </p>
                     <ul className="mt-6 space-y-4 flex-1">
                       {habits.length === 0 ? (
-                        <li className="text-sm text-alignment-accent/45 border border-alignment-accent/[0.06] rounded-lg px-4 py-3 bg-apple-surface-muted">
+                        <li className="text-sm text-alignment-accent/90 border border-alignment-accent/[0.06] rounded-lg px-4 py-3 bg-apple-surface-muted">
                           Finish the diagnostic while signed in to install three practices.
                         </li>
                       ) : (
                         habits.slice(0, 3).map((h) => (
                           <li key={h.id} className="border border-alignment-accent/[0.08] rounded-lg px-4 py-3 bg-alignment-surface">
                             <span className="font-medium text-alignment-accent">{h.title}</span>
-                            {h.description && <p className="mt-1 text-sm text-alignment-accent/55">{h.description}</p>}
+                            {h.description && <p className="mt-1 text-sm text-alignment-accent/90">{h.description}</p>}
                           </li>
                         ))
                       )}
@@ -235,13 +235,13 @@ export default function ResultsPage() {
                             <CartesianGrid strokeDasharray="3 3" stroke="rgba(44,46,38,0.06)" vertical={false} />
                             <XAxis
                               dataKey="date"
-                              tick={{ fontSize: 10, fill: 'rgba(44,46,38,0.45)' }}
+                              tick={{ fontSize: 10, fill: 'rgba(44,46,38,0.65)' }}
                               tickLine={false}
                               axisLine={false}
                             />
                             <YAxis
                               domain={[0, 100]}
-                              tick={{ fontSize: 10, fill: 'rgba(44,46,38,0.45)' }}
+                              tick={{ fontSize: 10, fill: 'rgba(44,46,38,0.65)' }}
                               tickLine={false}
                               axisLine={false}
                               width={28}
@@ -273,7 +273,7 @@ export default function ResultsPage() {
                       <span className={resultsUi.label}>Score history</span>
                       <Link
                         to="/dashboard"
-                        className="text-[10px] font-semibold uppercase tracking-[0.18em] text-alignment-accent/60 hover:text-alignment-accent"
+                        className="text-[10px] font-semibold uppercase tracking-[0.18em] text-alignment-accent/85 hover:text-alignment-accent"
                       >
                         Full map →
                       </Link>
@@ -284,13 +284,13 @@ export default function ResultsPage() {
                     <div>
                       <p className={resultsUi.label}>Review</p>
                       <p className="mt-2 text-sm text-alignment-accent font-medium">Few, and chosen.</p>
-                      <p className="mt-2 text-xs text-alignment-accent/50 leading-relaxed">
+                      <p className="mt-2 text-xs text-alignment-accent/75 leading-relaxed">
                         The practice library — not a Sunday form.
                       </p>
                     </div>
                     <Link
                       to="/reflect"
-                      className="mt-5 text-[10px] font-semibold uppercase tracking-[0.18em] text-alignment-accent/60 hover:text-alignment-accent"
+                      className="mt-5 text-[10px] font-semibold uppercase tracking-[0.18em] text-alignment-accent/85 hover:text-alignment-accent"
                     >
                       Open the library →
                     </Link>
@@ -302,13 +302,13 @@ export default function ResultsPage() {
                   <section className={`${resultsUi.panel} flex flex-col h-full justify-between`}>
                     <div>
                       <p className={resultsUi.label}>Retake</p>
-                      <p className="mt-2 text-sm text-alignment-accent/60 leading-relaxed">
+                      <p className="mt-2 text-sm text-alignment-accent/90 leading-relaxed">
                         Every 90 days — habits recalibrate with your score.
                       </p>
                     </div>
                     <Link
                       to="/assessment"
-                      className="mt-5 inline-flex text-[10px] font-semibold uppercase tracking-[0.18em] text-alignment-accent/60 hover:text-alignment-accent"
+                      className="mt-5 inline-flex text-[10px] font-semibold uppercase tracking-[0.18em] text-alignment-accent/85 hover:text-alignment-accent"
                     >
                       Retake diagnostic →
                     </Link>
@@ -316,7 +316,7 @@ export default function ResultsPage() {
 
                   <section className={`${resultsUi.panel} h-full flex flex-col`}>
                     <p className={resultsUi.label}>Who should know their score?</p>
-                    <p className="mt-2 text-xs text-alignment-accent/50 leading-relaxed">
+                    <p className="mt-2 text-xs text-alignment-accent/75 leading-relaxed">
                       Add someone who might take the diagnostic next. We save this as a lead for follow-up — we don’t email their
                       score.
                     </p>
@@ -332,12 +332,12 @@ export default function ResultsPage() {
                         {shareSending ? '…' : 'Send →'}
                       </button>
                     </form>
-                    {shareMsg && <p className="mt-2 text-xs text-alignment-accent/50">{shareMsg}</p>}
+                    {shareMsg && <p className="mt-2 text-xs text-alignment-accent/75">{shareMsg}</p>}
                   </section>
 
                   <section className={`${resultsUi.panel} h-full flex flex-col`}>
-                    <p className="font-display text-alignment-accent/55 italic text-left">Invite someone to the diagnostic</p>
-                    <p className="mt-2 text-xs text-alignment-accent/45 leading-relaxed">
+                    <p className="font-display text-alignment-accent/80 italic text-left">Invite someone to the diagnostic</p>
+                    <p className="mt-2 text-xs text-alignment-accent/65 leading-relaxed">
                       Share the free assessment link — not your personal score. (A shareable score card is on the roadmap.)
                     </p>
                     <div className="mt-4 flex flex-wrap gap-2">
@@ -368,7 +368,7 @@ export default function ResultsPage() {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-6 xl:gap-8 lg:items-stretch">
                   <section className="rounded-xl border border-alignment-accent/[0.08] bg-alignment-surface px-6 py-8 shadow-apple h-full flex flex-col">
                     <h3 className={`${resultsUi.heading} text-xl sm:text-2xl`}>Go deeper when you are ready</h3>
-                    <p className="mt-4 text-sm text-alignment-accent/60 leading-relaxed flex-1">
+                    <p className="mt-4 text-sm text-alignment-accent/90 leading-relaxed flex-1">
                       The Habit Engine is $12/month. Journey is $297, one time. Practice is already open.
                     </p>
                     <Link to="/pricing" className={`mt-6 inline-flex ${resultsUi.btnOutline} px-8 py-3 self-start`}>
@@ -381,7 +381,7 @@ export default function ResultsPage() {
                     <h3 className={`mt-4 ${resultsUi.heading} text-xl sm:text-2xl`}>
                       Who are you becoming — and toward what?
                     </h3>
-                    <p className="mt-4 text-sm text-alignment-accent/60 leading-relaxed flex-1">
+                    <p className="mt-4 text-sm text-alignment-accent/90 leading-relaxed flex-1">
                       Journey to Purpose — 90 days, 14 modules, complete life architecture. One time. Lifetime access.
                     </p>
                     {creatorHref ? (
@@ -405,7 +405,7 @@ export default function ResultsPage() {
                 </div>
 
                 {result.createdAt && (
-                  <p className="text-center text-xs text-alignment-accent/45">
+                  <p className="text-center text-xs text-alignment-accent/65">
                     Result from {new Date(result.createdAt).toLocaleString()}
                   </p>
                 )}
@@ -416,7 +416,7 @@ export default function ResultsPage() {
 
         {!loading && !error && !result && (
           <div className={`rounded-2xl border ${diag.border} ${diag.card} p-10 text-center shadow-apple`}>
-            <p className="text-alignment-accent/60">No results yet.</p>
+            <p className="text-alignment-accent/90">No results yet.</p>
             <Link to="/assessment" className="mt-4 inline-block font-medium text-alignment-accent hover:underline">
               Take the assessment →
             </Link>

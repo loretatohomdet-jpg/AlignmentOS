@@ -117,7 +117,7 @@ function Layout({ children }) {
         {!isLoggedIn ? (
           <NavLink
             to="/login"
-            className="px-4 py-2 rounded-full text-sm font-medium text-alignment-accent/70 hover:text-alignment-accent transition-colors"
+            className="px-4 py-2 rounded-full text-sm font-medium text-alignment-accent/90 hover:text-alignment-accent transition-colors"
           >
             Sign In
           </NavLink>
@@ -128,7 +128,7 @@ function Layout({ children }) {
           <button
             type="button"
             onClick={handleSetToken}
-            className="p-2 rounded-full text-alignment-accent/70 hover:text-alignment-accent hover:bg-alignment-accent/5 transition-colors"
+            className="p-2 rounded-full text-alignment-accent/90 hover:text-alignment-accent hover:bg-alignment-accent/5 transition-colors"
             title="Dev: paste JWT"
             aria-label="Set JWT token (development)"
           >
@@ -162,7 +162,7 @@ function Layout({ children }) {
           userRole === 'ADMIN' ? (
             <NavLink
               to="/admin/overview"
-              className="text-[9px] sm:text-[10px] font-normal uppercase tracking-[0.14em] text-alignment-accent/45 hover:text-alignment-accent"
+              className="text-[9px] sm:text-[10px] font-normal uppercase tracking-[0.14em] text-alignment-accent/65 hover:text-alignment-accent"
             >
               Admin
             </NavLink>

@@ -118,7 +118,7 @@ export default function EveningClosePage() {
       <h1 className={`mt-4 ${type.h1}`}>
         Close the day.
       </h1>
-      <p className="mt-3 text-[17px] text-alignment-accent/55 leading-relaxed">
+      <p className="mt-3 text-[17px] text-alignment-accent/90 leading-relaxed">
         So it stops following you into tomorrow.
       </p>
 

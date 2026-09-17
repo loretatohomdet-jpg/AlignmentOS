@@ -10,11 +10,11 @@ export const diag = {
   /** Primary text */
   text: 'text-alignment-accent',
   /** Secondary labels */
-  muted: 'text-alignment-accent/55',
+  muted: 'text-alignment-accent/80',
   /** Tertiary / helper */
-  subtle: 'text-alignment-accent/45',
+  subtle: 'text-alignment-accent/65',
   /** Category line above question */
-  category: 'text-alignment-accent/50',
+  category: 'text-alignment-accent/75',
   /** Accent for links & small highlights */
   accent: 'text-alignment-accent',
   /** Primary actions — deep olive */
@@ -27,7 +27,7 @@ export const diag = {
   border: 'border-alignment-accent/10',
   /** Inputs */
   input:
-    'border-alignment-accent/10 bg-alignment-surfaceSoft text-alignment-accent placeholder:text-alignment-accent/40',
+    'border-alignment-accent/10 bg-alignment-surfaceSoft text-alignment-accent placeholder:text-alignment-accent/55',
   /** Primary strain title */
   strainTitle: 'text-alignment-accent',
   /** Alignment “type” card */
@@ -40,73 +40,73 @@ export const diag = {
 export const diagFlow = {
   /** Dark olive-brown canvas — immersive flow without pure black */
   page: 'bg-alignment-deep text-white',
-  kicker: 'text-white/50',
-  muted: 'text-white/60',
-  subtle: 'text-white/45',
-  category: 'text-white/50',
+  kicker: 'text-white/70',
+  muted: 'text-white/80',
+  subtle: 'text-white/70',
+  category: 'text-white/75',
   barTrack: 'bg-alignment-surface/15',
   barFill: 'bg-alignment-primary',
   domainCard: 'rounded-2xl border border-white/10 bg-neutral-900 shadow-none',
-  domainKicker: 'text-white/45',
+  domainKicker: 'text-white/70',
   domainTitle: 'text-white',
-  domainBody: 'text-neutral-400',
+  domainBody: 'text-neutral-200',
   question: 'text-white',
   likertIdle:
     'border border-white/35 bg-transparent text-white hover:border-white/55 hover:bg-alignment-surface/[0.06]',
   likertActive: 'bg-alignment-surface text-alignment-accent border-alignment-surface ring-2 ring-white/25',
-  likertCaption: 'text-neutral-400',
-  scaleEnds: 'text-white/40',
-  likertHint: 'text-neutral-500',
-  footerCount: 'text-white/45',
+  likertCaption: 'text-neutral-200',
+  scaleEnds: 'text-white/70',
+  likertHint: 'text-neutral-300',
+  footerCount: 'text-white/70',
   primaryBtn: 'bg-alignment-surface text-alignment-accent hover:bg-alignment-foundation',
   primaryBtnDisabled: 'bg-neutral-800 text-neutral-500 cursor-not-allowed border border-white/10',
-  ghostLink: 'text-neutral-400 hover:text-white',
+  ghostLink: 'text-neutral-200 hover:text-white',
   errorBox: 'rounded-2xl border border-white/20 bg-neutral-900 text-neutral-200 px-4 py-3',
   emptySurface: 'rounded-2xl border border-white/10 bg-neutral-900',
   reviewCard: 'rounded-2xl border border-white/10 bg-neutral-900',
-  reviewMuted: 'text-neutral-400',
-  reviewLink: 'text-neutral-400 hover:text-white',
+  reviewMuted: 'text-neutral-200',
+  reviewLink: 'text-neutral-200 hover:text-white',
 };
 
 /** Logged-in results (/results) — warm surfaces + charcoal type */
 export const resultsUi = {
   wrap: 'bg-alignment-foundation rounded-2xl sm:rounded-3xl',
-  label: 'text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.22em] text-alignment-accent/45',
+  label: 'text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.22em] text-alignment-accent/65',
   panel: `rounded-xl border ${diag.border} ${diag.card} px-5 py-6 sm:px-7 sm:py-7 shadow-apple`,
   heading: 'font-display text-alignment-accent',
   btnPrimary: `${diag.btn} ${diag.btnHover} inline-flex items-center justify-center rounded-full px-8 py-3.5 text-[15px] font-medium min-h-12 transition-colors`,
   btnOutline:
     'inline-flex items-center justify-center rounded-full border border-alignment-accent/15 bg-alignment-surfaceSoft text-alignment-accent text-[15px] px-8 py-3.5 min-h-12 hover:border-alignment-primary/40 hover:bg-alignment-surfaceSoft transition-colors',
   input:
-    'w-full rounded-xl border border-alignment-accent/12 bg-alignment-surfaceSoft px-4 py-3 text-sm text-alignment-accent placeholder:text-alignment-accent/40 focus:border-alignment-primary/40 focus:outline-none focus:ring-2 focus:ring-alignment-primary/15',
+    'w-full rounded-xl border border-alignment-accent/12 bg-alignment-surfaceSoft px-4 py-3 text-sm text-alignment-accent placeholder:text-alignment-accent/55 focus:border-alignment-primary/40 focus:outline-none focus:ring-2 focus:ring-alignment-primary/15',
 };
 
 export const diagRun = {
   page: 'bg-alignment-foundation text-alignment-accent',
-  kicker: 'text-alignment-accent/45',
-  muted: 'text-alignment-accent/55',
-  subtle: 'text-alignment-accent/45',
-  category: 'text-alignment-accent/50',
+  kicker: 'text-alignment-accent/65',
+  muted: 'text-alignment-accent/80',
+  subtle: 'text-alignment-accent/65',
+  category: 'text-alignment-accent/75',
   barTrack: 'bg-alignment-accent/10',
   barFill: 'bg-alignment-primary',
   domainCard: 'rounded-2xl border border-alignment-accent/10 bg-alignment-surfaceSoft shadow-apple',
-  domainKicker: 'text-alignment-accent/45',
+  domainKicker: 'text-alignment-accent/65',
   domainTitle: 'text-alignment-accent',
-  domainBody: 'text-alignment-accent/60',
+  domainBody: 'text-alignment-accent/85',
   question: 'text-alignment-accent',
   likertIdle:
     'border border-alignment-accent/15 bg-alignment-surfaceSoft text-alignment-accent hover:border-alignment-accent/30 hover:bg-alignment-accent/[0.02]',
   likertActive: 'bg-alignment-primary text-white border-alignment-primary ring-2 ring-alignment-primary/20',
-  likertCaption: 'text-alignment-accent/50',
-  scaleEnds: 'text-alignment-accent/40',
-  likertHint: 'text-alignment-accent/45',
-  footerCount: 'text-alignment-accent/45',
+  likertCaption: 'text-alignment-accent/75',
+  scaleEnds: 'text-alignment-accent/70',
+  likertHint: 'text-alignment-accent/65',
+  footerCount: 'text-alignment-accent/65',
   primaryBtn: 'bg-alignment-primary text-white hover:bg-alignment-primary/90',
-  primaryBtnDisabled: 'bg-alignment-primary/15 text-alignment-accent/35 cursor-not-allowed border border-alignment-primary/20',
-  ghostLink: 'text-alignment-accent/45 hover:text-alignment-accent',
+  primaryBtnDisabled: 'bg-alignment-primary/15 text-alignment-accent/50 cursor-not-allowed border border-alignment-primary/20',
+  ghostLink: 'text-alignment-accent/65 hover:text-alignment-accent',
   errorBox: 'rounded-2xl border border-alignment-accent/10 bg-alignment-surfaceSoft text-alignment-accent px-4 py-3',
   emptySurface: 'rounded-2xl border border-alignment-accent/10 bg-alignment-surfaceSoft shadow-apple',
   reviewCard: 'rounded-2xl border border-alignment-accent/10 bg-alignment-surfaceSoft shadow-apple',
-  reviewMuted: 'text-alignment-accent/55',
-  reviewLink: 'text-alignment-accent/55 hover:text-alignment-accent',
+  reviewMuted: 'text-alignment-accent/80',
+  reviewLink: 'text-alignment-accent/80 hover:text-alignment-accent',
 };

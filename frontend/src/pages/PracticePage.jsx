@@ -111,18 +111,18 @@ export default function PracticePage() {
   if (loading) {
     return (
       <div className="mx-auto max-w-xl px-6 py-20 text-center">
-        <p className="font-display italic text-alignment-accent/45">Loading today…</p>
+        <p className="font-display italic text-alignment-accent/65">Loading today…</p>
       </div>
     );
   }
 
   return (
     <div className="mx-auto w-full max-w-xl px-6 pb-16 pt-10 sm:pt-14">
-      <p className="text-center text-[10px] font-medium uppercase tracking-[0.22em] text-alignment-accent/40">
+      <p className="text-center text-[10px] font-medium uppercase tracking-[0.22em] text-alignment-accent/70">
         {dateLabel}
       </p>
       <h1 className={`mt-4 text-center ${type.h1}`}>{greeting}</h1>
-      <p className="mt-3 text-center text-[15px] text-alignment-accent/55 leading-relaxed">
+      <p className="mt-3 text-center text-[15px] text-alignment-accent/90 leading-relaxed">
         The day has three rooms. Do them in order.
       </p>
 
@@ -136,8 +136,8 @@ export default function PracticePage() {
         <div className="mt-10 rounded-2xl border border-alignment-primary/20 bg-alignment-primary/[0.06] px-6 py-6">
           <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-primary">Today’s hold</p>
           <p className="mt-3 font-display text-xl font-medium text-alignment-accent leading-snug">{prompt.title}</p>
-          <p className="mt-2 text-sm text-alignment-accent/70 leading-relaxed">{prompt.body}</p>
-          <p className="mt-4 text-[11px] text-alignment-accent/45 leading-relaxed">
+          <p className="mt-2 text-sm text-alignment-accent/90 leading-relaxed">{prompt.body}</p>
+          <p className="mt-4 text-[11px] text-alignment-accent/65 leading-relaxed">
             This is the Habit Engine. The same line is emailed if this hold is still open.
           </p>
         </div>
@@ -147,7 +147,7 @@ export default function PracticePage() {
         <div className="mt-10 rounded-2xl border border-alignment-accent/10 bg-alignment-surface px-6 py-6">
           <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-primary">Habit Engine</p>
           <p className="mt-3 font-medium text-alignment-accent">A daily hold, named for you.</p>
-          <p className="mt-2 text-sm text-alignment-accent/65 leading-relaxed">
+          <p className="mt-2 text-sm text-alignment-accent/90 leading-relaxed">
             The engine picks one of your three practices each day, shows it here, and emails it if it is still open. The three rooms stay available either way.
           </p>
           <Link to="/pricing" className={`${pillGhost} mt-5`}>
@@ -158,7 +158,7 @@ export default function PracticePage() {
 
       {!liveHabits && (
         <div className="mt-10 rounded-2xl border border-alignment-accent/10 bg-alignment-surface px-6 py-6 text-center">
-          <p className="text-sm text-alignment-accent/65 leading-relaxed">
+          <p className="text-sm text-alignment-accent/90 leading-relaxed">
             Take the free diagnostic so these rooms can sit on your lowest domain.
           </p>
           <Link to="/assessment" className={`${pillGhost} mt-5`}>
@@ -172,31 +172,31 @@ export default function PracticePage() {
           {nextRoom.id === 'morning' ? 'Begin the morning anchor' : nextRoom.id === 'midday' ? 'Begin the midday pause' : 'Close the day'}
         </Link>
       ) : (
-        <p className="mt-8 text-center text-sm text-alignment-accent/50">The day is held.</p>
+        <p className="mt-8 text-center text-sm text-alignment-accent/90">The day is held.</p>
       )}
 
       <ol className="mt-10 divide-y divide-alignment-accent/[0.08] border-t border-alignment-accent/[0.08]">
         {rooms.map((room, index) => (
           <li key={room.id}>
             <Link to={room.to} className="flex items-start gap-4 py-5">
-              <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-alignment-accent/15 text-[11px] text-alignment-accent/45">
+              <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-alignment-accent/15 text-[11px] text-alignment-accent/65">
                 {index + 1}
               </span>
               <span className="min-w-0 flex-1">
                 <span className="flex items-baseline justify-between gap-3">
                   <span className="font-display text-lg font-medium text-alignment-accent">{room.title}</span>
-                  <span className="text-[11px] uppercase tracking-[0.16em] text-alignment-accent/40">
+                  <span className="text-[11px] uppercase tracking-[0.16em] text-alignment-accent/70">
                     {room.held ? 'Held' : nextRoom?.id === room.id ? 'Next' : 'Later'}
                   </span>
                 </span>
-                <span className="mt-1 block text-sm text-alignment-accent/50 leading-relaxed">{room.note}</span>
+                <span className="mt-1 block text-sm text-alignment-accent/90 leading-relaxed">{room.note}</span>
               </span>
             </Link>
           </li>
         ))}
       </ol>
 
-      <p className="mt-10 text-center text-sm text-alignment-accent/45">
+      <p className="mt-10 text-center text-sm text-alignment-accent/90">
         <Link to="/reflect" className="underline underline-offset-2 hover:text-alignment-accent">
           Review
         </Link>

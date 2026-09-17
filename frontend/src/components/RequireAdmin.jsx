@@ -43,7 +43,7 @@ export default function RequireAdmin({ children }) {
   if (status === 'loading') {
     return (
       <div className="max-w-4xl mx-auto px-6 py-16">
-        <p className="text-alignment-accent/70">Loading…</p>
+        <p className="text-alignment-accent/90">Loading…</p>
       </div>
     );
   }

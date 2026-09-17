@@ -15,7 +15,7 @@ export const siteNavSignedInLinks = [
 ];
 
 export const siteNavLinkClass =
-  'text-[10px] sm:text-[11px] font-normal uppercase tracking-[0.22em] text-alignment-accent/50 hover:text-alignment-accent transition-colors';
+  'text-[10px] sm:text-[11px] font-normal uppercase tracking-[0.22em] text-alignment-accent/75 hover:text-alignment-accent transition-colors';
 
 export const siteNavDrawerRowClass =
   'block px-4 py-3 rounded-xl text-base font-medium text-alignment-accent hover:bg-alignment-accent/5';

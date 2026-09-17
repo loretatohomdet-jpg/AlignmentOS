@@ -38,7 +38,7 @@ export default function MobileDrawer({ open, onClose, children }) {
           <button
             type="button"
             onClick={onClose}
-            className="p-2 rounded-full text-alignment-accent/70 hover:bg-alignment-accent/5 hover:text-alignment-accent transition-colors"
+            className="p-2 rounded-full text-alignment-accent/90 hover:bg-alignment-accent/5 hover:text-alignment-accent transition-colors"
             aria-label="Close menu"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -45,7 +45,7 @@ export default function InstitutionPage() {
               Formation awakens a calling. Alignment builds the life required to live it.
             </p>
           </blockquote>
-          <div className="mt-12 space-y-6 text-sm sm:text-base text-alignment-accent/70 leading-relaxed font-sans max-w-2xl mx-auto">
+          <div className="mt-12 space-y-6 text-sm sm:text-base text-alignment-accent/90 leading-relaxed font-sans max-w-2xl mx-auto">
             <p>
               Every formation programme has an ending. What follows is a transition — and in that transition, most people
               struggle. Not because the formation failed. But because inspiration fades when structure does not follow. The
@@ -63,21 +63,21 @@ export default function InstitutionPage() {
         <section className="border-t border-alignment-accent/[0.08] bg-apple-surface-muted py-12 sm:py-16">
           <div className={`${sectionClass} flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-4 sm:gap-2`}>
             <div className="flex-1 rounded-xl border border-alignment-accent/[0.08] bg-alignment-surface px-4 py-5 text-center shadow-sm">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-alignment-accent/45">Your programme</p>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-alignment-accent/65">Your programme</p>
               <p className="mt-2 font-display text-lg sm:text-xl text-alignment-accent">Awakens calling</p>
             </div>
             <span className="hidden sm:inline text-alignment-accent/25 text-xl shrink-0" aria-hidden>
               →
             </span>
             <div className="flex-1 rounded-xl border-2 border-alignment-accent/20 bg-alignment-surface px-4 py-5 text-center shadow-apple">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-alignment-accent/55">Alignment OS</p>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-alignment-accent/80">Alignment OS</p>
               <p className="mt-2 font-display text-lg sm:text-xl text-alignment-accent">Builds the life</p>
             </div>
             <span className="hidden sm:inline text-alignment-accent/25 text-xl shrink-0" aria-hidden>
               →
             </span>
             <div className="flex-1 rounded-xl border border-alignment-accent/[0.08] bg-alignment-surface px-4 py-5 text-center shadow-sm">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-alignment-accent/45">Your community</p>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-alignment-accent/65">Your community</p>
               <p className="mt-2 font-display text-lg sm:text-xl text-alignment-accent">Mission sustained</p>
             </div>
           </div>
@@ -88,7 +88,7 @@ export default function InstitutionPage() {
           <h2 className={`${type.h2} text-center`}>
             Who this is built for
           </h2>
-          <p className="mt-4 text-base text-alignment-accent/60 text-center max-w-2xl mx-auto leading-relaxed">
+          <p className="mt-4 text-base text-alignment-accent/85 text-center max-w-2xl mx-auto leading-relaxed">
             Alignment OS was designed for communities that form people seriously — and want to support what comes after.
           </p>
           <div className="mt-12 grid sm:grid-cols-2 gap-5 sm:gap-6">
@@ -119,7 +119,7 @@ export default function InstitutionPage() {
                 className="rounded-2xl border border-alignment-accent/[0.08] bg-apple-surface-muted px-6 py-6 sm:px-7 sm:py-7"
               >
                 <h3 className="font-semibold text-alignment-accent text-base">{title}</h3>
-                <p className="mt-3 text-sm text-alignment-accent/65 leading-relaxed">{body}</p>
+                <p className="mt-3 text-sm text-alignment-accent/90 leading-relaxed">{body}</p>
               </div>
             ))}
           </div>
@@ -128,7 +128,7 @@ export default function InstitutionPage() {
         {/* The full offering */}
         <section className={`${sectionClass} py-16 sm:py-20 border-t border-alignment-accent/[0.08]`}>
           <h2 className={`${type.h2} text-center`}>The full offering</h2>
-          <p className="mt-4 text-base text-alignment-accent/60 text-center max-w-2xl mx-auto leading-relaxed">
+          <p className="mt-4 text-base text-alignment-accent/85 text-center max-w-2xl mx-auto leading-relaxed">
             Every member in an institutional partnership receives the complete Alignment OS system. There are no partial access
             tiers — the value of the platform is its integration.
           </p>
@@ -180,7 +180,7 @@ export default function InstitutionPage() {
                 <span className="font-display text-4xl sm:text-5xl text-alignment-accent/15 tabular-nums leading-none pt-1">{n}</span>
                 <div>
                   <h3 className="font-semibold text-alignment-accent text-lg">{h}</h3>
-                  <p className="mt-3 text-sm sm:text-base text-alignment-accent/65 leading-relaxed">
+                  <p className="mt-3 text-sm sm:text-base text-alignment-accent/90 leading-relaxed">
                     {p}
                     {cohortLink && (
                       <>
@@ -205,7 +205,7 @@ export default function InstitutionPage() {
           <h2 className={`${type.h2} text-center`}>
             What formation leaders see
           </h2>
-          <p className="mt-4 text-base text-alignment-accent/60 text-center max-w-2xl mx-auto">
+          <p className="mt-4 text-base text-alignment-accent/85 text-center max-w-2xl mx-auto">
             Institutional access includes a leader view — aggregate insight across your community without exposing individual
             member data.
           </p>
@@ -246,7 +246,7 @@ export default function InstitutionPage() {
               <div key={title} className="rounded-2xl border border-alignment-accent/[0.08] bg-alignment-surface px-5 py-6 shadow-sm">
                 <div className="text-alignment-accent">{icon}</div>
                 <h4 className="mt-4 font-semibold text-alignment-accent text-sm sm:text-base">{title}</h4>
-                <p className="mt-2 text-sm text-alignment-accent/60 leading-relaxed">{body}</p>
+                <p className="mt-2 text-sm text-alignment-accent/90 leading-relaxed">{body}</p>
               </div>
             ))}
           </div>
@@ -255,7 +255,7 @@ export default function InstitutionPage() {
         {/* Onboarding */}
         <section className={`${sectionClass} py-16 sm:py-20 border-t border-alignment-accent/[0.08]`}>
           <h2 className={`${type.h2} text-center`}>How onboarding works</h2>
-          <p className="mt-4 text-base text-alignment-accent/60 text-center max-w-2xl mx-auto">
+          <p className="mt-4 text-base text-alignment-accent/85 text-center max-w-2xl mx-auto">
             We work directly with your organisation to ensure the platform integrates naturally into your existing formation
             structure — without adding administrative burden.
           </p>
@@ -300,11 +300,11 @@ export default function InstitutionPage() {
                   {step.n}
                 </span>
                 <h3 className="font-semibold text-alignment-accent text-lg">{step.h}</h3>
-                <p className="mt-3 text-sm text-alignment-accent/65 leading-relaxed">{step.p}</p>
-                <ul className="mt-4 space-y-2 text-sm text-alignment-accent/70">
+                <p className="mt-3 text-sm text-alignment-accent/90 leading-relaxed">{step.p}</p>
+                <ul className="mt-4 space-y-2 text-sm text-alignment-accent/90">
                   {step.bullets.map((b) => (
                     <li key={b} className="flex gap-2">
-                      <span className="text-alignment-accent/40 shrink-0">→</span>
+                      <span className="text-alignment-accent/70 shrink-0">→</span>
                       <span>{b}</span>
                     </li>
                   ))}
@@ -343,11 +343,11 @@ export default function InstitutionPage() {
                   {step.n}
                 </span>
                 <h3 className="font-semibold text-alignment-accent text-lg">{step.h}</h3>
-                <p className="mt-3 text-sm text-alignment-accent/65 leading-relaxed">{step.p}</p>
-                <ul className="mt-4 space-y-2 text-sm text-alignment-accent/70">
+                <p className="mt-3 text-sm text-alignment-accent/90 leading-relaxed">{step.p}</p>
+                <ul className="mt-4 space-y-2 text-sm text-alignment-accent/90">
                   {step.bullets.map((b) => (
                     <li key={b} className="flex gap-2">
-                      <span className="text-alignment-accent/40 shrink-0">→</span>
+                      <span className="text-alignment-accent/70 shrink-0">→</span>
                       <span>{b}</span>
                     </li>
                   ))}
@@ -358,7 +358,7 @@ export default function InstitutionPage() {
 
           <div className="mt-14 rounded-2xl bg-apple-surface-muted border border-alignment-accent/[0.08] px-6 sm:px-8 py-8 sm:py-10 max-w-2xl mx-auto">
             <h3 className="font-display text-xl sm:text-2xl font-medium text-alignment-accent">A partnership, not a subscription</h3>
-            <p className="mt-4 text-sm sm:text-base text-alignment-accent/65 leading-relaxed">
+            <p className="mt-4 text-sm sm:text-base text-alignment-accent/90 leading-relaxed">
               Institutional access to Alignment OS is structured as a partnership — an annual agreement built around your
               community&apos;s formation model. Pricing is discussed directly, based on community size, cohort structure, and
               the depth of support your programme requires. It is not a per-seat software product.
@@ -375,13 +375,13 @@ export default function InstitutionPage() {
             >
               Bring this to your community
             </h2>
-            <p className="mt-5 text-sm sm:text-base text-white/60 leading-relaxed max-w-xl mx-auto">
+            <p className="mt-5 text-sm sm:text-base text-white/85 leading-relaxed max-w-xl mx-auto">
               We work directly with formation leaders to structure the right access model. The conversation begins with a
               single email.
             </p>
 
             <div className="mt-10 max-w-md mx-auto text-left">
-              <label htmlFor="institution-contact-display" className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.2em] text-white/45">
+              <label htmlFor="institution-contact-display" className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.2em] text-white/75">
                 Contact email
               </label>
               <a

@@ -120,7 +120,7 @@ function AnimatedProofStat({ target, prefix = '', suffix = '', label }) {
         {value}
         {suffix}
       </p>
-      <p className="mt-3 text-[10px] sm:text-[11px] font-normal uppercase tracking-[0.22em] text-white/55">
+      <p className="mt-3 text-[10px] sm:text-[11px] font-normal uppercase tracking-[0.22em] text-white/80">
         {label}
       </p>
     </div>
@@ -138,7 +138,7 @@ function FinalCtaClosing() {
         <h2 id="final-cta-heading" className={`mt-6 ${type.h2}`}>
           Get the guide.
         </h2>
-        <p className="mt-6 text-sm sm:text-base text-alignment-accent/75 leading-relaxed">
+        <p className={`mt-6 ${type.body}`}>
           A short letter on where life holds, where it strains, and how to begin. We’ll send it to your inbox.
         </p>
 
@@ -155,7 +155,7 @@ function FinalCtaClosing() {
         <p className="mt-5 text-center">
           <Link
             to="/assessment"
-            className="text-[11px] sm:text-xs text-alignment-accent/50 transition-colors duration-200 hover:text-alignment-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-alignment-primary/30 rounded-sm px-0.5"
+            className="text-[11px] sm:text-xs text-alignment-accent/75 transition-colors duration-200 hover:text-alignment-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-alignment-primary/30 rounded-sm px-0.5"
           >
             Prefer the diagnostic? Begin free <span aria-hidden>→</span>
           </Link>
@@ -163,7 +163,7 @@ function FinalCtaClosing() {
         <p className="mt-3 text-center">
           <Link
             to="/dashboard"
-            className="text-[11px] sm:text-xs text-alignment-accent/50 transition-colors duration-200 hover:text-alignment-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-alignment-primary/30 rounded-sm px-0.5"
+            className="text-[11px] sm:text-xs text-alignment-accent/75 transition-colors duration-200 hover:text-alignment-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-alignment-primary/30 rounded-sm px-0.5"
           >
             Already have an account? Dashboard <span aria-hidden>→</span>
           </Link>
@@ -243,7 +243,7 @@ export default function LandingPage() {
                   How it works
                 </a>
               </div>
-              <p className="mt-8 text-sm sm:text-base text-alignment-accent/40 leading-relaxed max-w-sm mx-auto">
+              <p className={`mt-8 ${type.body} max-w-sm mx-auto`}>
                 Six domains. One Alignment Score. A clearer path forward.
               </p>
             </div>
@@ -276,7 +276,7 @@ export default function LandingPage() {
           <div className="max-w-xl mx-auto px-6 sm:px-8 py-12 sm:py-16 text-center">
             <blockquote className={type.quote}>
               <p>
-                You need <em className="italic text-alignment-accent/70">structure beneath</em> the effort — not more effort.
+                You need <em className="italic text-alignment-accent/90">structure beneath</em> the effort — not more effort.
               </p>
             </blockquote>
           </div>
@@ -294,7 +294,7 @@ export default function LandingPage() {
                   <li key={step.n} className="flex gap-4">
                     <div className="flex w-11 shrink-0 flex-col items-center">
                       <span
-                        className="flex h-11 w-11 items-center justify-center rounded-full border border-alignment-accent/20 text-sm font-medium text-alignment-accent/70"
+                        className="flex h-11 w-11 items-center justify-center rounded-full border border-alignment-accent/20 text-sm font-medium text-alignment-accent/90"
                         aria-hidden
                       >
                         {step.n}
@@ -316,7 +316,7 @@ export default function LandingPage() {
                   <Fragment key={`desktop-${step.n}`}>
                     <div className="min-w-0 flex flex-col">
                       <span
-                        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-alignment-accent/20 text-sm font-medium text-alignment-accent/70"
+                        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-alignment-accent/20 text-sm font-medium text-alignment-accent/90"
                         aria-hidden
                       >
                         {step.n}

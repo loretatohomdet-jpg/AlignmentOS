@@ -46,7 +46,7 @@ export default function ComingSoonPage({ variant }) {
                   className={`block rounded-xl border border-alignment-accent/[0.08] bg-apple-surface-muted px-5 py-4 transition-colors hover:border-alignment-accent/15 hover:bg-alignment-surface ${focusRing}`}
                 >
                   <span className="font-medium text-alignment-accent">{label}</span>
-                  {note && <span className="mt-1 block text-xs text-alignment-accent/50">{note}</span>}
+                  {note && <span className="mt-1 block text-xs text-alignment-accent/75">{note}</span>}
                 </Link>
               </li>
             ))}

@@ -11,7 +11,7 @@ function Row({ to, href, onClick, label, note }) {
   const inner = (
     <>
       <span className="text-[15px] text-alignment-accent">{label}</span>
-      {note ? <span className="text-[13px] text-alignment-accent/40">{note}</span> : null}
+      {note ? <span className="text-[13px] text-alignment-accent/70">{note}</span> : null}
     </>
   );
   if (onClick) {

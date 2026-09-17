@@ -327,7 +327,7 @@ export default function AssessmentPage() {
         <p className={`mt-10 ${diagRun.muted} text-center max-w-2xl mx-auto text-sm`}>Loading questions…</p>
       )}
 
-      {loading && !showRunChrome && <p className="mt-8 text-alignment-accent/70">Loading...</p>}
+      {loading && !showRunChrome && <p className="mt-8 text-alignment-accent/90">Loading...</p>}
 
       {error && (
         <div
@@ -354,7 +354,7 @@ export default function AssessmentPage() {
             </Link>
             <a
               href="/"
-              className="rounded-full border border-alignment-accent/15 bg-alignment-surface px-5 py-2.5 text-sm font-medium text-alignment-accent/70 hover:text-alignment-accent hover:bg-alignment-accent/[0.03]"
+              className="rounded-full border border-alignment-accent/15 bg-alignment-surface px-5 py-2.5 text-sm font-medium text-alignment-accent/90 hover:text-alignment-accent hover:bg-alignment-accent/[0.03]"
             >
               Home
             </a>
@@ -379,7 +379,7 @@ export default function AssessmentPage() {
             >
               Reload page
             </button>
-            <Link to="/dashboard" className="text-sm font-medium text-alignment-accent/70 hover:text-alignment-accent">
+            <Link to="/dashboard" className="text-sm font-medium text-alignment-accent/90 hover:text-alignment-accent">
               Back to Dashboard →
             </Link>
           </div>
@@ -555,36 +555,36 @@ export default function AssessmentPage() {
           ) : (
             <div className="space-y-10">
               <div className="text-center">
-                <p className="text-[10px] sm:text-[11px] font-normal uppercase tracking-[0.28em] text-alignment-accent/45">
+                <p className="text-[10px] sm:text-[11px] font-normal uppercase tracking-[0.28em] text-alignment-accent/65">
                   Alignment score
                 </p>
                 <p className="mt-4 font-display text-[3.5rem] sm:text-[4rem] font-medium leading-none tabular-nums text-alignment-accent">
                   {Math.round(Math.min(100, Math.max(0, Number(guestPreview.score) || 0)))}
                 </p>
-                <p className="mt-3 text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-alignment-accent/40">Out of 100</p>
-                <p className="mt-2 text-sm text-alignment-accent/55">{guestPreview.label}</p>
+                <p className="mt-3 text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-alignment-accent/70">Out of 100</p>
+                <p className="mt-2 text-sm text-alignment-accent/90">{guestPreview.label}</p>
               </div>
 
               <div className="rounded-2xl border border-alignment-accent/10 bg-alignment-surface px-6 py-8 text-center shadow-apple">
-                <p className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.22em] text-alignment-accent/45">
+                <p className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.22em] text-alignment-accent/65">
                   Alignment type
                 </p>
                 <p className="mt-4 font-display text-xl sm:text-2xl font-medium text-alignment-accent">
                   {guestPreview.alignmentTypeTitle}
                 </p>
-                <p className="mt-3 text-sm text-alignment-accent/65 italic leading-relaxed">
+                <p className="mt-3 text-sm text-alignment-accent/90 italic leading-relaxed">
                   {guestPreview.alignmentTypeSubtitle}
                 </p>
               </div>
 
               <div className="rounded-2xl border border-alignment-accent/10 bg-alignment-surface px-6 py-8 text-center shadow-apple">
-                <p className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.22em] text-alignment-accent/45">
+                <p className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.22em] text-alignment-accent/65">
                   Primary strain
                 </p>
                 {guestPreview.primaryStrainLabel && (
                   <p className="mt-4 font-display text-2xl font-medium text-alignment-accent">{guestPreview.primaryStrainLabel}</p>
                 )}
-                <p className="mt-3 text-sm text-alignment-accent/60 italic leading-relaxed">
+                <p className="mt-3 text-sm text-alignment-accent/90 italic leading-relaxed">
                   {guestPreview.primaryStrainDescription}
                 </p>
               </div>
@@ -594,7 +594,7 @@ export default function AssessmentPage() {
                   <h2 className="font-display text-xl font-medium text-alignment-accent text-center leading-snug">
                     See your full diagnostic
                   </h2>
-                  <p className="mt-3 text-sm text-alignment-accent/55 text-center leading-relaxed">
+                  <p className="mt-3 text-sm text-alignment-accent/90 text-center leading-relaxed">
                     Enter your email to unlock the six-domain breakdown. We’ll send this report, then invite you to upgrade.
                   </p>
                   <form onSubmit={handleGuestUnlockEmail} className="mt-6 space-y-4">
@@ -605,7 +605,7 @@ export default function AssessmentPage() {
                       onChange={(e) => setGuestEmail(e.target.value)}
                       placeholder="your@email.com"
                       autoComplete="email"
-                      className="w-full rounded-xl border border-alignment-accent/12 bg-apple-surface-muted px-4 py-3.5 text-sm text-alignment-accent placeholder:text-alignment-accent/35 focus:border-alignment-accent/25 focus:bg-alignment-surface focus:outline-none focus:ring-2 focus:ring-alignment-accent/10"
+                      className="w-full rounded-xl border border-alignment-accent/12 bg-apple-surface-muted px-4 py-3.5 text-sm text-alignment-accent placeholder:text-alignment-accent/45 focus:border-alignment-accent/25 focus:bg-alignment-surface focus:outline-none focus:ring-2 focus:ring-alignment-accent/10"
                     />
                     {guestLeadError && <p className="text-sm text-red-600 text-center">{guestLeadError}</p>}
                     <button
@@ -619,16 +619,16 @@ export default function AssessmentPage() {
                 </div>
               ) : (
                 <>
-                  <p className="text-sm text-alignment-accent/60 text-center leading-relaxed">
+                  <p className="text-sm text-alignment-accent/90 text-center leading-relaxed">
                     {guestEmailed
                       ? `We sent this diagnostic to ${guestEmail.trim()}, with an invite to upgrade.`
                       : `Your results are below. If an email doesn’t arrive at ${guestEmail.trim()}, keep this page.`}
                   </p>
                   <div className="rounded-2xl border border-alignment-accent/10 bg-alignment-surface px-5 py-8 shadow-apple">
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-alignment-accent/55 text-center">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-alignment-accent/80 text-center">
                       Six domains
                     </p>
-                    <p className="mt-1 text-xs text-alignment-accent/45 text-center mb-6">
+                    <p className="mt-1 text-xs text-alignment-accent/65 text-center mb-6">
                       Strength per domain (from your four answers in each).
                     </p>
                     <div className="space-y-4">
@@ -640,10 +640,10 @@ export default function AssessmentPage() {
                           <div key={key}>
                             <div className="flex justify-between items-center gap-2 text-sm mb-1">
                               <span className="font-medium text-alignment-accent flex items-center gap-2 min-w-0">
-                                <DomainPillarIcon pillar={key} className="w-5 h-5 shrink-0 text-alignment-accent/65" />
+                                <DomainPillarIcon pillar={key} className="w-5 h-5 shrink-0 text-alignment-accent/85" />
                                 <span className="truncate">{DOMAIN_LABELS[key]}</span>
                               </span>
-                              <span className="text-alignment-accent/70 tabular-nums shrink-0">{pct}%</span>
+                              <span className="text-alignment-accent/90 tabular-nums shrink-0">{pct}%</span>
                             </div>
                             <div className="h-1.5 rounded-full overflow-hidden bg-alignment-accent/[0.08]">
                               <div
@@ -659,7 +659,7 @@ export default function AssessmentPage() {
                   <div className="rounded-2xl border border-alignment-accent/10 bg-alignment-surface px-6 py-6 text-center shadow-apple">
                     <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-alignment-primary/70">Next step</p>
                     <p className="mt-3 text-sm font-medium text-alignment-accent">Upgrade</p>
-                    <p className="mt-2 text-sm text-alignment-accent/55">
+                    <p className="mt-2 text-sm text-alignment-accent/90">
                       The Habit Engine holds the day. Journey to Purpose is the formation course. See pricing, then create an account or sign in.
                     </p>
                     <Link to="/pricing" className={`${pillPrimary} mt-5`}>

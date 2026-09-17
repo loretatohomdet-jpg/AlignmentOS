@@ -40,7 +40,7 @@ export default function LoginModal({ open, onClose, returnTo = '/practice', onLo
         <button
           type="button"
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 rounded-full text-alignment-accent/50 hover:text-alignment-accent hover:bg-alignment-accent/5 transition-colors"
+          className="absolute top-4 right-4 p-2 rounded-full text-alignment-accent/75 hover:text-alignment-accent hover:bg-alignment-accent/5 transition-colors"
           aria-label="Close"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

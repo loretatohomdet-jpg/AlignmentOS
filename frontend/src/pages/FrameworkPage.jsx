@@ -175,7 +175,7 @@ function FrameworkHexDiagram() {
             <foreignObject key={`fo-${d.key}`} x={labelPos.x - 58} y={labelPos.y - 28} width="116" height="56">
               <div className="text-center leading-tight">
                 <p className="text-[9px] font-semibold uppercase tracking-[0.12em] text-alignment-accent">{d.key}</p>
-                <p className="mt-0.5 text-[8px] text-alignment-accent/55">{d.sub}</p>
+                <p className="mt-0.5 text-[8px] text-alignment-accent/80">{d.sub}</p>
               </div>
             </foreignObject>
           );
@@ -227,7 +227,7 @@ export default function FrameworkPage() {
                   <DomainPillarIcon pillar={pillar} className={`mt-0.5 h-6 w-6 shrink-0 ${iconClass}`} />
                   <div>
                     <h2 className="font-semibold text-alignment-accent text-base">{title}</h2>
-                    <p className="mt-2 text-sm text-alignment-accent/65 leading-relaxed">{body}</p>
+                    <p className="mt-2 text-sm text-alignment-accent/90 leading-relaxed">{body}</p>
                   </div>
                 </div>
               </li>
@@ -240,7 +240,7 @@ export default function FrameworkPage() {
           <div className="mt-8 rounded-2xl border border-alignment-accent/[0.08] bg-alignment-surface px-5 py-2 sm:px-8 sm:py-3 max-w-3xl mx-auto">
             <ul className="divide-y divide-alignment-accent/[0.08]">
               {FORMATION_AXIS.map((row) => (
-                <li key={row.strong} className="py-4 sm:py-5 text-sm sm:text-base text-alignment-accent/70 leading-relaxed">
+                <li key={row.strong} className="py-4 sm:py-5 text-sm sm:text-base text-alignment-accent/90 leading-relaxed">
                   <span className="font-semibold text-alignment-accent">{row.strong}</span>
                   {row.rest}
                 </li>
@@ -253,7 +253,7 @@ export default function FrameworkPage() {
           <Link to="/assessment" className={`${pillPrimary} mt-2`}>
             Take the free diagnostic <span aria-hidden className="ml-1">→</span>
           </Link>
-          <p className="mt-5 text-sm text-alignment-accent/50 max-w-md mx-auto">
+          <p className="mt-5 text-sm text-alignment-accent/90 max-w-md mx-auto">
             Find your score across all six domains. 12 minutes. Free.
           </p>
         </section>

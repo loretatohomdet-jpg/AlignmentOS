@@ -96,7 +96,7 @@ export default function DiagnosticResultsSummary({
           {displayPct ?? '—'}
         </p>
         <div className="mx-auto mt-5 h-2 w-40 max-w-[12rem] rounded-full bg-alignment-primary/35" aria-hidden />
-        <p className="mt-5 text-[10px] sm:text-[11px] font-normal uppercase tracking-[0.22em] text-alignment-accent/40">out of 100</p>
+        <p className="mt-5 text-[10px] sm:text-[11px] font-normal uppercase tracking-[0.22em] text-alignment-accent/70">out of 100</p>
       </div>
 
       <div className="mt-10 grid grid-cols-2 gap-0 overflow-hidden rounded-xl border border-alignment-accent/[0.08] bg-alignment-surface shadow-apple max-w-2xl mx-auto">
@@ -113,19 +113,19 @@ export default function DiagnosticResultsSummary({
       <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-5">
         <div className={`${resultsUi.panel} h-full`}>
           <p className={resultsUi.label}>What this means</p>
-          <p className="mt-4 text-sm text-alignment-accent/70 leading-relaxed">{meaningBody?.trim() ? meaningBody : '—'}</p>
+          <p className="mt-4 text-sm text-alignment-accent/90 leading-relaxed">{meaningBody?.trim() ? meaningBody : '—'}</p>
         </div>
 
         <div className={`${resultsUi.panel} h-full`}>
           <p className={resultsUi.label}>What the score reveals</p>
-          <p className="mt-4 text-sm text-alignment-accent/70 leading-relaxed">{whatScoreReveals?.trim() ? whatScoreReveals : '—'}</p>
+          <p className="mt-4 text-sm text-alignment-accent/90 leading-relaxed">{whatScoreReveals?.trim() ? whatScoreReveals : '—'}</p>
         </div>
       </div>
 
       {showEmailGate && (
         <div className="mt-12 sm:mt-14">
           <h2 className={`${resultsUi.heading} text-xl sm:text-2xl text-center leading-snug`}>See your full diagnostic.</h2>
-          <p className="mt-5 text-sm text-alignment-accent/55 text-center leading-relaxed px-1">
+          <p className="mt-5 text-sm text-alignment-accent/90 text-center leading-relaxed px-1">
             Enter your email to unlock your domain breakdown. We’ll send this report, then invite you to upgrade.
           </p>
           <form onSubmit={handleUnlock} className="mt-9 space-y-4">
@@ -136,7 +136,7 @@ export default function DiagnosticResultsSummary({
               onChange={(e) => setEmail(e.target.value)}
               placeholder="your@email.com"
               autoComplete="email"
-              className="w-full rounded-xl border border-alignment-accent/12 bg-apple-surface-muted px-4 py-4 text-sm text-alignment-accent placeholder:text-alignment-accent/35 focus:border-alignment-accent/25 focus:bg-alignment-surface focus:outline-none focus:ring-2 focus:ring-alignment-accent/10 transition-colors"
+              className="w-full rounded-xl border border-alignment-accent/12 bg-apple-surface-muted px-4 py-4 text-sm text-alignment-accent placeholder:text-alignment-accent/45 focus:border-alignment-accent/25 focus:bg-alignment-surface focus:outline-none focus:ring-2 focus:ring-alignment-accent/10 transition-colors"
             />
             {error && <p className="text-sm text-red-600 text-center">{error}</p>}
             <button
@@ -147,10 +147,10 @@ export default function DiagnosticResultsSummary({
               {submitting ? 'Sending…' : 'Email my results →'}
             </button>
           </form>
-          <p className="mt-5 text-center text-[11px] text-alignment-accent/40 leading-relaxed">
+          <p className="mt-5 text-center text-[11px] text-alignment-accent/70 leading-relaxed">
             No spam. Unsubscribe any time. We never share your email.
           </p>
-          <p className="mt-10 text-center text-sm text-alignment-accent/45">
+          <p className="mt-10 text-center text-sm text-alignment-accent/90">
             Returning user?{' '}
             <Link to="/dashboard" className="font-medium text-alignment-accent underline underline-offset-2 hover:text-alignment-accent/80">
               Open your Dashboard →
@@ -160,7 +160,7 @@ export default function DiagnosticResultsSummary({
       )}
 
       {showExtended && emailed && (
-        <p className="mt-10 text-sm text-alignment-accent/60 text-center leading-relaxed">
+        <p className="mt-10 text-sm text-alignment-accent/90 text-center leading-relaxed">
           We sent this diagnostic to {email.trim()}, with an invite to upgrade.
         </p>
       )}
@@ -169,7 +169,7 @@ export default function DiagnosticResultsSummary({
         <div className="mt-10 grid grid-cols-1 xl:grid-cols-2 gap-5 xl:gap-6 xl:items-start">
           <div className={`${resultsUi.panel} h-full`}>
             <p className={`${resultsUi.label} text-center xl:text-left`}>Six domains</p>
-            <p className="mt-2 text-xs text-alignment-accent/45 text-center xl:text-left mb-6 xl:mb-8">
+            <p className="mt-2 text-xs text-alignment-accent/65 text-center xl:text-left mb-6 xl:mb-8">
               Domain strength shown as 0–100% (from your four answers in each domain).
             </p>
             <div className="space-y-5">
@@ -181,10 +181,10 @@ export default function DiagnosticResultsSummary({
                   <div key={key}>
                     <div className="flex justify-between items-center gap-2 text-sm mb-1.5">
                       <span className="font-medium text-alignment-accent flex items-center gap-2 min-w-0">
-                        <DomainPillarIcon pillar={key} className="w-5 h-5 shrink-0 text-alignment-accent/65" />
+                        <DomainPillarIcon pillar={key} className="w-5 h-5 shrink-0 text-alignment-accent/85" />
                         <span className="truncate">{DOMAIN_LABELS[key]}</span>
                       </span>
-                      <span className="text-alignment-accent/70 tabular-nums shrink-0">{pct.toFixed(0)}%</span>
+                      <span className="text-alignment-accent/90 tabular-nums shrink-0">{pct.toFixed(0)}%</span>
                     </div>
                     <div className={`h-1.5 rounded-full overflow-hidden ${diag.barTrack}`}>
                       <div
@@ -200,7 +200,7 @@ export default function DiagnosticResultsSummary({
 
           <div className={`${resultsUi.panel} h-full`}>
             <p className={resultsUi.label}>Identity Anchors</p>
-            <p className="mt-3 text-sm text-alignment-accent/55 italic leading-relaxed">
+            <p className="mt-3 text-sm text-alignment-accent/90 italic leading-relaxed">
               Three statements about who you are becoming. Your habits are installed on these.
             </p>
             <div className="mt-6 space-y-3">
@@ -237,7 +237,7 @@ export default function DiagnosticResultsSummary({
         <div className={`${resultsUi.panel} mt-8 text-center`}>
           <p className={resultsUi.label}>Next step</p>
           <p className="mt-4 font-display text-xl sm:text-2xl font-medium text-alignment-accent">Upgrade</p>
-          <p className="mt-3 text-sm text-alignment-accent/60 leading-relaxed">
+          <p className="mt-3 text-sm text-alignment-accent/90 leading-relaxed">
             The Habit Engine holds the day. Journey to Purpose is the formation course. See pricing, then create an account or sign in.
           </p>
           <Link to="/pricing" className={`${pillPrimary} mt-6`}>

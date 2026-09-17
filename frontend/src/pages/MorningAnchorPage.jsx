@@ -57,7 +57,7 @@ function FieldCard({ kicker, hint, value, onChange, italicPrompt, label }) {
         aria-label={label}
         className={engineTextarea}
       />
-      {hint ? <p className="mt-3 text-[13px] text-alignment-accent/45 leading-relaxed">{hint}</p> : null}
+      {hint ? <p className="mt-3 text-[13px] text-alignment-accent/90 leading-relaxed">{hint}</p> : null}
     </div>
   );
 }
@@ -158,7 +158,7 @@ export default function MorningAnchorPage() {
       <h1 className={`mt-4 ${type.h1}`}>
         Begin on purpose.
       </h1>
-      <p className="mt-3 text-[17px] text-alignment-accent/55 leading-relaxed">
+      <p className="mt-3 text-[17px] text-alignment-accent/90 leading-relaxed">
         Before the phone, before the inbox. Four short answers.
       </p>
 

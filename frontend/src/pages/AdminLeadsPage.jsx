@@ -62,7 +62,7 @@ export default function AdminLeadsPage() {
   if (loading) {
     return (
       <div className="max-w-4xl mx-auto px-6 sm:px-8 py-12">
-        <p className="text-alignment-accent/70">Loading...</p>
+        <p className="text-alignment-accent/90">Loading...</p>
       </div>
     );
   }
@@ -73,7 +73,7 @@ export default function AdminLeadsPage() {
         <div className="rounded-2xl bg-alignment-surface border border-alignment-accent/15 px-4 py-3 text-alignment-accent">
           {error}
         </div>
-        <p className="mt-4 text-sm text-alignment-accent/70">
+        <p className="mt-4 text-sm text-alignment-accent/90">
           Sign in with an admin account to view leads.
         </p>
       </div>
@@ -87,7 +87,7 @@ export default function AdminLeadsPage() {
           <h2 className="text-lg font-semibold text-alignment-accent tracking-tight">
             Leads
           </h2>
-          <p className="mt-1 text-alignment-accent/70">
+          <p className="mt-1 text-alignment-accent/90">
             {count} lead{count !== 1 ? 's' : ''} captured from the start lander and other sources.
           </p>
         </div>
@@ -109,7 +109,7 @@ export default function AdminLeadsPage() {
 
       <div className="mt-8 rounded-2xl border border-alignment-accent/10 bg-alignment-surface overflow-hidden">
         {leads.length === 0 ? (
-          <div className="px-6 py-12 text-center text-alignment-accent/70">
+          <div className="px-6 py-12 text-center text-alignment-accent/90">
             No leads yet. They will appear here once someone submits the start lander or another capture form.
           </div>
         ) : (
@@ -126,8 +126,8 @@ export default function AdminLeadsPage() {
                 {leads.map((lead) => (
                   <tr key={lead.id} className="border-b border-alignment-accent/5 hover:bg-alignment-accent/[0.02]">
                     <td className="px-4 py-3 text-alignment-accent">{lead.email}</td>
-                    <td className="px-4 py-3 text-alignment-accent/70">{lead.source || '—'}</td>
-                    <td className="px-4 py-3 text-alignment-accent/70">
+                    <td className="px-4 py-3 text-alignment-accent/90">{lead.source || '—'}</td>
+                    <td className="px-4 py-3 text-alignment-accent/90">
                       {new Date(lead.createdAt).toLocaleString()}
                     </td>
                   </tr>

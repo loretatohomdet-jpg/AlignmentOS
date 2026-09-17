@@ -11,6 +11,6 @@ export const type = {
   h2: 'font-display text-2xl sm:text-3xl font-medium text-alignment-accent leading-tight tracking-tight',
   h3: 'font-display text-xl sm:text-2xl font-medium text-alignment-accent tracking-tight',
   quote: 'font-display text-xl sm:text-2xl font-normal text-alignment-accent leading-snug tracking-tight text-balance',
-  body: 'text-sm sm:text-base text-alignment-accent/70 leading-relaxed',
-  muted: 'text-[11px] sm:text-xs text-alignment-accent/45',
+  body: 'text-sm sm:text-base text-alignment-accent/90 leading-relaxed',
+  muted: 'text-[11px] sm:text-xs text-alignment-accent/65',
 };

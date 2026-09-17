@@ -91,7 +91,7 @@ export default function HeaderUserMenu({ isLoggedIn, onLogout }) {
                 <p className="text-sm font-medium text-alignment-accent truncate">
                   {user?.name || 'Account'}
                 </p>
-                <p className="text-xs text-alignment-accent/70 truncate">{user?.email}</p>
+                <p className="text-xs text-alignment-accent/90 truncate">{user?.email}</p>
               </div>
             </div>
             <NavLink

@@ -91,7 +91,7 @@ export default function ReflectPage() {
   if (loading) {
     return (
       <div className="mx-auto max-w-xl px-6 py-20 text-center">
-        <p className="font-display italic text-alignment-accent/45">Loading the library…</p>
+        <p className="font-display italic text-alignment-accent/65">Loading the library…</p>
       </div>
     );
   }
@@ -116,7 +116,7 @@ export default function ReflectPage() {
 
       <div className="mt-8 border-l-2 border-alignment-primary bg-alignment-surfaceSoft/80 px-5 py-5">
         {gapLabel ? (
-          <p className="text-[16px] leading-relaxed text-alignment-accent/70">
+          <p className="text-[16px] leading-relaxed text-alignment-accent/90">
             Your primary gap is <span className="font-semibold text-alignment-accent">{gapLabel}.</span> Start there, with
             one practice.{' '}
             <Link to="/practice" className="underline underline-offset-2 hover:text-alignment-accent">
@@ -124,7 +124,7 @@ export default function ReflectPage() {
             </Link>
           </p>
         ) : (
-          <p className="text-[16px] leading-relaxed text-alignment-accent/70">
+          <p className="text-[16px] leading-relaxed text-alignment-accent/90">
             Take the Alignment Score to name your primary gap.{' '}
             <Link to="/assessment" className="underline underline-offset-2 hover:text-alignment-accent">
               Begin free.
@@ -139,7 +139,7 @@ export default function ReflectPage() {
           <section key={key} className="mt-10">
             <p
               className={`text-[10px] font-medium uppercase tracking-[0.2em] ${
-                isFocus ? 'text-alignment-primary' : 'text-alignment-accent/40'
+                isFocus ? 'text-alignment-primary' : 'text-alignment-accent/70'
               }`}
             >
               {DOMAIN_LABELS[key]}

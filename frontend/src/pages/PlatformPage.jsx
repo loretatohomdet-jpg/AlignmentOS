@@ -135,7 +135,7 @@ export default function PlatformPage() {
                 <DomainPillarIcon pillar={pillar} className={`mt-0.5 h-7 w-7 shrink-0 ${iconClass}`} />
                 <div className="grid min-w-0 flex-1 gap-1 sm:grid-cols-[minmax(0,10rem)_1fr] sm:gap-x-8 sm:gap-y-0">
                   <h3 className="font-semibold text-alignment-accent">{title}</h3>
-                  <p className="text-sm sm:text-base text-alignment-accent/65 leading-relaxed">{body}</p>
+                  <p className="text-sm sm:text-base text-alignment-accent/90 leading-relaxed">{body}</p>
                 </div>
               </li>
             ))}
@@ -143,13 +143,13 @@ export default function PlatformPage() {
           <div className="mt-12 flex flex-col sm:flex-row flex-wrap gap-4 sm:gap-8">
             <Link
               to="/framework"
-              className={`text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.2em] text-alignment-accent/60 underline underline-offset-4 decoration-alignment-accent/25 hover:text-alignment-accent hover:decoration-alignment-accent/50 ${focusRing} rounded-sm`}
+              className={`text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.2em] text-alignment-accent/85 underline underline-offset-4 decoration-alignment-accent/25 hover:text-alignment-accent hover:decoration-alignment-accent/50 ${focusRing} rounded-sm`}
             >
               Full framework diagram →
             </Link>
             <Link
               to="/ethics"
-              className={`text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.2em] text-alignment-accent/60 underline underline-offset-4 decoration-alignment-accent/25 hover:text-alignment-accent hover:decoration-alignment-accent/50 ${focusRing} rounded-sm`}
+              className={`text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.2em] text-alignment-accent/85 underline underline-offset-4 decoration-alignment-accent/25 hover:text-alignment-accent hover:decoration-alignment-accent/50 ${focusRing} rounded-sm`}
             >
               Why integration matters →
             </Link>

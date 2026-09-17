@@ -175,7 +175,7 @@ function AlignmentMapHex({ result }) {
           <foreignObject key={`fo-${d.pillar}`} x={x} y={y} width="116" height="48">
             <div className={`${align} leading-tight px-1`}>
               <p className="text-[9px] font-semibold uppercase tracking-[0.12em] text-alignment-accent">{d.label}</p>
-              <p className="mt-0.5 text-[8px] text-alignment-accent/55">{pct != null ? `${pct}%` : d.sub}</p>
+              <p className="mt-0.5 text-[8px] text-alignment-accent/80">{pct != null ? `${pct}%` : d.sub}</p>
             </div>
           </foreignObject>
         );
@@ -229,13 +229,13 @@ export default function AlignmentMapPage() {
         <section className="w-full border-t border-alignment-accent/[0.08] bg-alignment-surface px-4 sm:px-8 py-10 sm:py-14 overflow-x-hidden">
           <div className="max-w-xl mx-auto min-w-0">
             {loading ? (
-              <p className="text-center text-alignment-accent/50">Loading the map…</p>
+              <p className="text-center text-alignment-accent/75">Loading the map…</p>
             ) : (
               <AlignmentMapHex result={hasMap ? result : null} />
             )}
           </div>
           {hasMap && strainLabel && (
-            <p className="mt-6 text-center text-sm text-alignment-accent/60">
+            <p className="mt-6 text-center text-sm text-alignment-accent/90">
               Primary strain · <span className="text-alignment-accent font-medium">{strainLabel}</span>
             </p>
           )}
@@ -262,9 +262,9 @@ export default function AlignmentMapPage() {
                           {DOMAIN_LABELS[pillar]}
                           {isStrain ? <span className="ml-2 text-[10px] uppercase tracking-[0.16em] text-alignment-primary">Strain</span> : null}
                         </p>
-                        {pct != null && <span className="tabular-nums text-sm text-alignment-accent/60 shrink-0">{pct}%</span>}
+                        {pct != null && <span className="tabular-nums text-sm text-alignment-accent/85 shrink-0">{pct}%</span>}
                       </div>
-                      <p className="mt-1 text-sm text-alignment-accent/55 leading-relaxed">{PILLAR_INTRO[pillar]}</p>
+                      <p className="mt-1 text-sm text-alignment-accent/90 leading-relaxed">{PILLAR_INTRO[pillar]}</p>
                       {pct != null && (
                         <div className="mt-3 h-1.5 rounded-full bg-alignment-accent/[0.08] overflow-hidden">
                           <div className="h-full rounded-full bg-alignment-primary" style={{ width: `${pct}%` }} />

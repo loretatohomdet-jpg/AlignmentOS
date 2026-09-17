@@ -84,7 +84,7 @@ export default function DashboardWelcomeModal({ open, onDismiss, hasScore = fals
               </span>
               <div className="min-w-0 text-left">
                 <p className="text-sm font-medium text-alignment-accent font-sans">{step.title}</p>
-                <p className="mt-1 text-xs sm:text-sm text-alignment-accent/60 leading-relaxed font-sans">{step.body}</p>
+                <p className="mt-1 text-xs sm:text-sm text-alignment-accent/90 leading-relaxed font-sans">{step.body}</p>
               </div>
             </Link>
           ))}
@@ -97,7 +97,7 @@ export default function DashboardWelcomeModal({ open, onDismiss, hasScore = fals
         >
           Enter dashboard <span aria-hidden className="ml-2">→</span>
         </button>
-        <p className="mt-4 text-center text-[10px] sm:text-[11px] text-alignment-accent/50">
+        <p className="mt-4 text-center text-[10px] sm:text-[11px] text-alignment-accent/75">
           You will not see this again after dismissing.
         </p>
       </div>

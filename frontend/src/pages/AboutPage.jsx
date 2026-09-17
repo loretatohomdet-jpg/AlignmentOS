@@ -49,7 +49,7 @@ export default function AboutPage() {
             <div className="max-w-xl">
               <blockquote>
                 <p className={type.quote}>
-                  Peace is the <em className="italic text-alignment-accent/70">tranquility of order.</em>
+                  Peace is the <em className="italic text-alignment-accent/90">tranquility of order.</em>
                 </p>
                 <footer className={`mt-6 ${type.body}`}>
                   — Augustine. The order is the work; the peace is what it makes room for.

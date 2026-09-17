@@ -63,7 +63,7 @@ export default function ProgressPage() {
   if (loading) {
     return (
       <div className="max-w-3xl mx-auto px-6 sm:px-8 py-12 sm:py-16">
-        <p className="text-alignment-accent/70">Loading...</p>
+        <p className="text-alignment-accent/90">Loading...</p>
       </div>
     );
   }
@@ -76,8 +76,8 @@ export default function ProgressPage() {
       <div className="mt-10 space-y-6">
         {/* Alignment Score — quarterly awareness */}
         <div className="rounded-2xl bg-alignment-surface border border-alignment-accent/5 shadow-apple p-6 sm:p-8">
-          <p className="text-sm font-medium text-alignment-accent/70 uppercase tracking-wider mb-2">Alignment Score</p>
-          <p className="text-sm text-alignment-accent/70 mb-4">Clarity over time.</p>
+          <p className="text-sm font-medium text-alignment-accent/65 uppercase tracking-wider mb-2">Alignment Score</p>
+          <p className="text-sm text-alignment-accent/90 mb-4">Clarity over time.</p>
           {chartData.length > 0 ? (
             <div className="h-56 sm:h-64">
               <ResponsiveContainer width="100%" height="100%">
@@ -88,13 +88,13 @@ export default function ProgressPage() {
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(44,46,38,0.06)" vertical={false} />
                   <XAxis
                     dataKey="date"
-                    tick={{ fontSize: 11, fill: 'rgba(44,46,38,0.45)' }}
+                    tick={{ fontSize: 11, fill: 'rgba(44,46,38,0.65)' }}
                     tickLine={false}
                     axisLine={false}
                   />
                   <YAxis
                     domain={[0, 100]}
-                    tick={{ fontSize: 11, fill: 'rgba(44,46,38,0.45)' }}
+                    tick={{ fontSize: 11, fill: 'rgba(44,46,38,0.65)' }}
                     tickLine={false}
                     axisLine={false}
                     width={28}
@@ -123,7 +123,7 @@ export default function ProgressPage() {
               </ResponsiveContainer>
             </div>
           ) : (
-            <div className="h-56 sm:h-64 flex flex-col items-center justify-center text-alignment-accent/70 text-center">
+            <div className="h-56 sm:h-64 flex flex-col items-center justify-center text-alignment-accent/90 text-center">
               <p>Take the assessment to start tracking your score.</p>
               <Link to="/assessment" className="mt-3 text-sm font-medium text-alignment-accent hover:underline">
                 Take assessment →
@@ -135,7 +135,7 @@ export default function ProgressPage() {
         {/* Pillar direction — simple descriptors, no daily metrics */}
         {result?.pillarScores && typeof result.pillarScores === 'object' && (
           <div className="rounded-2xl bg-alignment-surface border border-alignment-accent/5 shadow-apple p-6 sm:p-8">
-            <p className="text-sm font-medium text-alignment-accent/70 uppercase tracking-wider mb-4">Pillar trends</p>
+            <p className="text-sm font-medium text-alignment-accent/65 uppercase tracking-wider mb-4">Pillar trends</p>
             <div className="space-y-3">
               {['IDENTITY', 'PURPOSE', 'MINDSET', 'HABITS', 'ENVIRONMENT', 'EXECUTION'].map((key) => {
                 const score = result.pillarScores[key];
@@ -161,7 +161,7 @@ export default function ProgressPage() {
                 return (
                   <div key={key} className="flex items-center justify-between gap-4 py-2 border-b border-alignment-accent/5 last:border-0">
                     <span className="font-medium text-alignment-accent">{label}</span>
-                    <span className="text-alignment-accent/70 text-sm">{dir} {descriptor}</span>
+                    <span className="text-alignment-accent/90 text-sm">{dir} {descriptor}</span>
                   </div>
                 );
               })}

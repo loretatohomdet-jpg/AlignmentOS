@@ -45,7 +45,7 @@ export default function AdminUsersPage() {
   return (
     <div>
       <h2 className="text-lg font-semibold text-alignment-accent">Users</h2>
-      <p className="mt-1 text-sm text-alignment-accent/65">
+      <p className="mt-1 text-sm text-alignment-accent/85">
         Search by name or email. Open a user to change plan, role, suspension, and internal notes.
       </p>
 
@@ -55,7 +55,7 @@ export default function AdminUsersPage() {
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Search name or email…"
-          className="flex-1 rounded-xl border border-alignment-accent/15 bg-alignment-foundation px-4 py-2.5 text-sm text-alignment-accent placeholder:text-alignment-accent/35 focus:border-alignment-primary/40 focus:outline-none focus:ring-2 focus:ring-alignment-primary/15"
+          className="flex-1 rounded-xl border border-alignment-accent/15 bg-alignment-foundation px-4 py-2.5 text-sm text-alignment-accent placeholder:text-alignment-accent/45 focus:border-alignment-primary/40 focus:outline-none focus:ring-2 focus:ring-alignment-primary/15"
         />
         <button
           type="submit"
@@ -72,10 +72,10 @@ export default function AdminUsersPage() {
       )}
 
       {loading ? (
-        <p className="mt-8 text-alignment-accent/70">Loading…</p>
+        <p className="mt-8 text-alignment-accent/90">Loading…</p>
       ) : payload ? (
         <div className="mt-8 rounded-2xl border border-alignment-accent/10 bg-alignment-surface overflow-hidden">
-          <div className="px-4 py-3 border-b border-alignment-accent/10 text-xs text-alignment-accent/55">
+          <div className="px-4 py-3 border-b border-alignment-accent/10 text-xs text-alignment-accent/80">
             {payload.total} user{payload.total !== 1 ? 's' : ''}
             {submittedQ ? ` matching “${submittedQ}”` : ''}
           </div>
@@ -93,7 +93,7 @@ export default function AdminUsersPage() {
               <tbody>
                 {payload.users.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="px-4 py-8 text-center text-alignment-accent/60">
+                    <td colSpan={5} className="px-4 py-8 text-center text-alignment-accent/85">
                       No users found.
                     </td>
                   </tr>
@@ -117,7 +117,7 @@ export default function AdminUsersPage() {
                             Suspended
                           </span>
                         ) : (
-                          <span className="text-alignment-accent/50 text-xs">Active</span>
+                          <span className="text-alignment-accent/75 text-xs">Active</span>
                         )}
                       </td>
                     </tr>

@@ -44,7 +44,7 @@ function ScoreGauge({ score, label }) {
           </span>
         </div>
       </div>
-      {label && <p className="mt-1 text-sm text-alignment-accent/70">{label}</p>}
+      {label && <p className="mt-1 text-sm text-alignment-accent/90">{label}</p>}
     </div>
   );
 }
@@ -165,7 +165,7 @@ export default function DashboardPage() {
   if (!loading && !user) {
     return (
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-        <p className="text-alignment-accent/70">Unable to load your dashboard.</p>
+        <p className="text-alignment-accent/90">Unable to load your dashboard.</p>
       </div>
     );
   }
@@ -173,7 +173,7 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-        <p className="text-alignment-accent/70">Loading...</p>
+        <p className="text-alignment-accent/90">Loading...</p>
       </div>
     );
   }
@@ -209,7 +209,7 @@ export default function DashboardPage() {
             <h1 className={`${type.h1} tracking-tight`}>
               Hi, {firstName}
             </h1>
-            <p className="text-sm text-alignment-accent/70">{todayStr}</p>
+            <p className="text-sm text-alignment-accent/90">{todayStr}</p>
           </div>
           <div className="mt-1 flex flex-wrap items-center gap-3">
             <span className="rounded-full bg-alignment-surface px-3 py-1 text-xs font-medium text-alignment-accent capitalize">
@@ -231,7 +231,7 @@ export default function DashboardPage() {
                 Today’s hold
               </p>
               <p className="mt-2 font-medium text-alignment-accent">{habitStats.prompt.title}</p>
-              <p className="mt-1 text-sm text-alignment-accent/70 leading-relaxed">{habitStats.prompt.body}</p>
+              <p className="mt-1 text-sm text-alignment-accent/90 leading-relaxed">{habitStats.prompt.body}</p>
               <Link to="/practice" className="mt-3 inline-block text-sm font-medium text-alignment-accent hover:underline">
                 Open Practice →
               </Link>
@@ -243,9 +243,9 @@ export default function DashboardPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-6 xl:gap-8 lg:items-stretch">
               <section className="rounded-2.5xl bg-alignment-surface border border-alignment-accent/[0.06] shadow-apple p-6 sm:p-8 flex flex-col justify-between h-full min-h-0">
                 <div>
-                  <p className="text-xs font-medium text-alignment-accent/70 uppercase tracking-wider mb-2">The day</p>
+                  <p className="text-xs font-medium text-alignment-accent/65 uppercase tracking-wider mb-2">The day</p>
                   <p className="font-medium text-alignment-accent">Morning, midday, close.</p>
-                  <p className="mt-2 text-sm text-alignment-accent/60 leading-relaxed">
+                  <p className="mt-2 text-sm text-alignment-accent/90 leading-relaxed">
                     Practice is where the day is held. This page is the record.
                   </p>
                 </div>
@@ -259,7 +259,7 @@ export default function DashboardPage() {
 
               <section className="rounded-2.5xl bg-alignment-surface border border-alignment-accent/[0.06] shadow-apple p-6 sm:p-8 flex flex-col items-center justify-between gap-4 h-full min-h-0">
                 <div className="w-full text-center lg:text-left">
-                  <p className="text-xs font-medium text-alignment-accent/70 uppercase tracking-wider mb-1">Alignment Score</p>
+                  <p className="text-xs font-medium text-alignment-accent/65 uppercase tracking-wider mb-1">Alignment Score</p>
                 </div>
                 <ScoreGauge score={result?.score} label={result?.label} />
                 {result ? (
@@ -275,7 +275,7 @@ export default function DashboardPage() {
 
               <section className="rounded-2.5xl border border-alignment-accent/20 bg-alignment-accent/5 p-6 flex flex-col justify-between h-full min-h-[11rem]">
                 <div>
-                  <p className="text-xs font-medium text-alignment-accent/70 uppercase tracking-wider mb-2">Next Step</p>
+                  <p className="text-xs font-medium text-alignment-accent/65 uppercase tracking-wider mb-2">Next Step</p>
                   <p className="font-medium text-alignment-accent">{nextStep.label}</p>
                 </div>
                 <Link
@@ -316,13 +316,13 @@ export default function DashboardPage() {
                           <CartesianGrid strokeDasharray="3 3" stroke="rgba(44,46,38,0.06)" vertical={false} />
                           <XAxis
                             dataKey="date"
-                            tick={{ fontSize: 11, fill: 'rgba(44,46,38,0.45)' }}
+                            tick={{ fontSize: 11, fill: 'rgba(44,46,38,0.65)' }}
                             tickLine={false}
                             axisLine={false}
                           />
                           <YAxis
                             domain={[0, 100]}
-                            tick={{ fontSize: 11, fill: 'rgba(44,46,38,0.45)' }}
+                            tick={{ fontSize: 11, fill: 'rgba(44,46,38,0.65)' }}
                             tickLine={false}
                             axisLine={false}
                             width={28}
@@ -341,13 +341,13 @@ export default function DashboardPage() {
                         </AreaChart>
                       </ResponsiveContainer>
                     </div>
-                    <p className="mt-2 text-xs text-alignment-accent/70">
+                    <p className="mt-2 text-xs text-alignment-accent/90">
                       {scoreHistory.length} result{scoreHistory.length !== 1 ? 's' : ''}
                     </p>
                   </>
                 ) : (
                   <div className="flex-1 flex flex-col justify-center py-6">
-                    <p className="text-sm text-alignment-accent/60">No history yet — take the assessment to establish a baseline.</p>
+                    <p className="text-sm text-alignment-accent/90">No history yet — take the assessment to establish a baseline.</p>
                     <Link
                       to="/assessment"
                       className="mt-4 inline-flex text-sm font-medium text-alignment-accent hover:underline"
@@ -362,8 +362,8 @@ export default function DashboardPage() {
                 {isQuarterlyDue ? (
                   <>
                     <div>
-                      <p className="text-xs font-medium text-alignment-accent/70 uppercase tracking-wider mb-2">Quarterly reassessment</p>
-                      <p className="text-sm text-alignment-accent/70">Retake to measure progress</p>
+                      <p className="text-xs font-medium text-alignment-accent/65 uppercase tracking-wider mb-2">Quarterly reassessment</p>
+                      <p className="text-sm text-alignment-accent/90">Retake to measure progress</p>
                     </div>
                     <Link
                       to="/assessment"
@@ -375,8 +375,8 @@ export default function DashboardPage() {
                 ) : (
                   <>
                     <div>
-                      <p className="text-xs font-medium text-alignment-accent/70 uppercase tracking-wider mb-2">Today</p>
-                      <p className="text-sm text-alignment-accent/70">Morning, midday, close.</p>
+                      <p className="text-xs font-medium text-alignment-accent/65 uppercase tracking-wider mb-2">Today</p>
+                      <p className="text-sm text-alignment-accent/90">Morning, midday, close.</p>
                     </div>
                     <Link
                       to="/practice"
@@ -390,7 +390,7 @@ export default function DashboardPage() {
 
               <section className="rounded-2.5xl bg-alignment-surface border border-alignment-accent/[0.06] shadow-apple p-6 flex flex-col h-full min-h-0">
                 <h2 className="text-sm font-semibold text-alignment-accent tracking-tight">Your record</h2>
-                <p className="mt-3 text-sm text-alignment-accent/60 leading-relaxed flex-1">
+                <p className="mt-3 text-sm text-alignment-accent/90 leading-relaxed flex-1">
                   Score, type, and strain live here. Completing the day happens in Practice.
                 </p>
                 <Link to="/alignment-map" className="mt-4 text-sm font-medium text-alignment-accent hover:underline">
@@ -408,7 +408,7 @@ export default function DashboardPage() {
             {/* Go deeper */}
             <div className="rounded-2.5xl border border-alignment-accent/[0.08] bg-alignment-surface px-6 py-6 shadow-apple flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
-                <p className="text-xs font-medium text-alignment-accent/70 uppercase tracking-wider mb-1">Go deeper</p>
+                <p className="text-xs font-medium text-alignment-accent/65 uppercase tracking-wider mb-1">Go deeper</p>
                 <p className="font-medium text-alignment-accent">Habit Engine</p>
               </div>
               <div className="flex flex-wrap gap-2 shrink-0">

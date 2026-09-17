@@ -68,7 +68,7 @@ export default function AgentPage() {
   return (
     <div className="max-w-3xl mx-auto px-6 sm:px-8 py-12 sm:py-16 flex flex-col h-[calc(100vh-8rem)] md:h-[calc(100vh-6rem)]">
       <h1 className={type.h1}>AI Agent</h1>
-      <p className="mt-2 text-alignment-accent/70">Ask about alignment, your AQ score, daily practice, or reflection.</p>
+      <p className="mt-2 text-alignment-accent/90">Ask about alignment, your AQ score, daily practice, or reflection.</p>
 
       {statusChecked && !agentEnabled && (
         <div className="mt-4 rounded-2xl border border-alignment-accent/15 bg-alignment-accent/[0.04] px-4 py-3 text-sm text-alignment-accent">
@@ -80,7 +80,7 @@ export default function AgentPage() {
       <div className="mt-6 flex-1 flex flex-col min-h-0 rounded-2xl bg-alignment-surface border border-alignment-accent/5 shadow-apple overflow-hidden">
         <div ref={listRef} className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4">
           {messages.length === 0 && (
-            <p className="text-sm text-alignment-accent/70">Send a message to start. For example: “How can I improve my alignment?” or “What do my pillar scores mean?”</p>
+            <p className="text-sm text-alignment-accent/90">Send a message to start. For example: “How can I improve my alignment?” or “What do my pillar scores mean?”</p>
           )}
           {messages.map((m, i) => (
             <div
@@ -100,7 +100,7 @@ export default function AgentPage() {
           ))}
           {loading && (
             <div className="flex justify-start">
-              <div className="rounded-2xl bg-alignment-accent/[0.04] border border-alignment-accent/5 px-4 py-3 text-sm text-alignment-accent/70">
+              <div className="rounded-2xl bg-alignment-accent/[0.04] border border-alignment-accent/5 px-4 py-3 text-sm text-alignment-accent/90">
                 …
               </div>
             </div>

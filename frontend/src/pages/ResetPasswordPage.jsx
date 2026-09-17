@@ -124,7 +124,7 @@ export default function ResetPasswordPage() {
         </button>
       </form>
 
-      <p className="mt-8 text-center text-sm text-alignment-accent/70">
+      <p className="mt-8 text-center text-sm text-alignment-accent/90">
         <NavLink to="/login" className="font-medium text-alignment-accent hover:underline">
           Back to sign in
         </NavLink>

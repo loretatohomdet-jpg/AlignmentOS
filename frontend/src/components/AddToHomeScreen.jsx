@@ -61,13 +61,13 @@ export default function AddToHomeScreen() {
     <section className="rounded-2xl border border-alignment-accent/[0.08] bg-alignment-surface px-5 py-6 sm:px-6">
       <p className={type.kicker}>On your phone</p>
       <h2 className="mt-3 font-medium text-alignment-accent">Add to Home Screen</h2>
-      <p className="mt-2 text-sm text-alignment-accent/60 leading-relaxed">
+      <p className="mt-2 text-sm text-alignment-accent/90 leading-relaxed">
         It sits on the home screen like an app. No store. No download.
       </p>
       {added ? (
-        <p className="mt-4 text-sm text-alignment-accent/70">Added. Look for Alignment OS on your home screen.</p>
+        <p className="mt-4 text-sm text-alignment-accent/90">Added. Look for Alignment OS on your home screen.</p>
       ) : ios ? (
-        <p className="mt-4 text-sm text-alignment-accent/70 leading-relaxed">
+        <p className="mt-4 text-sm text-alignment-accent/90 leading-relaxed">
           On iPhone: tap <span className="text-alignment-accent">Share</span>, then{' '}
           <span className="text-alignment-accent">Add to Home Screen</span>.
         </p>
@@ -76,7 +76,7 @@ export default function AddToHomeScreen() {
           Add to Home Screen
         </button>
       ) : (
-        <p className="mt-4 text-sm text-alignment-accent/70 leading-relaxed">
+        <p className="mt-4 text-sm text-alignment-accent/90 leading-relaxed">
           Open the browser menu and tap <span className="text-alignment-accent">Add to Home Screen</span> or{' '}
           <span className="text-alignment-accent">Install app</span>.
         </p>

@@ -47,7 +47,7 @@ function CheckList({ items, checkClass = 'text-alignment-primary' }) {
   return (
     <ul className="mt-6 space-y-3">
       {items.map((f) => (
-        <li key={f} className="flex gap-2.5 text-sm text-alignment-accent/80 font-sans leading-relaxed">
+        <li key={f} className="flex gap-2.5 text-sm text-alignment-accent/90 font-sans leading-relaxed">
           <span className={`${checkClass} shrink-0`} aria-hidden>
             ✓
           </span>
@@ -63,7 +63,7 @@ function SectionRule({ children, bgClass = 'bg-alignment-surface' }) {
     <div className="relative flex items-center justify-center py-8 sm:py-10">
       <div className="absolute inset-x-0 top-1/2 h-px bg-alignment-accent/[0.1]" aria-hidden />
       <span
-        className={`relative px-5 sm:px-8 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.2em] text-alignment-accent/50 ${bgClass}`}
+        className={`relative px-5 sm:px-8 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.2em] text-alignment-accent/75 ${bgClass}`}
       >
         {children}
       </span>
@@ -151,7 +151,7 @@ export default function PricingPage() {
   const resourcesHref = courseLibraryUrl || formationExploreUrl();
 
   const toggleActive = 'bg-alignment-primary text-white shadow-sm';
-  const toggleIdle = 'text-alignment-accent/50 hover:text-alignment-accent/80';
+  const toggleIdle = 'text-alignment-accent/75 hover:text-alignment-accent/80';
 
   return (
     <div className={type.page}>
@@ -214,7 +214,7 @@ export default function PricingPage() {
                 </button>
               </div>
               {billing === 'yearly' && (
-                <span className="text-[10px] uppercase tracking-[0.16em] text-alignment-accent/45 sm:hidden">Save 17%</span>
+                <span className="text-[10px] uppercase tracking-[0.16em] text-alignment-accent/65 sm:hidden">Save 17%</span>
               )}
             </div>
 
@@ -225,11 +225,11 @@ export default function PricingPage() {
               <div className="flex flex-col p-6 sm:p-8 lg:min-h-[26rem]">
                 <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
                   <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-alignment-primary">Step 1</span>
-                  <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-alignment-accent/55">Free · forever</span>
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-alignment-accent/80">Free · forever</span>
                 </div>
                 <h2 className={`mt-6 ${type.h3}`}>Alignment Diagnostic</h2>
                 <p className="mt-5 font-display text-4xl sm:text-[2.75rem] font-medium text-alignment-accent tabular-nums">$0</p>
-                <p className="mt-1 text-xs text-alignment-accent/50">No card required</p>
+                <p className="mt-1 text-xs text-alignment-accent/75">No card required</p>
                 <CheckList items={foundationFree} />
                 <div className="flex-1" />
                 <Link to="/assessment" className={`${pillGhost} mt-10 w-full`}>
@@ -249,7 +249,7 @@ export default function PricingPage() {
                 <p className="mt-5 font-display text-4xl sm:text-[2.75rem] font-medium text-alignment-accent tabular-nums">
                   {billing === 'yearly' ? `$${habitYearly}` : `$${habitMonthly}`}
                 </p>
-                <p className="mt-1 text-xs text-alignment-accent/50">
+                <p className="mt-1 text-xs text-alignment-accent/75">
                   {billing === 'yearly' ? 'per year · save 17%' : 'per month · cancel any time'}
                 </p>
                 <CheckList items={foundationHabit} />
@@ -263,7 +263,7 @@ export default function PricingPage() {
                   {checkoutLoading?.startsWith('habit') ? 'Redirecting…' : 'Activate'}{' '}
                   <span aria-hidden className="ml-2">→</span>
                 </button>
-                <p className="mt-3 text-center text-[11px] text-alignment-accent/45">
+                <p className="mt-3 text-center text-[11px] text-alignment-accent/65">
                   {billingReady === false
                     ? 'Stripe checkout is being connected. You can still begin free.'
                     : 'Secure checkout · Stripe'}
@@ -277,11 +277,11 @@ export default function PricingPage() {
               >
                 <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
                   <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-alignment-primary">Step 3</span>
-                  <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-alignment-accent/55">Course · one-time</span>
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-alignment-accent/80">Course · one-time</span>
                 </div>
                 <h2 className={`mt-6 ${type.h3}`}>Journey to Purpose</h2>
                 <p className="mt-5 font-display text-4xl sm:text-[2.75rem] font-medium text-alignment-accent tabular-nums">$297</p>
-                <p className="mt-1 text-xs text-alignment-accent/50">Self-guided · lifetime access</p>
+                <p className="mt-1 text-xs text-alignment-accent/75">Self-guided · lifetime access</p>
                 <CheckList items={foundationJourney} />
                 <div className="flex-1" />
                 <button
@@ -303,7 +303,7 @@ export default function PricingPage() {
             >
               <p className={type.kicker}>To continue</p>
               <p className={`mt-4 ${type.h3}`}>Create an account or sign in</p>
-              <p className="mt-3 text-sm text-alignment-accent/60 leading-relaxed">
+              <p className="mt-3 text-sm text-alignment-accent/90 leading-relaxed">
                 Then you’ll return here to complete checkout.
               </p>
               <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
@@ -327,7 +327,7 @@ export default function PricingPage() {
               <div className="flex flex-col border border-alignment-accent/[0.1] bg-alignment-surface p-6 shadow-sm">
                 <h3 className="font-display text-lg font-medium text-alignment-accent">Formation resources</h3>
                 <p className="mt-2 font-display text-2xl font-medium text-alignment-accent tabular-nums">$19 – $97</p>
-                <p className="mt-1 text-xs text-alignment-accent/50">Planners, workbooks, short courses</p>
+                <p className="mt-1 text-xs text-alignment-accent/75">Planners, workbooks, short courses</p>
                 <div className="flex-1" />
                 <a
                   href={resourcesHref}
@@ -342,7 +342,7 @@ export default function PricingPage() {
               <div className="flex flex-col border border-alignment-accent/[0.1] bg-alignment-surface p-6 shadow-sm">
                 <h3 className="font-display text-lg font-medium text-alignment-accent">Formation consultation</h3>
                 <p className="mt-2 font-display text-2xl font-medium text-alignment-accent tabular-nums">$127</p>
-                <p className="mt-1 text-xs text-alignment-accent/50">60 minutes · one session</p>
+                <p className="mt-1 text-xs text-alignment-accent/75">60 minutes · one session</p>
                 <CheckList items={consultationFeatures} />
                 <div className="flex-1" />
                 {bookingUrl ? (
@@ -368,7 +368,7 @@ export default function PricingPage() {
             <div className="mt-6 border border-alignment-accent/[0.1] bg-alignment-surface p-6 shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
                 <h3 className="font-display text-lg font-medium text-alignment-accent">Guided cohort</h3>
-                <p className="mt-1 text-xs text-alignment-accent/50">Six weeks · small group · limited places</p>
+                <p className="mt-1 text-xs text-alignment-accent/75">Six weeks · small group · limited places</p>
               </div>
               <div className="flex flex-col sm:items-end gap-3 shrink-0">
                 <p className="font-display text-2xl font-medium text-alignment-accent tabular-nums">$997</p>
@@ -416,10 +416,10 @@ export default function PricingPage() {
             >
               Learn more <span aria-hidden>→</span>
             </Link>
-            <p className="mt-6 text-sm text-alignment-accent/50">
+            <p className="mt-6 text-sm text-alignment-accent/75">
               <a
                 href="mailto:organizations@alignmentos.com"
-                className="text-alignment-accent/70 underline underline-offset-2 hover:text-alignment-accent"
+                className="text-alignment-accent/90 underline underline-offset-2 hover:text-alignment-accent"
               >
                 organizations@alignmentos.com
               </a>
@@ -439,7 +439,7 @@ export default function PricingPage() {
             >
               Begin free <span aria-hidden className="ml-2">→</span>
             </Link>
-            <p className="mt-8 text-xs sm:text-sm text-white/45">Free · ~12 min · No card</p>
+            <p className="mt-8 text-xs sm:text-sm text-white/80">Free · ~12 min · No card</p>
           </div>
         </section>
       </main>

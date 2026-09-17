@@ -57,7 +57,7 @@ export default function SiteMarketingHeader({ appendDesktop = null, authDrawer }
         {!isLoggedIn ? (
           <NavLink
             to="/login"
-            className="px-4 py-2 rounded-full text-sm font-medium text-alignment-accent/70 hover:text-alignment-accent transition-colors"
+            className="px-4 py-2 rounded-full text-sm font-medium text-alignment-accent/90 hover:text-alignment-accent transition-colors"
           >
             Sign In
           </NavLink>
@@ -112,7 +112,7 @@ export default function SiteMarketingHeader({ appendDesktop = null, authDrawer }
         </div>
       </header>
       <MobileDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)}>
-        <p className="px-4 pt-2 pb-1 text-xs font-medium text-alignment-accent/70 uppercase tracking-wider">Navigate</p>
+        <p className="px-4 pt-2 pb-1 text-xs font-medium text-alignment-accent/65 uppercase tracking-wider">Navigate</p>
         {navLinks.map(({ to, label }) => (
           <NavLink
             key={to}
@@ -132,7 +132,7 @@ export default function SiteMarketingHeader({ appendDesktop = null, authDrawer }
             {primaryCta.label}
           </Link>
         )}
-        <p className="px-4 pt-4 pb-1 text-xs font-medium text-alignment-accent/70 uppercase tracking-wider">Account</p>
+        <p className="px-4 pt-4 pb-1 text-xs font-medium text-alignment-accent/65 uppercase tracking-wider">Account</p>
         {drawerAuth.isLoggedIn ? (
           <>
             <Link to="/profile" className={siteNavDrawerRowClass} onClick={() => setDrawerOpen(false)}>

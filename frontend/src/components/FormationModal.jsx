@@ -27,12 +27,12 @@ export default function FormationModal({ show, onClose, aqScore, daysWithHabits 
         <h2 id="formation-title" className="text-xl font-semibold text-alignment-accent tracking-tight">
           You’ve built a foundation
         </h2>
-        <p className="mt-3 text-alignment-accent/70 leading-relaxed">
+        <p className="mt-3 text-alignment-accent/90 leading-relaxed">
           {daysWithHabits >= 14
             ? "You've been building alignment for 14+ days. Explore the Simplicity & Productivity Formation program for guided transformation and deeper practice."
             : "Your alignment could use deeper support. The Simplicity & Productivity Formation program offers guided transformation to close the gap."}
         </p>
-        <p className="mt-4 text-xs text-alignment-accent/50 leading-relaxed">
+        <p className="mt-4 text-xs text-alignment-accent/75 leading-relaxed">
           Partner programme — separate from your Alignment OS subscription; for deeper 1:1 and cohort formation support.
         </p>
         <div className="mt-6 flex flex-col sm:flex-row gap-3">

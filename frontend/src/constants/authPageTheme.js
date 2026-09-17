@@ -4,9 +4,9 @@
 export const authHeadingClass =
   'font-display italic font-normal text-[2.15rem] sm:text-[2.75rem] md:text-[3.15rem] leading-[1.18] tracking-tight text-alignment-accent text-balance';
 
-export const authLeadClass = 'mt-3 font-sans text-sm sm:text-base text-alignment-accent/70 leading-relaxed';
+export const authLeadClass = 'mt-3 font-sans text-sm sm:text-base text-alignment-accent/90 leading-relaxed';
 
-export const authLeadClassCompact = 'mt-2 font-sans text-sm text-alignment-accent/70 leading-relaxed';
+export const authLeadClassCompact = 'mt-2 font-sans text-sm text-alignment-accent/90 leading-relaxed';
 
 export const authFocusRingClass =
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2 focus-visible:ring-offset-alignment-foundation';

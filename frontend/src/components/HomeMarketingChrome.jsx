@@ -56,7 +56,7 @@ export function HomeHeader() {
     : { to: '/assessment', label: 'Begin free' };
 
   const navClass = (active) =>
-    `text-[15px] transition-colors ${active ? 'text-alignment-accent' : 'text-alignment-accent/70 hover:text-alignment-accent'}`;
+    `text-[15px] transition-colors ${active ? 'text-alignment-accent' : 'text-alignment-accent/90 hover:text-alignment-accent'}`;
 
   return (
     <>
@@ -79,7 +79,7 @@ export function HomeHeader() {
               )
             )}
             {!isLoggedIn ? (
-              <Link to="/login" className="text-[15px] text-alignment-accent/55 hover:text-alignment-accent transition-colors">
+              <Link to="/login" className="text-[15px] text-alignment-accent/90 hover:text-alignment-accent transition-colors">
                 Sign in
               </Link>
             ) : null}
@@ -153,7 +153,7 @@ export function SitePageFooter({ extra = null }) {
         <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between lg:gap-12">
           <div className="max-w-xs">
             <BrandLogo iconHeightPx={44} />
-            <p className="mt-4 text-xs text-alignment-accent/45 leading-relaxed">Human alignment software.</p>
+            <p className="mt-4 text-xs text-alignment-accent/65 leading-relaxed">Human alignment software.</p>
           </div>
           <div className="flex flex-col gap-3 lg:flex-1">
             <SiteMarketingFooterNav className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-4 sm:gap-x-8 gap-y-3 min-w-0 text-[9px] sm:text-[10px] font-normal uppercase tracking-[0.14em]" />

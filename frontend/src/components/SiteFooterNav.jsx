@@ -35,13 +35,13 @@ export function SiteMarketingFooterNav({ className = '' }) {
           <a
             key={item.label}
             href={item.href}
-            className={`${linkClass} text-alignment-accent/45`}
+            className={`${linkClass} text-alignment-accent/65`}
             {...(item.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
           >
             {item.label}
           </a>
         ) : (
-          <Link key={`${item.to}-${item.label}`} to={item.to} className={`${linkClass} text-alignment-accent/45`}>
+          <Link key={`${item.to}-${item.label}`} to={item.to} className={`${linkClass} text-alignment-accent/65`}>
             {item.label}
           </Link>
         ),
@@ -50,7 +50,7 @@ export function SiteMarketingFooterNav({ className = '' }) {
         <a
           key={`ext-${item.label}-${item.href}`}
           href={item.href}
-          className={`${linkClass} text-alignment-accent/45`}
+          className={`${linkClass} text-alignment-accent/65`}
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -58,7 +58,7 @@ export function SiteMarketingFooterNav({ className = '' }) {
         </a>
       ))}
       {siteLegalLinks.map((item) => (
-        <Link key={item.to} to={item.to} className={`${linkClass} text-alignment-accent/45`}>
+        <Link key={item.to} to={item.to} className={`${linkClass} text-alignment-accent/65`}>
           {item.label}
         </Link>
       ))}
@@ -67,7 +67,7 @@ export function SiteMarketingFooterNav({ className = '' }) {
 }
 
 const secondaryLinkClass =
-  'text-sm text-alignment-accent/70 hover:text-alignment-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2 rounded-sm';
+  'text-sm text-alignment-accent/90 hover:text-alignment-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2 rounded-sm';
 
 /** Compact row: Home, Pricing, About, Wholeness, Organizations, Privacy, Terms */
 export function SiteSecondaryFooterNav({ className = '' }) {

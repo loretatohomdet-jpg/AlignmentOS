@@ -114,7 +114,7 @@ export default function AdminAssessmentEditPage() {
   }
 
   if (!assessment) {
-    return <p className="text-alignment-accent/70">Loading…</p>;
+    return <p className="text-alignment-accent/90">Loading…</p>;
   }
 
   return (
@@ -133,7 +133,7 @@ export default function AdminAssessmentEditPage() {
 
       <div className="mt-6 rounded-2xl border border-alignment-accent/10 bg-alignment-surface p-5 space-y-4 max-w-2xl">
         <label className="block">
-          <span className="text-xs font-medium uppercase tracking-wide text-alignment-accent/55">Title</span>
+          <span className="text-xs font-medium uppercase tracking-wide text-alignment-accent/80">Title</span>
           <input
             type="text"
             value={title}
@@ -142,7 +142,7 @@ export default function AdminAssessmentEditPage() {
           />
         </label>
         <label className="block">
-          <span className="text-xs font-medium uppercase tracking-wide text-alignment-accent/55">Description</span>
+          <span className="text-xs font-medium uppercase tracking-wide text-alignment-accent/80">Description</span>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
@@ -176,7 +176,7 @@ export default function AdminAssessmentEditPage() {
             {editingId === q.id && qDraft ? (
               <div className="space-y-3">
                 <label className="block">
-                  <span className="text-xs text-alignment-accent/55">Text</span>
+                  <span className="text-xs text-alignment-accent/80">Text</span>
                   <textarea
                     value={qDraft.text}
                     onChange={(e) => setQDraft({ ...qDraft, text: e.target.value })}
@@ -186,7 +186,7 @@ export default function AdminAssessmentEditPage() {
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   <label className="block">
-                    <span className="text-xs text-alignment-accent/55">Order</span>
+                    <span className="text-xs text-alignment-accent/80">Order</span>
                     <input
                       type="number"
                       value={qDraft.order}
@@ -195,7 +195,7 @@ export default function AdminAssessmentEditPage() {
                     />
                   </label>
                   <label className="block">
-                    <span className="text-xs text-alignment-accent/55">Min</span>
+                    <span className="text-xs text-alignment-accent/80">Min</span>
                     <input
                       type="number"
                       value={qDraft.scaleMin}
@@ -204,7 +204,7 @@ export default function AdminAssessmentEditPage() {
                     />
                   </label>
                   <label className="block">
-                    <span className="text-xs text-alignment-accent/55">Max</span>
+                    <span className="text-xs text-alignment-accent/80">Max</span>
                     <input
                       type="number"
                       value={qDraft.scaleMax}
@@ -215,7 +215,7 @@ export default function AdminAssessmentEditPage() {
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <label className="block">
-                    <span className="text-xs text-alignment-accent/55">Pillar</span>
+                    <span className="text-xs text-alignment-accent/80">Pillar</span>
                     <select
                       value={qDraft.pillar}
                       onChange={(e) => setQDraft({ ...qDraft, pillar: e.target.value })}
@@ -229,7 +229,7 @@ export default function AdminAssessmentEditPage() {
                     </select>
                   </label>
                   <label className="block">
-                    <span className="text-xs text-alignment-accent/55">Type</span>
+                    <span className="text-xs text-alignment-accent/80">Type</span>
                     <select
                       value={qDraft.questionType}
                       onChange={(e) => setQDraft({ ...qDraft, questionType: e.target.value })}
@@ -266,7 +266,7 @@ export default function AdminAssessmentEditPage() {
               </div>
             ) : (
               <>
-                <p className="text-xs text-alignment-accent/45">
+                <p className="text-xs text-alignment-accent/65">
                   #{q.order} · {q.pillar} · {q.questionType}
                 </p>
                 <p className="mt-2 text-sm text-alignment-accent">{q.text}</p>

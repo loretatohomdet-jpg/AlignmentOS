@@ -50,7 +50,7 @@ export default function BusinessAlignmentPage() {
                 >
                   View Today
                 </Link>
-                <span className="text-alignment-accent/70">·</span>
+                <span className="text-alignment-accent/90">·</span>
                 <Link
                   to="/results"
                   className="text-sm font-medium text-alignment-accent hover:underline"
@@ -192,7 +192,7 @@ export default function BusinessAlignmentPage() {
                 className="rounded-2xl bg-alignment-surface border border-alignment-accent/5 shadow-apple p-5 text-center"
               >
                 <h3 className="font-medium text-alignment-accent">{title}</h3>
-                <p className="mt-1 text-sm text-alignment-accent/70">{desc}</p>
+                <p className="mt-1 text-sm text-alignment-accent/90">{desc}</p>
               </div>
             ))}
           </div>
@@ -220,11 +220,11 @@ export default function BusinessAlignmentPage() {
                 Contact us
               </a>
             </div>
-            <p className="mt-4 text-xs text-alignment-accent/50 max-w-lg mx-auto text-center">
+            <p className="mt-4 text-xs text-alignment-accent/75 max-w-lg mx-auto text-center">
               “Contact us” opens our partner channel (Simplicity & Productivity) for bespoke team and leadership formation —
               in addition to Alignment OS product plans above.
             </p>
-            <p className="mt-6 text-sm text-alignment-accent/70">
+            <p className="mt-6 text-sm text-alignment-accent/90">
               {isLoggedIn ? (
                 <>
                   Or <Link to="/dashboard" className="text-alignment-accent font-medium hover:underline">go to Dashboard</Link>

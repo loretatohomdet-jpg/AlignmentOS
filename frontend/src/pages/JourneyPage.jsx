@@ -89,7 +89,7 @@ export default function JourneyPage() {
   if (loading) {
     return (
       <div className="mx-auto max-w-xl px-6 py-20 text-center">
-        <p className="font-display italic text-alignment-accent/45">Loading your journey…</p>
+        <p className="font-display italic text-alignment-accent/65">Loading your journey…</p>
       </div>
     );
   }
@@ -100,7 +100,7 @@ export default function JourneyPage() {
       <h1 className={`mt-4 ${type.h1}`}>
         What is forming.
       </h1>
-      <p className="mt-3 text-[17px] text-alignment-accent/55 leading-relaxed">
+      <p className="mt-3 text-[17px] text-alignment-accent/90 leading-relaxed">
         Growth, not streaks. The record is yours.
       </p>
 
@@ -113,7 +113,7 @@ export default function JourneyPage() {
       {showBeginLoop && (
         <div className="mt-8 bg-alignment-surfaceSoft/80 px-5 py-6 sm:px-6">
           <p className={type.kicker}>Begin the loop</p>
-          <p className="mt-3 text-[16px] leading-relaxed text-alignment-accent/70">
+          <p className="mt-3 text-[16px] leading-relaxed text-alignment-accent/90">
             Take the Alignment Score to set your starting point. Everything here shapes itself around your result, and in
             ninety days you will be able to see what changed.
           </p>
@@ -124,7 +124,7 @@ export default function JourneyPage() {
       )}
 
       <div className={`${showBeginLoop ? 'mt-3' : 'mt-8'} border-l-2 border-alignment-primary bg-alignment-surfaceSoft/80 px-5 py-5 sm:px-6`}>
-        <p className="text-[16px] leading-relaxed text-alignment-accent/70">
+        <p className="text-[16px] leading-relaxed text-alignment-accent/90">
           {latestExcerpt
             ? latestExcerpt
             : 'Nothing recorded yet. The archive begins with your first morning anchor — and it is never overwritten.'}
@@ -132,7 +132,7 @@ export default function JourneyPage() {
       </div>
 
       <div className="mt-10 border-t border-alignment-accent/[0.08] pt-8">
-        <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-accent/40">
+        <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-accent/70">
           Six domains · latest
         </p>
         {hasScore && result?.pillarScores ? (
@@ -152,19 +152,19 @@ export default function JourneyPage() {
             })}
           </ul>
         ) : (
-          <p className="mt-4 text-[15px] leading-relaxed text-alignment-accent/45">
+          <p className="mt-4 text-[15px] leading-relaxed text-alignment-accent/90">
             Take the Alignment Score to see the six domains here.
           </p>
         )}
       </div>
 
       <div className="mt-10 border-t border-alignment-accent/[0.08] pt-8">
-        <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-accent/40">The archive</p>
-        <p className="mt-4 text-[15px] leading-relaxed text-alignment-accent/45">
+        <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-accent/70">The archive</p>
+        <p className="mt-4 text-[15px] leading-relaxed text-alignment-accent/90">
           Every reflection you have written, in order. Nothing is deleted.
         </p>
         {archive.length === 0 ? (
-          <p className="mt-3 text-[15px] text-alignment-accent/45">Your archive is empty for now.</p>
+          <p className="mt-3 text-[15px] text-alignment-accent/90">Your archive is empty for now.</p>
         ) : (
           <ul className="mt-5 space-y-5">
             {archive.map((item) => (

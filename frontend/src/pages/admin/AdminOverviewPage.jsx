@@ -33,7 +33,7 @@ export default function AdminOverviewPage() {
   }
 
   if (!data) {
-    return <p className="text-alignment-accent/70">Loading metrics…</p>;
+    return <p className="text-alignment-accent/90">Loading metrics…</p>;
   }
 
   const cards = [
@@ -49,7 +49,7 @@ export default function AdminOverviewPage() {
   return (
     <div>
       <h2 className="text-lg font-semibold text-alignment-accent">Overview</h2>
-      <p className="mt-1 text-sm text-alignment-accent/65">
+      <p className="mt-1 text-sm text-alignment-accent/85">
         High-level counts for operations and growth checks.
       </p>
       <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -58,7 +58,7 @@ export default function AdminOverviewPage() {
             key={c.label}
             className="rounded-2xl border border-alignment-accent/10 bg-alignment-surface px-5 py-4"
           >
-            <p className="text-xs font-medium uppercase tracking-wider text-alignment-accent/50">{c.label}</p>
+            <p className="text-xs font-medium uppercase tracking-wider text-alignment-accent/75">{c.label}</p>
             <p className="mt-2 font-display text-3xl tabular-nums text-alignment-accent">{c.value}</p>
           </li>
         ))}

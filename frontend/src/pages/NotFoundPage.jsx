@@ -17,7 +17,7 @@ export default function NotFoundPage() {
         <Link to="/diagnostic" className={pillGhost}>
           Diagnostic
         </Link>
-        <Link to="/login" className="text-sm text-alignment-accent/70 hover:text-alignment-accent underline underline-offset-4">
+        <Link to="/login" className="text-sm text-alignment-accent/90 hover:text-alignment-accent underline underline-offset-4">
           Sign in
         </Link>
       </div>

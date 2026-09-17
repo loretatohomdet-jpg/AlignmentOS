@@ -3,7 +3,7 @@ export default function ProgressBar({ value }) {
 
   return (
     <div className="w-full">
-      <div className="flex justify-between mb-2 text-sm text-alignment-accent/70">
+      <div className="flex justify-between mb-2 text-sm text-alignment-accent/90">
         <span>Progress</span>
         <span className="font-medium text-alignment-accent">{Math.round(clamped)}%</span>
       </div>

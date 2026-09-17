@@ -31,8 +31,8 @@ export default function DiagnosticPage() {
         </p>
 
         <div className="mt-10 rounded-2xl border border-alignment-accent/10 bg-alignment-surface shadow-apple p-6 sm:p-8">
-          <p className="text-xs font-medium text-alignment-accent/70 uppercase tracking-wider">What to expect</p>
-          <ul className="mt-4 text-sm text-alignment-accent/70 space-y-3">
+          <p className="text-xs font-medium text-alignment-accent/65 uppercase tracking-wider">What to expect</p>
+          <ul className="mt-4 text-sm text-alignment-accent/90 space-y-3">
             <li className="flex gap-3">
               <span className="text-alignment-accent font-medium shrink-0">24 questions</span>
               <span>Four per domain — enough to see patterns without fatigue.</span>
@@ -62,7 +62,7 @@ export default function DiagnosticPage() {
         </div>
 
         <div className="mt-10">
-          <p className="text-xs font-medium text-alignment-accent/70 uppercase tracking-wider text-center">The six domains</p>
+          <p className="text-xs font-medium text-alignment-accent/65 uppercase tracking-wider text-center">The six domains</p>
           <p className={`mt-2 text-sm ${diag.muted} text-center max-w-xl mx-auto`}>
             Your Alignment Quotient (AQ) blends all six. Your <strong className="text-alignment-accent font-medium">primary strain</strong> is the
             domain with the lowest score — where habit and structure matter most.
@@ -74,10 +74,10 @@ export default function DiagnosticPage() {
                 className={`rounded-2xl border ${diag.border} bg-alignment-surface px-5 py-4 shadow-apple`}
               >
                 <div className="flex gap-3 items-start">
-                  <DomainPillarIcon pillar={key} className="w-6 h-6 shrink-0 text-alignment-accent/65 mt-0.5" />
+                  <DomainPillarIcon pillar={key} className="w-6 h-6 shrink-0 text-alignment-accent/85 mt-0.5" />
                   <div className="min-w-0 flex-1">
                     <p className="text-sm font-semibold text-alignment-accent">{DOMAIN_LABELS[key]}</p>
-                    <p className="mt-1.5 text-sm text-alignment-accent/65 leading-relaxed">{DOMAIN_BLURBS[key]}</p>
+                    <p className="mt-1.5 text-sm text-alignment-accent/90 leading-relaxed">{DOMAIN_BLURBS[key]}</p>
                   </div>
                 </div>
               </li>
@@ -86,8 +86,8 @@ export default function DiagnosticPage() {
         </div>
 
         <div className="mt-10 rounded-2xl border border-alignment-accent/10 bg-alignment-surface shadow-apple p-6 sm:p-8">
-          <p className="text-xs font-medium text-alignment-accent/70 uppercase tracking-wider">After you submit</p>
-          <ul className="mt-4 text-sm text-alignment-accent/70 space-y-3">
+          <p className="text-xs font-medium text-alignment-accent/65 uppercase tracking-wider">After you submit</p>
+          <ul className="mt-4 text-sm text-alignment-accent/90 space-y-3">
             <li>
               <strong className="text-alignment-accent font-medium">Your AQ score (0–100)</strong> — a whole-number summary of alignment across
               domains.
@@ -110,7 +110,7 @@ export default function DiagnosticPage() {
         {!hasToken && (
           <div className="mt-8 rounded-2xl bg-alignment-accent/[0.04] border border-alignment-accent/5 p-5">
             <p className="text-sm font-medium text-alignment-accent">Account to submit</p>
-            <p className="mt-1 text-sm text-alignment-accent/70">
+            <p className="mt-1 text-sm text-alignment-accent/90">
               You can work through every question now. To submit and save your AQ, sign in or create a free account — your answers can
               be held on this device until then.
             </p>
@@ -118,7 +118,7 @@ export default function DiagnosticPage() {
               <Link to="/signup?returnTo=/assessment" className="text-sm font-medium text-alignment-accent hover:underline">
                 Sign up →
               </Link>
-              <Link to="/login?returnTo=/assessment" className="text-sm font-medium text-alignment-accent/70 hover:text-alignment-accent">
+              <Link to="/login?returnTo=/assessment" className="text-sm font-medium text-alignment-accent/90 hover:text-alignment-accent">
                 Sign in →
               </Link>
             </div>

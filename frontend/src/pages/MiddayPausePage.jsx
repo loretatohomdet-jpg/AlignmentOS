@@ -86,7 +86,7 @@ export default function MiddayPausePage() {
       <h1 className={`mt-4 ${type.h1}`}>
         Still here?
       </h1>
-      <p className="mt-3 text-[17px] text-alignment-accent/55 leading-relaxed">
+      <p className="mt-3 text-[17px] text-alignment-accent/90 leading-relaxed">
         Three questions, one adjustment, then continue.
       </p>
 
@@ -95,10 +95,10 @@ export default function MiddayPausePage() {
           <p className="font-display italic font-normal text-[1.35rem] sm:text-[1.5rem] leading-snug text-alignment-accent">
             Am I living the day I intended?
           </p>
-          <p className="mt-3 font-display italic font-normal text-[1.25rem] sm:text-[1.4rem] leading-snug text-alignment-accent/45">
+          <p className="mt-3 font-display italic font-normal text-[1.25rem] sm:text-[1.4rem] leading-snug text-alignment-accent/85">
             What has distracted me?
           </p>
-          <p className="mt-3 font-display italic font-normal text-[1.25rem] sm:text-[1.4rem] leading-snug text-alignment-accent/45">
+          <p className="mt-3 font-display italic font-normal text-[1.25rem] sm:text-[1.4rem] leading-snug text-alignment-accent/85">
             What deserves my attention now?
           </p>
           <textarea
