@@ -289,25 +289,23 @@ export default function LandingPage() {
               Four steps. <span className="italic font-normal text-alignment-accent/80">One system.</span>
             </h2>
             <div className="mt-10 sm:mt-12">
-              <ol className="flex flex-col gap-0 lg:hidden">
+              <ol className="flex flex-col lg:hidden">
                 {compoundingSteps.map((step, idx) => (
-                  <li key={step.n} className="list-none">
-                    <div className="flex flex-col">
+                  <li key={step.n} className="flex gap-4">
+                    <div className="flex w-11 shrink-0 flex-col items-center">
                       <span
-                        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-alignment-accent/20 text-sm font-medium text-alignment-accent/70"
+                        className="flex h-11 w-11 items-center justify-center rounded-full border border-alignment-accent/20 text-sm font-medium text-alignment-accent/70"
                         aria-hidden
                       >
                         {step.n}
                       </span>
-                      <h3 className="mt-4 text-base font-semibold text-alignment-accent tracking-tight">{step.title}</h3>
+                      {idx < compoundingSteps.length - 1 && (
+                        <span className="mt-1 mb-1 w-px flex-1 min-h-[1.25rem] bg-alignment-accent/15" aria-hidden />
+                      )}
                     </div>
-                    {idx < 3 && (
-                      <div className="flex justify-start pl-3 py-5" aria-hidden="true">
-                        <svg className="h-5 w-5 text-alignment-accent/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
-                        </svg>
-                      </div>
-                    )}
+                    <h3 className={`min-w-0 pt-2.5 text-base font-semibold text-alignment-accent tracking-tight ${idx < compoundingSteps.length - 1 ? 'pb-8' : ''}`}>
+                      {step.title}
+                    </h3>
                   </li>
                 ))}
               </ol>
