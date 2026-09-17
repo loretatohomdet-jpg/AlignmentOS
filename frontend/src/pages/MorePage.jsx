@@ -60,8 +60,9 @@ export default function MorePage() {
 
       <div className="mt-10 border-t border-alignment-accent/[0.08]">
         <Row to="/profile" label="Profile" note="Name & photo" />
+        <Row to="/alignment-map" label="Alignment map" note="Six domains" />
         <Row to="/results" label="Results" note="Your score" />
-        <Row to="/journey" label="The archive" note="What is forming" />
+        <Row to="/journey" label="Archive" note="What you have written" />
         <Row onClick={signOut} label="Sign out" />
       </div>
 

@@ -101,7 +101,7 @@ export default function JourneyPage() {
         What is forming.
       </h1>
       <p className="mt-3 text-[17px] text-alignment-accent/90 leading-relaxed">
-        Growth, not streaks. The record is yours.
+        What you write in Practice is kept here. The map lives on Dashboard.
       </p>
 
       {error && (

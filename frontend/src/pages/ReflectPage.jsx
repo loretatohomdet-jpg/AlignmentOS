@@ -105,7 +105,7 @@ export default function ReflectPage() {
         Few, and chosen.
       </h1>
       <p className={`mt-3 ${type.body}`}>
-        One or two at a time. The system prescribes less, better.
+        This is the library, not the day. Open Practice to hold a room.
       </p>
 
       {error && (

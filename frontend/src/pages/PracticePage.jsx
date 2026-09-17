@@ -6,6 +6,7 @@ import { loadRituals, utcDayStamp } from '../utils/engineStorage';
 import { pushHeldLocalRituals } from '../utils/engineRitualsApi';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { type } from '../config/siteType';
+import { clearJustPaid, isJustPaid } from '../config/productLoop';
 import { pillGhost, pillPrimary } from '../components/HomeMarketingChrome';
 
 function authHeaders() {
@@ -37,6 +38,7 @@ export default function PracticePage() {
   const [habits, setHabits] = useState([]);
   const [prompt, setPrompt] = useState(null);
   const [engineActive, setEngineActive] = useState(false);
+  const [enginePending, setEnginePending] = useState(() => isJustPaid());
   const [now] = useState(() => new Date());
   const day = utcDayStamp(now);
   const [rituals, setRituals] = useState(() => loadRituals(day));
@@ -52,7 +54,12 @@ export default function PracticePage() {
       const statsRes = await axios.get(`${API_BASE}/habits/stats`, { headers: authHeaders() });
       setHabits(Array.isArray(statsRes.data?.habits) ? statsRes.data.habits : []);
       setPrompt(statsRes.data?.prompt || null);
-      setEngineActive(Boolean(statsRes.data?.engineActive));
+      const active = Boolean(statsRes.data?.engineActive);
+      setEngineActive(active);
+      if (active) {
+        clearJustPaid();
+        setEnginePending(false);
+      }
       const held = await pushHeldLocalRituals(day);
       setRituals(held);
     } catch (e) {
@@ -72,6 +79,20 @@ export default function PracticePage() {
   useEffect(() => {
     load();
   }, [load]);
+
+  useEffect(() => {
+    if (engineActive || !isJustPaid()) return undefined;
+    let n = 0;
+    const id = setInterval(() => {
+      n += 1;
+      load();
+      if (n >= 8) {
+        clearInterval(id);
+        setEnginePending(false);
+      }
+    }, 2000);
+    return () => clearInterval(id);
+  }, [engineActive, load]);
 
   const liveHabits = habits.length > 0;
   const morningHabitHeld = liveHabits && habits.some((h) => isMorningHabit(h) && h.completedToday);
@@ -123,7 +144,7 @@ export default function PracticePage() {
       </p>
       <h1 className={`mt-4 text-center ${type.h1}`}>{greeting}</h1>
       <p className="mt-3 text-center text-[15px] text-alignment-accent/90 leading-relaxed">
-        The day has three rooms. Do them in order.
+        Three rooms. What you write is saved to your record.
       </p>
 
       {error && (
@@ -143,7 +164,17 @@ export default function PracticePage() {
         </div>
       )}
 
-      {!engineActive && (
+      {!engineActive && enginePending && (
+        <div className="mt-10 rounded-2xl border border-alignment-primary/20 bg-alignment-primary/[0.06] px-6 py-6">
+          <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-primary">Habit Engine</p>
+          <p className="mt-3 font-medium text-alignment-accent">Your daily hold is turning on.</p>
+          <p className="mt-2 text-sm text-alignment-accent/90 leading-relaxed">
+            The three rooms are ready now. Today’s named hold appears here in a moment.
+          </p>
+        </div>
+      )}
+
+      {!engineActive && !enginePending && (
         <div className="mt-10 rounded-2xl border border-alignment-accent/10 bg-alignment-surface px-6 py-6">
           <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-primary">Habit Engine</p>
           <p className="mt-3 font-medium text-alignment-accent">A daily hold, named for you.</p>
@@ -197,12 +228,12 @@ export default function PracticePage() {
       </ol>
 
       <p className="mt-10 text-center text-sm text-alignment-accent/90">
-        <Link to="/reflect" className="underline underline-offset-2 hover:text-alignment-accent">
-          Review
+        <Link to="/dashboard" className="underline underline-offset-2 hover:text-alignment-accent">
+          Record and map
         </Link>
         {' · '}
-        <Link to="/journey" className="underline underline-offset-2 hover:text-alignment-accent">
-          Journey
+        <Link to="/reflect" className="underline underline-offset-2 hover:text-alignment-accent">
+          Review
         </Link>
       </p>
     </div>

@@ -3,26 +3,50 @@ import { Link } from 'react-router-dom';
 import { type } from '../config/siteType';
 import { pillPrimary } from './HomeMarketingChrome';
 
-const defaultSteps = [
-  {
-    n: '01',
-    title: 'Open Practice',
-    body: 'Three habits from your primary gap. Do one today.',
-    to: '/practice',
-  },
-  {
-    n: '02',
-    title: 'Add your Identity Anchors',
-    body: 'Three statements about who you are becoming.',
-    to: '/profile',
-  },
-  {
-    n: '03',
-    title: 'Open Review when you need the map',
-    body: 'The practice library — few, and chosen. Today is where the day is held.',
-    to: '/reflect',
-  },
-];
+function stepsFor({ hasScore }) {
+  if (!hasScore) {
+    return [
+      {
+        n: '01',
+        title: 'Take the diagnostic',
+        body: 'Twelve minutes. This fills your map and names three practices.',
+        to: '/assessment',
+      },
+      {
+        n: '02',
+        title: 'Open Practice',
+        body: 'Three rooms: morning, midday, close. What you write is saved.',
+        to: '/practice',
+      },
+      {
+        n: '03',
+        title: 'See your map',
+        body: 'It fills from the diagnostic. Score and history stay on Dashboard.',
+        to: '/alignment-map',
+      },
+    ];
+  }
+  return [
+    {
+      n: '01',
+      title: 'Open Practice',
+      body: 'Three rooms. Do them in order. What you write is saved.',
+      to: '/practice',
+    },
+    {
+      n: '02',
+      title: 'Open your map',
+      body: 'Six domains from the diagnostic. Strain is the thin place.',
+      to: '/alignment-map',
+    },
+    {
+      n: '03',
+      title: 'Review when you need a line',
+      body: 'A small library. Not the day, and not the record.',
+      to: '/reflect',
+    },
+  ];
+}
 
 /**
  * First-visit welcome overlay for /dashboard — uses Alignment OS palette (ivory / olive / ink).
@@ -39,6 +63,8 @@ export default function DashboardWelcomeModal({ open, onDismiss, hasScore = fals
 
   if (!open) return null;
 
+  const steps = stepsFor({ hasScore });
+
   return (
     <div
       className="fixed inset-0 z-[110] flex items-center justify-center p-4 sm:p-6 bg-alignment-deep/50 backdrop-blur-lg backdrop-saturate-150 supports-[backdrop-filter]:bg-alignment-deep/35"
@@ -47,32 +73,17 @@ export default function DashboardWelcomeModal({ open, onDismiss, hasScore = fals
       aria-labelledby="dashboard-welcome-title"
     >
       <div className="relative w-full max-w-lg rounded-2xl border border-alignment-accent/12 bg-alignment-foundation shadow-apple-lg px-6 py-8 sm:px-10 sm:py-10 animate-fade-in">
-        <p className={type.kicker}>Welcome to your dashboard</p>
+        <p className={type.kicker}>Two places, every day</p>
 
         <h2 id="dashboard-welcome-title" className={`mt-6 ${type.h2}`}>
           {hasHabits ? 'Your practices are installed.' : hasScore ? 'Your score is in.' : 'Here is the loop.'}
         </h2>
         <p className="mt-3 font-display text-[1.35rem] sm:text-[1.5rem] italic font-normal text-alignment-primary leading-snug">
-          {hasHabits
-            ? 'Practice is where the day is held.'
-            : hasScore
-              ? 'Open Practice after the diagnostic installs your three.'
-              : 'Start with the diagnostic. Three practices follow.'}
+          Practice holds the day. This page holds the record.
         </p>
 
         <div className="mt-10 border-t border-alignment-accent/10">
-          {(hasScore
-            ? defaultSteps
-            : [
-                {
-                  n: '01',
-                  title: 'Take the diagnostic',
-                  body: 'Twelve minutes. Your lowest domain becomes three practices.',
-                  to: '/assessment',
-                },
-                ...defaultSteps.slice(1),
-              ]
-          ).map((step) => (
+          {steps.map((step) => (
             <Link
               key={step.n}
               to={step.to}

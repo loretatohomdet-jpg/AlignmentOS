@@ -124,6 +124,7 @@ export default function MiddayPausePage() {
         <button type="submit" disabled={saving} className={`mt-2 ${enginePrimaryBtn}`}>
           {saving ? 'Saving…' : 'Save and continue'}
         </button>
+        <p className="mt-3 text-center text-[11px] text-alignment-accent/65">This is saved to your record.</p>
         <Link to="/practice" className={engineGhostBtn}>
           Back
         </Link>

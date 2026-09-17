@@ -199,6 +199,7 @@ export default function MorningAnchorPage() {
         <button type="submit" disabled={saving} className={`mt-4 ${enginePrimaryBtn}`}>
           {saving ? 'Holding…' : 'Hold this morning'}
         </button>
+        <p className="mt-3 text-center text-[11px] text-alignment-accent/65">This is saved to your record.</p>
         <Link to="/practice" className={engineGhostBtn}>
           Back
         </Link>

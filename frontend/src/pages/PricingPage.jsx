@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_BASE, networkErrorUserMessage } from '../config/apiBase';
+import { markJustPaid } from '../config/productLoop';
 import {
   bookingUrl,
   checkoutHabitUrl,
@@ -112,6 +113,7 @@ export default function PricingPage() {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       if (data?.url) {
+        markJustPaid();
         window.location.href = data.url;
         return;
       }

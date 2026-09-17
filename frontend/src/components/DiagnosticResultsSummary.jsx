@@ -201,7 +201,7 @@ export default function DiagnosticResultsSummary({
           <div className={`${resultsUi.panel} h-full`}>
             <p className={resultsUi.label}>Identity Anchors</p>
             <p className="mt-3 text-sm text-alignment-accent/90 italic leading-relaxed">
-              Three statements about who you are becoming. Your habits are installed on these.
+              Three statements about who you are becoming. Saved here on Results.
             </p>
             <div className="mt-6 space-y-3">
               <input

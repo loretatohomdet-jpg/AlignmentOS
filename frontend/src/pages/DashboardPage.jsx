@@ -17,7 +17,6 @@ import {
 } from 'recharts';
 import { API_BASE } from '../config/apiBase';
 import { type } from '../config/siteType';
-import { creatorHandoffUrl } from '../config/externalLinks';
 
 function ScoreGauge({ score, label }) {
   const value = score != null ? Math.min(100, Math.max(0, score)) : 0;
@@ -64,7 +63,6 @@ export default function DashboardPage() {
 
   const token = localStorage.getItem('accessToken');
   const authHeaders = token ? { Authorization: `Bearer ${token}` } : {};
-  const creatorHref = creatorHandoffUrl();
 
   useEffect(() => {
     if (!authed) {
@@ -211,6 +209,9 @@ export default function DashboardPage() {
             </h1>
             <p className="text-sm text-alignment-accent/90">{todayStr}</p>
           </div>
+          <p className="mt-3 text-sm text-alignment-accent/90 leading-relaxed max-w-xl">
+            Practice holds the day. This page holds the record — your score and map.
+          </p>
           <div className="mt-1 flex flex-wrap items-center gap-3">
             <span className="rounded-full bg-alignment-surface px-3 py-1 text-xs font-medium text-alignment-accent capitalize">
               {user.plan?.toLowerCase() ?? 'free'} plan
@@ -246,7 +247,7 @@ export default function DashboardPage() {
                   <p className="text-xs font-medium text-alignment-accent/65 uppercase tracking-wider mb-2">The day</p>
                   <p className="font-medium text-alignment-accent">Morning, midday, close.</p>
                   <p className="mt-2 text-sm text-alignment-accent/90 leading-relaxed">
-                    Practice is where the day is held. This page is the record.
+                    Write here in Practice. It is saved when you hold a room.
                   </p>
                 </div>
                 <Link
@@ -389,50 +390,50 @@ export default function DashboardPage() {
               </section>
 
               <section className="rounded-2.5xl bg-alignment-surface border border-alignment-accent/[0.06] shadow-apple p-6 flex flex-col h-full min-h-0">
-                <h2 className="text-sm font-semibold text-alignment-accent tracking-tight">Your record</h2>
+                <h2 className="text-sm font-semibold text-alignment-accent tracking-tight">Your map</h2>
                 <p className="mt-3 text-sm text-alignment-accent/90 leading-relaxed flex-1">
-                  Score, type, and strain live here. Completing the day happens in Practice.
+                  {result
+                    ? 'Six domains from the diagnostic. This is the picture of your record.'
+                    : 'Empty until you take the diagnostic. Twelve minutes. Then it fills.'}
                 </p>
-                <Link to="/alignment-map" className="mt-4 text-sm font-medium text-alignment-accent hover:underline">
-                  Alignment map →
-                </Link>
-                <Link to="/results" className="mt-2 text-sm font-medium text-alignment-accent hover:underline">
-                  View results →
-                </Link>
-                <Link to="/progress" className="mt-2 text-sm font-medium text-alignment-accent hover:underline">
-                  Progress →
-                </Link>
+                {result ? (
+                  <>
+                    <Link to="/alignment-map" className="mt-4 text-sm font-medium text-alignment-accent hover:underline">
+                      Open the map →
+                    </Link>
+                    <Link to="/results" className="mt-2 text-sm font-medium text-alignment-accent hover:underline">
+                      Full results →
+                    </Link>
+                    <Link to="/journey" className="mt-2 text-sm font-medium text-alignment-accent hover:underline">
+                      What you have written →
+                    </Link>
+                  </>
+                ) : (
+                  <Link to="/assessment" className="mt-4 text-sm font-medium text-alignment-accent hover:underline">
+                    Take the diagnostic →
+                  </Link>
+                )}
               </section>
             </div>
 
-            {/* Go deeper */}
+            {/* Archive */}
             <div className="rounded-2.5xl border border-alignment-accent/[0.08] bg-alignment-surface px-6 py-6 shadow-apple flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
-                <p className="text-xs font-medium text-alignment-accent/65 uppercase tracking-wider mb-1">Go deeper</p>
-                <p className="font-medium text-alignment-accent">Habit Engine</p>
+                <p className="text-xs font-medium text-alignment-accent/65 uppercase tracking-wider mb-1">The archive</p>
+                <p className="font-medium text-alignment-accent">What you write in Practice is kept.</p>
               </div>
               <div className="flex flex-wrap gap-2 shrink-0">
                 <Link
-                  to="/practice"
+                  to="/journey"
                   className="inline-flex rounded-full bg-alignment-primary text-white px-5 py-2.5 text-sm font-medium hover:bg-alignment-primary/90 transition-colors"
                 >
-                  Open Practice →
+                  Open the archive →
                 </Link>
-                {creatorHref && (
-                  <a
-                    href={creatorHref}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex rounded-full border border-alignment-accent/15 bg-alignment-surface px-5 py-2.5 text-sm font-medium text-alignment-accent hover:bg-alignment-accent/5 transition-colors"
-                  >
-                    Creator →
-                  </a>
-                )}
                 <Link
-                  to="/results"
+                  to="/alignment-map"
                   className="inline-flex rounded-full border border-alignment-accent/15 bg-alignment-surface px-5 py-2.5 text-sm font-medium text-alignment-accent hover:bg-alignment-accent/5 transition-colors"
                 >
-                  Results →
+                  Map →
                 </Link>
               </div>
             </div>

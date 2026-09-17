@@ -135,6 +135,12 @@ export default function SiteMarketingHeader({ appendDesktop = null, authDrawer }
         <p className="px-4 pt-4 pb-1 text-xs font-medium text-alignment-accent/65 uppercase tracking-wider">Account</p>
         {drawerAuth.isLoggedIn ? (
           <>
+            <Link to="/alignment-map" className={siteNavDrawerRowClass} onClick={() => setDrawerOpen(false)}>
+              Alignment map
+            </Link>
+            <Link to="/journey" className={siteNavDrawerRowClass} onClick={() => setDrawerOpen(false)}>
+              Archive
+            </Link>
             <Link to="/profile" className={siteNavDrawerRowClass} onClick={() => setDrawerOpen(false)}>
               Profile
             </Link>

@@ -221,8 +221,8 @@ export default function AlignmentMapPage() {
           </h1>
           <p className={`mt-6 ${type.body} max-w-xl mx-auto`}>
             {hasMap
-              ? 'This is your formation map — the six domains of the diagnostic, with the thin place named.'
-              : 'Identity. Purpose. Mindset. Habits. Environment. Execution. Take the diagnostic and this map fills with your score.'}
+              ? 'This is the picture of your record — six domains from the diagnostic. Practice holds the day; this page does not.'
+              : 'The map is empty until you take the diagnostic. Twelve minutes. Then your score sits on each domain.'}
           </p>
         </section>
 
@@ -280,20 +280,20 @@ export default function AlignmentMapPage() {
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
             {hasMap ? (
               <>
-                <Link to="/dashboard" className={pillPrimary}>
-                  Open Dashboard
-                </Link>
-                <Link to="/practice" className={pillGhost}>
+                <Link to="/practice" className={pillPrimary}>
                   Open Practice
+                </Link>
+                <Link to="/dashboard" className={pillGhost}>
+                  Back to your record
                 </Link>
               </>
             ) : (
               <>
                 <Link to="/assessment" className={pillPrimary}>
-                  Take the free assessment
+                  Take the diagnostic
                 </Link>
-                <Link to="/diagnostic" className={pillGhost}>
-                  How the diagnostic works
+                <Link to="/dashboard" className={pillGhost}>
+                  Your record
                 </Link>
               </>
             )}
