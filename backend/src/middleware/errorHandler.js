@@ -7,7 +7,7 @@ function errorHandler(err, req, res, next) {
 
   if (err.name === 'MulterError') {
     if (err.code === 'LIMIT_FILE_SIZE') {
-      return res.status(400).json({ message: 'File too large' });
+      return res.status(400).json({ message: 'Image must be under 200KB' });
     }
     return res.status(400).json({ message: err.message || 'Upload error' });
   }

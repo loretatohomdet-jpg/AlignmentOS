@@ -10,20 +10,34 @@ function checkout(url) {
   return url || shopifyStoreUrl || '';
 }
 
+export const plannerImages = {
+  paperCover: '/images/planner/paper-cover.png',
+  paperFoil: '/images/planner/paper-foil.png',
+  paperLifestyle: '/images/planner/paper-lifestyle.png',
+  paperGift: '/images/planner/paper-gift.png',
+  sleevedDesk: '/images/planner/sleeved-desk.png',
+  sleevedAnatomy: '/images/planner/sleeved-anatomy.png',
+};
+
 /** Single source for shop prices and Shopify checkout URLs. */
 export const plannerEditions = [
   {
     sku: 'planner-standard',
-    name: 'Standard Edition',
+    name: 'Paper Edition',
     price: 48,
-    note: 'For everyday planning.',
+    note: 'For those who would rather keep this work on paper than on a screen.',
+    image: plannerImages.paperCover,
+    imageAlt: 'Life of Purpose Planner, paper edition, with ribbon markers',
     checkoutUrl: checkout(shopPlannerUrl),
   },
   {
     sku: 'planner-heirloom',
-    name: 'Heirloom Edition',
+    name: 'Sleeved Edition',
     price: 168,
-    note: 'A more enduring, elevated edition.',
+    note: 'The luxury edition. A signature cover and slipcase, made in Florence, Italy.',
+    origin: 'Made in Florence, Italy',
+    image: plannerImages.sleevedDesk,
+    imageAlt: 'The sleeved Life of Purpose Planner, held at a desk',
     checkoutUrl: checkout(shopPlannerHeirloomUrl || shopPlannerUrl),
   },
 ];
@@ -33,10 +47,12 @@ export const plannerProduct = {
   title: 'Life of Purpose Planner',
   kicker: 'Planner',
   tagline: 'Plan from what matters.',
-  body: 'Not another place to collect more tasks. A thoughtful planner for deciding what matters, making room for it, and carrying those priorities into your day.',
+  body: 'Not another place to collect more tasks. A thoughtful planner for deciding what matters, making room for it, and carrying those priorities into your day — on paper, or in the sleeved edition made in Florence.',
   priceFrom: 48,
   path: '/planner',
   checkoutUrl: checkout(shopPlannerUrl),
+  image: plannerImages.paperLifestyle,
+  imageAlt: 'Life of Purpose Planner on a sunlit table, beside a pen and an open book',
 };
 
 export const clarityProduct = {

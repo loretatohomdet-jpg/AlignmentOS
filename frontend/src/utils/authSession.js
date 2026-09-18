@@ -3,6 +3,16 @@ import { API_BASE } from '../config/apiBase';
 
 const TOKEN_KEY = 'accessToken';
 const AUTH_EVENT = 'alignment-auth';
+const PROFILE_EVENT = 'alignment-profile';
+
+/** Header and other chrome refetch /me after name or photo changes. */
+export function notifyProfileUpdated() {
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new Event(PROFILE_EVENT));
+  }
+}
+
+export { PROFILE_EVENT };
 
 export function getAccessToken() {
   try {

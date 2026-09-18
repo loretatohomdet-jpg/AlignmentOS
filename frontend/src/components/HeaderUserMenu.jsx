@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { NavLink, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_BASE } from '../config/apiBase';
-import { clearSession, getAccessToken } from '../utils/authSession';
+import { clearSession, getAccessToken, PROFILE_EVENT } from '../utils/authSession';
 
 function HeaderAvatar({ user, className = 'w-8 h-8' }) {
   if (user?.avatarUrl) {
@@ -38,19 +38,24 @@ export default function HeaderUserMenu({ isLoggedIn, onLogout }) {
   useEffect(() => {
     if (!isLoggedIn) {
       setUser(null);
-      return;
+      return undefined;
     }
-    const token = getAccessToken();
-    if (!token) return;
-    axios
-      .get(`${API_BASE}/me`, { headers: { Authorization: `Bearer ${token}` } })
-      .then((res) => setUser(res.data))
-      .catch((err) => {
-        if (err.response?.status === 401 || err.response?.status === 403) {
-          clearSession();
-        }
-        setUser(null);
-      });
+    const load = () => {
+      const token = getAccessToken();
+      if (!token) return;
+      axios
+        .get(`${API_BASE}/me`, { headers: { Authorization: `Bearer ${token}` } })
+        .then((res) => setUser(res.data))
+        .catch((err) => {
+          if (err.response?.status === 401 || err.response?.status === 403) {
+            clearSession();
+            setUser(null);
+          }
+        });
+    };
+    load();
+    window.addEventListener(PROFILE_EVENT, load);
+    return () => window.removeEventListener(PROFILE_EVENT, load);
   }, [isLoggedIn]);
 
   useLayoutEffect(() => {

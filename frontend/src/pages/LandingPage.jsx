@@ -6,7 +6,7 @@ import SiteMarketingHeader from '../components/SiteMarketingHeader';
 import DomainPillarIcon from '../components/DomainPillarIcon';
 import { pillGhost, pillPrimary, SitePageFooter } from '../components/HomeMarketingChrome';
 import CommerceCta from '../components/CommerceCta';
-import { clarityProduct, plannerProduct } from '../config/commerce';
+import { clarityProduct, plannerImages, plannerProduct } from '../config/commerce';
 import { type } from '../config/siteType';
 
 const HERO_LINE = 'Recover the art of living well.';
@@ -146,10 +146,22 @@ function HomeToolsSection() {
           practical tools designed to help you carry clarity into everyday life.
         </p>
 
-        <ul className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
+        <figure className="mt-10 overflow-hidden rounded-2xl bg-alignment-foundation">
+          <img
+            src={plannerImages.paperLifestyle}
+            alt={plannerProduct.imageAlt}
+            className="w-full aspect-[4/5] sm:aspect-[4/3] object-cover object-[center_46%]"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+
+        <ul className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
           <li className="flex flex-col rounded-2xl border border-alignment-accent/[0.1] bg-alignment-surface p-6 sm:p-8">
             <h3 className={type.h3}>{plannerProduct.title}</h3>
-            <p className={`mt-3 ${type.body} flex-1`}>A place to decide what matters before the day fills up.</p>
+            <p className={`mt-3 ${type.body} flex-1`}>
+              Paper, for those who do not want this work on a screen. Or the sleeved edition, made in Florence.
+            </p>
             <CommerceCta
               to="/planner"
               event="planner_shop_click"
