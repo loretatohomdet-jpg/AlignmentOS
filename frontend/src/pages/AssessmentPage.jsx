@@ -9,10 +9,9 @@ import { domainScoresToDisplayPct } from '../utils/domainScores';
 import DomainPillarIcon from '../components/DomainPillarIcon';
 import { buildGuestPreviewPayload } from '../utils/assessmentPreview';
 import { type } from '../config/siteType';
+import { FRESH_RESULT_KEY } from '../config/productLoop';
 import { pillPrimary } from '../components/HomeMarketingChrome';
 const DRAFT_KEY = 'alignment_assessment_draft';
-/** Handoff to /results after submit (score + strain + email gate); cleared when read */
-const FRESH_RESULT_KEY = 'alignment_os_fresh_result';
 
 function loadDraft() {
   try {
@@ -253,7 +252,7 @@ export default function AssessmentPage() {
       try {
         sessionStorage.setItem(FRESH_RESULT_KEY, JSON.stringify({ ...res.data, _freshSubmission: true }));
       } catch (_) {}
-      navigate('/results?fresh=1', { replace: true });
+      navigate('/snapshot', { replace: true });
     } catch (err) {
       console.error(err);
       setError(err.response?.data?.message || err.message || 'Failed to submit assessment');

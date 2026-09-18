@@ -13,10 +13,10 @@ import {
 import DiagnosticResultsSummary from '../components/DiagnosticResultsSummary';
 import { diag, resultsUi } from '../constants/diagnosticTheme';
 import { API_BASE } from '../config/apiBase';
+import { FRESH_RESULT_KEY } from '../config/productLoop';
 import { creatorHandoffUrl } from '../config/externalLinks';
 
 const REQUEST_TIMEOUT_MS = 15000;
-const FRESH_RESULT_KEY = 'alignment_os_fresh_result';
 
 export default function ResultsPage() {
   const navigate = useNavigate();

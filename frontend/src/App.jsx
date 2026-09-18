@@ -54,6 +54,7 @@ import AgentPage from './pages/AgentPage';
 import EthicsPage from './pages/EthicsPage';
 import NotFoundPage from './pages/NotFoundPage';
 import SuccessPage from './pages/SuccessPage';
+import SnapshotPage from './pages/SnapshotPage';
 import SharePage from './pages/SharePage';
 import SharePublicPage from './pages/SharePublicPage';
 import HeaderUserMenu from './components/HeaderUserMenu';
@@ -344,6 +345,16 @@ export default function App() {
           <Layout>
             <AssessmentPage />
           </Layout>
+        }
+      />
+      <Route
+        path="/snapshot"
+        element={
+          <RequireAuth>
+            <Layout>
+              <SnapshotPage />
+            </Layout>
+          </RequireAuth>
         }
       />
       <Route

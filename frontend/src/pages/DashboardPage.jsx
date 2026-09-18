@@ -17,6 +17,7 @@ import {
 } from 'recharts';
 import { API_BASE } from '../config/apiBase';
 import { type } from '../config/siteType';
+import { sawSnapshotContinue } from '../config/productLoop';
 
 function ScoreGauge({ score, label }) {
   const value = score != null ? Math.min(100, Math.max(0, score)) : 0;
@@ -122,7 +123,10 @@ export default function DashboardPage() {
   useEffect(() => {
     if (loading) return;
     try {
-      if (localStorage.getItem('alignment_os_dashboard_welcome_dismissed') !== '1') {
+      if (
+        localStorage.getItem('alignment_os_dashboard_welcome_dismissed') !== '1' &&
+        !sawSnapshotContinue()
+      ) {
         setWelcomeOpen(true);
       }
     } catch (_) {

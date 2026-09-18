@@ -11,7 +11,8 @@ export const visibility = {
 
 /** Human labels → canonical path */
 export const routeMap = {
-  Results: { path: '/results', visibility: visibility.auth, note: 'Post-assessment · logged in' },
+  Results: { path: '/results', visibility: visibility.auth, note: 'Full report · logged in' },
+  Snapshot: { path: '/snapshot', visibility: visibility.auth, note: 'Post-assessment transition · logged in' },
   Diagnostic: { path: '/diagnostic', visibility: visibility.public, note: 'How it works; /assessment is the flow' },
   Platform: { path: '/platform', visibility: visibility.public, note: 'Human alignment software · marketing' },
   Pricing: { path: '/pricing', visibility: visibility.public, note: 'Tiers · Habit Engine · Journey' },

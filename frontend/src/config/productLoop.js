@@ -44,3 +44,31 @@ export const LOOP_PLACES = [
 
 export const SAVED_TO_RECORD = 'This is saved to your record.';
 export const MAP_LIVES_ON_DASHBOARD = 'The map fills from the diagnostic. It lives on your Dashboard.';
+
+export const FRESH_RESULT_KEY = 'alignment_os_fresh_result';
+export const SNAPSHOT_SEEN_KEY = 'alignment_os_snapshot_seen';
+
+/** After the Assessment — what Alignment OS is for, before the whole product. */
+export const OS_OFFERS = [
+  { label: 'Alignment Map', body: 'Understand the pattern.' },
+  { label: 'Personal Plan', body: 'Decide what matters now.' },
+  { label: 'Habit Engine', body: 'Make the change practical.' },
+  { label: 'Weekly Review', body: 'See what is actually helping.' },
+];
+
+export function markSnapshotContinued() {
+  try {
+    sessionStorage.setItem(SNAPSHOT_SEEN_KEY, '1');
+  } catch (_) {}
+  try {
+    localStorage.setItem('alignment_os_dashboard_welcome_dismissed', '1');
+  } catch (_) {}
+}
+
+export function sawSnapshotContinue() {
+  try {
+    return sessionStorage.getItem(SNAPSHOT_SEEN_KEY) === '1';
+  } catch (_) {
+    return false;
+  }
+}
