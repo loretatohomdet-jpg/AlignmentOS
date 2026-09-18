@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const { PrismaClient } = require('@prisma/client');
 const { getQuestionsForSeed } = require('../src/data/assessmentQuestions');
 const { DIAGNOSTIC_TAG } = require('../src/services/habitAssignment');
+const { SITE_PAGES, SHOP_OFFERS } = require('../src/data/sitePages');
 
 const prisma = new PrismaClient();
 
@@ -226,6 +227,24 @@ async function main() {
     await prisma.habit.createMany({ data: diagnosticHabits });
     console.log(`Seeded ${diagnosticHabits.length} diagnostic v1 habits.`);
   }
+
+  for (const page of SITE_PAGES) {
+    await prisma.sitePage.upsert({
+      where: { slug: page.slug },
+      update: {},
+      create: page,
+    });
+  }
+  console.log(`Ensured ${SITE_PAGES.length} site pages.`);
+
+  for (const offer of SHOP_OFFERS) {
+    await prisma.shopOffer.upsert({
+      where: { sku: offer.sku },
+      update: {},
+      create: offer,
+    });
+  }
+  console.log(`Ensured ${SHOP_OFFERS.length} shop offers.`);
 
   const promoteEmail = (process.env.ADMIN_EMAIL || '').trim().toLowerCase();
   if (promoteEmail) {

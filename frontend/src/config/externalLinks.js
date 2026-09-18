@@ -27,9 +27,15 @@ export const shopPlannerHeirloomUrl = trimUrl(import.meta.env.VITE_SHOP_PLANNER_
 export const shopPlannerDigitalUrl = trimUrl(import.meta.env.VITE_SHOP_PLANNER_DIGITAL_URL);
 export const shopDigitalUrl = trimUrl(import.meta.env.VITE_SHOP_DIGITAL_URL) || trimUrl(import.meta.env.VITE_COURSE_LIBRARY_URL);
 export const shopResetUrl = trimUrl(import.meta.env.VITE_SHOP_RESET_URL);
+export const shopResetPrintUrl = trimUrl(import.meta.env.VITE_SHOP_RESET_PRINT_URL);
 export const shopClarityUrl = trimUrl(import.meta.env.VITE_SHOP_CLARITY_URL) || shopDigitalUrl;
 export const shopClarityPrintUrl = trimUrl(import.meta.env.VITE_SHOP_CLARITY_PRINT_URL);
+export const shopDailyUrl = trimUrl(import.meta.env.VITE_SHOP_DAILY_URL);
+export const shopDailyPrintUrl = trimUrl(import.meta.env.VITE_SHOP_DAILY_PRINT_URL);
 export const shopQuarterlyUrl = trimUrl(import.meta.env.VITE_SHOP_QUARTERLY_URL);
+export const shopQuarterlyPrintUrl = trimUrl(import.meta.env.VITE_SHOP_QUARTERLY_PRINT_URL);
+export const shopCollectionUrl = trimUrl(import.meta.env.VITE_SHOP_COLLECTION_URL);
+export const shopCollectionPrintUrl = trimUrl(import.meta.env.VITE_SHOP_COLLECTION_PRINT_URL);
 
 /** Fallback when no VITE_PROGRAM_HUB_URL — existing formation site */
 export const formationExploreFallback = 'https://simplicityandproductivity.com/';

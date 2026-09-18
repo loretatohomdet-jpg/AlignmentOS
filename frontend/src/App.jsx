@@ -17,6 +17,8 @@ import ShopPage from './pages/ShopPage';
 import PlannerPage from './pages/PlannerPage';
 import AlignmentClarityPage from './pages/AlignmentClarityPage';
 import QuarterlyReviewPage from './pages/QuarterlyReviewPage';
+import DailyPage from './pages/DailyPage';
+import ResetProductPage from './pages/ResetProductPage';
 import InstitutionPage from './pages/InstitutionPage';
 import PlatformPage from './pages/PlatformPage';
 import FrameworkPage from './pages/FrameworkPage';
@@ -34,6 +36,12 @@ import AdminUsersPage from './pages/admin/AdminUsersPage';
 import AdminUserDetailPage from './pages/admin/AdminUserDetailPage';
 import AdminAssessmentsPage from './pages/admin/AdminAssessmentsPage';
 import AdminAssessmentEditPage from './pages/admin/AdminAssessmentEditPage';
+import AdminPagesPage from './pages/admin/AdminPagesPage';
+import AdminPageEditPage from './pages/admin/AdminPageEditPage';
+import AdminShopPage from './pages/admin/AdminShopPage';
+import AdminShopEditPage from './pages/admin/AdminShopEditPage';
+import AdminHabitsPage from './pages/admin/AdminHabitsPage';
+import ManagedPage from './pages/ManagedPage';
 import BusinessAlignmentPage from './pages/BusinessAlignmentPage';
 import ProgressPage from './pages/ProgressPage';
 import PracticePage from './pages/PracticePage';
@@ -189,7 +197,9 @@ export default function App() {
       <Route path="/about" element={<AboutPage />} />
       <Route path="/shop" element={<ShopPage />} />
       <Route path="/shop/alignment-clarity" element={<AlignmentClarityPage />} />
+      <Route path="/shop/daily" element={<DailyPage />} />
       <Route path="/shop/quarterly-review" element={<QuarterlyReviewPage />} />
+      <Route path="/shop/reset" element={<ResetProductPage />} />
       <Route path="/planner" element={<PlannerPage />} />
       <Route path="/reset" element={<ResetGuidePage />} />
       <Route path="/platform" element={<PlatformPage />} />
@@ -386,16 +396,14 @@ export default function App() {
         <Route path="users/:userId" element={<AdminUserDetailPage />} />
         <Route path="assessments" element={<AdminAssessmentsPage />} />
         <Route path="assessments/:assessmentId" element={<AdminAssessmentEditPage />} />
+        <Route path="pages" element={<AdminPagesPage />} />
+        <Route path="pages/:pageId" element={<AdminPageEditPage />} />
+        <Route path="shop" element={<AdminShopPage />} />
+        <Route path="shop/:offerId" element={<AdminShopEditPage />} />
+        <Route path="habits" element={<AdminHabitsPage />} />
         <Route path="leads" element={<AdminLeadsPage />} />
       </Route>
-      <Route
-        path="*"
-        element={
-          <Layout>
-            <NotFoundPage />
-          </Layout>
-        }
-      />
+      <Route path="*" element={<ManagedPage />} />
     </Routes>
   );
 }

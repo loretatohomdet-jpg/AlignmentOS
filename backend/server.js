@@ -18,6 +18,11 @@ const cronRoutes = require('./src/routes/cron');
 const { handleStripeWebhook } = require('./src/controllers/stripeWebhookController');
 const { startHabitNudgeScheduler } = require('./src/services/habitNudge');
 const { getPublic: getPublicShare } = require('./src/controllers/shareController');
+const {
+  getPublicPageByPath,
+  listPublicShop,
+  getPublicShopByPath,
+} = require('./src/controllers/adminContentController');
 
 const app = express();
 app.set('trust proxy', 1);
@@ -83,6 +88,9 @@ app.get('/health', async (_req, res) => {
 });
 
 app.get('/api/public/share/:token', sharePublicLimiter, getPublicShare);
+app.get('/api/public/pages/by-path', sharePublicLimiter, getPublicPageByPath);
+app.get('/api/public/shop', sharePublicLimiter, listPublicShop);
+app.get('/api/public/shop/by-path', sharePublicLimiter, getPublicShopByPath);
 
 // Public auth routes
 app.use('/api/auth', authLimiter, authRoutes);

@@ -1,10 +1,16 @@
 import {
   shopClarityPrintUrl,
   shopClarityUrl,
+  shopCollectionPrintUrl,
+  shopCollectionUrl,
+  shopDailyPrintUrl,
+  shopDailyUrl,
   shopPlannerDigitalUrl,
   shopPlannerHeirloomUrl,
   shopPlannerUrl,
+  shopQuarterlyPrintUrl,
   shopQuarterlyUrl,
+  shopResetPrintUrl,
   shopResetUrl,
   shopifyStoreUrl,
 } from './externalLinks';
@@ -83,72 +89,117 @@ export const companionImages = {
   quarterly: '/images/companions/quarterly-review.png',
 };
 
+function digitalPrint(digitalPrice, printPrice) {
+  return `Digital — $${digitalPrice}  ·  Print — $${printPrice}`;
+}
+
 export const resetProduct = {
   sku: 'alignment-reset',
   title: 'Reset',
-  kicker: 'Companion',
+  kicker: 'Fresh start',
   tagline: 'A fresh start for what matters.',
-  body: 'Simple steps for a more aligned life. Begin here when effort is high and the week has drifted.',
-  price: 0,
-  path: '/reset',
-  checkoutUrl: shopResetUrl,
+  body: 'A short guided reset for stepping back, clearing what no longer belongs, and deciding what matters next.',
+  price: 12,
+  path: '/shop/reset',
+  checkoutUrl: checkout(shopResetUrl),
   image: companionImages.reset,
-  imageAlt: 'Reset — A Fresh Start for What Matters, the Alignment OS companion',
-  priceLabel: 'Free',
-  cta: 'Begin the Reset',
-  event: 'shop_all_click',
+  imageAlt: 'Reset — A Fresh Start for What Matters',
+  priceLabel: digitalPrint(12, 24),
+  cta: 'Choose Digital',
+  event: 'checkout_started',
+  print: {
+    sku: 'alignment-reset-print',
+    name: 'Printed edition',
+    price: 24,
+    checkoutUrl: checkout(shopResetPrintUrl),
+  },
 };
 
 export const clarityProduct = {
   sku: 'alignment-clarity',
   title: 'Clarity',
-  kicker: 'Companion',
+  kicker: 'Alignment Tool',
   tagline: 'See what matters.',
-  body: 'A guided tool for stepping back, getting clear, and choosing what deserves your attention now.',
+  body: 'A guided tool for stepping back from the noise, identifying what matters, and choosing a direction for this season.',
   price: 27,
   path: '/shop/alignment-clarity',
   checkoutUrl: checkout(shopClarityUrl),
   image: companionImages.clarity,
-  imageAlt: 'Clarity — See What Matters, the Alignment OS companion',
-  priceLabel: 'Digital — $27',
-  cta: 'Get Clarity',
+  imageAlt: 'Clarity — See What Matters',
+  priceLabel: digitalPrint(27, 42),
+  cta: 'Choose Digital',
   event: 'clarity_product_click',
   print: {
     sku: 'alignment-clarity-print',
     name: 'Printed edition',
-    price: 47,
+    price: 42,
     checkoutUrl: checkout(shopClarityPrintUrl),
+  },
+};
+
+export const dailyProduct = {
+  sku: 'alignment-daily',
+  title: 'Daily',
+  kicker: 'Alignment Tool',
+  tagline: 'Practice what matters.',
+  body: 'A simple daily structure for carrying your priorities into the way you actually spend your time and attention.',
+  price: 24,
+  path: '/shop/daily',
+  checkoutUrl: checkout(shopDailyUrl),
+  image: '',
+  imageAlt: 'Daily — Practice What Matters',
+  priceLabel: digitalPrint(24, 38),
+  cta: 'Choose Digital',
+  event: 'checkout_started',
+  print: {
+    sku: 'alignment-daily-print',
+    name: 'Printed edition',
+    price: 38,
+    checkoutUrl: checkout(shopDailyPrintUrl),
   },
 };
 
 export const quarterlyProduct = {
   sku: 'alignment-quarterly',
   title: 'Quarterly Review',
-  kicker: 'Companion',
+  kicker: 'Alignment Tool',
   tagline: 'Realign as life changes.',
-  body: 'Reflect. Release. Realign. A guided review for stepping into what is next when the season has moved.',
-  price: 27,
+  body: 'A guided seasonal review for noticing what is working, what has drifted, and what needs to change.',
+  price: 18,
   path: '/shop/quarterly-review',
-  checkoutUrl: checkout(shopQuarterlyUrl || shopClarityUrl),
+  checkoutUrl: checkout(shopQuarterlyUrl),
   image: companionImages.quarterly,
-  imageAlt: 'Quarterly Review — Realign as life changes, the Alignment OS companion',
-  priceLabel: 'Digital — $27',
-  cta: 'Get the Quarterly Review',
+  imageAlt: 'Quarterly Review — Realign as life changes',
+  priceLabel: digitalPrint(18, 32),
+  cta: 'Choose Digital',
   event: 'checkout_started',
+  print: {
+    sku: 'alignment-quarterly-print',
+    name: 'Printed edition',
+    price: 32,
+    checkoutUrl: checkout(shopQuarterlyPrintUrl),
+  },
 };
 
-/** Reset, Clarity, Quarterly Review — the three paper/digital companions. */
-export const companionProducts = [resetProduct, clarityProduct, quarterlyProduct];
+/** Clarity, Daily, Quarterly Review — not Reset, not the planner. */
+export const alignmentTools = [clarityProduct, dailyProduct, quarterlyProduct];
 
-export const shopToolCards = [
-  ...companionProducts,
-  {
-    ...plannerProduct,
-    priceLabel: 'From $27',
-    cta: 'Shop the planner',
-    event: 'planner_shop_click',
+export const toolsCollection = {
+  sku: 'alignment-tools-collection',
+  title: 'The Alignment Tools Collection',
+  tagline: 'Clarity + Daily + Quarterly Review',
+  body: 'Move through the full cycle: see what matters, practice what matters, and realign as life changes.',
+  digital: {
+    sku: 'alignment-tools-collection-digital',
+    price: 54,
+    checkoutUrl: checkout(shopCollectionUrl),
   },
-];
+  print: {
+    sku: 'alignment-tools-collection-print',
+    price: 89,
+    checkoutUrl: checkout(shopCollectionPrintUrl),
+  },
+};
 
 export function formatUsd(amount) {
   return `$${amount}`;

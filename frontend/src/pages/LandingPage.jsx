@@ -7,8 +7,9 @@ import DomainPillarIcon from '../components/DomainPillarIcon';
 import { pillGhost, pillPrimary, SitePageFooter } from '../components/HomeMarketingChrome';
 import CommerceCta from '../components/CommerceCta';
 import BookCover from '../components/BookCover';
-import { companionProducts, plannerImages, plannerProduct } from '../config/commerce';
+import { alignmentTools, plannerImages, plannerProduct, resetProduct } from '../config/commerce';
 import { type } from '../config/siteType';
+import { mergeProduct, useShopCatalog, useSitePage } from '../hooks/useSiteContent';
 
 const HERO_LINE = 'Recover the art of living well.';
 
@@ -131,6 +132,11 @@ function AnimatedProofStat({ target, prefix = '', suffix = '', label }) {
 }
 
 function HomeToolsSection() {
+  const offers = useShopCatalog();
+  const planner = mergeProduct(plannerProduct, offers);
+  const reset = mergeProduct(resetProduct, offers);
+  const tools = alignmentTools.map((item) => mergeProduct(item, offers)).filter((item) => !item.hidden);
+
   return (
     <section
       id="tools"
@@ -138,22 +144,43 @@ function HomeToolsSection() {
       aria-labelledby="home-tools-heading"
     >
       <div className="max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12 sm:py-16">
-        <p className={type.kicker}>Prefer to begin on paper?</p>
+        <p className={type.kicker}>The signature planner</p>
         <h2 id="home-tools-heading" className={`mt-4 ${type.h2} max-w-xl text-balance`}>
-          Tools for living what matters.
+          {planner.title}
         </h2>
         <p className={`mt-6 ${type.body} max-w-xl`}>
-          Three companions — Reset, Clarity, and the Quarterly Review — for paper and screen. The planner is for the
-          week itself.
+          A thoughtfully designed planner for carrying what matters into the days and weeks of your actual life. Not
+          more to manage. A clearer way to decide what deserves your time.
         </p>
+        <figure className="mt-10 overflow-hidden rounded-2xl bg-alignment-foundation">
+          <img
+            src={plannerImages.paperLifestyle}
+            alt={planner.imageAlt}
+            className="w-full aspect-[4/5] sm:aspect-[4/3] object-cover object-[center_46%]"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+        <CommerceCta
+          to="/planner"
+          event="planner_shop_click"
+          sku={planner.sku}
+          className="mt-8 inline-flex items-center text-[11px] font-medium uppercase tracking-[0.2em] text-alignment-accent border-b border-alignment-accent/25 pb-1 hover:border-alignment-accent"
+        >
+          Explore the Planner <span aria-hidden>→</span>
+        </CommerceCta>
 
+        <p className={`${type.kicker} mt-16`}>The Alignment Tools</p>
+        <h3 className={`mt-4 ${type.h2} max-w-xl text-balance`}>Three tools. Three places to begin.</h3>
+        <p className={`mt-4 ${type.body} max-w-xl`}>Focused guides for the moments you need them most.</p>
         <ul className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-6 lg:gap-8">
-          {companionProducts.map((product) => (
+          {tools.map((product) => (
             <li key={product.sku}>
               <Link to={product.path} className="group block">
                 <BookCover
                   src={product.image}
                   alt={product.imageAlt}
+                  title={product.title}
                   className="rounded-2xl transition-opacity group-hover:opacity-90"
                 />
                 <h3 className={`mt-4 ${type.h3}`}>{product.title}</h3>
@@ -163,27 +190,18 @@ function HomeToolsSection() {
           ))}
         </ul>
 
-        <figure className="mt-12 overflow-hidden rounded-2xl bg-alignment-foundation">
-          <img
-            src={plannerImages.paperLifestyle}
-            alt={plannerProduct.imageAlt}
-            className="w-full aspect-[4/5] sm:aspect-[4/3] object-cover object-[center_46%]"
-            loading="lazy"
-            decoding="async"
-          />
-        </figure>
-        <div className="mt-8 max-w-xl">
-          <h3 className={type.h3}>{plannerProduct.title}</h3>
-          <p className={`mt-3 ${type.body}`}>
-            Paper, a fillable download, or the sleeved edition made in Florence.
-          </p>
+        <div className="mt-16 max-w-xl">
+          <p className={type.kicker}>Need a fresh start?</p>
+          <h3 className={`mt-4 ${type.h3}`}>{reset.title}</h3>
+          <p className="mt-2 font-display italic text-alignment-primary">{reset.tagline}</p>
+          <p className={`mt-3 ${type.muted}`}>{reset.priceLabel}</p>
           <CommerceCta
-            to="/planner"
-            event="planner_shop_click"
-            sku={plannerProduct.sku}
-            className="mt-8 inline-flex items-center text-[11px] font-medium uppercase tracking-[0.2em] text-alignment-accent border-b border-alignment-accent/25 pb-1 hover:border-alignment-accent"
+            to={reset.path}
+            event="shop_all_click"
+            sku={reset.sku}
+            className="mt-6 inline-flex items-center text-[11px] font-medium uppercase tracking-[0.2em] text-alignment-accent border-b border-alignment-accent/25 pb-1 hover:border-alignment-accent"
           >
-            Shop the planner <span aria-hidden>→</span>
+            Begin with Reset <span aria-hidden>→</span>
           </CommerceCta>
         </div>
 
@@ -248,6 +266,8 @@ function FinalCtaClosing() {
 
 export default function LandingPage() {
   /** Six domains — olive bar marquee (white / grey dots only). */
+  const cms = useSitePage('/');
+
   const heroDomains = [
     { label: 'Identity', dot: 'bg-alignment-surface' },
     { label: 'Purpose', dot: 'bg-alignment-surface/70' },
@@ -304,20 +324,20 @@ export default function LandingPage() {
           <div className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
             <div className="relative flex flex-1 flex-col justify-center px-6 sm:px-8 lg:px-12 pt-12 pb-8 sm:pt-16 sm:pb-10">
             <div className="max-w-4xl mx-auto text-center px-1">
-              <HeroTypeLine text={HERO_LINE} />
+              <HeroTypeLine text={cms?.headline || HERO_LINE} />
               <p className="mt-7 sm:mt-9 font-display italic text-xl sm:text-2xl text-alignment-primary leading-snug">
-                A system for becoming whole.
+                {cms?.subhead || 'A system for becoming whole.'}
               </p>
               <div className="mt-9 sm:mt-11 flex flex-col items-center gap-3">
-                <Link to="/assessment" className={pillPrimary}>
-                  Take the free assessment
+                <Link to={cms?.ctaHref || '/assessment'} className={pillPrimary}>
+                  {cms?.ctaLabel || 'Take the free assessment'}
                 </Link>
                 <a href="#how-it-works" className={pillGhost}>
                   How it works
                 </a>
               </div>
               <p className={`mt-8 ${type.body} max-w-sm mx-auto`}>
-                Six domains. One Alignment Score. A clearer path forward.
+                {cms?.body || 'Six domains. One Alignment Score. A clearer path forward.'}
               </p>
             </div>
             </div>

@@ -12,6 +12,7 @@ import {
   isProductAppPath,
 } from '../config/siteNav';
 import { clearSession, useAuthSession } from '../utils/authSession';
+import AdminPageBar from './AdminPageBar';
 
 /**
  * Site header. Marketing pages: Assessment · How it works · Platform · Planner · Shop.
@@ -151,6 +152,7 @@ export default function SiteMarketingHeader({ appendDesktop = null, authDrawer }
           </>
         )}
       </MobileDrawer>
+      <AdminPageBar />
     </>
   );
 }

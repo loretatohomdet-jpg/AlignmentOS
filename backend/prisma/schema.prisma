@@ -244,3 +244,46 @@ enum Role {
   ADMIN
 }
 
+/** Editable marketing / product page copy. System rows are seeded; custom rows are created in Admin. */
+model SitePage {
+  id          String   @id @default(uuid())
+  slug        String   @unique
+  path        String   @unique
+  title       String
+  pageGroup   String   @default("marketing")
+  eyebrow     String?
+  headline    String?
+  subhead     String?
+  body        String?
+  ctaLabel    String?
+  ctaHref     String?
+  isPublished Boolean  @default(true)
+  isSystem    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([pageGroup, isPublished])
+}
+
+/** Shop / planner offers the Admin desk can create, edit, or hide. */
+model ShopOffer {
+  id           String   @id @default(uuid())
+  sku          String   @unique
+  name         String
+  path         String
+  kicker       String?
+  tagline      String?
+  body         String?
+  image        String?
+  digitalPrice Int?
+  printPrice   Int?
+  digitalUrl   String?
+  printUrl     String?
+  isPublished  Boolean  @default(true)
+  sortOrder    Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([isPublished, sortOrder])
+}
+

@@ -3,8 +3,11 @@ import { Link } from 'react-router-dom';
 import SiteMarketingHeader from '../components/SiteMarketingHeader';
 import { pageWidth, pillPrimary, SitePageFooter } from '../components/HomeMarketingChrome';
 import { type } from '../config/siteType';
+import { useSitePage } from '../hooks/useSiteContent';
 
 export default function AboutPage() {
+  const cms = useSitePage('/about');
+
   useEffect(() => {
     const prev = document.title;
     document.title = 'About — Alignment OS';
@@ -24,16 +27,20 @@ export default function AboutPage() {
         <section>
           <div className={`${pageWidth} pt-16 sm:pt-24 pb-10 sm:pb-14`}>
             <div className="max-w-xl">
-              <p className={type.kicker}>Why this exists</p>
+              <p className={type.kicker}>{cms?.eyebrow || 'Why this exists'}</p>
               <h1 className={`mt-6 ${type.h1}`}>
-                Most people are productive.
-                <br />
-                Few are coherent.
+                {cms?.headline || (
+                  <>
+                    Most people are productive.
+                    <br />
+                    Few are coherent.
+                  </>
+                )}
               </h1>
               <div className={`mt-10 sm:mt-12 space-y-6 ${type.body}`}>
                 <p>
-                  Modern life pulls people in a hundred directions. The fix is not more effort. It is structure
-                  beneath the effort — a few things, repeated, until a life holds together.
+                  {cms?.body ||
+                    'Modern life pulls people in a hundred directions. The fix is not more effort. It is structure beneath the effort — a few things, repeated, until a life holds together.'}
                 </p>
                 <p>
                   Alignment OS is built on one conviction, drawn from a long tradition: a life is formed by what is

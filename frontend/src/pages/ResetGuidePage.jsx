@@ -2,13 +2,12 @@ import { Link } from 'react-router-dom';
 import SiteMarketingHeader from '../components/SiteMarketingHeader';
 import BookCover from '../components/BookCover';
 import { pillPrimary, SitePageFooter } from '../components/HomeMarketingChrome';
-import { companionProducts, resetProduct } from '../config/commerce';
+import { companionImages } from '../config/commerce';
 import { type } from '../config/siteType';
 import { usePageTitle } from '../hooks/usePageTitle';
 
 export default function ResetGuidePage() {
   usePageTitle('Reset — Alignment OS');
-  const others = companionProducts.filter((item) => item.sku !== resetProduct.sku);
 
   return (
     <div className={type.page}>
@@ -20,16 +19,13 @@ export default function ResetGuidePage() {
         <section className="max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-12 sm:pt-16 pb-16 sm:pb-24">
           <div className="grid gap-10 lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)] lg:items-start xl:gap-16">
             <BookCover
-              src={resetProduct.image}
-              alt={resetProduct.imageAlt}
+              src={companionImages.reset}
+              alt="Reset — A Fresh Start for What Matters"
               className="rounded-2xl max-w-xs mx-auto lg:mx-0 lg:max-w-none"
             />
             <div className="min-w-0">
-              <p className={type.kicker}>{resetProduct.kicker}</p>
-              <h1 className={`mt-6 ${type.h1} text-balance`}>{resetProduct.title}</h1>
-              <p className="mt-6 font-display italic text-xl sm:text-2xl text-alignment-primary leading-snug">
-                {resetProduct.tagline}
-              </p>
+              <p className={type.kicker}>The Alignment Reset</p>
+              <h1 className={`mt-6 ${type.h1} text-balance`}>A short guide for when effort is high and life still drifts.</h1>
               <p className={`mt-6 ${type.body} max-w-xl`}>
                 A life is formed by what is repeated. This is not more motivation. It is a way to see the structure
                 underneath the week — and to begin again without starting over.
@@ -63,29 +59,11 @@ export default function ResetGuidePage() {
             <Link to="/assessment" className={`${pillPrimary} mt-12`}>
               Begin the free diagnostic →
             </Link>
-          </div>
 
-          <div className="mt-20">
-            <p className={type.kicker}>The other parts</p>
-            <ul className="mt-6 grid grid-cols-2 gap-4 max-w-lg">
-              {others.map((item) => (
-                <li key={item.sku}>
-                  <Link to={item.path} className="block group">
-                    <BookCover
-                      src={item.image}
-                      alt={item.imageAlt}
-                      className="rounded-2xl transition-opacity group-hover:opacity-90"
-                    />
-                    <p className="mt-3 text-sm font-medium text-alignment-accent">{item.title}</p>
-                    <p className={`mt-1 ${type.muted}`}>{item.tagline}</p>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <p className={`mt-10 ${type.body}`}>
-              For the week itself, there is the{' '}
-              <Link to="/planner" className="underline underline-offset-2 hover:text-alignment-accent">
-                Life of Purpose Planner
+            <p className={`mt-12 ${type.body}`}>
+              Prefer the Reset tool as a download or in print?{' '}
+              <Link to="/shop/reset" className="underline underline-offset-2 hover:text-alignment-accent">
+                Begin with Reset
               </Link>
               .
             </p>

@@ -6,6 +6,7 @@ import { type } from '../config/siteType';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
+import { mergeProduct, useShopCatalog, useSitePage } from '../hooks/useSiteContent';
 
 const gallery = [
   {
@@ -35,7 +36,10 @@ function Photo({ src, alt, className, eager = false }) {
 }
 
 export default function PlannerPage() {
-  usePageTitle('Life of Purpose Planner — Alignment OS');
+  const cms = useSitePage('/planner');
+  const offers = useShopCatalog();
+  const planner = mergeProduct(plannerProduct, offers);
+  usePageTitle(`${planner.title} — Alignment OS`);
 
   useEffect(() => {
     trackCommerce('product_view', { sku: plannerProduct.sku, product_sku: plannerProduct.sku });
@@ -52,12 +56,12 @@ export default function PlannerPage() {
         <section className="max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-12 sm:pt-16 pb-12 sm:pb-16">
           <div className="grid gap-10 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-center xl:gap-16">
             <div className="min-w-0">
-              <p className={type.kicker}>{plannerProduct.kicker}</p>
-              <h1 className={`mt-6 ${type.h1} text-balance`}>{plannerProduct.title}</h1>
+              <p className={type.kicker}>{cms?.eyebrow || planner.kicker}</p>
+              <h1 className={`mt-6 ${type.h1} text-balance`}>{cms?.headline || planner.title}</h1>
               <p className="mt-6 font-display italic text-xl sm:text-2xl text-alignment-primary leading-snug">
-                {plannerProduct.tagline}
+                {cms?.subhead || planner.tagline}
               </p>
-              <p className={`mt-6 ${type.body} max-w-xl`}>{plannerProduct.body}</p>
+              <p className={`mt-6 ${type.body} max-w-xl`}>{cms?.body || planner.body}</p>
               <CommerceCta
                 href="#editions"
                 event="planner_shop_click"
@@ -160,9 +164,9 @@ export default function PlannerPage() {
             <p className={type.kicker}>Together</p>
             <h2 className={`mt-4 ${type.h2} text-balance`}>Digital clarity. Analog practice.</h2>
             <p className={`mt-6 ${type.body} max-w-xl`}>
-              Reset, Clarity, and the Quarterly Review are the three companions for paper and screen. Alignment OS
-              helps you see the bigger picture. The planner helps you carry it into the day — as a download, on paper,
-              or as an object made in Florence.
+              Clarity, Daily, and the Quarterly Review are the Alignment Tools. The planner is the flagship paper
+              product — not a fourth tool. Alignment OS helps you see the bigger picture. The planner helps you carry
+              it into the day.
             </p>
             <Link to="/shop" className={`${pillGhost} mt-10`}>
               Explore all tools

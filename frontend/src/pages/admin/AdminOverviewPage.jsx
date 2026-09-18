@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_BASE } from '../../config/apiBase';
+import { ADMIN_NAV, TONE, adminHeaders } from './adminShared';
 
-function headers() {
-  const token = localStorage.getItem('accessToken');
-  return token ? { Authorization: `Bearer ${token}` } : {};
-}
+const STAT_TONES = ['olive', 'clay', 'teal', 'gold', 'olive', 'clay', 'teal'];
 
 export default function AdminOverviewPage() {
   const navigate = useNavigate();
@@ -15,53 +13,65 @@ export default function AdminOverviewPage() {
 
   useEffect(() => {
     axios
-      .get(`${API_BASE}/admin/analytics/overview`, { headers: headers() })
+      .get(`${API_BASE}/admin/analytics/overview`, { headers: adminHeaders() })
       .then((res) => setData(res.data))
       .catch((err) => {
         if (err.response?.status === 401) navigate('/login', { replace: true });
-        else if (err.response?.status === 403) setError('Admin access required.');
-        else setError(err.response?.data?.message || 'Failed to load analytics');
+        else setError(err.response?.data?.message || 'Could not load overview');
       });
   }, [navigate]);
 
   if (error) {
-    return (
-      <div className="rounded-2xl border border-alignment-accent/15 bg-alignment-surface px-4 py-3 text-sm text-alignment-accent">
-        {error}
-      </div>
-    );
+    return <p className="rounded-2xl bg-white px-4 py-3 text-sm text-[#C45C4A]">{error}</p>;
   }
 
   if (!data) {
-    return <p className="text-alignment-accent/90">Loading metrics…</p>;
+    return <p className="text-alignment-accent/80">Loading the desk…</p>;
   }
 
   const cards = [
-    { label: 'Registered users', value: data.userCount },
-    { label: 'Sign-ups (7 days)', value: data.signupsLast7Days },
-    { label: 'Leads captured', value: data.leadCount },
-    { label: 'Question responses', value: data.responseCount },
-    { label: 'Alignment profiles', value: data.profileCount },
-    { label: 'Scores recorded', value: data.scoreCount },
-    { label: 'Suspended accounts', value: data.suspendedCount },
+    { label: 'People', value: data.userCount, to: '/admin/users' },
+    { label: 'New this week', value: data.signupsLast7Days, to: '/admin/users' },
+    { label: 'Inbox leads', value: data.leadCount, to: '/admin/leads' },
+    { label: 'Answers', value: data.responseCount, to: '/admin/assessments' },
+    { label: 'Profiles', value: data.profileCount, to: '/admin/users' },
+    { label: 'Scores', value: data.scoreCount, to: '/admin/assessments' },
+    { label: 'Suspended', value: data.suspendedCount, to: '/admin/users' },
   ];
 
   return (
     <div>
-      <h2 className="text-lg font-semibold text-alignment-accent">Overview</h2>
-      <p className="mt-1 text-sm text-alignment-accent/85">
-        High-level counts for operations and growth checks.
-      </p>
-      <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {cards.map((c) => (
-          <li
-            key={c.label}
-            className="rounded-2xl border border-alignment-accent/10 bg-alignment-surface px-5 py-4"
-          >
-            <p className="text-xs font-medium uppercase tracking-wider text-alignment-accent/75">{c.label}</p>
-            <p className="mt-2 font-display text-3xl tabular-nums text-alignment-accent">{c.value}</p>
-          </li>
-        ))}
+      <h2 className="font-display text-2xl text-alignment-accent">Today</h2>
+      <p className="mt-1 text-sm text-alignment-accent/75">Tap a card to go work on it.</p>
+
+      <ul className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {cards.map((c, i) => {
+          const tone = TONE[STAT_TONES[i]];
+          return (
+            <li key={c.label}>
+              <Link to={c.to} className={`block rounded-2xl ${tone.soft} p-5 hover:-translate-y-0.5 transition-transform`}>
+                <p className={`text-[11px] uppercase tracking-wider ${tone.text}`}>{c.label}</p>
+                <p className="mt-2 font-display text-3xl tabular-nums text-alignment-accent">{c.value}</p>
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+
+      <h3 className="mt-10 font-display text-xl text-alignment-accent">Jump in</h3>
+      <ul className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {ADMIN_NAV.filter((item) => item.to !== '/admin/overview').map((item) => {
+          const tone = TONE[item.tone];
+          return (
+            <li key={item.to}>
+              <Link to={item.to} className={`block rounded-2xl ${tone.bg} text-white p-5 hover:opacity-95`}>
+                <p className="font-display text-xl">{item.label}</p>
+                <p className="mt-1 text-sm text-white/85">{item.hint}</p>
+                <p className="mt-4 text-sm font-medium">Open →</p>
+              </Link>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

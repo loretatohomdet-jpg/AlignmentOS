@@ -84,7 +84,7 @@ export default function MorePage() {
       <div className="mt-3 border-t border-alignment-accent/[0.08]">
         {isAdmin ? <Row to="/admin/overview" label="Admin" note="Operators" /> : null}
         <Row to="/planner" label="Planner" />
-        <Row to="/shop" label="Tools" note="Reset, Clarity, Quarterly Review, planner" />
+        <Row to="/shop" label="Tools" note="Planner, Alignment Tools, Reset" />
         <Row to="/pricing" label="Pricing" />
         <Row to="/cohort" label="The Charter Cohort" />
         {courseLibraryUrl ? <Row href={courseLibraryUrl} label="Courses" note="↗" /> : null}

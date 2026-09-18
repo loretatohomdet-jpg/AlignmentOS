@@ -1,10 +1,14 @@
 const { ZodError } = require('zod');
+const bcrypt = require('bcryptjs');
 const { prisma } = require('../prismaClient');
 const {
   adminUpdateUserSchema,
+  adminCreateUserSchema,
   adminCreateNoteSchema,
   adminUpdateAssessmentSchema,
+  adminCreateAssessmentSchema,
   adminUpdateQuestionSchema,
+  adminCreateQuestionSchema,
 } = require('../validation/adminSchemas');
 
 const userPublicSelect = {
@@ -30,6 +34,9 @@ async function getAnalyticsOverview(req, res, next) {
       scoreCount,
       signupsLast7Days,
       suspendedCount,
+      pageCount,
+      shopCount,
+      habitCount,
     ] = await Promise.all([
       prisma.user.count(),
       prisma.lead.count(),
@@ -38,6 +45,9 @@ async function getAnalyticsOverview(req, res, next) {
       prisma.alignmentIndexScore.count(),
       prisma.user.count({ where: { createdAt: { gte: weekAgo } } }),
       prisma.user.count({ where: { suspendedAt: { not: null } } }),
+      prisma.sitePage.count(),
+      prisma.shopOffer.count(),
+      prisma.habit.count(),
     ]);
     res.json({
       userCount,
@@ -47,6 +57,9 @@ async function getAnalyticsOverview(req, res, next) {
       scoreCount,
       signupsLast7Days,
       suspendedCount,
+      pageCount,
+      shopCount,
+      habitCount,
     });
   } catch (err) {
     next(err);
@@ -125,6 +138,7 @@ async function updateUser(req, res, next) {
     }
 
     const update = {};
+    if (data.name !== undefined) update.name = data.name.trim();
     if (data.role !== undefined) update.role = data.role;
     if (data.plan !== undefined) update.plan = data.plan;
     if (data.suspended === true) update.suspendedAt = new Date();
@@ -140,6 +154,57 @@ async function updateUser(req, res, next) {
     if (err instanceof ZodError) {
       return res.status(400).json({ message: err.errors[0]?.message || 'Invalid data', errors: err.errors });
     }
+    next(err);
+  }
+}
+
+async function createUser(req, res, next) {
+  try {
+    const data = adminCreateUserSchema.parse({
+      ...req.body,
+      email: typeof req.body.email === 'string' ? req.body.email.trim().toLowerCase() : req.body.email,
+      name: typeof req.body.name === 'string' ? req.body.name.trim() : req.body.name,
+    });
+    const existing = await prisma.user.findUnique({ where: { email: data.email } });
+    if (existing) return res.status(409).json({ message: 'Email is already registered' });
+
+    const passwordHash = await bcrypt.hash(data.password, 10);
+    const user = await prisma.user.create({
+      data: {
+        email: data.email,
+        name: data.name,
+        password: passwordHash,
+        role: data.role,
+        plan: data.plan,
+      },
+      select: userPublicSelect,
+    });
+    res.status(201).json(user);
+  } catch (err) {
+    if (err instanceof ZodError) {
+      return res.status(400).json({ message: err.errors[0]?.message || 'Invalid data', errors: err.errors });
+    }
+    next(err);
+  }
+}
+
+async function deleteUser(req, res, next) {
+  try {
+    const { userId } = req.params;
+    if (userId === req.user.sub) {
+      return res.status(400).json({ message: 'Cannot delete your own account.' });
+    }
+    const existing = await prisma.user.findUnique({ where: { id: userId } });
+    if (!existing) return res.status(404).json({ message: 'User not found' });
+    if (existing.role === 'ADMIN') {
+      const adminCount = await prisma.user.count({ where: { role: 'ADMIN' } });
+      if (adminCount <= 1) {
+        return res.status(400).json({ message: 'Cannot delete the last admin.' });
+      }
+    }
+    await prisma.user.delete({ where: { id: userId } });
+    res.status(204).send();
+  } catch (err) {
     next(err);
   }
 }
@@ -191,6 +256,18 @@ async function createUserNote(req, res, next) {
   }
 }
 
+async function deleteUserNote(req, res, next) {
+  try {
+    const { userId, noteId } = req.params;
+    const note = await prisma.adminUserNote.findFirst({ where: { id: noteId, userId } });
+    if (!note) return res.status(404).json({ message: 'Note not found' });
+    await prisma.adminUserNote.delete({ where: { id: noteId } });
+    res.status(204).send();
+  } catch (err) {
+    next(err);
+  }
+}
+
 async function listAssessments(req, res, next) {
   try {
     const assessments = await prisma.assessment.findMany({
@@ -201,6 +278,39 @@ async function listAssessments(req, res, next) {
     });
     res.json(assessments);
   } catch (err) {
+    next(err);
+  }
+}
+
+async function createAssessment(req, res, next) {
+  try {
+    const data = adminCreateAssessmentSchema.parse(req.body);
+    const assessment = await prisma.assessment.create({
+      data: {
+        title: data.title.trim(),
+        description: data.description ?? null,
+        isActive: data.isActive ?? true,
+      },
+      include: {
+        _count: { select: { questions: true, responses: true } },
+      },
+    });
+    res.status(201).json(assessment);
+  } catch (err) {
+    if (err instanceof ZodError) {
+      return res.status(400).json({ message: err.errors[0]?.message || 'Invalid data', errors: err.errors });
+    }
+    next(err);
+  }
+}
+
+async function deleteAssessment(req, res, next) {
+  try {
+    const { assessmentId } = req.params;
+    await prisma.assessment.delete({ where: { id: assessmentId } });
+    res.status(204).send();
+  } catch (err) {
+    if (err.code === 'P2025') return res.status(404).json({ message: 'Assessment not found' });
     next(err);
   }
 }
@@ -271,6 +381,53 @@ async function updateQuestion(req, res, next) {
   }
 }
 
+async function createQuestion(req, res, next) {
+  try {
+    const { assessmentId } = req.params;
+    const data = adminCreateQuestionSchema.parse(req.body);
+    const assessment = await prisma.assessment.findUnique({ where: { id: assessmentId }, select: { id: true } });
+    if (!assessment) return res.status(404).json({ message: 'Assessment not found' });
+
+    let order = data.order;
+    if (order == null) {
+      const agg = await prisma.question.aggregate({
+        where: { assessmentId },
+        _max: { order: true },
+      });
+      order = (agg._max.order ?? 0) + 1;
+    }
+
+    const question = await prisma.question.create({
+      data: {
+        assessmentId,
+        text: data.text.trim(),
+        pillar: data.pillar,
+        questionType: data.questionType,
+        order,
+        scaleMin: data.scaleMin,
+        scaleMax: data.scaleMax,
+      },
+    });
+    res.status(201).json(question);
+  } catch (err) {
+    if (err instanceof ZodError) {
+      return res.status(400).json({ message: err.errors[0]?.message || 'Invalid data', errors: err.errors });
+    }
+    next(err);
+  }
+}
+
+async function deleteQuestion(req, res, next) {
+  try {
+    const { questionId } = req.params;
+    await prisma.question.delete({ where: { id: questionId } });
+    res.status(204).send();
+  } catch (err) {
+    if (err.code === 'P2025') return res.status(404).json({ message: 'Question not found' });
+    next(err);
+  }
+}
+
 async function getLeads(req, res, next) {
   try {
     const limit = Math.min(parseInt(req.query.limit, 10) || 50, 500);
@@ -313,18 +470,37 @@ async function exportLeadsCsv(req, res, next) {
   }
 }
 
+async function deleteLead(req, res, next) {
+  try {
+    const { leadId } = req.params;
+    await prisma.lead.delete({ where: { id: leadId } });
+    res.status(204).send();
+  } catch (err) {
+    if (err.code === 'P2025') return res.status(404).json({ message: 'Lead not found' });
+    next(err);
+  }
+}
+
 module.exports = {
   getAnalyticsOverview,
   listUsers,
   getUser,
   updateUser,
+  createUser,
+  deleteUser,
   listUserNotes,
   createUserNote,
+  deleteUserNote,
   listAssessments,
+  createAssessment,
   getAssessmentDetail,
   updateAssessment,
+  deleteAssessment,
   updateQuestion,
+  createQuestion,
+  deleteQuestion,
   getLeads,
   getLeadsCount,
   exportLeadsCsv,
+  deleteLead,
 };
