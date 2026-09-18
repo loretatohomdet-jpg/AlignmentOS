@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useLayoutEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { NavLink, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_BASE } from '../config/apiBase';
@@ -30,7 +31,9 @@ export default function HeaderUserMenu({ isLoggedIn, onLogout }) {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [panelPos, setPanelPos] = useState({ top: 0, right: 8 });
   const menuRef = useRef(null);
+  const panelRef = useRef(null);
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -50,15 +53,39 @@ export default function HeaderUserMenu({ isLoggedIn, onLogout }) {
       });
   }, [isLoggedIn]);
 
+  useLayoutEffect(() => {
+    if (!dropdownOpen || !menuRef.current) return undefined;
+    const place = () => {
+      const r = menuRef.current.getBoundingClientRect();
+      setPanelPos({
+        top: Math.round(r.bottom + 6),
+        right: Math.round(Math.max(8, window.innerWidth - r.right)),
+      });
+    };
+    place();
+    window.addEventListener('resize', place);
+    window.addEventListener('scroll', place, true);
+    return () => {
+      window.removeEventListener('resize', place);
+      window.removeEventListener('scroll', place, true);
+    };
+  }, [dropdownOpen]);
+
   useEffect(() => {
-    if (!dropdownOpen) return;
-    function handleClickOutside(e) {
-      if (menuRef.current && !menuRef.current.contains(e.target)) {
-        setDropdownOpen(false);
-      }
+    if (!dropdownOpen) return undefined;
+    function handlePointerDown(e) {
+      if (menuRef.current?.contains(e.target) || panelRef.current?.contains(e.target)) return;
+      setDropdownOpen(false);
     }
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
+    function handleKey(e) {
+      if (e.key === 'Escape') setDropdownOpen(false);
+    }
+    document.addEventListener('mousedown', handlePointerDown);
+    document.addEventListener('keydown', handleKey);
+    return () => {
+      document.removeEventListener('mousedown', handlePointerDown);
+      document.removeEventListener('keydown', handleKey);
+    };
   }, [dropdownOpen]);
 
   const handleLogout = () => {
@@ -73,21 +100,12 @@ export default function HeaderUserMenu({ isLoggedIn, onLogout }) {
     return null;
   }
 
-  return (
-    <div className="relative flex items-center gap-2 ml-2" ref={menuRef}>
-      <button
-        type="button"
-        onClick={() => setDropdownOpen((o) => !o)}
-        className="flex items-center gap-2 p-1 rounded-full hover:bg-alignment-accent/5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-alignment-accent/50"
-        aria-expanded={dropdownOpen}
-        aria-haspopup="true"
-        aria-label="Account menu"
-      >
-        <HeaderAvatar user={user} />
-      </button>
-      {dropdownOpen && (
+  const menu = dropdownOpen && typeof document !== 'undefined'
+    ? createPortal(
         <div
-          className="absolute right-0 top-full mt-1 py-1 w-56 rounded-2xl bg-alignment-surface border border-alignment-accent/10 shadow-apple-lg z-50 animate-fade-in"
+          ref={panelRef}
+          className="fixed z-[80] py-1 w-56 rounded-2xl bg-alignment-surface border border-alignment-accent/10 shadow-apple-lg animate-fade-in"
+          style={{ top: panelPos.top, right: panelPos.right }}
           role="menu"
         >
           <div className="px-4 py-3 border-b border-alignment-accent/5">
@@ -150,8 +168,24 @@ export default function HeaderUserMenu({ isLoggedIn, onLogout }) {
               Log out
             </button>
           </div>
-        </div>
-      )}
+        </div>,
+        document.body
+      )
+    : null;
+
+  return (
+    <div className="relative flex items-center gap-2 ml-2" ref={menuRef}>
+      <button
+        type="button"
+        onClick={() => setDropdownOpen((o) => !o)}
+        className="flex items-center gap-2 p-1 rounded-full hover:bg-alignment-accent/5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-alignment-accent/50"
+        aria-expanded={dropdownOpen}
+        aria-haspopup="true"
+        aria-label="Account menu"
+      >
+        <HeaderAvatar user={user} />
+      </button>
+      {menu}
     </div>
   );
 }

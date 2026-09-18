@@ -139,7 +139,7 @@ export function SitePageFooter({ extra = null }) {
             <p className="mt-4 text-xs text-alignment-accent/65 leading-relaxed">Human alignment software.</p>
           </div>
           <div className="flex flex-col gap-3 lg:flex-1">
-            <SiteMarketingFooterNav className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-4 sm:gap-x-8 gap-y-3 min-w-0 text-[9px] sm:text-[10px] font-normal uppercase tracking-[0.14em]" />
+            <SiteMarketingFooterNav className="flex flex-wrap gap-x-6 sm:gap-x-8 gap-y-3 min-w-0 text-[9px] sm:text-[10px] font-normal uppercase tracking-[0.14em]" />
             {extra}
           </div>
         </div>

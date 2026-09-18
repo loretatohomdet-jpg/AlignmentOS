@@ -53,7 +53,7 @@ export default function SiteMarketingHeader({ appendDesktop = null, authDrawer }
 
   return (
     <>
-      <header className="sticky top-0 z-50 w-full max-w-full overflow-x-hidden border-b border-alignment-accent/[0.07] bg-alignment-foundation/88 backdrop-blur-md supports-[backdrop-filter]:bg-alignment-foundation/78 pt-[max(0px,env(safe-area-inset-top))]">
+      <header className="sticky top-0 z-50 w-full max-w-full overflow-visible border-b border-alignment-accent/[0.07] bg-alignment-foundation/88 backdrop-blur-md supports-[backdrop-filter]:bg-alignment-foundation/78 pt-[max(0px,env(safe-area-inset-top))]">
         <div className="flex w-full max-w-6xl mx-auto min-w-0 items-center gap-2 px-3 sm:px-6 lg:px-10 min-h-14 sm:min-h-16 py-1.5 sm:py-0">
           <BrandLogo
             compact

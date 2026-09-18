@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import { siteLegalLinks, siteMarketingFooter, siteSecondaryFooter } from '../config/footerNav';
-import { extraMarketingFooterLinks } from '../config/externalLinks';
 
 const linkClass =
   'hover:text-alignment-accent transition-colors duration-200 whitespace-normal break-words focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2 rounded-sm';
@@ -27,17 +26,6 @@ export function SiteMarketingFooterNav({ className = '' }) {
           </Link>
         ),
       )}
-      {extraMarketingFooterLinks.map((item) => (
-        <a
-          key={`ext-${item.label}-${item.href}`}
-          href={item.href}
-          className={`${linkClass} text-alignment-accent/65`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {item.label}
-        </a>
-      ))}
       {siteLegalLinks.map((item) => (
         <Link key={item.to} to={item.to} className={`${linkClass} text-alignment-accent/65`}>
           {item.label}
@@ -50,7 +38,7 @@ export function SiteMarketingFooterNav({ className = '' }) {
 const secondaryLinkClass =
   'text-sm text-alignment-accent/90 hover:text-alignment-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2 rounded-sm';
 
-/** Compact row: Home, Pricing, About, Wholeness, Organizations, Privacy, Terms */
+/** Compact row: Home, Platform, About, Begin free, Privacy, Terms */
 export function SiteSecondaryFooterNav({ className = '' }) {
   return (
     <nav className={className} aria-label="Site">
