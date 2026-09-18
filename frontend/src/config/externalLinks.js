@@ -24,9 +24,12 @@ export const amazonStoreUrl = trimUrl(import.meta.env.VITE_AMAZON_STORE_URL);
 export const shopifyStoreUrl = trimUrl(import.meta.env.VITE_SHOPIFY_STORE_URL);
 export const shopPlannerUrl = trimUrl(import.meta.env.VITE_SHOP_PLANNER_URL) || amazonStoreUrl;
 export const shopPlannerHeirloomUrl = trimUrl(import.meta.env.VITE_SHOP_PLANNER_HEIRLOOM_URL);
+export const shopPlannerDigitalUrl = trimUrl(import.meta.env.VITE_SHOP_PLANNER_DIGITAL_URL);
 export const shopDigitalUrl = trimUrl(import.meta.env.VITE_SHOP_DIGITAL_URL) || trimUrl(import.meta.env.VITE_COURSE_LIBRARY_URL);
+export const shopResetUrl = trimUrl(import.meta.env.VITE_SHOP_RESET_URL);
 export const shopClarityUrl = trimUrl(import.meta.env.VITE_SHOP_CLARITY_URL) || shopDigitalUrl;
 export const shopClarityPrintUrl = trimUrl(import.meta.env.VITE_SHOP_CLARITY_PRINT_URL);
+export const shopQuarterlyUrl = trimUrl(import.meta.env.VITE_SHOP_QUARTERLY_URL);
 
 /** Fallback when no VITE_PROGRAM_HUB_URL — existing formation site */
 export const formationExploreFallback = 'https://simplicityandproductivity.com/';

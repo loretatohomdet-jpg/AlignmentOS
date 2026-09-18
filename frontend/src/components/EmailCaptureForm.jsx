@@ -7,7 +7,7 @@ const focusRing =
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2 focus-visible:ring-offset-alignment-foundation';
 
 /**
- * POST /api/lead — stores the email, adds it to the list quietly, and sends the Alignment Reset guide.
+ * POST /api/lead — homepage sends the Alignment Reset guide; other sources save the email quietly.
  */
 export default function EmailCaptureForm({
   source = 'lander',

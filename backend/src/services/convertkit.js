@@ -68,11 +68,10 @@ async function subscribeToConvertKit({ email, firstName, tags = [], source }) {
   return true;
 }
 
-/** Form subscribe — sends Kit’s Reset-guide confirmation. Never use after payment or signup. */
+/** Form subscribe — sends Kit’s Reset-guide email. Do not also tag; the lead tag often fires a welcome sequence. */
 function subscribeLead(email, source = 'lander') {
   return subscribeToConvertKit({
     email,
-    tags: process.env.CONVERTKIT_TAG_LEAD ? [process.env.CONVERTKIT_TAG_LEAD] : [],
     source,
   });
 }

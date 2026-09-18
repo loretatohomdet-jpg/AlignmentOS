@@ -59,13 +59,12 @@ export default function PlannerPage() {
               </p>
               <p className={`mt-6 ${type.body} max-w-xl`}>{plannerProduct.body}</p>
               <CommerceCta
-                href={plannerProduct.checkoutUrl}
-                to={plannerProduct.checkoutUrl ? undefined : '/shop'}
+                href="#editions"
                 event="planner_shop_click"
                 sku={plannerProduct.sku}
                 className={`${pillPrimary} mt-10`}
               >
-                Shop the planner <span aria-hidden className="ml-1">
+                Choose an edition <span aria-hidden className="ml-1">
                   →
                 </span>
               </CommerceCta>
@@ -99,11 +98,11 @@ export default function PlannerPage() {
           </div>
         </section>
 
-        <section className="w-full border-t border-alignment-accent/[0.06]">
+        <section id="editions" className="w-full border-t border-alignment-accent/[0.06] scroll-mt-20">
           <div className="max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-16 sm:py-20">
             <p className={type.kicker}>Editions</p>
-            <h2 className={`mt-4 ${type.h2} text-balance`}>Two ways to hold the week.</h2>
-            <ul className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
+            <h2 className={`mt-4 ${type.h2} text-balance`}>Three ways to hold the week.</h2>
+            <ul className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
               {plannerEditions.map((edition) => (
                 <li
                   key={edition.sku}
@@ -112,14 +111,11 @@ export default function PlannerPage() {
                   <Photo
                     src={edition.image}
                     alt={edition.imageAlt}
-                    className={
-                      edition.sku === 'planner-standard'
-                        ? 'w-full aspect-[4/3] object-cover object-center'
-                        : 'w-full aspect-[4/3] object-cover object-[center_42%]'
-                    }
+                    className={edition.imageClass}
                   />
                   <div className="flex flex-1 flex-col p-6 sm:p-8">
-                    <h3 className={type.h3}>{edition.name}</h3>
+                    {edition.kicker ? <p className={type.kicker}>{edition.kicker}</p> : null}
+                    <h3 className={`${edition.kicker ? 'mt-3' : ''} ${type.h3}`}>{edition.name}</h3>
                     {edition.origin ? <p className={`mt-2 ${type.kicker}`}>{edition.origin}</p> : null}
                     <p className="mt-3 font-display text-3xl font-medium text-alignment-accent tabular-nums">
                       {formatUsd(edition.price)}
@@ -131,7 +127,7 @@ export default function PlannerPage() {
                       sku={edition.sku}
                       className={`${pillPrimary} mt-8`}
                     >
-                      Shop this edition <span aria-hidden className="ml-1">
+                      {edition.cta} <span aria-hidden className="ml-1">
                         →
                       </span>
                     </CommerceCta>
@@ -140,7 +136,8 @@ export default function PlannerPage() {
               ))}
             </ul>
             <p className={`mt-8 ${type.muted}`}>
-              Checkout is on Shopify. No Alignment OS account is required.
+              The digital edition checks out on Gumroad. Paper and sleeved editions check out on Shopify. No Alignment OS
+              account is required.
             </p>
           </div>
         </section>
@@ -163,8 +160,9 @@ export default function PlannerPage() {
             <p className={type.kicker}>Together</p>
             <h2 className={`mt-4 ${type.h2} text-balance`}>Digital clarity. Analog practice.</h2>
             <p className={`mt-6 ${type.body} max-w-xl`}>
-              Alignment OS helps you see the bigger picture. The planner helps you carry it into the day — especially if
-              you would rather not do this work on a screen.
+              Reset, Clarity, and the Quarterly Review are the three companions for paper and screen. Alignment OS
+              helps you see the bigger picture. The planner helps you carry it into the day — as a download, on paper,
+              or as an object made in Florence.
             </p>
             <Link to="/shop" className={`${pillGhost} mt-10`}>
               Explore all tools

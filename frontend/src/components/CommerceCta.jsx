@@ -40,7 +40,7 @@ export default function CommerceCta({
   }
 
   return (
-    <span className={className} title={import.meta.env.DEV ? 'Set the Shopify product URL in Vercel to enable checkout' : undefined}>
+    <span className={className} title={import.meta.env.DEV ? 'Set the product checkout URL in Vercel to enable this button' : undefined}>
       {children}
     </span>
   );

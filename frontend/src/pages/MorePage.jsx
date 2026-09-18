@@ -69,7 +69,7 @@ export default function MorePage() {
       <p className={`mt-10 ${type.kicker}`}>The system</p>
       <div className="mt-3 border-t border-alignment-accent/[0.08]">
         <Row to="/planner" label="Planner" />
-        <Row to="/shop" label="Tools" note="Clarity, planner, reset" />
+        <Row to="/shop" label="Tools" note="Reset, Clarity, Quarterly Review, planner" />
         <Row to="/pricing" label="Pricing" />
         <Row to="/cohort" label="The Charter Cohort" />
         {courseLibraryUrl ? <Row href={courseLibraryUrl} label="Courses" note="↗" /> : null}

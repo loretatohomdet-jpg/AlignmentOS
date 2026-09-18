@@ -1,14 +1,16 @@
 const { ZodError } = require('zod');
 const { prisma } = require('../prismaClient');
 const { createLeadSchema } = require('../validation/leadSchemas');
-const { subscribeLeadQuietly, isConfigured } = require('../services/convertkit');
+const { subscribeLead, subscribeLeadQuietly, isConfigured } = require('../services/convertkit');
 const { sendResetGuideEmail } = require('../services/resetGuideEmail');
+const { wantsResetGuide } = require('../services/leadEmail');
 
 async function create(req, res, next) {
   try {
     const data = createLeadSchema.parse(req.body);
     const email = data.email.toLowerCase().trim();
     const source = data.source || 'lander';
+    const sendGuide = wantsResetGuide(source);
 
     let lead = null;
     try {
@@ -17,7 +19,10 @@ async function create(req, res, next) {
       console.error('Lead DB save failed:', dbErr.message);
     }
 
-    const kitSaved = await subscribeLeadQuietly(email, source);
+    // Homepage: Kit form subscribe sends the Reset guide. Everywhere else: tag only (no Kit email).
+    const kitSaved = sendGuide
+      ? await subscribeLead(email, source)
+      : await subscribeLeadQuietly(email, source);
 
     if (!lead && !kitSaved && !process.env.RESEND_API_KEY) {
       const message = isConfigured()
@@ -26,11 +31,13 @@ async function create(req, res, next) {
       return res.status(503).json({ message });
     }
 
-    let emailed = false;
-    try {
-      emailed = await sendResetGuideEmail(email);
-    } catch (err) {
-      console.error('Reset guide email failed:', err.message);
+    let emailed = Boolean(sendGuide && kitSaved);
+    if (sendGuide && !kitSaved) {
+      try {
+        emailed = await sendResetGuideEmail(email);
+      } catch (err) {
+        console.error('Reset guide email failed:', err.message);
+      }
     }
 
     if (!lead && !kitSaved && !emailed) {
