@@ -3,7 +3,6 @@
  */
 export const siteNavMainLinks = [
   { to: '/platform', label: 'Platform' },
-  { to: '/pricing', label: 'Pricing' },
   { to: '/about', label: 'About' },
 ];
 
@@ -13,6 +12,29 @@ export const siteNavSignedInLinks = [
   { to: '/practice', label: 'Practice' },
   { to: '/reflect', label: 'Review' },
 ];
+
+const PRODUCT_APP_PREFIXES = [
+  '/dashboard',
+  '/practice',
+  '/reflect',
+  '/snapshot',
+  '/results',
+  '/journey',
+  '/more',
+  '/profile',
+  '/progress',
+  '/admin',
+  '/agent',
+  '/share',
+  '/alignment-map',
+  '/success',
+];
+
+/** Product chrome (Dashboard · Practice · Review). Marketing pages stay visitor-facing. */
+export function isProductAppPath(pathname) {
+  if (!pathname) return false;
+  return PRODUCT_APP_PREFIXES.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`));
+}
 
 export const siteNavLinkClass =
   'text-[10px] sm:text-[11px] font-normal uppercase tracking-[0.22em] text-alignment-accent/75 hover:text-alignment-accent transition-colors';

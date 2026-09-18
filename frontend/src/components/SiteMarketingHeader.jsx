@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import BrandLogo from './BrandLogo';
 import HeaderUserMenu from './HeaderUserMenu';
 import MobileDrawer from './MobileDrawer';
@@ -9,43 +9,27 @@ import {
   siteNavLinkClass,
   siteNavDrawerRowClass,
   beginFreeHeaderButtonClass,
+  isProductAppPath,
 } from '../config/siteNav';
-
-function readLoggedIn() {
-  return typeof window !== 'undefined' && !!localStorage.getItem('accessToken');
-}
+import { clearSession, useAuthSession } from '../utils/authSession';
 
 /**
- * Site header. Logged-in users always get Dashboard · Practice · Review
- * including on Home, Pricing, and other marketing pages. The olive button
- * stays the primary action: Begin free when logged out, Practice when in.
+ * Site header. Marketing pages stay visitor-facing (Platform · About · Begin free).
+ * Product pages switch to Dashboard · Practice · Review once a real session exists.
  */
 export default function SiteMarketingHeader({ appendDesktop = null, authDrawer }) {
+  const { pathname } = useLocation();
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(readLoggedIn);
+  const isLoggedIn = useAuthSession();
+  const showProductNav = isLoggedIn && isProductAppPath(pathname);
 
-  useEffect(() => {
-    const sync = () => setIsLoggedIn(readLoggedIn());
-    sync();
-    window.addEventListener('alignment-auth', sync);
-    window.addEventListener('storage', sync);
-    return () => {
-      window.removeEventListener('alignment-auth', sync);
-      window.removeEventListener('storage', sync);
-    };
-  }, []);
-
-  const navLinks = isLoggedIn ? siteNavSignedInLinks : siteNavMainLinks;
-  const primaryCta = isLoggedIn
+  const navLinks = showProductNav ? siteNavSignedInLinks : siteNavMainLinks;
+  const primaryCta = showProductNav
     ? { to: '/practice', label: 'Practice' }
     : { to: '/assessment', label: 'Begin free' };
 
   const handleLogout = () => {
-    try {
-      localStorage.removeItem('accessToken');
-    } catch (_) {}
-    window.dispatchEvent(new Event('alignment-auth'));
-    setIsLoggedIn(false);
+    clearSession();
     window.location.href = '/';
   };
 

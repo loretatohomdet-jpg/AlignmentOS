@@ -15,7 +15,7 @@ export const routeMap = {
   Snapshot: { path: '/snapshot', visibility: visibility.auth, note: 'Post-assessment transition · logged in' },
   Diagnostic: { path: '/diagnostic', visibility: visibility.public, note: 'How it works; /assessment is the flow' },
   Platform: { path: '/platform', visibility: visibility.public, note: 'Human alignment software · marketing' },
-  Pricing: { path: '/pricing', visibility: visibility.public, note: 'Tiers · Habit Engine · Journey' },
+  Pricing: { path: '/pricing', visibility: visibility.hidden, note: 'Unlisted until stage 2 · keep route for later' },
   Wholeness: { path: '/ethics', visibility: visibility.public, note: '/wholeness redirects here' },
   Framework: { path: '/framework', visibility: visibility.public, note: 'Six domains diagram + formation axis' },
   Becoming: { path: '/start', visibility: visibility.public, note: 'Email capture / landing' },

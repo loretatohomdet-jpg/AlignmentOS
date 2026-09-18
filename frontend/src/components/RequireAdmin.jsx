@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { API_BASE } from '../config/apiBase';
+import { clearSession, getAccessToken } from '../utils/authSession';
 
 /**
  * Ensures the user is signed in and has ADMIN role before rendering children.
@@ -10,7 +11,7 @@ export default function RequireAdmin({ children }) {
   const [status, setStatus] = useState('loading');
 
   useEffect(() => {
-    const token = localStorage.getItem('accessToken');
+    const token = getAccessToken();
     if (!token) {
       setStatus('no-auth');
       return;
@@ -18,6 +19,7 @@ export default function RequireAdmin({ children }) {
     fetch(`${API_BASE}/me`, { headers: { Authorization: `Bearer ${token}` } })
       .then(async (res) => {
         if (res.status === 401) {
+          clearSession();
           setStatus('no-auth');
           return null;
         }

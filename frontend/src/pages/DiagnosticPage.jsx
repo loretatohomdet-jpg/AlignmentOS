@@ -101,8 +101,8 @@ export default function DiagnosticPage() {
               breakdown, alignment type, and a copy of this report in your inbox (no spam; you can unsubscribe any time).
             </li>
             <li>
-              You&apos;ll land on <strong className="text-alignment-accent font-medium">Results</strong> after submit — not back on this intro — so
-              you always see your score and next steps in one place.
+              You&apos;ll land on <strong className="text-alignment-accent font-medium">Your Alignment Snapshot</strong> after
+              submit — the score, what deserves attention, and how Alignment OS helps you do something with it.
             </li>
           </ul>
         </div>
@@ -130,8 +130,8 @@ export default function DiagnosticPage() {
             Begin diagnostic
           </Link>
           {hasToken && (
-            <Link to="/results" className={pillGhost}>
-              View my results
+            <Link to="/snapshot" className={pillGhost}>
+              View my snapshot
             </Link>
           )}
         </div>

@@ -1,32 +1,13 @@
-import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { siteLegalLinks, siteMarketingFooter, siteSecondaryFooter } from '../config/footerNav';
 import { extraMarketingFooterLinks } from '../config/externalLinks';
-
-function readLoggedIn() {
-  return typeof window !== 'undefined' && !!localStorage.getItem('accessToken');
-}
 
 const linkClass =
   'hover:text-alignment-accent transition-colors duration-200 whitespace-normal break-words focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2 rounded-sm';
 
 /** Landing page marketing grid + legal */
 export function SiteMarketingFooterNav({ className = '' }) {
-  const [isLoggedIn, setIsLoggedIn] = useState(readLoggedIn);
-
-  useEffect(() => {
-    const sync = () => setIsLoggedIn(readLoggedIn());
-    window.addEventListener('alignment-auth', sync);
-    window.addEventListener('storage', sync);
-    return () => {
-      window.removeEventListener('alignment-auth', sync);
-      window.removeEventListener('storage', sync);
-    };
-  }, []);
-
-  const links = siteMarketingFooter.map((item) =>
-    item.label === 'Begin free' && isLoggedIn ? { to: '/practice', label: 'Practice' } : item
-  );
+  const links = siteMarketingFooter;
 
   return (
     <nav className={className} aria-label="Site">

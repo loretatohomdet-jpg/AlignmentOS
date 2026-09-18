@@ -42,10 +42,12 @@ test('report html includes score, strain, and domains', () => {
   assert.match(html, /The Developing Person/);
   assert.match(html, /Habits/);
   assert.match(html, /48%/);
-  assert.match(html, /See pricing/);
-  assert.match(html, /\/pricing/);
-  assert.match(html, /Habit Engine/);
-  assert.match(html, /Journey to Purpose/);
+  assert.match(html, /Create a free account/);
+  assert.match(html, /\/signup\?returnTo=\/snapshot/);
+  assert.match(html, /Keep what you discovered/);
+  assert.doesNotMatch(html, /See pricing/);
+  assert.doesNotMatch(html, /\/pricing/);
+  assert.doesNotMatch(html, /Upgrade/);
   assert.doesNotMatch(html, /\$12/);
   assert.doesNotMatch(html, /\$297/);
   assert.doesNotMatch(html, /Alignment Reset/i);

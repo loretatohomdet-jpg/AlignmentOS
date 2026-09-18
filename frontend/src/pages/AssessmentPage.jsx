@@ -594,7 +594,7 @@ export default function AssessmentPage() {
                     See your full diagnostic
                   </h2>
                   <p className="mt-3 text-sm text-alignment-accent/90 text-center leading-relaxed">
-                    Enter your email to unlock the six-domain breakdown. We’ll send this report, then invite you to upgrade.
+                    Enter your email to unlock the six-domain breakdown. We’ll send this report to your inbox.
                   </p>
                   <form onSubmit={handleGuestUnlockEmail} className="mt-6 space-y-4">
                     <input
@@ -620,7 +620,7 @@ export default function AssessmentPage() {
                 <>
                   <p className="text-sm text-alignment-accent/90 text-center leading-relaxed">
                     {guestEmailed
-                      ? `We sent this diagnostic to ${guestEmail.trim()}, with an invite to upgrade.`
+                      ? `We sent this diagnostic to ${guestEmail.trim()}.`
                       : `Your results are below. If an email doesn’t arrive at ${guestEmail.trim()}, keep this page.`}
                   </p>
                   <div className="rounded-2xl border border-alignment-accent/10 bg-alignment-surface px-5 py-8 shadow-apple">
@@ -657,13 +657,18 @@ export default function AssessmentPage() {
                   </div>
                   <div className="rounded-2xl border border-alignment-accent/10 bg-alignment-surface px-6 py-6 text-center shadow-apple">
                     <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-alignment-primary/70">Next step</p>
-                    <p className="mt-3 text-sm font-medium text-alignment-accent">Upgrade</p>
+                    <p className="mt-3 text-sm font-medium text-alignment-accent">Keep what you discovered</p>
                     <p className="mt-2 text-sm text-alignment-accent/90">
-                      The Habit Engine holds the day. Journey to Purpose is the formation course. See pricing, then create an account or sign in.
+                      Create a free account to save this snapshot. Alignment OS is where you do something with it.
                     </p>
-                    <Link to="/pricing" className={`${pillPrimary} mt-5`}>
-                      See pricing →
+                    <Link to="/signup?returnTo=/snapshot" className={`${pillPrimary} mt-5`}>
+                      Create a free account →
                     </Link>
+                    <p className="mt-4 text-sm text-alignment-accent/90">
+                      <Link to="/login?returnTo=/snapshot" className="underline underline-offset-2 hover:text-alignment-accent">
+                        Already have an account? Sign in
+                      </Link>
+                    </p>
                   </div>
                 </>
               )}

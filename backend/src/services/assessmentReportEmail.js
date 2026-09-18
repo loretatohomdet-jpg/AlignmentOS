@@ -45,7 +45,7 @@ function domainScoresToDisplayPct(pillarScores, key) {
 function buildAssessmentReportHtml(report) {
   const score = Math.round(Math.min(100, Math.max(0, Number(report.score) || 0)));
   const origin = appOrigin();
-  const upgradeUrl = `${origin}/pricing`;
+  const continueUrl = `${origin}/signup?returnTo=/snapshot`;
   const rows = DOMAIN_ORDER.map((key) => {
     if (report.pillarScores?.[key] == null) return '';
     const pct = domainScoresToDisplayPct(report.pillarScores, key);
@@ -77,15 +77,15 @@ function buildAssessmentReportHtml(report) {
         <table style="width:100%;border-collapse:collapse;">${rows}</table>
         <div style="margin:32px 0 0;padding:24px;border:1px solid #E7E4DC;border-radius:16px;">
           <p style="margin:0 0 6px;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#6E7158;">Next step</p>
-          <p style="margin:0 0 10px;font-size:22px;font-weight:500;line-height:1.25;">Upgrade</p>
+          <p style="margin:0 0 10px;font-size:22px;font-weight:500;line-height:1.25;">Keep what you discovered</p>
           <p style="margin:0 0 20px;font-size:15px;line-height:1.55;color:#5a5c54;">
-            The diagnostic is free. To close the gap, upgrade to the Habit Engine — morning, midday, and evening rooms — or to Journey to Purpose, the formation course. See pricing, then create an account or sign in to continue.
+            Create a free account to save this snapshot. Alignment OS is where you do something with what the diagnostic named.
           </p>
           <table role="presentation" cellspacing="0" cellpadding="0" border="0">
             <tr>
               <td style="border-radius:999px;background:#6E7158;">
-                <a href="${upgradeUrl}" style="display:inline-block;padding:14px 26px;color:#ffffff;text-decoration:none;font-size:15px;line-height:1;">
-                  See pricing →
+                <a href="${continueUrl}" style="display:inline-block;padding:14px 26px;color:#ffffff;text-decoration:none;font-size:15px;line-height:1;">
+                  Create a free account →
                 </a>
               </td>
             </tr>

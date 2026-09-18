@@ -186,7 +186,7 @@ export default function InstitutionPage() {
                       <>
                         {' '}
                         <Link
-                          to="/pricing#journey-tier"
+                          to="/cohort"
                           className="font-medium text-alignment-accent underline underline-offset-2 hover:text-alignment-accent/80"
                         >
                           Learn about cohorts →
@@ -401,7 +401,7 @@ export default function InstitutionPage() {
                 Begin the conversation →
               </a>
               <Link
-                to="/pricing#journey-tier"
+                to="/cohort"
                 className={`${pillGhostOnOlive} flex-1 sm:flex-none sm:min-w-[200px]`}
               >
                 The cohort model

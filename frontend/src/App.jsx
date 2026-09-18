@@ -1,16 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route, NavLink, Navigate, useNavigate, useLocation } from 'react-router-dom';
-
-/** Redirects to login with returnTo if not signed in. Use for routes that require authentication. */
-function RequireAuth({ children }) {
-  const location = useLocation();
-  const hasToken = typeof window !== 'undefined' && !!localStorage.getItem('accessToken');
-  if (!hasToken) {
-    const returnTo = encodeURIComponent(location.pathname || '/practice');
-    return <Navigate to={`/login?returnTo=${returnTo}`} replace />;
-  }
-  return children;
-}
 import LandingPage from './pages/LandingPage';
 import CharterCohortPage from './pages/CharterCohortPage';
 import DashboardPage from './pages/DashboardPage';
@@ -62,32 +51,39 @@ import AgentFloatingButton from './components/AgentFloatingButton';
 import SiteMarketingHeader from './components/SiteMarketingHeader';
 import { SitePageFooter } from './components/HomeMarketingChrome';
 import { API_BASE } from './config/apiBase';
+import { clearSession, getAccessToken, hasUnexpiredAccessToken, useAuthSession } from './utils/authSession';
+
+/** Redirects to login with returnTo if not signed in. Use for routes that require authentication. */
+function RequireAuth({ children }) {
+  const location = useLocation();
+  if (!hasUnexpiredAccessToken()) {
+    const returnTo = encodeURIComponent(location.pathname || '/practice');
+    return <Navigate to={`/login?returnTo=${returnTo}`} replace />;
+  }
+  return children;
+}
 
 function Layout({ children }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const [isLoggedIn, setIsLoggedIn] = useState(() => typeof window !== 'undefined' && !!localStorage.getItem('accessToken'));
+  const isLoggedIn = useAuthSession();
   const [userRole, setUserRole] = useState(null);
-
-  useEffect(() => {
-    setIsLoggedIn(!!localStorage.getItem('accessToken'));
-  }, [location.pathname]);
-
-  useEffect(() => {
-    const sync = () => setIsLoggedIn(!!localStorage.getItem('accessToken'));
-    window.addEventListener('alignment-auth', sync);
-    return () => window.removeEventListener('alignment-auth', sync);
-  }, []);
 
   useEffect(() => {
     if (!isLoggedIn) {
       setUserRole(null);
       return;
     }
-    const token = localStorage.getItem('accessToken');
+    const token = getAccessToken();
     if (!token) return;
     fetch(`${API_BASE}/me`, { headers: { Authorization: `Bearer ${token}` } })
-      .then((res) => (res.ok ? res.json() : Promise.reject()))
+      .then((res) => {
+        if (res.status === 401 || res.status === 403) {
+          clearSession();
+          return null;
+        }
+        return res.ok ? res.json() : null;
+      })
       .then((data) => setUserRole(data?.role ?? null))
       .catch(() => setUserRole(null));
   }, [isLoggedIn, location.pathname]);
@@ -96,6 +92,7 @@ function Layout({ children }) {
     const token = window.prompt('Paste your JWT access token:');
     if (token) {
       localStorage.setItem('accessToken', token);
+      window.dispatchEvent(new Event('alignment-auth'));
       navigate('/', { replace: true });
       window.location.reload();
     }
@@ -104,10 +101,7 @@ function Layout({ children }) {
   const immersiveAssessment = location.pathname === '/assessment';
 
   const handleDrawerLogout = () => {
-    try {
-      localStorage.removeItem('accessToken');
-    } catch (_) {}
-    setIsLoggedIn(false);
+    clearSession();
     window.location.href = '/';
   };
 
@@ -123,7 +117,7 @@ function Layout({ children }) {
             Sign In
           </NavLink>
         ) : (
-          <HeaderUserMenu isLoggedIn={isLoggedIn} onLogout={() => setIsLoggedIn(false)} />
+          <HeaderUserMenu isLoggedIn={isLoggedIn} onLogout={handleDrawerLogout} />
         )}
         {import.meta.env.DEV && !immersiveAssessment && (
           <button
@@ -197,7 +191,7 @@ export default function App() {
       <Route path="/alignment-map" element={<AlignmentMapPage />} />
       <Route path="/map" element={<Navigate to="/alignment-map" replace />} />
       <Route path="/ethics" element={<Layout><EthicsPage /></Layout>} />
-      <Route path="/how-it-works" element={<Navigate to="/pricing" replace />} />
+      <Route path="/how-it-works" element={<Navigate to="/#how-it-works" replace />} />
       {/* Short URLs — marketing / email friendly */}
       <Route
         path="/diagnostic"

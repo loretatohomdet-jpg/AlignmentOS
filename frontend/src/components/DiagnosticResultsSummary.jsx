@@ -126,7 +126,7 @@ export default function DiagnosticResultsSummary({
         <div className="mt-12 sm:mt-14">
           <h2 className={`${resultsUi.heading} text-xl sm:text-2xl text-center leading-snug`}>See your full diagnostic.</h2>
           <p className="mt-5 text-sm text-alignment-accent/90 text-center leading-relaxed px-1">
-            Enter your email to unlock your domain breakdown. We’ll send this report, then invite you to upgrade.
+            Enter your email to unlock your domain breakdown. We’ll send this report to your inbox.
           </p>
           <form onSubmit={handleUnlock} className="mt-9 space-y-4">
             <input
@@ -161,7 +161,7 @@ export default function DiagnosticResultsSummary({
 
       {showExtended && emailed && (
         <p className="mt-10 text-sm text-alignment-accent/90 text-center leading-relaxed">
-          We sent this diagnostic to {email.trim()}, with an invite to upgrade.
+          We sent this diagnostic to {email.trim()}.
         </p>
       )}
 
@@ -236,12 +236,12 @@ export default function DiagnosticResultsSummary({
       {showExtended && lockBreakdownUntilEmail && (
         <div className={`${resultsUi.panel} mt-8 text-center`}>
           <p className={resultsUi.label}>Next step</p>
-          <p className="mt-4 font-display text-xl sm:text-2xl font-medium text-alignment-accent">Upgrade</p>
+          <p className="mt-4 font-display text-xl sm:text-2xl font-medium text-alignment-accent">Keep what you discovered</p>
           <p className="mt-3 text-sm text-alignment-accent/90 leading-relaxed">
-            The Habit Engine holds the day. Journey to Purpose is the formation course. See pricing, then create an account or sign in.
+            Continue into Alignment OS. The snapshot is waiting.
           </p>
-          <Link to="/pricing" className={`${pillPrimary} mt-6`}>
-            See pricing →
+          <Link to="/snapshot" className={`${pillPrimary} mt-6`}>
+            Open your snapshot →
           </Link>
         </div>
       )}

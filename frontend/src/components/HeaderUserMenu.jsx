@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_BASE } from '../config/apiBase';
+import { clearSession, getAccessToken } from '../utils/authSession';
 
 function HeaderAvatar({ user, className = 'w-8 h-8' }) {
   if (user?.avatarUrl) {
@@ -36,12 +37,17 @@ export default function HeaderUserMenu({ isLoggedIn, onLogout }) {
       setUser(null);
       return;
     }
-    const token = localStorage.getItem('accessToken');
+    const token = getAccessToken();
     if (!token) return;
     axios
       .get(`${API_BASE}/me`, { headers: { Authorization: `Bearer ${token}` } })
       .then((res) => setUser(res.data))
-      .catch(() => setUser(null));
+      .catch((err) => {
+        if (err.response?.status === 401 || err.response?.status === 403) {
+          clearSession();
+        }
+        setUser(null);
+      });
   }, [isLoggedIn]);
 
   useEffect(() => {
@@ -57,8 +63,8 @@ export default function HeaderUserMenu({ isLoggedIn, onLogout }) {
 
   const handleLogout = () => {
     setDropdownOpen(false);
-    localStorage.removeItem('accessToken');
-    onLogout();
+    clearSession();
+    onLogout?.();
     navigate('/', { replace: true });
     window.location.reload();
   };

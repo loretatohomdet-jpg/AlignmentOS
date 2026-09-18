@@ -5,7 +5,7 @@ import { hairline, pageWidth, pillPrimary, SitePageFooter } from '../components/
 import { type } from '../config/siteType';
 import { cohortApplyUrl } from '../config/externalLinks';
 
-const seatHref = cohortApplyUrl || '/pricing';
+const seatHref = cohortApplyUrl || 'mailto:organizations@alignmentos.com?subject=Charter%20cohort';
 const seatExternal = /^https?:/i.test(seatHref) || seatHref.startsWith('mailto:');
 
 const weeks = [
@@ -32,7 +32,7 @@ const weeks = [
 ];
 
 function SeatButton() {
-  const label = 'Take a charter seat — $997';
+  const label = 'Take a charter seat';
   if (seatExternal) {
     return (
       <a
@@ -131,8 +131,8 @@ export default function CharterCohortPage() {
               </p>
               <p className={`mt-5 ${type.body}`}>
                 Not the right season?{' '}
-                <Link to="/pricing" className="underline underline-offset-2 hover:text-alignment-accent">
-                  Begin with the Habit Engine — $12/mo — or the Journey — $297.
+                <Link to="/assessment" className="underline underline-offset-2 hover:text-alignment-accent">
+                  Begin with the free diagnostic.
                 </Link>
               </p>
             </div>

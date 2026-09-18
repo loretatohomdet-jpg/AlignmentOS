@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import BrandLogo from './BrandLogo';
 import HeaderUserMenu from './HeaderUserMenu';
 import MobileDrawer from './MobileDrawer';
 import { SiteMarketingFooterNav } from './SiteFooterNav';
+import { clearSession, useAuthSession } from '../utils/authSession';
 
 export const hairline = 'border-alignment-accent/[0.10]';
 export const focusRing =
@@ -23,31 +24,13 @@ const homeNav = [
   { to: '/about', label: 'About' },
 ];
 
-function readLoggedIn() {
-  return typeof window !== 'undefined' && !!localStorage.getItem('accessToken');
-}
-
 export function HomeHeader() {
   const { pathname } = useLocation();
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(readLoggedIn);
-
-  useEffect(() => {
-    const sync = () => setIsLoggedIn(readLoggedIn());
-    window.addEventListener('alignment-auth', sync);
-    window.addEventListener('storage', sync);
-    return () => {
-      window.removeEventListener('alignment-auth', sync);
-      window.removeEventListener('storage', sync);
-    };
-  }, []);
+  const isLoggedIn = useAuthSession();
 
   const handleLogout = () => {
-    try {
-      localStorage.removeItem('accessToken');
-    } catch (_) {}
-    window.dispatchEvent(new Event('alignment-auth'));
-    setIsLoggedIn(false);
+    clearSession();
     window.location.href = '/';
   };
 

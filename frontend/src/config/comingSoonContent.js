@@ -23,7 +23,7 @@ export const comingSoonVariants = {
     links: [
       { to: '/business', label: 'Business & team alignment', note: 'Companies and founder-led teams' },
       { to: '/institution', label: 'Institutions', note: 'Formation programmes & cohorts' },
-      { to: '/pricing', label: 'Pricing', note: 'Habit Engine & Journey' },
+      { to: '/assessment', label: 'Take the diagnostic', note: 'Individual · free' },
     ],
   },
 };

@@ -204,7 +204,7 @@ export default function LandingPage() {
     { target: 24, label: 'Questions' },
     { target: 6, label: 'Life domains' },
     { target: 90, label: 'Day cycles' },
-    { target: 0, prefix: '$', label: 'To begin' },
+    { target: 12, label: 'Minutes' },
   ];
 
   const domainRow = (

@@ -205,20 +205,20 @@ export default function BusinessAlignmentPage() {
               {isLoggedIn ? 'Bring alignment to your team' : 'Ready to align your team?'}
             </h2>
             <p className={`mt-3 ${type.body} max-w-xl mx-auto`}>
-              Get the Team plan for your organization. Shared dashboard, admin controls, and priority support.
+              Shared language, a common diagnostic, and a conversation about how formation can hold in your team.
             </p>
             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link to="/pricing" className={`${pillPrimary} w-full sm:w-auto`}>
-                View Team plan
-              </Link>
               <a
                 href={formationExploreUrl()}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`${pillGhost} w-full sm:w-auto`}
+                className={`${pillPrimary} w-full sm:w-auto`}
               >
                 Contact us
               </a>
+              <Link to="/assessment" className={`${pillGhost} w-full sm:w-auto`}>
+                Take the diagnostic
+              </Link>
             </div>
             <p className="mt-4 text-xs text-alignment-accent/75 max-w-lg mx-auto text-center">
               “Contact us” opens our partner channel (Simplicity & Productivity) for bespoke team and leadership formation —

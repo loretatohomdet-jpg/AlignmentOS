@@ -369,10 +369,10 @@ export default function ResultsPage() {
                   <section className="rounded-xl border border-alignment-accent/[0.08] bg-alignment-surface px-6 py-8 shadow-apple h-full flex flex-col">
                     <h3 className={`${resultsUi.heading} text-xl sm:text-2xl`}>Go deeper when you are ready</h3>
                     <p className="mt-4 text-sm text-alignment-accent/90 leading-relaxed flex-1">
-                      The Habit Engine is $12/month. Journey is $297, one time. Practice is already open.
+                      The day is held in Practice. The record — score and map — lives on the Dashboard.
                     </p>
-                    <Link to="/pricing" className={`mt-6 inline-flex ${resultsUi.btnOutline} px-8 py-3 self-start`}>
-                      See plans
+                    <Link to="/practice" className={`mt-6 inline-flex ${resultsUi.btnOutline} px-8 py-3 self-start`}>
+                      Open Practice
                     </Link>
                   </section>
 
@@ -395,10 +395,10 @@ export default function ResultsPage() {
                       </a>
                     ) : (
                       <Link
-                        to="/pricing#journey-tier"
+                        to="/cohort"
                         className={`mt-6 inline-flex ${resultsUi.btnOutline} px-8 py-3 self-start`}
                       >
-                        Explore Journey to Purpose →
+                        Explore the cohort →
                       </Link>
                     )}
                   </section>

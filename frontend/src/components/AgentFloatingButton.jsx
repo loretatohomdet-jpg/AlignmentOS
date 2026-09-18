@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuthSession } from '../utils/authSession';
 
 /**
  * Floating AI agent entry — drops in from above (see `animate-agent-pop` in tailwind.config).
@@ -8,15 +8,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 export default function AgentFloatingButton() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [hasToken, setHasToken] = useState(() =>
-    typeof window !== 'undefined' ? !!localStorage.getItem('accessToken') : false
-  );
-
-  useEffect(() => {
-    const sync = () => setHasToken(!!localStorage.getItem('accessToken'));
-    window.addEventListener('alignment-auth', sync);
-    return () => window.removeEventListener('alignment-auth', sync);
-  }, []);
+  const hasToken = useAuthSession();
 
   if (location.pathname === '/agent') return null;
 

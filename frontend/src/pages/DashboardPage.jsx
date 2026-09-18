@@ -18,6 +18,7 @@ import {
 import { API_BASE } from '../config/apiBase';
 import { type } from '../config/siteType';
 import { sawSnapshotContinue } from '../config/productLoop';
+import { clearSession, hasUnexpiredAccessToken } from '../utils/authSession';
 
 function ScoreGauge({ score, label }) {
   const value = score != null ? Math.min(100, Math.max(0, score)) : 0;
@@ -51,8 +52,8 @@ function ScoreGauge({ score, label }) {
 
 export default function DashboardPage() {
   const navigate = useNavigate();
-  const [authed, setAuthed] = useState(() => !!localStorage.getItem('accessToken'));
-  const [loading, setLoading] = useState(() => !!localStorage.getItem('accessToken'));
+  const [authed, setAuthed] = useState(hasUnexpiredAccessToken);
+  const [loading, setLoading] = useState(hasUnexpiredAccessToken);
   const [user, setUser] = useState(null);
   const [result, setResult] = useState(null);
   const [scoreHistory, setScoreHistory] = useState([]);
@@ -102,9 +103,7 @@ export default function DashboardPage() {
       } catch (err) {
         setError(err.response?.status === 401 ? null : (err.response?.data?.message || 'Something went wrong'));
         if (err.response?.status === 401) {
-          try {
-            localStorage.removeItem('accessToken');
-          } catch (_) {}
+          clearSession();
           setAuthed(false);
           setUser(null);
           setResult(null);

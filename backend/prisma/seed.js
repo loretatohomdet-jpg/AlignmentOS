@@ -23,6 +23,19 @@ async function main() {
       },
     });
     console.log('Demo user:', { email: demoEmail, password: demoPassword });
+
+    const adminEmail = 'admin@alignment.local';
+    await prisma.user.upsert({
+      where: { email: adminEmail },
+      update: { password: passwordHash, name: 'Admin', role: 'ADMIN' },
+      create: {
+        email: adminEmail,
+        name: 'Admin',
+        password: passwordHash,
+        role: 'ADMIN',
+      },
+    });
+    console.log('Admin user:', { email: adminEmail, password: demoPassword });
   } else {
     console.log('Skipping demo user (NODE_ENV=production).');
   }
@@ -212,6 +225,19 @@ async function main() {
     });
     await prisma.habit.createMany({ data: diagnosticHabits });
     console.log(`Seeded ${diagnosticHabits.length} diagnostic v1 habits.`);
+  }
+
+  const promoteEmail = (process.env.ADMIN_EMAIL || '').trim().toLowerCase();
+  if (promoteEmail) {
+    const promoted = await prisma.user.updateMany({
+      where: { email: promoteEmail },
+      data: { role: 'ADMIN' },
+    });
+    if (promoted.count > 0) {
+      console.log(`Promoted ${promoteEmail} to ADMIN.`);
+    } else {
+      console.log(`ADMIN_EMAIL=${promoteEmail} — no matching user yet. Create the account, then re-seed.`);
+    }
   }
 }
 
