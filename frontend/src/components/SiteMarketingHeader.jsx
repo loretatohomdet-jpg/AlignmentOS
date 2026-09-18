@@ -14,7 +14,7 @@ import {
 import { clearSession, useAuthSession } from '../utils/authSession';
 
 /**
- * Site header. Marketing pages stay visitor-facing (Platform · About · Begin free).
+ * Site header. Marketing pages: Assessment · How it works · Platform · Planner · Shop.
  * Product pages switch to Dashboard · Practice · Review once a real session exists.
  */
 export default function SiteMarketingHeader({ appendDesktop = null, authDrawer }) {
@@ -26,7 +26,7 @@ export default function SiteMarketingHeader({ appendDesktop = null, authDrawer }
   const navLinks = showProductNav ? siteNavSignedInLinks : siteNavMainLinks;
   const primaryCta = showProductNav
     ? { to: '/practice', label: 'Practice' }
-    : { to: '/assessment', label: 'Begin free' };
+    : { to: '/assessment', label: 'Take the Assessment' };
 
   const handleLogout = () => {
     clearSession();

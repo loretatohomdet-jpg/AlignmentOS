@@ -5,6 +5,8 @@ import EmailCaptureForm from '../components/EmailCaptureForm';
 import SiteMarketingHeader from '../components/SiteMarketingHeader';
 import DomainPillarIcon from '../components/DomainPillarIcon';
 import { pillGhost, pillPrimary, SitePageFooter } from '../components/HomeMarketingChrome';
+import CommerceCta from '../components/CommerceCta';
+import { clarityProduct, plannerProduct } from '../config/commerce';
 import { type } from '../config/siteType';
 
 const HERO_LINE = 'Recover the art of living well.';
@@ -124,6 +126,65 @@ function AnimatedProofStat({ target, prefix = '', suffix = '', label }) {
         {label}
       </p>
     </div>
+  );
+}
+
+function HomeToolsSection() {
+  return (
+    <section
+      id="tools"
+      className="w-full border-t border-alignment-accent/[0.06] bg-alignment-surfaceSoft/90"
+      aria-labelledby="home-tools-heading"
+    >
+      <div className="max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12 sm:py-16">
+        <p className={type.kicker}>Prefer to begin on paper?</p>
+        <h2 id="home-tools-heading" className={`mt-4 ${type.h2} max-w-xl text-balance`}>
+          Tools for living what matters.
+        </h2>
+        <p className={`mt-6 ${type.body} max-w-xl`}>
+          Some things are easier to see on a screen. Others are better worked out with a pen in your hand. Explore
+          practical tools designed to help you carry clarity into everyday life.
+        </p>
+
+        <ul className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
+          <li className="flex flex-col rounded-2xl border border-alignment-accent/[0.1] bg-alignment-surface p-6 sm:p-8">
+            <h3 className={type.h3}>{plannerProduct.title}</h3>
+            <p className={`mt-3 ${type.body} flex-1`}>A place to decide what matters before the day fills up.</p>
+            <CommerceCta
+              to="/planner"
+              event="planner_shop_click"
+              sku={plannerProduct.sku}
+              className="mt-8 inline-flex items-center text-[11px] font-medium uppercase tracking-[0.2em] text-alignment-accent border-b border-alignment-accent/25 pb-1 hover:border-alignment-accent"
+            >
+              Shop the planner <span aria-hidden>→</span>
+            </CommerceCta>
+          </li>
+          <li className="flex flex-col rounded-2xl border border-alignment-accent/[0.1] bg-alignment-surface p-6 sm:p-8">
+            <h3 className={type.h3}>{clarityProduct.title}</h3>
+            <p className={`mt-3 ${type.body} flex-1`}>
+              A guided digital tool for stepping back, getting clear, and deciding what deserves your attention now.
+            </p>
+            <CommerceCta
+              to="/shop/alignment-clarity"
+              event="clarity_product_click"
+              sku={clarityProduct.sku}
+              className="mt-8 inline-flex items-center text-[11px] font-medium uppercase tracking-[0.2em] text-alignment-accent border-b border-alignment-accent/25 pb-1 hover:border-alignment-accent"
+            >
+              Get the digital tool <span aria-hidden>→</span>
+            </CommerceCta>
+          </li>
+        </ul>
+
+        <CommerceCta
+          to="/shop"
+          event="shop_all_click"
+          sku="shop"
+          className="mt-8 inline-flex items-center text-[11px] font-medium uppercase tracking-[0.2em] text-alignment-accent/80 border-b border-alignment-accent/20 pb-1 hover:text-alignment-accent hover:border-alignment-accent"
+        >
+          Explore all tools <span aria-hidden>→</span>
+        </CommerceCta>
+      </div>
+    </section>
   );
 }
 
@@ -391,6 +452,9 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
+
+        {/* Tools — after platform, before final CTA. Not in the hero. */}
+        <HomeToolsSection />
 
         {/* Final CTA — closing */}
         <FinalCtaClosing />

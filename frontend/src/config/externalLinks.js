@@ -19,6 +19,14 @@ export const checkoutJourneyUrl = trimUrl(import.meta.env.VITE_CHECKOUT_JOURNEY_
 export const cohortApplyUrl = trimUrl(import.meta.env.VITE_COHORT_APPLY_URL) || bookingUrl;
 /** Creator handoff (GHL funnel, Teachable, etc.) */
 export const creatorUrl = trimUrl(import.meta.env.VITE_CREATOR_URL);
+/** Amazon storefront or planner listing */
+export const amazonStoreUrl = trimUrl(import.meta.env.VITE_AMAZON_STORE_URL);
+export const shopifyStoreUrl = trimUrl(import.meta.env.VITE_SHOPIFY_STORE_URL);
+export const shopPlannerUrl = trimUrl(import.meta.env.VITE_SHOP_PLANNER_URL) || amazonStoreUrl;
+export const shopPlannerHeirloomUrl = trimUrl(import.meta.env.VITE_SHOP_PLANNER_HEIRLOOM_URL);
+export const shopDigitalUrl = trimUrl(import.meta.env.VITE_SHOP_DIGITAL_URL) || trimUrl(import.meta.env.VITE_COURSE_LIBRARY_URL);
+export const shopClarityUrl = trimUrl(import.meta.env.VITE_SHOP_CLARITY_URL) || shopDigitalUrl;
+export const shopClarityPrintUrl = trimUrl(import.meta.env.VITE_SHOP_CLARITY_PRINT_URL);
 
 /** Fallback when no VITE_PROGRAM_HUB_URL — existing formation site */
 export const formationExploreFallback = 'https://simplicityandproductivity.com/';

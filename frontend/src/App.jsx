@@ -13,6 +13,9 @@ import ResetPasswordPage from './pages/ResetPasswordPage';
 import ResetGuidePage from './pages/ResetGuidePage';
 import PricingPage from './pages/PricingPage';
 import AboutPage from './pages/AboutPage';
+import ShopPage from './pages/ShopPage';
+import PlannerPage from './pages/PlannerPage';
+import AlignmentClarityPage from './pages/AlignmentClarityPage';
 import InstitutionPage from './pages/InstitutionPage';
 import PlatformPage from './pages/PlatformPage';
 import FrameworkPage from './pages/FrameworkPage';
@@ -183,6 +186,10 @@ export default function App() {
       <Route path="/reset-guide" element={<ResetGuidePage />} />
       <Route path="/pricing" element={<PricingPage />} />
       <Route path="/about" element={<AboutPage />} />
+      <Route path="/shop" element={<ShopPage />} />
+      <Route path="/shop/alignment-clarity" element={<AlignmentClarityPage />} />
+      <Route path="/planner" element={<PlannerPage />} />
+      <Route path="/reset" element={<ResetGuidePage />} />
       <Route path="/platform" element={<PlatformPage />} />
       <Route path="/framework" element={<FrameworkPage />} />
       <Route path="/institution" element={<InstitutionPage />} />

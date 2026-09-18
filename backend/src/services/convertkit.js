@@ -68,7 +68,7 @@ async function subscribeToConvertKit({ email, firstName, tags = [], source }) {
   return true;
 }
 
-/** Form subscribe — sends Kit’s form confirmation. Do not use for homepage or diagnostic capture. */
+/** Form subscribe — sends Kit’s Reset-guide confirmation. Never use after payment or signup. */
 function subscribeLead(email, source = 'lander') {
   return subscribeToConvertKit({
     email,
@@ -78,43 +78,45 @@ function subscribeLead(email, source = 'lander') {
 }
 
 /**
- * Add a diagnostic lead to the list without the form’s Reset-guide confirmation.
- * Tag subscribe creates the subscriber; it does not send that form’s incentive email.
+ * Add someone to the list by tag only. Does not trigger the Reset-guide form email.
  */
-async function subscribeLeadQuietly(email, source = 'diagnostic-report') {
-  const tagId = process.env.CONVERTKIT_TAG_LEAD;
+async function subscribeByTag(email, tagId, { firstName, source } = {}) {
   const apiKey = process.env.CONVERTKIT_API_KEY;
   const normalized = String(email || '').trim().toLowerCase();
   if (!normalized || !apiKey || !tagId) return false;
   try {
     await postJson(`/tags/${tagId}/subscribe`, {
       email: normalized,
+      first_name: firstName || undefined,
       fields: source ? { source } : undefined,
     });
     return true;
   } catch (err) {
-    console.error('ConvertKit quiet lead subscribe failed:', err.message);
+    console.error('ConvertKit tag subscribe failed:', err.message);
     return false;
   }
 }
 
-/** New account registration */
-function subscribeRegistered(email, firstName) {
-  return subscribeToConvertKit({
-    email,
-    firstName,
-    tags: process.env.CONVERTKIT_TAG_REGISTERED ? [process.env.CONVERTKIT_TAG_REGISTERED] : [],
-    source: 'signup',
-  });
+/**
+ * Add a diagnostic lead to the list without the form’s Reset-guide confirmation.
+ */
+async function subscribeLeadQuietly(email, source = 'diagnostic-report') {
+  return subscribeByTag(email, process.env.CONVERTKIT_TAG_LEAD, { source });
 }
 
-/** Successful Habit Engine / paid checkout */
+/** New account — tag only, never the Reset-guide form. */
+function subscribeRegistered(email, firstName) {
+  const tagId = process.env.CONVERTKIT_TAG_REGISTERED || process.env.CONVERTKIT_TAG_LEAD;
+  return subscribeByTag(email, tagId, { firstName, source: 'signup' });
+}
+
+/** Successful Habit Engine / paid checkout — tag only, never the Reset-guide form. */
 function subscribePaid(email) {
-  return subscribeToConvertKit({
-    email,
-    tags: process.env.CONVERTKIT_TAG_PAID ? [process.env.CONVERTKIT_TAG_PAID] : [],
-    source: 'paid',
-  });
+  const tagId =
+    process.env.CONVERTKIT_TAG_PAID ||
+    process.env.CONVERTKIT_TAG_REGISTERED ||
+    process.env.CONVERTKIT_TAG_LEAD;
+  return subscribeByTag(email, tagId, { source: 'paid' });
 }
 
 module.exports = {

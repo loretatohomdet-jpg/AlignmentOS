@@ -191,8 +191,16 @@ export default function PlatformPage() {
               Begin with <span className="italic font-normal text-white/95">the diagnostic.</span>
             </h2>
             <Link to="/assessment" className={`${pillOnOlive} mt-10`}>
-              Begin free <span aria-hidden className="ml-1">→</span>
+              Take the Assessment <span aria-hidden className="ml-1">→</span>
             </Link>
+            <p className="mt-8">
+              <Link
+                to="/planner"
+                className="text-[11px] sm:text-xs text-white/80 underline underline-offset-2 hover:text-white"
+              >
+                Prefer to begin on paper? Explore the Life of Purpose Planner →
+              </Link>
+            </p>
           </div>
         </section>
       </main>

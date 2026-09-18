@@ -2,8 +2,11 @@
  * Primary header navigation — same labels and order as the home page.
  */
 export const siteNavMainLinks = [
+  { to: '/assessment', label: 'Assessment' },
+  { to: '/how-it-works', label: 'How it works' },
   { to: '/platform', label: 'Platform' },
-  { to: '/about', label: 'About' },
+  { to: '/planner', label: 'Planner' },
+  { to: '/shop', label: 'Shop' },
 ];
 
 /** Product nav when signed in — daily work lives on Practice. */

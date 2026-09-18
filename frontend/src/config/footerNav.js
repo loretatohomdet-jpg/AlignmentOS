@@ -4,9 +4,12 @@
  */
 
 export const siteMarketingFooter = [
+  { to: '/assessment', label: 'Assessment' },
+  { to: '/how-it-works', label: 'How it works' },
   { to: '/platform', label: 'Platform' },
+  { to: '/planner', label: 'Planner' },
+  { to: '/shop', label: 'Shop' },
   { to: '/about', label: 'About' },
-  { to: '/assessment', label: 'Begin free' },
 ];
 
 export const siteLegalLinks = [

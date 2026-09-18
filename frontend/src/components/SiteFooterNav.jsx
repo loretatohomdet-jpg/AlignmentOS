@@ -38,7 +38,7 @@ export function SiteMarketingFooterNav({ className = '' }) {
 const secondaryLinkClass =
   'text-sm text-alignment-accent/90 hover:text-alignment-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2 rounded-sm';
 
-/** Compact row: Home, Platform, About, Begin free, Privacy, Terms */
+/** Compact row: Home, Platform, About, Shop, Begin free, Privacy, Terms */
 export function SiteSecondaryFooterNav({ className = '' }) {
   return (
     <nav className={className} aria-label="Site">

@@ -1,6 +1,7 @@
 const Stripe = require('stripe');
 const { prisma } = require('../prismaClient');
 const { subscribePaid } = require('./convertkit');
+const { sendPaidWelcomeEmail } = require('./paidWelcomeEmail');
 
 let stripeClient = null;
 
@@ -124,6 +125,9 @@ async function handleCheckoutCompleted(session) {
       },
     });
     subscribePaid(user.email).catch((err) => console.error('ConvertKit paid tag failed:', err.message));
+    sendPaidWelcomeEmail(user.email, user.name).catch((err) =>
+      console.error('Paid welcome email failed:', err.message)
+    );
   }
 }
 

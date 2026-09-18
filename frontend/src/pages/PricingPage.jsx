@@ -8,8 +8,6 @@ import {
   checkoutHabitUrl,
   checkoutJourneyUrl,
   cohortApplyUrl,
-  courseLibraryUrl,
-  formationExploreUrl,
 } from '../config/externalLinks';
 import SiteMarketingHeader from '../components/SiteMarketingHeader';
 import {
@@ -150,7 +148,6 @@ export default function PricingPage() {
 
   const habitMonthly = 12;
   const habitYearly = 120;
-  const resourcesHref = courseLibraryUrl || formationExploreUrl();
 
   const toggleActive = 'bg-alignment-primary text-white shadow-sm';
   const toggleIdle = 'text-alignment-accent/75 hover:text-alignment-accent/80';
@@ -331,14 +328,9 @@ export default function PricingPage() {
                 <p className="mt-2 font-display text-2xl font-medium text-alignment-accent tabular-nums">$19 – $97</p>
                 <p className="mt-1 text-xs text-alignment-accent/75">Planners, workbooks, short courses</p>
                 <div className="flex-1" />
-                <a
-                  href={resourcesHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`${pillOutline} mt-6 w-full sm:w-auto`}
-                >
-                  Browse <span aria-hidden className="ml-2">→</span>
-                </a>
+                <Link to="/shop" className={`${pillOutline} mt-6 w-full sm:w-auto`}>
+                  Browse shop <span aria-hidden className="ml-2">→</span>
+                </Link>
               </div>
 
               <div className="flex flex-col border border-alignment-accent/[0.1] bg-alignment-surface p-6 shadow-sm">
