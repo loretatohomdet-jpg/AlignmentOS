@@ -19,6 +19,9 @@ export default function LoginForm({
   onSuccess,
   /** Smaller vertical spacing for modal */
   compact = false,
+  lead = 'Take the assessment and track your AQ score.',
+  showSignup = true,
+  showGuest = true,
 }) {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
@@ -59,7 +62,7 @@ export default function LoginForm({
       <div className={`text-center ${titleMb}`}>
         <h1 className={authHeadingClass}>Sign in</h1>
         <p className={compact ? authLeadClassCompact : `${authLeadClass} max-w-md mx-auto`}>
-          Take the assessment and track your AQ score.
+          {lead}
         </p>
       </div>
 
@@ -126,20 +129,24 @@ export default function LoginForm({
         </div>
       )}
 
-      <p className={`${compact ? 'mt-6' : 'mt-6'} text-center font-sans text-sm text-alignment-accent/90`}>
-        Don&apos;t have an account?{' '}
-        <NavLink
-          to={`/signup?returnTo=${encodeURIComponent(returnTo)}`}
-          className="font-medium text-alignment-accent hover:underline"
-        >
-          Sign up
-        </NavLink>
-      </p>
-      <p className="mt-3 text-center">
-        <NavLink to="/diagnostic" className="font-sans text-sm text-alignment-accent hover:underline">
-          Continue without signing in
-        </NavLink>
-      </p>
+      {showSignup ? (
+        <p className={`${compact ? 'mt-6' : 'mt-6'} text-center font-sans text-sm text-alignment-accent/90`}>
+          Don&apos;t have an account?{' '}
+          <NavLink
+            to={`/signup?returnTo=${encodeURIComponent(returnTo)}`}
+            className="font-medium text-alignment-accent hover:underline"
+          >
+            Sign up
+          </NavLink>
+        </p>
+      ) : null}
+      {showGuest ? (
+        <p className="mt-3 text-center">
+          <NavLink to="/diagnostic" className="font-sans text-sm text-alignment-accent hover:underline">
+            Continue without signing in
+          </NavLink>
+        </p>
+      ) : null}
     </div>
   );
 }

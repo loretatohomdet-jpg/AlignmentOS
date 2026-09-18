@@ -140,6 +140,16 @@ export default function HeaderUserMenu({ isLoggedIn, onLogout }) {
             >
               Dashboard
             </NavLink>
+            {user?.role === 'ADMIN' ? (
+              <NavLink
+                to="/admin/overview"
+                className="block px-4 py-2.5 text-sm text-alignment-accent hover:bg-alignment-accent/5 transition-colors"
+                onClick={() => setDropdownOpen(false)}
+                role="menuitem"
+              >
+                Admin
+              </NavLink>
+            ) : null}
             <NavLink
               to="/alignment-map"
               className="block px-4 py-2.5 text-sm text-alignment-accent hover:bg-alignment-accent/5 transition-colors"

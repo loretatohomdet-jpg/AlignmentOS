@@ -1,5 +1,6 @@
 import { NavLink, Outlet } from 'react-router-dom';
 import { type } from '../../config/siteType';
+import { usePageTitle } from '../../hooks/usePageTitle';
 
 const tabs = [
   { to: '/admin/overview', label: 'Overview' },
@@ -9,6 +10,7 @@ const tabs = [
 ];
 
 export default function AdminLayout() {
+  usePageTitle('Admin — Alignment OS');
   return (
     <div className="max-w-6xl mx-auto px-6 sm:px-8 py-8 sm:py-12">
       <header className="mb-8">

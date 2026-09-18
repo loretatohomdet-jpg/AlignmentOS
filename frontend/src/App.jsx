@@ -373,11 +373,11 @@ export default function App() {
       <Route
         path="/admin"
         element={
-          <RequireAdmin>
-            <Layout>
+          <Layout>
+            <RequireAdmin>
               <AdminLayout />
-            </Layout>
-          </RequireAdmin>
+            </RequireAdmin>
+          </Layout>
         }
       >
         <Route index element={<Navigate to="/admin/overview" replace />} />

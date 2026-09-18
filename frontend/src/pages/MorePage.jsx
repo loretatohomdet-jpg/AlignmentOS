@@ -1,6 +1,9 @@
 import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import AddToHomeScreen from '../components/AddToHomeScreen';
 import { courseLibraryUrl } from '../config/externalLinks';
+import { API_BASE } from '../config/apiBase';
+import { getAccessToken } from '../utils/authSession';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { type } from '../config/siteType';
 
@@ -37,7 +40,18 @@ function Row({ to, href, onClick, label, note }) {
 
 export default function MorePage() {
   const navigate = useNavigate();
+  const [isAdmin, setIsAdmin] = useState(false);
   usePageTitle('More — Alignment OS');
+
+  useEffect(() => {
+    const token = getAccessToken();
+    if (!token) return undefined;
+    fetch(`${API_BASE}/me`, { headers: { Authorization: `Bearer ${token}` } })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => setIsAdmin(data?.role === 'ADMIN'))
+      .catch(() => setIsAdmin(false));
+    return undefined;
+  }, []);
 
   const signOut = () => {
     try {
@@ -68,6 +82,7 @@ export default function MorePage() {
 
       <p className={`mt-10 ${type.kicker}`}>The system</p>
       <div className="mt-3 border-t border-alignment-accent/[0.08]">
+        {isAdmin ? <Row to="/admin/overview" label="Admin" note="Operators" /> : null}
         <Row to="/planner" label="Planner" />
         <Row to="/shop" label="Tools" note="Reset, Clarity, Quarterly Review, planner" />
         <Row to="/pricing" label="Pricing" />
