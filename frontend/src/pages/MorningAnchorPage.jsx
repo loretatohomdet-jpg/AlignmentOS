@@ -40,16 +40,10 @@ const PRACTICE_HINT = {
   EXECUTION: 'Suggested for Execution: Name the first move, not the whole plan.',
 };
 
-function FieldCard({ kicker, hint, value, onChange, italicPrompt, label }) {
+function FieldCard({ kicker, hint, value, onChange, label }) {
   return (
     <div className="border border-alignment-accent/[0.10] bg-white px-5 py-5 sm:px-6 sm:py-6">
-      {italicPrompt ? (
-        <p className="font-display italic font-normal text-[1.35rem] sm:text-[1.5rem] leading-snug text-alignment-accent">
-          {italicPrompt}
-        </p>
-      ) : (
-        <p className={type.kicker}>{kicker}</p>
-      )}
+      <p className={type.kicker}>{kicker}</p>
       <textarea
         value={value}
         onChange={(e) => onChange(e.target.value)}
@@ -178,15 +172,14 @@ export default function MorningAnchorPage() {
           onChange={setField('oneThing')}
         />
         <FieldCard
-          kicker="Today’s practice · one small exercise"
-          italicPrompt={practicePrompt}
+          kicker={practicePrompt || 'Today’s practice · one small exercise'}
           label="Today’s practice"
           hint={hint}
           value={draft.practice}
           onChange={setField('practice')}
         />
         <FieldCard
-          italicPrompt="What would make today a faithful expression of what matters most?"
+          kicker="What would make today a faithful expression of what matters most?"
           label="A faithful expression of what matters most"
           value={draft.faithful}
           onChange={setField('faithful')}

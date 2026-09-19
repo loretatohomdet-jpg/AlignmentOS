@@ -27,9 +27,7 @@ function loadDraft(day) {
 function PromptCard({ prompt, value, onChange, label }) {
   return (
     <div className="border border-alignment-accent/[0.10] bg-white px-5 py-5 sm:px-6">
-      <p className="font-display italic font-normal text-[1.35rem] sm:text-[1.5rem] leading-snug text-alignment-accent">
-        {prompt}
-      </p>
+      <p className={type.kicker}>{prompt}</p>
       <textarea
         value={value}
         onChange={(e) => onChange(e.target.value)}

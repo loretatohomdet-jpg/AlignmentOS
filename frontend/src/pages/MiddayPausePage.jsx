@@ -92,15 +92,9 @@ export default function MiddayPausePage() {
 
       <form onSubmit={saveAndContinue} className="mt-8 space-y-3">
         <div className="border border-alignment-accent/[0.10] bg-white px-5 py-6 sm:px-6">
-          <p className="font-display italic font-normal text-[1.35rem] sm:text-[1.5rem] leading-snug text-alignment-accent">
-            Am I living the day I intended?
-          </p>
-          <p className="mt-3 font-display italic font-normal text-[1.25rem] sm:text-[1.4rem] leading-snug text-alignment-accent/85">
-            What has distracted me?
-          </p>
-          <p className="mt-3 font-display italic font-normal text-[1.25rem] sm:text-[1.4rem] leading-snug text-alignment-accent/85">
-            What deserves my attention now?
-          </p>
+          <p className={type.kicker}>Am I living the day I intended?</p>
+          <p className={`mt-3 ${type.kicker}`}>What has distracted me?</p>
+          <p className={`mt-3 ${type.kicker}`}>What deserves my attention now?</p>
           <textarea
             value={draft.notice}
             onChange={(e) => setField('notice')(e.target.value)}

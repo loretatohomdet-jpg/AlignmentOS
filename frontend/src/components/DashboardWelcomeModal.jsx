@@ -22,7 +22,7 @@ function stepsFor({ hasScore }) {
         n: '03',
         title: 'See your map',
         body: 'It fills from the diagnostic. Score and history stay on Dashboard.',
-        to: '/alignment-map',
+        to: '/dashboard',
       },
     ];
   }
@@ -35,9 +35,9 @@ function stepsFor({ hasScore }) {
     },
     {
       n: '02',
-      title: 'Open your map',
-      body: 'Six domains from the diagnostic. Strain is the thin place.',
-      to: '/alignment-map',
+      title: 'See your results',
+      body: 'Score and map live on the Dashboard — one record, not a separate menu.',
+      to: '/dashboard',
     },
     {
       n: '03',
