@@ -6,6 +6,7 @@ export const siteNavMainLinks = [
   { to: '/platform', label: 'Platform' },
   { to: '/planner', label: 'Planner' },
   { to: '/shop', label: 'Shop' },
+  { to: '/about', label: 'About' },
 ];
 
 /** Product nav when signed in — daily work lives on Practice. */

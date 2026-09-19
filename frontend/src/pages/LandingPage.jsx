@@ -9,9 +9,9 @@ import CommerceCta from '../components/CommerceCta';
 import BookCover from '../components/BookCover';
 import { alignmentTools, plannerImages, plannerProduct, resetProduct } from '../config/commerce';
 import { type } from '../config/siteType';
-import { mergeProduct, useShopCatalog, useSitePage } from '../hooks/useSiteContent';
+import { mergeProduct, useShopCatalog } from '../hooks/useSiteContent';
 
-const HERO_LINE = 'Recover the art of living well.';
+const HERO_LINE = 'Know what matters. Know what to do next.';
 
 function HeroTypeLine({ text }) {
   const reduced = usePrefersReducedMotion();
@@ -266,8 +266,6 @@ function FinalCtaClosing() {
 
 export default function LandingPage() {
   /** Six domains — olive bar marquee (white / grey dots only). */
-  const cms = useSitePage('/');
-
   const heroDomains = [
     { label: 'Identity', dot: 'bg-alignment-surface' },
     { label: 'Purpose', dot: 'bg-alignment-surface/70' },
@@ -324,20 +322,20 @@ export default function LandingPage() {
           <div className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
             <div className="relative flex flex-1 flex-col justify-center px-6 sm:px-8 lg:px-12 pt-12 pb-8 sm:pt-16 sm:pb-10">
             <div className="max-w-4xl mx-auto text-center px-1">
-              <HeroTypeLine text={cms?.headline || HERO_LINE} />
+              <HeroTypeLine text={HERO_LINE} />
               <p className="mt-7 sm:mt-9 font-display italic text-xl sm:text-2xl text-alignment-primary leading-snug">
-                {cms?.subhead || 'A system for becoming whole.'}
+                A system for becoming whole.
               </p>
               <div className="mt-9 sm:mt-11 flex flex-col items-center gap-3">
-                <Link to={cms?.ctaHref || '/assessment'} className={pillPrimary}>
-                  {cms?.ctaLabel || 'Take the free assessment'}
+                <Link to="/assessment" className={pillPrimary}>
+                  Take the free assessment
                 </Link>
                 <a href="#how-it-works" className={pillGhost}>
                   How it works
                 </a>
               </div>
               <p className={`mt-8 ${type.body} max-w-sm mx-auto`}>
-                {cms?.body || 'Six domains. One Alignment Score. A clearer path forward.'}
+                Six domains. One Alignment Score. A clearer path forward.
               </p>
             </div>
             </div>
@@ -364,7 +362,6 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Second section — quote */}
         <section className="w-full border-t border-alignment-accent/[0.06] bg-alignment-surfaceSoft/90">
           <div className="max-w-xl mx-auto px-6 sm:px-8 py-12 sm:py-16 text-center">
             <blockquote className={type.quote}>
@@ -375,7 +372,6 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* The compounding loop — four steps */}
         <section id="how-it-works" className="w-full border-t border-alignment-accent/[0.06] bg-apple-surface-muted scroll-mt-20">
           <div className="max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12 sm:py-16">
             <h2 className={`${type.h2} max-w-xl text-balance`}>
@@ -403,7 +399,6 @@ export default function LandingPage() {
                 ))}
               </ol>
 
-              {/** Desktop: 7-col grid — equal step columns + fixed arrow gutters so chevrons align with badge row */}
               <div className="hidden lg:grid lg:grid-cols-[minmax(0,1fr)_2.5rem_minmax(0,1fr)_2.5rem_minmax(0,1fr)_2.5rem_minmax(0,1fr)] lg:items-start">
                 {compoundingSteps.map((step, idx) => (
                   <Fragment key={`desktop-${step.n}`}>
@@ -442,12 +437,9 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Six domains */}
         <section className="w-full border-t border-alignment-accent/[0.06] bg-alignment-surfaceSoft/90">
           <div className="max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12 sm:py-16">
-            <h2 className={type.h2}>
-              Six domains
-            </h2>
+            <h2 className={type.h2}>Six domains</h2>
 
             <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
               {sixDomains.map((domain) => (

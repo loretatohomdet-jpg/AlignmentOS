@@ -13,6 +13,8 @@ import ResetPasswordPage from './pages/ResetPasswordPage';
 import ResetGuidePage from './pages/ResetGuidePage';
 import PricingPage from './pages/PricingPage';
 import AboutPage from './pages/AboutPage';
+import FaqPage from './pages/FaqPage';
+import ContactPage from './pages/ContactPage';
 import ShopPage from './pages/ShopPage';
 import PlannerPage from './pages/PlannerPage';
 import AlignmentClarityPage from './pages/AlignmentClarityPage';
@@ -21,6 +23,7 @@ import DailyPage from './pages/DailyPage';
 import ResetProductPage from './pages/ResetProductPage';
 import InstitutionPage from './pages/InstitutionPage';
 import PlatformPage from './pages/PlatformPage';
+import HowItWorksPage from './pages/HowItWorksPage';
 import FrameworkPage from './pages/FrameworkPage';
 import ComingSoonPage from './pages/ComingSoonPage';
 import AlignmentMapPage from './pages/AlignmentMapPage';
@@ -195,6 +198,9 @@ export default function App() {
       <Route path="/reset-guide" element={<ResetGuidePage />} />
       <Route path="/pricing" element={<PricingPage />} />
       <Route path="/about" element={<AboutPage />} />
+      <Route path="/faq" element={<FaqPage />} />
+      <Route path="/faqs" element={<Navigate to="/faq" replace />} />
+      <Route path="/contact" element={<ContactPage />} />
       <Route path="/shop" element={<ShopPage />} />
       <Route path="/shop/alignment-clarity" element={<AlignmentClarityPage />} />
       <Route path="/shop/daily" element={<DailyPage />} />
@@ -210,7 +216,7 @@ export default function App() {
       <Route path="/alignment-map" element={<AlignmentMapPage />} />
       <Route path="/map" element={<Navigate to="/alignment-map" replace />} />
       <Route path="/ethics" element={<Layout><EthicsPage /></Layout>} />
-      <Route path="/how-it-works" element={<Navigate to="/#how-it-works" replace />} />
+      <Route path="/how-it-works" element={<HowItWorksPage />} />
       {/* Short URLs — marketing / email friendly */}
       <Route
         path="/diagnostic"

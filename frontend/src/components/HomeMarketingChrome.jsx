@@ -3,7 +3,9 @@ import { Link, useLocation } from 'react-router-dom';
 import BrandLogo from './BrandLogo';
 import HeaderUserMenu from './HeaderUserMenu';
 import MobileDrawer from './MobileDrawer';
-import { SiteMarketingFooterNav } from './SiteFooterNav';
+import { SiteLegalFooterNav, SiteMarketingFooterNav } from './SiteFooterNav';
+import { siteFooterCopyright, siteFooterTagline } from '../config/footerNav';
+import { type } from '../config/siteType';
 import { clearSession, useAuthSession } from '../utils/authSession';
 
 export const hairline = 'border-alignment-accent/[0.10]';
@@ -130,19 +132,20 @@ export function HomeFooter() {
 
 /** Same footer as the homepage. */
 export function SitePageFooter({ extra = null }) {
+  const linkRow =
+    'flex flex-wrap items-center gap-y-2 min-w-0 text-[9px] sm:text-[10px] font-normal uppercase tracking-[0.14em]';
+
   return (
     <footer className="w-full min-w-0 max-w-full overflow-x-hidden border-t border-alignment-accent/[0.08] bg-alignment-surfaceSoft/95 backdrop-blur-[2px] pb-[max(1rem,env(safe-area-inset-bottom))] mt-auto">
-      <div className="w-full min-w-0 max-w-6xl xl:max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 py-8 sm:py-10">
-        <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between lg:gap-12">
-          <div className="max-w-xs">
-            <BrandLogo iconHeightPx={44} />
-            <p className="mt-4 text-xs text-alignment-accent/65 leading-relaxed">Human alignment software.</p>
-          </div>
-          <div className="flex flex-col gap-3 lg:flex-1">
-            <SiteMarketingFooterNav className="flex flex-wrap gap-x-6 sm:gap-x-8 gap-y-3 min-w-0 text-[9px] sm:text-[10px] font-normal uppercase tracking-[0.14em]" />
-            {extra}
-          </div>
-        </div>
+      <div className="w-full min-w-0 max-w-6xl xl:max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 py-10 sm:py-12">
+        <BrandLogo iconHeightPx={44} />
+        <p className={`mt-4 ${type.body} max-w-md`}>{siteFooterTagline}</p>
+        <SiteMarketingFooterNav className={`${linkRow} mt-8`} />
+        <SiteLegalFooterNav className={`${linkRow} mt-4`} />
+        <p className={`mt-8 ${type.muted}`}>
+          {siteFooterCopyright}
+          {extra ? <span className="ml-4 inline-flex align-middle">{extra}</span> : null}
+        </p>
       </div>
     </footer>
   );

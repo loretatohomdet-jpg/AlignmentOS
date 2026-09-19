@@ -4,35 +4,50 @@ import { siteLegalLinks, siteMarketingFooter, siteSecondaryFooter } from '../con
 const linkClass =
   'hover:text-alignment-accent transition-colors duration-200 whitespace-normal break-words focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2 rounded-sm';
 
-/** Landing page marketing grid + legal */
-export function SiteMarketingFooterNav({ className = '' }) {
-  const links = siteMarketingFooter;
-
+function FooterItem({ item }) {
+  const className = `${linkClass} text-alignment-accent/65`;
+  if (item.href) {
+    return (
+      <a
+        href={item.href}
+        className={className}
+        {...(item.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+      >
+        {item.label}
+      </a>
+    );
+  }
   return (
-    <nav className={className} aria-label="Site">
-      {links.map((item) =>
-        item.href ? (
-          <a
-            key={item.label}
-            href={item.href}
-            className={`${linkClass} text-alignment-accent/65`}
-            {...(item.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-          >
-            {item.label}
-          </a>
-        ) : (
-          <Link key={`${item.to}-${item.label}`} to={item.to} className={`${linkClass} text-alignment-accent/65`}>
-            {item.label}
-          </Link>
-        ),
-      )}
-      {siteLegalLinks.map((item) => (
-        <Link key={item.to} to={item.to} className={`${linkClass} text-alignment-accent/65`}>
-          {item.label}
-        </Link>
+    <Link to={item.to} className={className}>
+      {item.label}
+    </Link>
+  );
+}
+
+function FooterLinkRow({ links, className, ariaLabel }) {
+  return (
+    <nav className={className} aria-label={ariaLabel}>
+      {links.map((item, index) => (
+        <span key={`${item.to || item.href}-${item.label}`} className="inline-flex items-center">
+          {index > 0 ? (
+            <span aria-hidden className="mx-2.5 sm:mx-3 text-alignment-accent/35">
+              ·
+            </span>
+          ) : null}
+          <FooterItem item={item} />
+        </span>
       ))}
     </nav>
   );
+}
+
+/** Landing page marketing links */
+export function SiteMarketingFooterNav({ className = '' }) {
+  return <FooterLinkRow links={siteMarketingFooter} className={className} ariaLabel="Navigate" />;
+}
+
+export function SiteLegalFooterNav({ className = '' }) {
+  return <FooterLinkRow links={siteLegalLinks} className={className} ariaLabel="Legal" />;
 }
 
 const secondaryLinkClass =
