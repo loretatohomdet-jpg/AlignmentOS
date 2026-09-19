@@ -19,8 +19,7 @@ async function create(req, res, next) {
       console.error('Lead DB save failed:', dbErr.message);
     }
 
-    // Never subscribe the homepage to the Kit form — that form’s incentive email is the extra lead-magnet.
-    // List add is tag-only. The Reset guide itself is Resend.
+    // Kit list only — no form, no lead tag. Resend sends the one Reset guide letter.
     const kitSaved = await subscribeLeadQuietly(email, source);
 
     if (!lead && !kitSaved && !process.env.RESEND_API_KEY) {

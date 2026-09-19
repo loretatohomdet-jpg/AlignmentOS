@@ -13,17 +13,17 @@ if (!email) {
 }
 
 if (!isConfigured()) {
-  console.error('Missing CONVERTKIT_API_KEY or CONVERTKIT_FORM_ID in .env');
+  console.error('Missing CONVERTKIT_API_KEY in .env');
   process.exit(1);
 }
 
 subscribeLead(email, 'test-script')
   .then((ok) => {
     if (ok) {
-      console.log(`OK — ${email} sent to ConvertKit form ${process.env.CONVERTKIT_FORM_ID}`);
+      console.log(`OK — ${email} added to the Kit list (no form email).`);
       process.exit(0);
     }
-    console.error('ConvertKit returned false — check API key, form ID, and that the form is published.');
+    console.error('ConvertKit returned false — check CONVERTKIT_API_KEY.');
     process.exit(1);
   })
   .catch((err) => {

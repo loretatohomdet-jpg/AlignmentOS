@@ -1,9 +1,10 @@
 /**
  * ConvertKit (Kit) — collect emails only.
- * Welcome, Reset guide, and diagnostic results are sent by Resend, never by a Kit form.
+ * Welcome, Reset guide, and diagnostic results are sent by Resend, never by Kit.
  *
- * Collection uses Kit v4 create-subscriber (no form, so no incentive email).
- * Optional tags organise the list. Do not attach a welcome sequence to those tags.
+ * Never POST to a Kit form. Forms send the Reset-guide confirmation (n.convertkit.com).
+ * Never apply CONVERTKIT_TAG_LEAD on a homepage capture — that tag is wired to the same
+ * incentive / double-opt-in letter. List add is v4 create-subscriber with state active.
  */
 
 const V3_BASE = 'https://api.convertkit.com/v3';
@@ -104,7 +105,6 @@ function subscribeLeadQuietly(email, source = 'diagnostic-report') {
   return collectOnConvertKit({
     email,
     source,
-    tagId: process.env.CONVERTKIT_TAG_LEAD,
   });
 }
 
