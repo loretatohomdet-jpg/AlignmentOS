@@ -2,7 +2,6 @@
  * Primary header navigation — same labels and order as the home page.
  */
 export const siteNavMainLinks = [
-  { to: '/assessment', label: 'Assessment' },
   { to: '/how-it-works', label: 'How it works' },
   { to: '/platform', label: 'Platform' },
   { to: '/planner', label: 'Planner' },

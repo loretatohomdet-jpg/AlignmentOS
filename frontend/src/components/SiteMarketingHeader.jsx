@@ -15,7 +15,7 @@ import { clearSession, useAuthSession } from '../utils/authSession';
 import AdminPageBar from './AdminPageBar';
 
 /**
- * Site header. Marketing pages: Assessment · How it works · Platform · Planner · Shop.
+ * Site header. Marketing pages: How it works · Platform · Planner · Shop, plus Take the Assessment.
  * Product pages switch to Dashboard · Practice · Review once a real session exists.
  */
 export default function SiteMarketingHeader({ appendDesktop = null, authDrawer }) {
