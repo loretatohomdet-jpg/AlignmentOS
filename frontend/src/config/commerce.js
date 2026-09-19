@@ -86,6 +86,7 @@ export const plannerProduct = {
 export const companionImages = {
   reset: '/images/companions/reset.png',
   clarity: '/images/companions/clarity.png',
+  daily: '/images/companions/daily.png',
   quarterly: '/images/companions/quarterly-review.png',
 };
 
@@ -146,7 +147,7 @@ export const dailyProduct = {
   price: 24,
   path: '/shop/daily',
   checkoutUrl: checkout(shopDailyUrl),
-  image: '',
+  image: companionImages.daily,
   imageAlt: 'Daily — Practice What Matters',
   priceLabel: digitalPrint(24, 38),
   cta: 'Choose Digital',

@@ -370,7 +370,7 @@ const SHOP_OFFERS = [
     kicker: 'Alignment Tool',
     tagline: 'Practice what matters.',
     body: 'A simple daily structure for carrying your priorities into the way you actually spend your time and attention.',
-    image: '',
+    image: '/images/companions/daily.png',
     digitalPrice: 24,
     printPrice: 38,
     sortOrder: 21,
