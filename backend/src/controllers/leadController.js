@@ -1,7 +1,7 @@
 const { ZodError } = require('zod');
 const { prisma } = require('../prismaClient');
 const { createLeadSchema } = require('../validation/leadSchemas');
-const { subscribeLead, subscribeLeadQuietly, isConfigured } = require('../services/convertkit');
+const { subscribeLeadQuietly, isConfigured } = require('../services/convertkit');
 const { sendResetGuideEmail } = require('../services/resetGuideEmail');
 const { wantsResetGuide } = require('../services/leadEmail');
 
@@ -19,10 +19,9 @@ async function create(req, res, next) {
       console.error('Lead DB save failed:', dbErr.message);
     }
 
-    // Homepage: Kit form subscribe sends the Reset guide. Everywhere else: tag only (no Kit email).
-    const kitSaved = sendGuide
-      ? await subscribeLead(email, source)
-      : await subscribeLeadQuietly(email, source);
+    // Never subscribe the homepage to the Kit form — that form’s incentive email is the extra lead-magnet.
+    // List add is tag-only. The Reset guide itself is Resend.
+    const kitSaved = await subscribeLeadQuietly(email, source);
 
     if (!lead && !kitSaved && !process.env.RESEND_API_KEY) {
       const message = isConfigured()
@@ -31,8 +30,8 @@ async function create(req, res, next) {
       return res.status(503).json({ message });
     }
 
-    let emailed = Boolean(sendGuide && kitSaved);
-    if (sendGuide && !kitSaved) {
+    let emailed = false;
+    if (sendGuide) {
       try {
         emailed = await sendResetGuideEmail(email);
       } catch (err) {

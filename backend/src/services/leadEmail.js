@@ -1,6 +1,6 @@
 const RESET_GUIDE_SOURCES = new Set(['home-reset-guide', 'lander']);
 
-/** Homepage (and default lander) should get Kit’s Reset guide. Other lead sources stay quiet. */
+/** Homepage (and default lander) get the Reset guide from Resend. Other lead sources stay quiet. */
 function wantsResetGuide(source) {
   return RESET_GUIDE_SOURCES.has(source || 'lander');
 }

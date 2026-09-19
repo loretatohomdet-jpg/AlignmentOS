@@ -1,24 +1,29 @@
 /**
- * ConvertKit (Kit) subscriber API — v3.
- * https://developers.kit.com/v3
+ * ConvertKit (Kit) — collect emails only.
+ * Welcome, Reset guide, and diagnostic results are sent by Resend, never by a Kit form.
  *
- * Set CONVERTKIT_API_KEY and CONVERTKIT_FORM_ID. Optional tag IDs per event.
+ * Collection uses Kit v4 create-subscriber (no form, so no incentive email).
+ * Optional tags organise the list. Do not attach a welcome sequence to those tags.
  */
 
-const API_BASE = 'https://api.convertkit.com/v3';
+const V3_BASE = 'https://api.convertkit.com/v3';
+const V4_BASE = 'https://api.kit.com/v4';
 
-function isConfigured() {
-  return Boolean(process.env.CONVERTKIT_API_KEY && process.env.CONVERTKIT_FORM_ID);
+function apiKey() {
+  return (process.env.CONVERTKIT_API_KEY || '').trim();
 }
 
-async function postJson(path, body) {
-  const apiKey = process.env.CONVERTKIT_API_KEY;
-  if (!apiKey) return null;
-  const url = `${API_BASE}${path}`;
-  const res = await fetch(url, {
+function isConfigured() {
+  return Boolean(apiKey());
+}
+
+async function postV3(path, body) {
+  const key = apiKey();
+  if (!key) return null;
+  const res = await fetch(`${V3_BASE}${path}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json; charset=utf-8' },
-    body: JSON.stringify({ api_key: apiKey, ...body }),
+    body: JSON.stringify({ api_key: key, ...body }),
   });
   if (!res.ok) {
     const text = await res.text().catch(() => '');
@@ -27,65 +32,32 @@ async function postJson(path, body) {
   return res.json().catch(() => ({}));
 }
 
-async function subscribeTag(tagId, email) {
-  if (!tagId || !email) return;
-  try {
-    await postJson(`/tags/${tagId}/subscribe`, { email });
-  } catch (err) {
-    console.error('ConvertKit tag subscribe failed:', err.message);
-  }
-}
-
-/**
- * Add or update a subscriber on the default form, optionally apply tag IDs.
- * @param {{ email: string, firstName?: string, tags?: string[], source?: string }} opts
- */
-/** @returns {Promise<boolean>} true when subscriber was added to the form */
-async function subscribeToConvertKit({ email, firstName, tags = [], source }) {
-  if (!isConfigured()) return false;
-  const normalized = String(email || '').trim().toLowerCase();
-  if (!normalized) return false;
-
-  const formId = process.env.CONVERTKIT_FORM_ID;
-  const fields = {};
-  if (source) fields.source = source;
-
-  try {
-    await postJson(`/forms/${formId}/subscribe`, {
-      email: normalized,
+async function createSubscriberV4({ email, firstName, source }) {
+  const key = apiKey();
+  if (!key) return false;
+  const res = await fetch(`${V4_BASE}/subscribers`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Kit-Api-Key': key,
+    },
+    body: JSON.stringify({
+      email_address: email,
       first_name: firstName || undefined,
-      fields: Object.keys(fields).length ? fields : undefined,
-    });
-  } catch (err) {
-    console.error('ConvertKit form subscribe failed:', err.message);
-    return false;
-  }
-
-  const tagIds = [...new Set(tags.filter(Boolean))];
-  for (const tagId of tagIds) {
-    await subscribeTag(tagId, normalized);
-  }
-  return true;
-}
-
-/** Form subscribe — sends Kit’s Reset-guide email. Do not also tag; the lead tag often fires a welcome sequence. */
-function subscribeLead(email, source = 'lander') {
-  return subscribeToConvertKit({
-    email,
-    source,
+      state: 'active',
+      fields: source ? { source } : undefined,
+    }),
   });
+  if (res.ok || res.status === 200) return true;
+  const text = await res.text().catch(() => '');
+  throw new Error(`Kit v4 ${res.status}: ${text.slice(0, 200)}`);
 }
 
-/**
- * Add someone to the list by tag only. Does not trigger the Reset-guide form email.
- */
-async function subscribeByTag(email, tagId, { firstName, source } = {}) {
-  const apiKey = process.env.CONVERTKIT_API_KEY;
-  const normalized = String(email || '').trim().toLowerCase();
-  if (!normalized || !apiKey || !tagId) return false;
+async function subscribeTag(tagId, email, { firstName, source } = {}) {
+  if (!tagId || !email) return false;
   try {
-    await postJson(`/tags/${tagId}/subscribe`, {
-      email: normalized,
+    await postV3(`/tags/${tagId}/subscribe`, {
+      email,
       first_name: firstName || undefined,
       fields: source ? { source } : undefined,
     });
@@ -97,29 +69,74 @@ async function subscribeByTag(email, tagId, { firstName, source } = {}) {
 }
 
 /**
- * Add a diagnostic lead to the list without the form’s Reset-guide confirmation.
+ * Add or update a subscriber on the list. Never uses a Kit form (forms send Kit email).
  */
-async function subscribeLeadQuietly(email, source = 'diagnostic-report') {
-  return subscribeByTag(email, process.env.CONVERTKIT_TAG_LEAD, { source });
+async function collectOnConvertKit({ email, firstName, source, tagId } = {}) {
+  const normalized = String(email || '').trim().toLowerCase();
+  if (!normalized || !isConfigured()) return false;
+
+  let saved = false;
+  try {
+    saved = await createSubscriberV4({ email: normalized, firstName, source });
+  } catch (err) {
+    console.error('Kit v4 list collect failed:', err.message);
+    try {
+      await postV3('/subscribers', {
+        email: normalized,
+        first_name: firstName || undefined,
+        fields: source ? { source } : undefined,
+      });
+      saved = true;
+    } catch (v3Err) {
+      console.error('Kit v3 list collect failed:', v3Err.message);
+    }
+  }
+
+  if (tagId) {
+    const tagged = await subscribeTag(tagId, normalized, { firstName, source });
+    saved = saved || tagged;
+  }
+
+  return saved;
 }
 
-/** New account — tag only, never the Reset-guide form. */
+function subscribeLeadQuietly(email, source = 'diagnostic-report') {
+  return collectOnConvertKit({
+    email,
+    source,
+    tagId: process.env.CONVERTKIT_TAG_LEAD,
+  });
+}
+
+/** Same as quiet collect — kept so scripts do not hit a Kit form. */
+function subscribeLead(email, source = 'lander') {
+  return subscribeLeadQuietly(email, source);
+}
+
 function subscribeRegistered(email, firstName) {
   const tagId = process.env.CONVERTKIT_TAG_REGISTERED || process.env.CONVERTKIT_TAG_LEAD;
-  return subscribeByTag(email, tagId, { firstName, source: 'signup' });
+  return collectOnConvertKit({
+    email,
+    firstName,
+    source: 'signup',
+    tagId,
+  });
 }
 
-/** Successful Habit Engine / paid checkout — tag only, never the Reset-guide form. */
 function subscribePaid(email) {
   const tagId =
     process.env.CONVERTKIT_TAG_PAID ||
     process.env.CONVERTKIT_TAG_REGISTERED ||
     process.env.CONVERTKIT_TAG_LEAD;
-  return subscribeByTag(email, tagId, { source: 'paid' });
+  return collectOnConvertKit({
+    email,
+    source: 'paid',
+    tagId,
+  });
 }
 
 module.exports = {
-  subscribeToConvertKit,
+  collectOnConvertKit,
   subscribeLead,
   subscribeLeadQuietly,
   subscribeRegistered,

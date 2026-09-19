@@ -4,6 +4,7 @@ const { ZodError } = require('zod');
 const { prisma } = require('../prismaClient');
 const { registerSchema, loginSchema, forgotPasswordSchema, resetPasswordSchema } = require('../validation/authSchemas');
 const { subscribeRegistered } = require('../services/convertkit');
+const { sendSignupWelcomeEmail } = require('../services/signupWelcomeEmail');
 const { claimGuestDiagnostic } = require('../services/persistAssessment');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-me';
@@ -71,6 +72,9 @@ async function register(req, res, next) {
 
     subscribeRegistered(user.email, user.name).catch((err) =>
       console.error('ConvertKit signup subscribe failed:', err.message)
+    );
+    sendSignupWelcomeEmail(user.email, user.name).catch((err) =>
+      console.error('Signup welcome email failed:', err.message)
     );
 
     const claimedDiagnostic = await claimGuestDiagnostic(user.id, user.email);
