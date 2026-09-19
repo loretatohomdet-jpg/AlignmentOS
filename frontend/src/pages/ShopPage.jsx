@@ -7,7 +7,7 @@ import { SitePageFooter, pillGhost, pillPrimary } from '../components/HomeMarket
 import {
   alignmentTools,
   formatUsd,
-  plannerImages,
+  plannerEditions,
   plannerProduct,
   resetProduct,
   toolsCollection,
@@ -24,6 +24,11 @@ export default function ShopPage() {
   const planner = mergeProduct(plannerProduct, offers);
   const reset = mergeProduct(resetProduct, offers);
   const tools = alignmentTools.map((item) => mergeProduct(item, offers)).filter((item) => !item.hidden);
+  const plannerShelf = ['planner-heirloom', 'planner-standard', 'planner-digital']
+    .map((sku) => plannerEditions.find((edition) => edition.sku === sku))
+    .filter(Boolean)
+    .map((edition) => mergeProduct(edition, offers))
+    .filter((edition) => !edition.hidden);
 
   useEffect(() => {
     trackCommerce('shop_all_click', { sku: 'shop' });
@@ -42,7 +47,7 @@ export default function ShopPage() {
           <h1 className={`mt-6 ${type.h1} text-balance max-w-xl`}>{cms?.headline || 'Practical tools for real life.'}</h1>
           <p className={`mt-6 ${type.body} max-w-xl`}>
             {cms?.body ||
-              'The Life of Purpose Planner is the flagship paper product. Clarity, Daily, and the Quarterly Review are the focused Alignment Tools. Reset is a simple place to begin.'}
+              'The Life of Purpose Planner in three editions — sleeved, paperback, and digital — plus the digital Alignment Tools in three parts: Clarity, Daily, and the Quarterly Review.'}
           </p>
         </section>
 
@@ -50,30 +55,56 @@ export default function ShopPage() {
           className="max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pb-16"
           aria-labelledby="shop-planner-heading"
         >
-          <p className={type.kicker}>The signature planner</p>
+          <p className={type.kicker}>The planner</p>
           <h2 id="shop-planner-heading" className={`mt-4 ${type.h2} max-w-xl text-balance`}>
             {planner.title}
           </h2>
-          <figure className="mt-8 overflow-hidden rounded-2xl bg-alignment-foundation max-w-3xl">
-            <img
-              src={plannerImages.paperLifestyle}
-              alt={planner.imageAlt}
-              className="w-full aspect-[4/5] sm:aspect-[4/3] object-cover object-[center_46%]"
-              loading="lazy"
-              decoding="async"
-            />
-          </figure>
-          <p className={`mt-6 ${type.body} max-w-xl`}>
-            A thoughtfully designed planner for carrying what matters into the days and weeks of your actual life.
+          <p className={`mt-4 ${type.body} max-w-xl`}>
+            Choose the sleeved edition, the paperback, or the digital download. Each is the same planner, held a
+            different way.
           </p>
-          <p className={`mt-3 ${type.muted}`}>Priced separately from the Alignment Tools.</p>
+          <ul className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+            {plannerShelf.map((edition) => (
+              <li
+                key={edition.sku}
+                className="flex flex-col overflow-hidden rounded-2xl border border-alignment-accent/[0.1] bg-alignment-surface"
+              >
+                <img
+                  src={edition.image}
+                  alt={edition.imageAlt}
+                  className={edition.imageClass}
+                  loading="lazy"
+                  decoding="async"
+                />
+                <div className="flex flex-1 flex-col p-6 sm:p-8">
+                  {edition.kicker ? <p className={type.kicker}>{edition.kicker}</p> : null}
+                  <h3 className={`${edition.kicker ? 'mt-3' : ''} ${type.h3}`}>{edition.name}</h3>
+                  {edition.origin ? <p className={`mt-2 ${type.kicker}`}>{edition.origin}</p> : null}
+                  <p className="mt-3 font-display text-3xl font-medium text-alignment-accent tabular-nums">
+                    {formatUsd(edition.price)}
+                  </p>
+                  <p className={`mt-3 ${type.body} flex-1`}>{edition.note}</p>
+                  <CommerceCta
+                    href={edition.checkoutUrl}
+                    event="checkout_started"
+                    sku={edition.sku}
+                    className={`${pillPrimary} mt-8`}
+                  >
+                    {edition.cta} <span aria-hidden className="ml-1">
+                      →
+                    </span>
+                  </CommerceCta>
+                </div>
+              </li>
+            ))}
+          </ul>
           <CommerceCta
             to="/planner"
             event="planner_shop_click"
             sku={planner.sku}
             className="mt-8 inline-flex items-center text-[11px] font-medium uppercase tracking-[0.2em] text-alignment-accent border-b border-alignment-accent/25 pb-1 hover:border-alignment-accent"
           >
-            Explore the Planner <span aria-hidden className="ml-1">
+            See the planner in full <span aria-hidden className="ml-1">
               →
             </span>
           </CommerceCta>
@@ -83,11 +114,13 @@ export default function ShopPage() {
           className="max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pb-16"
           aria-labelledby="shop-tools-heading"
         >
-          <p className={type.kicker}>The Alignment Tools</p>
+          <p className={type.kicker}>The digital product</p>
           <h2 id="shop-tools-heading" className={`mt-4 ${type.h2} max-w-xl text-balance`}>
-            Three tools. Three places to begin.
+            Three parts. One practice.
           </h2>
-          <p className={`mt-4 ${type.body} max-w-xl`}>Focused guides for the moments you need them most.</p>
+          <p className={`mt-4 ${type.body} max-w-xl`}>
+            Clarity, Daily, and the Quarterly Review — the Alignment Tools, sold together or as the part you need now.
+          </p>
           <ul className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-6 lg:gap-8">
             {tools.map((product) => (
               <li key={product.sku}>

@@ -21,7 +21,7 @@ const SITE_PAGES = [
     eyebrow: 'Shop',
     headline: 'Practical tools for real life.',
     subhead: '',
-    body: 'The Life of Purpose Planner is the flagship paper product. Clarity, Daily, and the Quarterly Review are the focused Alignment Tools. Reset is a simple place to begin.',
+    body: 'The Life of Purpose Planner in three editions — sleeved, paperback, and digital — plus the digital Alignment Tools in three parts: Clarity, Daily, and the Quarterly Review.',
     ctaLabel: 'Explore the Planner',
     ctaHref: '/planner',
     isSystem: true,
