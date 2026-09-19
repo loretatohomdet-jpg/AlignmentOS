@@ -219,14 +219,6 @@ export default function DashboardPage() {
             <span className="rounded-full bg-alignment-surface px-3 py-1 text-xs font-medium text-alignment-accent capitalize">
               {user.plan?.toLowerCase() ?? 'free'} plan
             </span>
-            {(user.plan === 'FREE' || !user.plan) && (
-              <Link
-                to="/pricing"
-                className="text-sm font-medium text-alignment-accent hover:underline"
-              >
-                Upgrade
-              </Link>
-            )}
           </div>
 
           {habitStats?.engineActive && habitStats?.prompt && (

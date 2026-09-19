@@ -78,12 +78,9 @@ async function completeHabit(req, res, next) {
 async function getCompletionStats(req, res, next) {
   try {
     const userId = req.user.sub;
-    const [active, user] = await Promise.all([
-      loadActiveWithCompletions(userId),
-      prisma.user.findUnique({ where: { id: userId }, select: { plan: true } }),
-    ]);
+    const active = await loadActiveWithCompletions(userId);
     const summary = summarizeActiveHabits(active);
-    const engineActive = user?.plan === 'PRO' || user?.plan === 'TEAM';
+    const engineActive = true;
     res.json({
       totalCompletions: summary.totalCompletions,
       totalDaysWithActivity: summary.totalDaysWithActivity,

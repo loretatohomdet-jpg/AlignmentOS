@@ -140,10 +140,6 @@ export default function MorningAnchorPage() {
       }
       navigate('/practice', { replace: true });
     } catch (err) {
-      if (err.response?.status === 402) {
-        navigate('/pricing');
-        return;
-      }
       setError(err.response?.data?.message || 'Could not hold this morning. Your words are saved here.');
     } finally {
       setSaving(false);
