@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { API_BASE } from '../config/apiBase';
-import { adminHeaders } from '../pages/admin/adminShared';
+import { adminHeaders, apiError } from '../pages/admin/adminShared';
 import { getAccessToken, useAuthSession } from '../utils/authSession';
 
 export default function AdminPageBar() {
@@ -11,6 +11,7 @@ export default function AdminPageBar() {
   const [role, setRole] = useState(null);
   const [page, setPage] = useState(null);
   const [creating, setCreating] = useState(false);
+  const [claimError, setClaimError] = useState(null);
 
   const onAdmin = location.pathname.startsWith('/admin');
 
@@ -58,6 +59,7 @@ export default function AdminPageBar() {
 
   const claimPage = async () => {
     setCreating(true);
+    setClaimError(null);
     try {
       const title = location.pathname === '/' ? 'Home' : location.pathname.replace(/^\//, '');
       const res = await axios.post(
@@ -66,7 +68,8 @@ export default function AdminPageBar() {
         { headers: adminHeaders() }
       );
       window.location.href = `/admin/pages/${res.data.id}`;
-    } catch {
+    } catch (err) {
+      setClaimError(apiError(err, 'Could not add this page to the desk'));
       setCreating(false);
     }
   };
@@ -99,6 +102,7 @@ export default function AdminPageBar() {
         <Link to="/admin/shop" className="rounded-full border border-white/40 px-3 py-1 text-xs font-medium hover:bg-white/10">
           Shop
         </Link>
+        {claimError ? <span className="text-xs text-white/90">{claimError}</span> : null}
       </div>
     </div>
   );

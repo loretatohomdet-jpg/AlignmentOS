@@ -1,12 +1,19 @@
-import { Link } from 'react-router-dom';
 import SiteMarketingHeader from '../components/SiteMarketingHeader';
-import { pageWidth, pillGhost, pillPrimary, SitePageFooter } from '../components/HomeMarketingChrome';
+import { pageWidth, pillGhost, pillPrimary, SitePageFooter, CmsCta } from '../components/HomeMarketingChrome';
 import { monicaStoryUrl } from '../config/externalLinks';
 import { type } from '../config/siteType';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { pageCopy, useSitePage } from '../hooks/useSiteContent';
 
 export default function AboutPage() {
   usePageTitle('About — Alignment OS');
+  const copy = pageCopy(useSitePage('/about'), {
+    eyebrow: 'About',
+    headline: 'Built for real life.',
+    subhead: 'Knowing what matters and living like it are not always the same thing.',
+    ctaLabel: 'Take the Assessment',
+    ctaHref: '/assessment',
+  });
 
   return (
     <div className={type.page}>
@@ -19,12 +26,12 @@ export default function AboutPage() {
         <section>
           <div className={`${pageWidth} pt-12 sm:pt-16 pb-10 sm:pb-14`}>
             <div className="max-w-xl">
-              <p className={type.kicker}>About</p>
-              <h1 className={`mt-6 ${type.h1}`}>Built for real life.</h1>
+              <p className={type.kicker}>{copy.eyebrow}</p>
+              <h1 className={`mt-6 ${type.h1}`}>{copy.headline}</h1>
               <div className={`mt-10 sm:mt-12 space-y-6 ${type.body}`}>
                 <p>Alignment OS began with a simple problem:</p>
                 <p className="font-display text-xl sm:text-2xl font-medium text-alignment-accent leading-snug">
-                  Knowing what matters and living like it are not always the same thing.
+                  {copy.subhead}
                 </p>
                 <p>Most of us do not lack information.</p>
                 <p>
@@ -108,11 +115,11 @@ export default function AboutPage() {
           <div className={`${pageWidth} py-16 sm:pb-28`}>
             <div className="max-w-xl">
               <h2 className={type.h2}>See where your life holds.</h2>
-              <Link to="/assessment" className={`${pillPrimary} mt-8`}>
-                Take the Assessment <span aria-hidden className="ml-1">
+              <CmsCta href={copy.ctaHref} className={`${pillPrimary} mt-8`}>
+                {copy.ctaLabel} <span aria-hidden className="ml-1">
                   →
                 </span>
-              </Link>
+              </CmsCta>
             </div>
           </div>
         </section>

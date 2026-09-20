@@ -25,8 +25,43 @@ function slugify(value) {
 function normalizePath(path) {
   const raw = String(path || '').trim();
   if (!raw || raw === '/') return '/';
-  const withSlash = raw.startsWith('/') ? raw : `/${raw}`;
-  return withSlash.replace(/\/+$/, '') || '/';
+  const parts = raw
+    .replace(/^\/+/, '')
+    .split('/')
+    .map((seg) => slugify(seg))
+    .filter(Boolean);
+  return parts.length ? `/${parts.join('/')}` : '/';
+}
+
+function wasNeverEdited(row) {
+  if (!row?.createdAt || !row?.updatedAt) return true;
+  return Math.abs(new Date(row.updatedAt) - new Date(row.createdAt)) < 2500;
+}
+
+function presentPage(page) {
+  if (!page?.isSystem || !wasNeverEdited(page)) return page;
+  const seed = SITE_PAGES.find((item) => item.slug === page.slug || item.path === page.path);
+  if (!seed) return page;
+  return {
+    ...page,
+    title: seed.title || page.title,
+    eyebrow: seed.eyebrow ?? page.eyebrow,
+    headline: seed.headline ?? page.headline,
+    subhead: seed.subhead ?? page.subhead,
+    body: seed.body ?? page.body,
+    ctaLabel: seed.ctaLabel ?? page.ctaLabel,
+    ctaHref: seed.ctaHref ?? page.ctaHref,
+  };
+}
+
+function prismaFail(err, res) {
+  if (err.code === 'P2002') {
+    return res.status(409).json({ message: 'A page or product already uses that URL or name' });
+  }
+  if (err.code === 'P2021' || err.code === 'P2022') {
+    return res.status(500).json({ message: 'The pages table is missing. Run database migrations, then try again.' });
+  }
+  return null;
 }
 
 async function uniqueSlug(base, excludeId) {
@@ -53,17 +88,48 @@ async function uniqueSku(base, excludeId) {
 
 let contentReady = false;
 
+function pageCreateData(page) {
+  return {
+    ...page,
+    eyebrow: page.eyebrow || null,
+    headline: page.headline || null,
+    subhead: page.subhead || null,
+    body: page.body || null,
+    ctaLabel: page.ctaLabel || null,
+    ctaHref: page.ctaHref || null,
+    isPublished: page.isPublished !== false,
+    isSystem: page.isSystem !== false,
+  };
+}
+
 async function ensureContent() {
   if (contentReady) return;
-  const [pageCount, offerCount] = await Promise.all([
-    prisma.sitePage.count(),
-    prisma.shopOffer.count(),
+  const [pages, offers] = await Promise.all([
+    prisma.sitePage.findMany({ select: { slug: true, path: true } }),
+    prisma.shopOffer.findMany({ select: { sku: true } }),
   ]);
-  if (pageCount === 0) {
-    await prisma.sitePage.createMany({ data: SITE_PAGES });
+  const slugs = new Set(pages.map((row) => row.slug));
+  const paths = new Set(pages.map((row) => row.path));
+  const missingPages = SITE_PAGES.filter((page) => !slugs.has(page.slug) && !paths.has(page.path)).map(pageCreateData);
+  if (missingPages.length) {
+    await prisma.sitePage.createMany({ data: missingPages });
   }
-  if (offerCount === 0) {
-    await prisma.shopOffer.createMany({ data: SHOP_OFFERS });
+  const skus = new Set(offers.map((row) => row.sku));
+  const missingOffers = SHOP_OFFERS.filter((offer) => !skus.has(offer.sku)).map((offer) => ({
+    ...offer,
+    kicker: offer.kicker || null,
+    tagline: offer.tagline || null,
+    body: offer.body || null,
+    image: offer.image || null,
+    digitalPrice: offer.digitalPrice ?? null,
+    printPrice: offer.printPrice ?? null,
+    digitalUrl: offer.digitalUrl || null,
+    printUrl: offer.printUrl || null,
+    isPublished: offer.isPublished !== false,
+    sortOrder: offer.sortOrder ?? 100,
+  }));
+  if (missingOffers.length) {
+    await prisma.shopOffer.createMany({ data: missingOffers });
   }
   contentReady = true;
 }
@@ -109,6 +175,7 @@ async function listPages(req, res, next) {
     const pages = await prisma.sitePage.findMany({ orderBy: [{ pageGroup: 'asc' }, { title: 'asc' }] });
     res.json(pages);
   } catch (err) {
+    if (prismaFail(err, res)) return;
     next(err);
   }
 }
@@ -117,7 +184,7 @@ async function getPage(req, res, next) {
   try {
     const page = await prisma.sitePage.findUnique({ where: { id: req.params.pageId } });
     if (!page) return res.status(404).json({ message: 'Page not found' });
-    res.json(page);
+    res.json(presentPage(page));
   } catch (err) {
     next(err);
   }
@@ -125,8 +192,10 @@ async function getPage(req, res, next) {
 
 async function createPage(req, res, next) {
   try {
+    await ensureContent();
     const data = adminCreatePageSchema.parse(req.body);
-    const path = normalizePath(data.path);
+    const path = normalizePath(data.path || data.title);
+    if (path === '/') return res.status(409).json({ message: 'The home page already exists. Edit it instead.' });
     const existingPath = await prisma.sitePage.findUnique({ where: { path } });
     if (existingPath) return res.status(409).json({ message: 'A page already uses that URL' });
     const slug = await uniqueSlug(data.slug || data.title || path);
@@ -137,7 +206,7 @@ async function createPage(req, res, next) {
         title: data.title,
         pageGroup: data.pageGroup || 'custom',
         eyebrow: data.eyebrow || null,
-        headline: data.headline || null,
+        headline: data.headline || data.title,
         subhead: data.subhead || null,
         body: data.body || null,
         ctaLabel: data.ctaLabel || null,
@@ -149,6 +218,7 @@ async function createPage(req, res, next) {
     res.status(201).json(page);
   } catch (err) {
     if (err instanceof ZodError) return zodFail(err, res);
+    if (prismaFail(err, res)) return;
     next(err);
   }
 }
@@ -158,7 +228,10 @@ async function updatePage(req, res, next) {
     const data = adminUpdatePageSchema.parse(req.body);
     const existing = await prisma.sitePage.findUnique({ where: { id: req.params.pageId } });
     if (!existing) return res.status(404).json({ message: 'Page not found' });
-    const nextPath = data.path ? normalizePath(data.path) : undefined;
+    const nextPath = data.path && !existing.isSystem ? normalizePath(data.path) : undefined;
+    if (existing.isSystem && data.path && normalizePath(data.path) !== existing.path) {
+      return res.status(400).json({ message: 'This core page URL cannot be changed. Edit the copy instead.' });
+    }
     if (nextPath && nextPath !== existing.path) {
       const clash = await prisma.sitePage.findUnique({ where: { path: nextPath } });
       if (clash) return res.status(409).json({ message: 'A page already uses that URL' });
@@ -182,6 +255,7 @@ async function updatePage(req, res, next) {
     res.json(page);
   } catch (err) {
     if (err instanceof ZodError) return zodFail(err, res);
+    if (prismaFail(err, res)) return;
     next(err);
   }
 }
@@ -190,8 +264,10 @@ async function deletePage(req, res, next) {
   try {
     const existing = await prisma.sitePage.findUnique({ where: { id: req.params.pageId } });
     if (!existing) return res.status(404).json({ message: 'Page not found' });
-    if (existing.path === '/') {
-      return res.status(400).json({ message: 'The home page cannot be deleted. Unpublish or edit it instead.' });
+    if (existing.path === '/' || existing.isSystem) {
+      return res.status(400).json({
+        message: 'This is a core page. Unpublish or edit it instead of deleting.',
+      });
     }
     await prisma.sitePage.delete({ where: { id: existing.id } });
     res.status(204).send();

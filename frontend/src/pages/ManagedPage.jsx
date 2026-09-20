@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import SiteMarketingHeader from '../components/SiteMarketingHeader';
-import { SitePageFooter, pillPrimary } from '../components/HomeMarketingChrome';
+import { SitePageFooter, pillPrimary, CmsCta } from '../components/HomeMarketingChrome';
 import { type } from '../config/siteType';
 import { API_BASE } from '../config/apiBase';
 import NotFoundPage from './NotFoundPage';
@@ -69,9 +69,7 @@ export default function ManagedPage() {
           ) : null}
           {page.body ? <p className={`mt-6 ${type.body} max-w-xl whitespace-pre-wrap`}>{page.body}</p> : null}
           {page.ctaHref && page.ctaLabel ? (
-            <Link to={page.ctaHref} className={`${pillPrimary} mt-10 inline-flex`}>
-              {page.ctaLabel}
-            </Link>
+            <CmsCta href={page.ctaHref} label={page.ctaLabel} className={`${pillPrimary} mt-10 inline-flex`} />
           ) : null}
         </section>
       </main>

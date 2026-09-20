@@ -4,12 +4,12 @@ import AgentFloatingButton from '../components/AgentFloatingButton';
 import EmailCaptureForm from '../components/EmailCaptureForm';
 import SiteMarketingHeader from '../components/SiteMarketingHeader';
 import DomainPillarIcon from '../components/DomainPillarIcon';
-import { pillGhost, pillPrimary, SitePageFooter } from '../components/HomeMarketingChrome';
+import { pillGhost, pillPrimary, SitePageFooter, CmsCta } from '../components/HomeMarketingChrome';
 import CommerceCta from '../components/CommerceCta';
 import BookCover from '../components/BookCover';
 import { alignmentTools, plannerImages, plannerProduct, resetProduct } from '../config/commerce';
 import { type } from '../config/siteType';
-import { mergeProduct, useShopCatalog } from '../hooks/useSiteContent';
+import { mergeProduct, pageCopy, useShopCatalog, useSitePage } from '../hooks/useSiteContent';
 
 const HERO_LINE = 'Know what matters. Know what to do next.';
 
@@ -220,6 +220,15 @@ function FinalCtaClosing() {
 }
 
 export default function LandingPage() {
+  const cms = useSitePage('/');
+  const copy = pageCopy(cms, {
+    headline: HERO_LINE,
+    subhead: 'A system for becoming whole.',
+    body: 'Six domains. One Alignment Score. A clearer path forward.',
+    ctaLabel: 'Take the free assessment',
+    ctaHref: '/assessment',
+  });
+
   /** Six domains — olive bar marquee (white / grey dots only). */
   const heroDomains = [
     { label: 'Identity', dot: 'bg-alignment-surface' },
@@ -278,21 +287,19 @@ export default function LandingPage() {
             <div className="relative flex flex-1 flex-col justify-center px-6 sm:px-8 lg:px-12 pt-12 pb-8 sm:pt-16 sm:pb-10">
             <div className="max-w-4xl mx-auto text-center px-1">
               <h1 className="font-display not-italic font-medium leading-[1.18] tracking-tight text-alignment-accent whitespace-nowrap text-[clamp(1.2rem,4.8vw+0.35rem,3.45rem)]">
-                {HERO_LINE}
+                {copy.headline}
               </h1>
               <p className="mt-7 sm:mt-9 font-display not-italic font-medium text-xl sm:text-2xl text-alignment-primary leading-snug">
-                A system for becoming whole.
+                {copy.subhead}
               </p>
               <div className="mt-9 sm:mt-11 flex flex-col items-center gap-3">
-                <Link to="/assessment" className={pillPrimary}>
-                  Take the free assessment
-                </Link>
+                <CmsCta href={copy.ctaHref} label={copy.ctaLabel} className={pillPrimary} />
                 <a href="#how-it-works" className={pillGhost}>
                   How it works
                 </a>
               </div>
               <p className={`mt-8 ${type.body} max-w-sm mx-auto`}>
-                Six domains. One Alignment Score. A clearer path forward.
+                {copy.body}
               </p>
             </div>
             </div>

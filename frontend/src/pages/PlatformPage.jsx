@@ -1,9 +1,9 @@
-import { Link } from 'react-router-dom';
 import SiteMarketingHeader from '../components/SiteMarketingHeader';
 import AlignmentMapHex from '../components/AlignmentMapHex';
-import { pageWidth, pillPrimary, SitePageFooter } from '../components/HomeMarketingChrome';
+import { pageWidth, pillPrimary, SitePageFooter, CmsCta } from '../components/HomeMarketingChrome';
 import { type } from '../config/siteType';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { pageCopy, useSitePage } from '../hooks/useSiteContent';
 
 const stages = [
   {
@@ -30,6 +30,13 @@ const stages = [
 
 export default function PlatformPage() {
   usePageTitle('Platform — Alignment OS');
+  const copy = pageCopy(useSitePage('/platform'), {
+    eyebrow: 'Platform',
+    headline: 'From insight to everyday life.',
+    subhead: 'Seeing the pattern is useful. Knowing what to do next is where Alignment OS begins.',
+    ctaLabel: 'Get started',
+    ctaHref: '/assessment',
+  });
 
   return (
     <div className={type.page}>
@@ -42,11 +49,9 @@ export default function PlatformPage() {
         <section>
           <div className={`${pageWidth} pt-12 sm:pt-16 pb-10 sm:pb-14`}>
             <div className="max-w-xl">
-              <p className={type.kicker}>Platform</p>
-              <h1 className={`mt-6 ${type.h1} text-balance`}>From insight to everyday life.</h1>
-              <p className={`mt-6 ${type.body}`}>
-                Seeing the pattern is useful. Knowing what to do next is where Alignment OS begins.
-              </p>
+              <p className={type.kicker}>{copy.eyebrow}</p>
+              <h1 className={`mt-6 ${type.h1} text-balance`}>{copy.headline}</h1>
+              <p className={`mt-6 ${type.body}`}>{copy.subhead}</p>
             </div>
             <figure className="mt-12 sm:mt-16 max-w-2xl mx-auto">
               <AlignmentMapHex className="w-full h-auto text-alignment-accent" />
@@ -75,11 +80,11 @@ export default function PlatformPage() {
               <h2 className={`mt-6 ${type.h2} text-balance`}>
                 Designed to help you spend less time managing a system and more time living what matters.
               </h2>
-              <Link to="/assessment" className={`${pillPrimary} mt-10`}>
-                Get started <span aria-hidden className="ml-1">
+              <CmsCta href={copy.ctaHref} className={`${pillPrimary} mt-10`}>
+                {copy.ctaLabel} <span aria-hidden className="ml-1">
                   →
                 </span>
-              </Link>
+              </CmsCta>
             </div>
           </div>
         </section>

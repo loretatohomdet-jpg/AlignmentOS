@@ -44,6 +44,23 @@ export const btnDanger =
 export const btnGhost =
   'inline-flex items-center justify-center rounded-full border border-alignment-accent/20 px-4 py-2 text-sm font-medium text-alignment-accent hover:bg-alignment-accent/5 disabled:opacity-50 transition-colors';
 
+export function apiError(err, fallback) {
+  return (
+    err.response?.data?.message ||
+    (err.request && !err.response ? 'Could not reach the API. Check your connection and try again.' : fallback)
+  );
+}
+
+export function pathFromTitle(title) {
+  const slug = String(title || '')
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 80);
+  return slug ? `/${slug}` : '';
+}
+
 export function confirmDelete(what) {
   return window.confirm(`Delete ${what}? This cannot be undone.`);
 }

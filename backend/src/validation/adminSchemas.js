@@ -74,7 +74,7 @@ const adminUpdateLeadSchema = z.object({
 
 const adminPageFields = {
   title: z.string().min(1).max(200),
-  path: z.string().min(1).max(200),
+  path: z.string().min(1).max(200).optional(),
   slug: z.string().min(1).max(80).optional(),
   pageGroup: z.string().min(1).max(40).optional(),
   eyebrow: z.string().max(200).optional().nullable(),

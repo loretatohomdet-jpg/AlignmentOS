@@ -20,6 +20,23 @@ export const pillHeader = `inline-flex items-center justify-center rounded-full 
 export const pageWidth = 'mx-auto w-full max-w-6xl px-5 sm:px-8 lg:px-12';
 export const copper = 'text-alignment-primary';
 
+export function CmsCta({ href, label, className, children }) {
+  const text = children || label;
+  if (!href || !text) return null;
+  if (/^(https?:|mailto:|#)/i.test(href)) {
+    return (
+      <a href={href} className={className}>
+        {text}
+      </a>
+    );
+  }
+  return (
+    <Link to={href} className={className}>
+      {text}
+    </Link>
+  );
+}
+
 const homeNav = [
   { to: '/cohort', label: 'Cohort' },
   { href: '/#leaders', label: 'For Leaders' },

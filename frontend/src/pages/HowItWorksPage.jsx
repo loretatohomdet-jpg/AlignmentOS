@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom';
 import SiteMarketingHeader from '../components/SiteMarketingHeader';
-import { pageWidth, pillPrimary, SitePageFooter } from '../components/HomeMarketingChrome';
+import { pageWidth, pillPrimary, SitePageFooter, CmsCta } from '../components/HomeMarketingChrome';
 import { type } from '../config/siteType';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { pageCopy, useSitePage } from '../hooks/useSiteContent';
 
 const steps = [
   {
@@ -39,6 +39,14 @@ const steps = [
 
 export default function HowItWorksPage() {
   usePageTitle('How It Works — Alignment OS');
+  const copy = pageCopy(useSitePage('/how-it-works'), {
+    eyebrow: 'How it works',
+    headline: 'See clearly. Start small.',
+    subhead: 'You do not need to change everything at once.',
+    body: 'You need to see what matters now and make the changes that support it.',
+    ctaLabel: 'Take the Alignment Assessment',
+    ctaHref: '/assessment',
+  });
 
   return (
     <div className={type.page}>
@@ -51,11 +59,11 @@ export default function HowItWorksPage() {
         <section>
           <div className={`${pageWidth} pt-12 sm:pt-16 pb-10 sm:pb-14`}>
             <div className="max-w-xl">
-              <p className={type.kicker}>How it works</p>
-              <h1 className={`mt-6 ${type.h1} text-balance`}>See clearly. Start small.</h1>
+              <p className={type.kicker}>{copy.eyebrow}</p>
+              <h1 className={`mt-6 ${type.h1} text-balance`}>{copy.headline}</h1>
               <div className={`mt-10 sm:mt-12 space-y-6 ${type.body}`}>
-                <p>You do not need to change everything at once.</p>
-                <p>You need to see what matters now and make the changes that support it.</p>
+                <p>{copy.subhead}</p>
+                <p>{copy.body}</p>
               </div>
             </div>
           </div>
@@ -83,11 +91,11 @@ export default function HowItWorksPage() {
               <p className="font-display text-xl sm:text-2xl font-medium text-alignment-accent leading-snug">
                 You don’t need a perfect system. You need one that helps you notice, decide, act, and adjust.
               </p>
-              <Link to="/assessment" className={`${pillPrimary} mt-10`}>
-                Take the Alignment Assessment <span aria-hidden className="ml-1">
+              <CmsCta href={copy.ctaHref} className={`${pillPrimary} mt-10`}>
+                {copy.ctaLabel} <span aria-hidden className="ml-1">
                   →
                 </span>
-              </Link>
+              </CmsCta>
             </div>
           </div>
         </section>

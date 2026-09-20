@@ -4,6 +4,7 @@ import { pageWidth, pillPrimary, SitePageFooter } from '../components/HomeMarket
 import { formatUsd, plannerEditions, plannerImages, plannerProduct, trackCommerce } from '../config/commerce';
 import { type } from '../config/siteType';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { pageCopy, useSitePage } from '../hooks/useSiteContent';
 import { useEffect } from 'react';
 
 function Photo({ src, alt, className, eager = false }) {
@@ -20,6 +21,13 @@ function Photo({ src, alt, className, eager = false }) {
 
 export default function PlannerPage() {
   usePageTitle('Planner — Alignment OS');
+  const copy = pageCopy(useSitePage('/planner'), {
+    eyebrow: 'Planner',
+    headline: 'It started on paper.',
+    subhead: 'Not another place for more tasks. A place to remember what the tasks were for.',
+    ctaLabel: 'Explore the Planner',
+    ctaHref: '#editions',
+  });
 
   useEffect(() => {
     trackCommerce('product_view', { sku: plannerProduct.sku, product_sku: plannerProduct.sku });
@@ -36,8 +44,8 @@ export default function PlannerPage() {
         <section>
           <div className={`${pageWidth} pt-12 sm:pt-16 pb-10 sm:pb-14`}>
             <div className="max-w-xl">
-              <p className={type.kicker}>Planner</p>
-              <h1 className={`mt-6 ${type.h1} text-balance`}>It started on paper.</h1>
+              <p className={type.kicker}>{copy.eyebrow}</p>
+              <h1 className={`mt-6 ${type.h1} text-balance`}>{copy.headline}</h1>
               <div className={`mt-10 sm:mt-12 space-y-6 ${type.body}`}>
                 <p>Before Alignment OS became a platform, it was a planner.</p>
                 <p>
@@ -45,7 +53,7 @@ export default function PlannerPage() {
                   productivity.
                 </p>
                 <p className="font-display text-xl sm:text-2xl font-medium text-alignment-accent leading-snug">
-                  Not another place for more tasks. A place to remember what the tasks were for.
+                  {copy.subhead}
                 </p>
               </div>
             </div>
@@ -123,12 +131,12 @@ export default function PlannerPage() {
               </li>
             </ul>
             <CommerceCta
-              href="#editions"
+              href={copy.ctaHref || '#editions'}
               event="planner_shop_click"
               sku={plannerProduct.sku}
               className={`${pillPrimary} mt-12 sm:mt-16`}
             >
-              Explore the Planner <span aria-hidden className="ml-1">
+              {copy.ctaLabel} <span aria-hidden className="ml-1">
                 →
               </span>
             </CommerceCta>

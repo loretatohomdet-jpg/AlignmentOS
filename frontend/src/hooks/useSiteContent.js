@@ -24,6 +24,31 @@ export function useSitePage(path) {
   return page;
 }
 
+function wasEditedInAdmin(cms) {
+  if (!cms?.createdAt || !cms?.updatedAt) return false;
+  return new Date(cms.updatedAt) - new Date(cms.createdAt) > 2000;
+}
+
+/** Overlay Admin copy after someone saves. Untouched seed rows keep the written fallback. */
+export function pageCopy(cms, defaults) {
+  const edited = wasEditedInAdmin(cms);
+  const pick = (key) => {
+    if (!edited) return defaults[key];
+    const value = cms?.[key];
+    if (typeof value === 'string' && value.trim()) return value.trim();
+    return defaults[key];
+  };
+  return {
+    eyebrow: pick('eyebrow'),
+    headline: pick('headline'),
+    subhead: pick('subhead'),
+    body: pick('body'),
+    ctaLabel: pick('ctaLabel'),
+    ctaHref: pick('ctaHref'),
+    title: pick('title'),
+  };
+}
+
 export function useShopCatalog() {
   const [offers, setOffers] = useState(null);
 

@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom';
 import SiteMarketingHeader from '../components/SiteMarketingHeader';
-import { pageWidth, pillPrimary, SitePageFooter } from '../components/HomeMarketingChrome';
+import { pageWidth, pillPrimary, SitePageFooter, CmsCta } from '../components/HomeMarketingChrome';
 import { type } from '../config/siteType';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { pageCopy, useSitePage } from '../hooks/useSiteContent';
 
 const faqs = [
   {
@@ -41,6 +41,14 @@ const faqs = [
 
 export default function FaqPage() {
   usePageTitle('FAQ — Alignment OS');
+  const copy = pageCopy(useSitePage('/faq'), {
+    eyebrow: 'FAQ',
+    headline: 'A few practical questions.',
+    subhead: 'Know what matters. Know what to do next.',
+    body: 'Start with a clearer picture of where you are today.',
+    ctaLabel: 'Take the free Alignment Assessment',
+    ctaHref: '/assessment',
+  });
 
   return (
     <div className={type.page}>
@@ -53,8 +61,8 @@ export default function FaqPage() {
         <section>
           <div className={`${pageWidth} pt-12 sm:pt-16 pb-10 sm:pb-14`}>
             <div className="max-w-xl">
-              <p className={type.kicker}>FAQ</p>
-              <h1 className={`mt-6 ${type.h1}`}>A few practical questions.</h1>
+              <p className={type.kicker}>{copy.eyebrow}</p>
+              <h1 className={`mt-6 ${type.h1}`}>{copy.headline}</h1>
             </div>
           </div>
         </section>
@@ -76,14 +84,14 @@ export default function FaqPage() {
           <div className={`${pageWidth} py-16 sm:py-24`}>
             <div className="max-w-xl">
               <p className={`font-display text-xl sm:text-2xl font-medium text-alignment-accent leading-snug`}>
-                Know what matters. Know what to do next.
+                {copy.subhead}
               </p>
-              <p className={`mt-4 ${type.body}`}>Start with a clearer picture of where you are today.</p>
-              <Link to="/assessment" className={`${pillPrimary} mt-10`}>
-                Take the free Alignment Assessment <span aria-hidden className="ml-1">
+              <p className={`mt-4 ${type.body}`}>{copy.body}</p>
+              <CmsCta href={copy.ctaHref} className={`${pillPrimary} mt-10`}>
+                {copy.ctaLabel} <span aria-hidden className="ml-1">
                   →
                 </span>
-              </Link>
+              </CmsCta>
             </div>
           </div>
         </section>
