@@ -2,7 +2,7 @@
  * Auth / account pages — same type and buttons as the homepage.
  */
 export const authHeadingClass =
-  'font-display italic font-normal text-[2.15rem] sm:text-[2.75rem] md:text-[3.15rem] leading-[1.18] tracking-tight text-alignment-accent text-balance';
+  'font-display font-medium text-[2.15rem] sm:text-[2.75rem] md:text-[3.15rem] leading-[1.18] tracking-tight text-alignment-accent text-balance';
 
 export const authLeadClass = 'mt-3 font-sans text-sm sm:text-base text-alignment-accent/90 leading-relaxed';
 

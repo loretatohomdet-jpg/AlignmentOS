@@ -89,7 +89,7 @@ export default function JourneyPage() {
   if (loading) {
     return (
       <div className="mx-auto max-w-xl px-6 py-20 text-center">
-        <p className="font-display italic text-alignment-accent/65">Loading your journey…</p>
+        <p className="font-display font-medium text-alignment-accent/65">Loading your journey…</p>
       </div>
     );
   }
@@ -175,7 +175,7 @@ export default function JourneyPage() {
                   {formatArchiveDay(item.day)}
                 </p>
                 {item.excerpt && (
-                  <p className="mt-2 font-display italic text-[1.15rem] leading-snug text-alignment-accent">
+                  <p className="mt-2 font-display font-medium text-[1.15rem] leading-snug text-alignment-accent">
                     {item.excerpt}
                   </p>
                 )}

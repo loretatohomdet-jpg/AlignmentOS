@@ -41,7 +41,7 @@ export default function CompanionProductPage({ product }) {
             <div className="min-w-0">
               <p className={type.kicker}>{live.kicker}</p>
               <h1 className={`mt-6 ${type.h1} text-balance`}>{live.title}</h1>
-              <p className="mt-6 font-display italic text-xl sm:text-2xl text-alignment-primary leading-snug">
+              <p className="mt-6 font-display font-medium text-xl sm:text-2xl text-alignment-primary leading-snug">
                 {live.tagline}
               </p>
               <p className={`mt-6 ${type.body} max-w-xl`}>{live.body}</p>

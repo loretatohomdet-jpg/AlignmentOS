@@ -78,7 +78,7 @@ export default function DashboardWelcomeModal({ open, onDismiss, hasScore = fals
         <h2 id="dashboard-welcome-title" className={`mt-6 ${type.h2}`}>
           {hasHabits ? 'Your practices are installed.' : hasScore ? 'Your score is in.' : 'Here is the loop.'}
         </h2>
-        <p className="mt-3 font-display text-[1.35rem] sm:text-[1.5rem] italic font-normal text-alignment-primary leading-snug">
+        <p className="mt-3 font-display text-[1.35rem] sm:text-[1.5rem] font-medium text-alignment-primary leading-snug">
           Practice holds the day. This page holds the record.
         </p>
 

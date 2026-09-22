@@ -63,7 +63,7 @@ export default function ManagedPage() {
           {page.eyebrow ? <p className={type.kicker}>{page.eyebrow}</p> : null}
           <h1 className={`mt-6 ${type.h1} text-balance max-w-2xl`}>{page.headline || page.title}</h1>
           {page.subhead ? (
-            <p className="mt-6 font-display italic text-xl sm:text-2xl text-alignment-primary leading-snug">
+            <p className="mt-6 font-display font-medium text-xl sm:text-2xl text-alignment-primary leading-snug">
               {page.subhead}
             </p>
           ) : null}

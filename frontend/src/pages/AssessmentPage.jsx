@@ -571,7 +571,7 @@ export default function AssessmentPage() {
                 <p className="mt-4 font-display text-xl sm:text-2xl font-medium text-alignment-accent">
                   {guestPreview.alignmentTypeTitle}
                 </p>
-                <p className="mt-3 text-sm text-alignment-accent/90 italic leading-relaxed">
+                <p className="mt-3 text-sm text-alignment-accent/90 leading-relaxed">
                   {guestPreview.alignmentTypeSubtitle}
                 </p>
               </div>
@@ -583,7 +583,7 @@ export default function AssessmentPage() {
                 {guestPreview.primaryStrainLabel && (
                   <p className="mt-4 font-display text-2xl font-medium text-alignment-accent">{guestPreview.primaryStrainLabel}</p>
                 )}
-                <p className="mt-3 text-sm text-alignment-accent/90 italic leading-relaxed">
+                <p className="mt-3 text-sm text-alignment-accent/90 leading-relaxed">
                   {guestPreview.primaryStrainDescription}
                 </p>
               </div>

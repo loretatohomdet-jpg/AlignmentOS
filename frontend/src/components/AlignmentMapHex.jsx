@@ -103,7 +103,7 @@ export default function AlignmentMapHex({ result = null, className = 'w-full h-a
             x={cx}
             y={cy - 4}
             textAnchor="middle"
-            className="fill-alignment-accent font-display italic"
+            className="fill-alignment-accent font-display"
             style={{ fontFamily: 'Georgia, ui-serif, serif', fontSize: 15 }}
           >
             Alignment

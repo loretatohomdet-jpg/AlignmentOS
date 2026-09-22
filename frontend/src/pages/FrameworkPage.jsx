@@ -145,7 +145,7 @@ function FrameworkHexDiagram() {
           x={cx}
           y={cy - 4}
           textAnchor="middle"
-          className="fill-alignment-accent font-display text-[15px] italic"
+          className="fill-alignment-accent font-display text-[15px]"
           style={{ fontFamily: 'Georgia, ui-serif, serif' }}
         >
           Alignment

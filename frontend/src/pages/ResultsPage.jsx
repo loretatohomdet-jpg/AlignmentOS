@@ -190,7 +190,7 @@ export default function ResultsPage() {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-6 xl:gap-8 lg:items-stretch">
                   <section className={`${resultsUi.panel} flex flex-col h-full min-h-0`}>
                     <p className={resultsUi.label}>Your three structural habits</p>
-                    <p className="mt-3 text-sm text-alignment-accent/90 italic leading-relaxed">
+                    <p className="mt-3 text-sm text-alignment-accent/90 leading-relaxed">
                       These three habits are drawn from your primary gap domain. Begin with one. Hold it for 21 days. Then add
                       the second.
                     </p>
@@ -336,7 +336,7 @@ export default function ResultsPage() {
                   </section>
 
                   <section className={`${resultsUi.panel} h-full flex flex-col`}>
-                    <p className="font-display text-alignment-accent/80 italic text-left">Invite someone to the diagnostic</p>
+                    <p className="font-display text-alignment-accent/80 text-left">Invite someone to the diagnostic</p>
                     <p className="mt-2 text-xs text-alignment-accent/65 leading-relaxed">
                       Share the free assessment link — not your personal score. (A shareable score card is on the roadmap.)
                     </p>

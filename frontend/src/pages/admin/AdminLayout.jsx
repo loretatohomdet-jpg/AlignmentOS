@@ -9,7 +9,7 @@ export default function AdminLayout() {
       <div className="max-w-6xl mx-auto px-5 sm:px-8 py-8 sm:py-10">
         <header className="rounded-3xl bg-[#2c2e26] text-[#F7F5F0] px-6 sm:px-8 py-7 sm:py-8 shadow-apple-lg">
           <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-[#C4A35A]">Operators</p>
-          <h1 className="mt-2 font-display italic text-3xl sm:text-4xl">Admin desk</h1>
+          <h1 className="mt-2 font-display font-medium text-3xl sm:text-4xl">Admin desk</h1>
           <p className="mt-2 text-sm text-white/75 max-w-xl">
             Create, edit, and remove pages, products, people, questions, habits, and inbox leads. Pick a colour-coded room.
           </p>

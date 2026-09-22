@@ -139,7 +139,7 @@ function HomeToolsSection() {
                   className="rounded-2xl transition-opacity group-hover:opacity-90"
                 />
                 <h3 className={`mt-4 ${type.h3}`}>{product.title}</h3>
-                <p className="mt-1 font-display italic text-alignment-primary">{product.tagline}</p>
+                <p className="mt-1 font-display font-medium text-alignment-primary">{product.tagline}</p>
               </Link>
             </li>
           ))}
@@ -148,7 +148,7 @@ function HomeToolsSection() {
         <div className="mt-16 max-w-xl">
           <p className={type.kicker}>Need a fresh start?</p>
           <h3 className={`mt-4 ${type.h3}`}>{reset.title}</h3>
-          <p className="mt-2 font-display italic text-alignment-primary">{reset.tagline}</p>
+          <p className="mt-2 font-display font-medium text-alignment-primary">{reset.tagline}</p>
           <p className={`mt-3 ${type.muted}`}>{reset.priceLabel}</p>
           <CommerceCta
             to={reset.path}
@@ -283,10 +283,10 @@ export default function LandingPage() {
       <main id="main-content" className="flex-1 w-full scroll-mt-16" tabIndex={-1}>
         {/* First fold — full-bleed hero (no inset card / frame) */}
         <section className="flex w-full flex-col bg-alignment-foundation min-h-[calc(100vh-5.5rem)] sm:min-h-[calc(100vh-6rem)]">
-          <div className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
+          <div className="relative flex min-h-0 flex-1 flex-col">
             <div className="relative flex flex-1 flex-col justify-center px-6 sm:px-8 lg:px-12 pt-12 pb-8 sm:pt-16 sm:pb-10">
-            <div className="max-w-4xl mx-auto text-center px-1">
-              <h1 className="font-display not-italic font-medium leading-[1.18] tracking-tight text-alignment-accent whitespace-nowrap text-[clamp(1.2rem,4.8vw+0.35rem,3.45rem)]">
+            <div className="mx-auto w-full max-w-5xl text-center">
+              <h1 className="font-display not-italic font-medium leading-[1.2] tracking-tight text-alignment-accent text-center text-balance max-w-full px-1 text-[clamp(1.5rem,3.8vw,2.6rem)]">
                 {copy.headline}
               </h1>
               <p className="mt-7 sm:mt-9 font-display not-italic font-medium text-xl sm:text-2xl text-alignment-primary leading-snug">
@@ -330,7 +330,7 @@ export default function LandingPage() {
           <div className="max-w-xl mx-auto px-6 sm:px-8 py-12 sm:py-16 text-center">
             <blockquote className={type.quote}>
               <p>
-                You need <em className="italic text-alignment-accent/90">structure beneath</em> the effort — not more effort.
+                You need structure beneath the effort — not more effort.
               </p>
             </blockquote>
           </div>
@@ -339,7 +339,7 @@ export default function LandingPage() {
         <section id="how-it-works" className="w-full border-t border-alignment-accent/[0.06] bg-apple-surface-muted scroll-mt-20">
           <div className="max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12 sm:py-16">
             <h2 className={`${type.h2} max-w-xl text-balance`}>
-              Four steps. <span className="italic font-normal text-alignment-accent/80">One system.</span>
+              Four steps. One system.
             </h2>
             <div className="mt-10 sm:mt-12">
               <ol className="flex flex-col lg:hidden">

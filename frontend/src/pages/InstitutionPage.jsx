@@ -33,15 +33,15 @@ export default function InstitutionPage() {
             Institutions · Mission groups · Formation programmes
           </p>
           <h1 className={`mt-8 sm:mt-10 ${type.h1} text-center text-balance`}>
-            <span className="italic font-normal text-alignment-accent/90">Formation</span> that holds{' '}
-            <span className="italic font-normal text-alignment-accent/90">after the programme ends.</span>
+            <span className="font-normal text-alignment-accent/90">Formation</span> that holds{' '}
+            <span className="font-normal text-alignment-accent/90">after the programme ends.</span>
           </h1>
           <p className={`mt-8 ${type.body} text-center max-w-2xl mx-auto`}>
             Most formation programmes inspire people deeply. Few give them the structure to sustain what was awakened.
             Alignment OS is the continuation layer — the daily architecture that allows formation to compound.
           </p>
           <blockquote className="mt-12 sm:mt-14 pl-5 sm:pl-6 border-l-[3px] border-alignment-accent/20 max-w-2xl mx-auto">
-            <p className={`${type.quote} italic`}>
+            <p className={type.quote}>
               Formation awakens a calling. Alignment builds the life required to live it.
             </p>
           </blockquote>
@@ -387,7 +387,7 @@ export default function InstitutionPage() {
               <a
                 id="institution-contact-display"
                 href="mailto:organizations@alignmentos.com"
-                className="mt-2 flex w-full items-center justify-center rounded-full border border-white/30 bg-alignment-surface/[0.07] px-4 py-3.5 text-center font-display text-base sm:text-lg text-white/95 italic underline underline-offset-[6px] decoration-white/50 hover:bg-alignment-surface/10 hover:decoration-white transition-colors"
+                className="mt-2 flex w-full items-center justify-center rounded-full border border-white/30 bg-alignment-surface/[0.07] px-4 py-3.5 text-center font-display text-base sm:text-lg text-white/95 underline underline-offset-[6px] decoration-white/50 hover:bg-alignment-surface/10 hover:decoration-white transition-colors"
               >
                 organizations@alignmentos.com
               </a>

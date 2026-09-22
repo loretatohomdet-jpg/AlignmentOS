@@ -132,7 +132,7 @@ export default function ShopPage() {
                     className="rounded-2xl transition-opacity group-hover:opacity-90"
                   />
                   <p className="mt-4 text-sm font-medium text-alignment-accent">{product.title}</p>
-                  <p className="mt-1 font-display italic text-alignment-primary">{product.tagline}</p>
+                  <p className="mt-1 font-display font-medium text-alignment-primary">{product.tagline}</p>
                   <p className={`mt-2 ${type.muted}`}>{product.priceLabel}</p>
                 </Link>
               </li>
@@ -148,7 +148,7 @@ export default function ShopPage() {
           <h2 id="shop-collection-heading" className={`mt-4 ${type.h2} max-w-xl text-balance`}>
             {toolsCollection.title}
           </h2>
-          <p className="mt-3 font-display italic text-alignment-primary">{toolsCollection.tagline}</p>
+          <p className="mt-3 font-display font-medium text-alignment-primary">{toolsCollection.tagline}</p>
           <p className={`mt-4 ${type.body} max-w-xl`}>{toolsCollection.body}</p>
           <div className="mt-8 flex flex-wrap gap-4">
             <CommerceCta
@@ -188,7 +188,7 @@ export default function ShopPage() {
               />
             </Link>
           </div>
-          <p className="mt-6 font-display italic text-xl text-alignment-primary">{reset.tagline}</p>
+          <p className="mt-6 font-display font-medium text-xl text-alignment-primary">{reset.tagline}</p>
           <p className={`mt-4 ${type.body} max-w-xl`}>{reset.body}</p>
           <p className={`mt-3 ${type.muted}`}>{reset.priceLabel}</p>
           <CommerceCta

@@ -132,7 +132,7 @@ export default function PracticePage() {
   if (loading) {
     return (
       <div className="mx-auto max-w-xl px-6 py-20 text-center">
-        <p className="font-display italic text-alignment-accent/65">Loading today…</p>
+        <p className="font-display font-medium text-alignment-accent/65">Loading today…</p>
       </div>
     );
   }

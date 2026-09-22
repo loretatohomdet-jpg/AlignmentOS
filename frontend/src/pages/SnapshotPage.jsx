@@ -83,7 +83,7 @@ export default function SnapshotPage() {
   if (loading && !result) {
     return (
       <div className="mx-auto max-w-lg px-6 py-20 text-center">
-        <p className="font-display italic text-alignment-accent/65">Loading your snapshot…</p>
+        <p className="font-display font-medium text-alignment-accent/65">Loading your snapshot…</p>
       </div>
     );
   }
@@ -116,7 +116,7 @@ export default function SnapshotPage() {
           Alignment Score · out of 100
         </p>
         {typeTitle ? (
-          <p className="mt-8 font-display italic text-xl sm:text-2xl text-alignment-accent leading-snug">
+          <p className="mt-8 font-display font-medium text-xl sm:text-2xl text-alignment-accent leading-snug">
             {typeTitle}
           </p>
         ) : null}

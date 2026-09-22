@@ -425,7 +425,7 @@ export default function PricingPage() {
         <section className="w-full border-t border-white/15 bg-alignment-primary">
           <div className="max-w-xl mx-auto px-6 py-20 sm:py-28 text-center">
             <h2 className="font-display text-2xl sm:text-3xl font-medium text-white leading-snug text-balance">
-              The diagnostic <span className="italic font-normal text-white/90">costs nothing.</span>
+              The diagnostic <span className="font-normal text-white/90">costs nothing.</span>
             </h2>
             <Link
               to="/assessment"

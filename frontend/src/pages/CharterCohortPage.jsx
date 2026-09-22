@@ -109,7 +109,7 @@ export default function CharterCohortPage() {
                   key={week.when}
                   className={`grid gap-2 sm:grid-cols-[8.5rem_8rem_1fr] sm:gap-x-8 py-8 border-b ${hairline}`}
                 >
-                  <p className="font-display italic text-[1.15rem] leading-snug text-alignment-primary">{week.when}</p>
+                  <p className="font-display font-medium text-[1.15rem] leading-snug text-alignment-primary">{week.when}</p>
                   <p className="font-medium text-alignment-accent">{week.title}</p>
                   <p className={type.body}>{week.body}</p>
                 </div>
