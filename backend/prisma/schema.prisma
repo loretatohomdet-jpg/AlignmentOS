@@ -257,6 +257,8 @@ model SitePage {
   body        String?
   ctaLabel    String?
   ctaHref     String?
+  /** Extra interface copy (homepage sections, etc.). Shape depends on path. */
+  sections    Json?
   isPublished Boolean  @default(true)
   isSystem    Boolean  @default(false)
   createdAt   DateTime @default(now())

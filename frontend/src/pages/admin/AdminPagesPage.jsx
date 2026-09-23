@@ -29,7 +29,9 @@ export default function AdminPagesPage() {
       .then((res) => setList(res.data))
       .catch((err) => {
         if (err.response?.status === 401) navigate('/login', { replace: true });
-        else setError(apiError(err, 'Could not load pages'));
+        else if (err.response?.status === 404) {
+          setError('The Pages API is not on the live server yet. Redeploy the Railway backend, then try again.');
+        } else setError(apiError(err, 'Could not load pages'));
       })
       .finally(() => setLoaded(true));
   };

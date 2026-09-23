@@ -9,9 +9,7 @@ import CommerceCta from '../components/CommerceCta';
 import BookCover from '../components/BookCover';
 import { alignmentTools, plannerImages, plannerProduct, resetProduct } from '../config/commerce';
 import { type } from '../config/siteType';
-import { mergeProduct, pageCopy, useShopCatalog, useSitePage } from '../hooks/useSiteContent';
-
-const HERO_LINE = 'Know what matters. Know what to do next.';
+import { homePageCopy, mergeProduct, useShopCatalog, useSitePage } from '../hooks/useSiteContent';
 
 function usePrefersReducedMotion() {
   const [reduced, setReduced] = useState(false);
@@ -86,7 +84,7 @@ function AnimatedProofStat({ target, prefix = '', suffix = '', label }) {
   );
 }
 
-function HomeToolsSection() {
+function HomeToolsSection({ copy }) {
   const offers = useShopCatalog();
   const planner = mergeProduct(plannerProduct, offers);
   const reset = mergeProduct(resetProduct, offers);
@@ -99,14 +97,11 @@ function HomeToolsSection() {
       aria-labelledby="home-tools-heading"
     >
       <div className="max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12 sm:py-16">
-        <p className={type.kicker}>The signature planner</p>
+        <p className={type.kicker}>{copy.plannerKicker}</p>
         <h2 id="home-tools-heading" className={`mt-4 ${type.h2} max-w-xl text-balance`}>
           {planner.title}
         </h2>
-        <p className={`mt-6 ${type.body} max-w-xl`}>
-          A thoughtfully designed planner for carrying what matters into the days and weeks of your actual life. Not
-          more to manage. A clearer way to decide what deserves your time.
-        </p>
+        <p className={`mt-6 ${type.body} max-w-xl`}>{copy.plannerBody}</p>
         <figure className="mt-10 overflow-hidden rounded-2xl bg-alignment-foundation">
           <img
             src={plannerImages.paperLifestyle}
@@ -122,12 +117,12 @@ function HomeToolsSection() {
           sku={planner.sku}
           className="mt-8 inline-flex items-center text-[11px] font-medium uppercase tracking-[0.2em] text-alignment-accent border-b border-alignment-accent/25 pb-1 hover:border-alignment-accent"
         >
-          Explore the Planner <span aria-hidden>→</span>
+          {copy.plannerCta} <span aria-hidden>→</span>
         </CommerceCta>
 
-        <p className={`${type.kicker} mt-16`}>The Alignment Tools</p>
-        <h3 className={`mt-4 ${type.h2} max-w-xl text-balance`}>Three tools. Three places to begin.</h3>
-        <p className={`mt-4 ${type.body} max-w-xl`}>Focused guides for the moments you need them most.</p>
+        <p className={`${type.kicker} mt-16`}>{copy.toolsKicker}</p>
+        <h3 className={`mt-4 ${type.h2} max-w-xl text-balance`}>{copy.toolsHeading}</h3>
+        <p className={`mt-4 ${type.body} max-w-xl`}>{copy.toolsBody}</p>
         <ul className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-6 lg:gap-8">
           {tools.map((product) => (
             <li key={product.sku}>
@@ -146,7 +141,7 @@ function HomeToolsSection() {
         </ul>
 
         <div className="mt-16 max-w-xl">
-          <p className={type.kicker}>Need a fresh start?</p>
+          <p className={type.kicker}>{copy.resetKicker}</p>
           <h3 className={`mt-4 ${type.h3}`}>{reset.title}</h3>
           <p className="mt-2 font-display font-medium text-alignment-primary">{reset.tagline}</p>
           <p className={`mt-3 ${type.muted}`}>{reset.priceLabel}</p>
@@ -156,7 +151,7 @@ function HomeToolsSection() {
             sku={reset.sku}
             className="mt-6 inline-flex items-center text-[11px] font-medium uppercase tracking-[0.2em] text-alignment-accent border-b border-alignment-accent/25 pb-1 hover:border-alignment-accent"
           >
-            Begin with Reset <span aria-hidden>→</span>
+            {copy.resetCta} <span aria-hidden>→</span>
           </CommerceCta>
         </div>
 
@@ -166,36 +161,34 @@ function HomeToolsSection() {
           sku="shop"
           className="mt-8 inline-flex items-center text-[11px] font-medium uppercase tracking-[0.2em] text-alignment-accent/80 border-b border-alignment-accent/20 pb-1 hover:text-alignment-accent hover:border-alignment-accent"
         >
-          Explore all tools <span aria-hidden>→</span>
+          {copy.shopCta} <span aria-hidden>→</span>
         </CommerceCta>
       </div>
     </section>
   );
 }
 
-function FinalCtaClosing() {
+function FinalCtaClosing({ copy }) {
   return (
     <section
       className="w-full bg-alignment-foundation border-t border-alignment-neutral/25"
       aria-labelledby="final-cta-heading"
     >
       <div className="max-w-2xl mx-auto px-6 py-20 sm:py-28 lg:py-32 text-center">
-        <p className={type.kicker}>The Alignment Reset</p>
+        <p className={type.kicker}>{copy.emailKicker}</p>
         <h2 id="final-cta-heading" className={`mt-6 ${type.h2}`}>
-          Get the guide.
+          {copy.emailHeading}
         </h2>
-        <p className={`mt-6 ${type.body}`}>
-          A short letter on where life holds, where it strains, and how to begin. We’ll send it to your inbox.
-        </p>
+        <p className={`mt-6 ${type.body}`}>{copy.emailBody}</p>
 
         <div className="mt-8 w-full max-w-sm mx-auto text-left">
           <EmailCaptureForm
             source="home-reset-guide"
             redirectTo={null}
             layout="stacked"
-            buttonText="Get the Alignment Reset guide"
-            helperText="No spam. Unsubscribe any time."
-            successText="The Alignment Reset guide is on its way to your inbox."
+            buttonText={copy.emailButton}
+            helperText={copy.emailHelper}
+            successText={copy.emailSuccess}
           />
         </div>
         <p className="mt-5 text-center">
@@ -203,7 +196,7 @@ function FinalCtaClosing() {
             to="/assessment"
             className="text-[11px] sm:text-xs text-alignment-accent/75 transition-colors duration-200 hover:text-alignment-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-alignment-primary/30 rounded-sm px-0.5"
           >
-            Prefer the diagnostic? Begin free <span aria-hidden>→</span>
+            {copy.preferDiagnostic} <span aria-hidden>→</span>
           </Link>
         </p>
         <p className="mt-3 text-center">
@@ -211,7 +204,7 @@ function FinalCtaClosing() {
             to="/dashboard"
             className="text-[11px] sm:text-xs text-alignment-accent/75 transition-colors duration-200 hover:text-alignment-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-alignment-primary/30 rounded-sm px-0.5"
           >
-            Already have an account? Dashboard <span aria-hidden>→</span>
+            {copy.alreadyAccount} <span aria-hidden>→</span>
           </Link>
         </p>
       </div>
@@ -221,45 +214,38 @@ function FinalCtaClosing() {
 
 export default function LandingPage() {
   const cms = useSitePage('/');
-  const copy = pageCopy(cms, {
-    headline: HERO_LINE,
-    subhead: 'A system for becoming whole.',
-    body: 'Six domains. One Alignment Score. A clearer path forward.',
-    ctaLabel: 'Take the free assessment',
-    ctaHref: '/assessment',
-  });
+  const copy = homePageCopy(cms);
 
-  /** Six domains — olive bar marquee (white / grey dots only). */
   const heroDomains = [
-    { label: 'Identity', dot: 'bg-alignment-surface' },
-    { label: 'Purpose', dot: 'bg-alignment-surface/70' },
-    { label: 'Mindset', dot: 'bg-alignment-surface' },
-    { label: 'Habits', dot: 'bg-alignment-surface/70' },
-    { label: 'Environment', dot: 'bg-alignment-surface' },
-    { label: 'Execution', dot: 'bg-alignment-surface/70' },
+    { label: copy.domainIdentity, dot: 'bg-alignment-surface' },
+    { label: copy.domainPurpose, dot: 'bg-alignment-surface/70' },
+    { label: copy.domainMindset, dot: 'bg-alignment-surface' },
+    { label: copy.domainHabits, dot: 'bg-alignment-surface/70' },
+    { label: copy.domainEnvironment, dot: 'bg-alignment-surface' },
+    { label: copy.domainExecution, dot: 'bg-alignment-surface/70' },
   ];
 
   const compoundingSteps = [
-    { n: 1, title: 'Diagnostic' },
-    { n: 2, title: 'Identity anchors' },
-    { n: 3, title: 'Habit engine' },
-    { n: 4, title: 'Weekly review' },
+    { n: 1, title: copy.step1 },
+    { n: 2, title: copy.step2 },
+    { n: 3, title: copy.step3 },
+    { n: 4, title: copy.step4 },
   ];
 
   const sixDomains = [
-    { pillar: 'IDENTITY', title: 'Identity' },
-    { pillar: 'PURPOSE', title: 'Purpose' },
-    { pillar: 'MINDSET', title: 'Mindset' },
-    { pillar: 'HABITS', title: 'Habits' },
-    { pillar: 'ENVIRONMENT', title: 'Environment' },
-    { pillar: 'EXECUTION', title: 'Execution' },
+    { pillar: 'IDENTITY', title: copy.domainIdentity },
+    { pillar: 'PURPOSE', title: copy.domainPurpose },
+    { pillar: 'MINDSET', title: copy.domainMindset },
+    { pillar: 'HABITS', title: copy.domainHabits },
+    { pillar: 'ENVIRONMENT', title: copy.domainEnvironment },
+    { pillar: 'EXECUTION', title: copy.domainExecution },
   ];
 
   const proofStats = [
-    { target: 24, label: 'Questions' },
-    { target: 6, label: 'Life domains' },
-    { target: 90, label: 'Day cycles' },
-    { target: 12, label: 'Minutes' },
+    { target: 24, label: copy.proofQuestions },
+    { target: 6, label: copy.proofDomains },
+    { target: 90, label: copy.proofCycles },
+    { target: 12, label: copy.proofMinutes },
   ];
 
   const domainRow = (
@@ -281,27 +267,24 @@ export default function LandingPage() {
       <SiteMarketingHeader />
 
       <main id="main-content" className="flex-1 w-full scroll-mt-16" tabIndex={-1}>
-        {/* First fold — full-bleed hero (no inset card / frame) */}
         <section className="flex w-full flex-col bg-alignment-foundation min-h-[calc(100vh-5.5rem)] sm:min-h-[calc(100vh-6rem)]">
           <div className="relative flex min-h-0 flex-1 flex-col">
             <div className="relative flex flex-1 flex-col justify-center px-6 sm:px-8 lg:px-12 pt-12 pb-8 sm:pt-16 sm:pb-10">
-            <div className="mx-auto w-full max-w-5xl text-center">
-              <h1 className="font-display not-italic font-medium leading-[1.2] tracking-tight text-alignment-accent text-center text-balance max-w-full px-1 text-[clamp(1.5rem,3.8vw,2.6rem)]">
-                {copy.headline}
-              </h1>
-              <p className="mt-7 sm:mt-9 font-display not-italic font-medium text-xl sm:text-2xl text-alignment-primary leading-snug">
-                {copy.subhead}
-              </p>
-              <div className="mt-9 sm:mt-11 flex flex-col items-center gap-3">
-                <CmsCta href={copy.ctaHref} label={copy.ctaLabel} className={pillPrimary} />
-                <a href="#how-it-works" className={pillGhost}>
-                  How it works
-                </a>
+              <div className="mx-auto w-full max-w-5xl text-center">
+                <h1 className="font-display not-italic font-medium leading-[1.2] tracking-tight text-alignment-accent text-center text-balance max-w-full px-1 text-[clamp(1.5rem,3.8vw,2.6rem)]">
+                  {copy.headline}
+                </h1>
+                <p className="mt-7 sm:mt-9 font-display not-italic font-medium text-xl sm:text-2xl text-alignment-primary leading-snug">
+                  {copy.subhead}
+                </p>
+                <div className="mt-9 sm:mt-11 flex flex-col items-center gap-3">
+                  <CmsCta href={copy.ctaHref} label={copy.ctaLabel} className={pillPrimary} />
+                  <a href="#how-it-works" className={pillGhost}>
+                    {copy.heroSecondaryCta}
+                  </a>
+                </div>
+                <p className={`mt-8 ${type.body} max-w-sm mx-auto`}>{copy.body}</p>
               </div>
-              <p className={`mt-8 ${type.body} max-w-sm mx-auto`}>
-                {copy.body}
-              </p>
-            </div>
             </div>
           </div>
 
@@ -329,18 +312,14 @@ export default function LandingPage() {
         <section className="w-full border-t border-alignment-accent/[0.06] bg-alignment-surfaceSoft/90">
           <div className="max-w-xl mx-auto px-6 sm:px-8 py-12 sm:py-16 text-center">
             <blockquote className={type.quote}>
-              <p>
-                You need structure beneath the effort — not more effort.
-              </p>
+              <p>{copy.quote}</p>
             </blockquote>
           </div>
         </section>
 
         <section id="how-it-works" className="w-full border-t border-alignment-accent/[0.06] bg-apple-surface-muted scroll-mt-20">
           <div className="max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12 sm:py-16">
-            <h2 className={`${type.h2} max-w-xl text-balance`}>
-              Four steps. One system.
-            </h2>
+            <h2 className={`${type.h2} max-w-xl text-balance`}>{copy.stepsHeading}</h2>
             <div className="mt-10 sm:mt-12">
               <ol className="flex flex-col lg:hidden">
                 {compoundingSteps.map((step, idx) => (
@@ -395,7 +374,7 @@ export default function LandingPage() {
                 to="/assessment"
                 className={`inline-block rounded-sm text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.2em] text-alignment-accent border-b border-alignment-accent/25 pb-1 transition-colors duration-200 hover:border-alignment-accent focus-visible:border-alignment-accent ${focusRingBtn}`}
               >
-                Start free <span aria-hidden>→</span>
+                {copy.stepsCta} <span aria-hidden>→</span>
               </Link>
             </div>
           </div>
@@ -403,7 +382,7 @@ export default function LandingPage() {
 
         <section className="w-full border-t border-alignment-accent/[0.06] bg-alignment-surfaceSoft/90">
           <div className="max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12 sm:py-16">
-            <h2 className={type.h2}>Six domains</h2>
+            <h2 className={type.h2}>{copy.domainsHeading}</h2>
 
             <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
               {sixDomains.map((domain) => (
@@ -424,7 +403,6 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Proof stats */}
         <section className="w-full border-t border-alignment-accent/[0.06]">
           <div className="w-full bg-alignment-primary">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-px bg-white/25">
@@ -441,11 +419,8 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Tools — after platform, before final CTA. Not in the hero. */}
-        <HomeToolsSection />
-
-        {/* Final CTA — closing */}
-        <FinalCtaClosing />
+        <HomeToolsSection copy={copy} />
+        <FinalCtaClosing copy={copy} />
 
         <SitePageFooter />
         <AgentFloatingButton />

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { API_BASE } from '../config/apiBase';
+import { mergeHomeSections } from '../config/homeCopy';
 
 export function useSitePage(path) {
   const [page, setPage] = useState(null);
@@ -47,6 +48,19 @@ export function pageCopy(cms, defaults) {
     ctaHref: pick('ctaHref'),
     title: pick('title'),
   };
+}
+
+/** Hero fields + every other homepage interface string. */
+export function homePageCopy(cms) {
+  const hero = pageCopy(cms, {
+    headline: 'Know what matters. Know what to do next.',
+    subhead: 'A system for becoming whole.',
+    body: 'Six domains. One Alignment Score. A clearer path forward.',
+    ctaLabel: 'Take the free assessment',
+    ctaHref: '/assessment',
+  });
+  const sections = wasEditedInAdmin(cms) ? mergeHomeSections(cms?.sections) : mergeHomeSections(null);
+  return { ...hero, ...sections };
 }
 
 export function useShopCatalog() {

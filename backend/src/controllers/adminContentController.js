@@ -211,6 +211,7 @@ async function createPage(req, res, next) {
         body: data.body || null,
         ctaLabel: data.ctaLabel || null,
         ctaHref: data.ctaHref || null,
+        ...(data.sections != null ? { sections: data.sections } : {}),
         isPublished: data.isPublished !== false,
         isSystem: false,
       },
@@ -249,6 +250,7 @@ async function updatePage(req, res, next) {
         ...(data.body !== undefined ? { body: data.body } : {}),
         ...(data.ctaLabel !== undefined ? { ctaLabel: data.ctaLabel } : {}),
         ...(data.ctaHref !== undefined ? { ctaHref: data.ctaHref } : {}),
+        ...(data.sections !== undefined ? { sections: data.sections } : {}),
         ...(data.isPublished !== undefined ? { isPublished: data.isPublished } : {}),
       },
     });

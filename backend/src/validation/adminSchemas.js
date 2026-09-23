@@ -83,6 +83,7 @@ const adminPageFields = {
   body: z.string().max(20000).optional().nullable(),
   ctaLabel: z.string().max(120).optional().nullable(),
   ctaHref: z.string().max(500).optional().nullable(),
+  sections: z.record(z.string(), z.string().max(5000)).optional().nullable(),
   isPublished: z.boolean().optional(),
 };
 
@@ -98,6 +99,7 @@ const adminUpdatePageSchema = z.object({
   body: z.string().max(20000).optional().nullable(),
   ctaLabel: z.string().max(120).optional().nullable(),
   ctaHref: z.string().max(500).optional().nullable(),
+  sections: z.record(z.string(), z.string().max(5000)).optional().nullable(),
   isPublished: z.boolean().optional(),
 });
 
