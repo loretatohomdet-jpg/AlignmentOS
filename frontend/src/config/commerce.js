@@ -22,7 +22,7 @@ function checkout(url) {
 export const plannerImages = {
   paperCover: '/images/planner/paper-cover.png',
   paperFoil: '/images/planner/paper-foil.png',
-  paperLifestyle: '/images/planner/paper-lifestyle.png',
+  paperLifestyle: '/images/planner/paper-lifestyle-carry.jpg',
   paperGift: '/images/planner/paper-gift.png',
   sleevedDesk: '/images/planner/sleeved-desk.png',
   sleevedAnatomy: '/images/planner/sleeved-anatomy.png',
@@ -80,7 +80,7 @@ export const plannerProduct = {
   path: '/planner',
   checkoutUrl: checkout(shopPlannerUrl),
   image: plannerImages.paperLifestyle,
-  imageAlt: 'Life of Purpose Planner on a sunlit table, beside a pen and an open book',
+  imageAlt: 'Life of Purpose Planner carried with a laptop and tote, outdoors',
 };
 
 export const companionImages = {

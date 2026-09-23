@@ -106,7 +106,7 @@ function HomeToolsSection({ copy }) {
           <img
             src={plannerImages.paperLifestyle}
             alt={planner.imageAlt}
-            className="w-full aspect-[4/5] sm:aspect-[4/3] object-cover object-[center_46%]"
+            className="w-full aspect-[16/10] sm:aspect-[16/9] object-cover object-center"
             loading="lazy"
             decoding="async"
           />

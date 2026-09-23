@@ -60,7 +60,7 @@ export default function PlannerPage() {
             <figure className="mt-12 sm:mt-16 overflow-hidden rounded-2xl bg-alignment-surfaceSoft">
               <Photo
                 src={plannerImages.paperLifestyle}
-                alt="The Life of Purpose Planner on a sunlit table, beside an open book and a pen"
+                alt="The Life of Purpose Planner carried with a laptop and tote, outdoors"
                 className="w-full h-auto"
                 eager
               />
