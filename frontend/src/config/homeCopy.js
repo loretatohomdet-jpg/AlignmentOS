@@ -80,7 +80,12 @@ export const STALE_HOME_COPY = {
     'The assessment names the thin place. Alignment OS starts the practice.',
     'Free. 12 minutes. No account.',
   ],
-  ctaLabel: ['Take the free assessment', 'Take the Assessment'],
+  ctaLabel: [
+    'Take the free assessment',
+    'Take the Assessment',
+    'Take the assessment',
+    'Take the Free Assessment',
+  ],
   domainsHeading: ['One life Six areas.', 'One life. Six areas'],
   insightHeading: [
     'You don’t need more information. You need to see what’s already there.',
