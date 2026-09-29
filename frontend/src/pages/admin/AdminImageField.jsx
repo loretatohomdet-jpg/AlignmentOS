@@ -45,7 +45,14 @@ export default function AdminImageField({ label, src, alt, onChangeSrc, onChange
       if (!path) throw new Error('Upload did not return a path');
       onChangeSrc(path);
     } catch (err) {
-      setError(apiError(err, err?.message || 'Could not upload image'));
+      const status = err.response?.status;
+      if (status === 404) {
+        setError('Upload API is still updating. Wait a minute, hard-refresh Admin, then try again.');
+      } else if (status === 413) {
+        setError('Image too large. Try a smaller photo.');
+      } else {
+        setError(apiError(err, err?.message || 'Could not upload image'));
+      }
     } finally {
       setBusy(false);
     }
