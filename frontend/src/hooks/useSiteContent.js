@@ -74,6 +74,19 @@ export function homePageCopy(cms) {
     const fallback = HERO_DEFAULTS[key] ?? HOME_COPY_DEFAULTS[key];
     merged[key] = replaceStale(merged[key], key, fallback);
   }
+  // Domain titles are fixed product names — never let bad CMS saves replace them.
+  merged.domainIdentity = HOME_COPY_DEFAULTS.domainIdentity;
+  merged.domainPurpose = HOME_COPY_DEFAULTS.domainPurpose;
+  merged.domainMindset = HOME_COPY_DEFAULTS.domainMindset;
+  merged.domainHabits = HOME_COPY_DEFAULTS.domainHabits;
+  merged.domainEnvironment = HOME_COPY_DEFAULTS.domainEnvironment;
+  merged.domainExecution = HOME_COPY_DEFAULTS.domainExecution;
+  merged.domainIdentityTag = HOME_COPY_DEFAULTS.domainIdentityTag;
+  merged.domainPurposeTag = HOME_COPY_DEFAULTS.domainPurposeTag;
+  merged.domainMindsetTag = HOME_COPY_DEFAULTS.domainMindsetTag;
+  merged.domainHabitsTag = HOME_COPY_DEFAULTS.domainHabitsTag;
+  merged.domainEnvironmentTag = HOME_COPY_DEFAULTS.domainEnvironmentTag;
+  merged.domainExecutionTag = HOME_COPY_DEFAULTS.domainExecutionTag;
   return merged;
 }
 
