@@ -158,7 +158,10 @@ export default function LandingPage() {
         <section className="w-full border-t border-alignment-accent/[0.06]">
           <div className={`${pageWidth} py-16 sm:py-20`}>
             <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
-              <h2 className={type.h2}>{copy.domainsHeading}</h2>
+              <div className="max-w-xl">
+                <h2 className={type.h2}>{copy.domainsHeading}</h2>
+                {copy.domainsBody ? <p className={`mt-3 ${type.body}`}>{copy.domainsBody}</p> : null}
+              </div>
               <Link
                 to="/assessment"
                 className="text-[11px] font-medium uppercase tracking-[0.18em] text-alignment-accent/80 border-b border-alignment-accent/20 pb-1 hover:text-alignment-accent hover:border-alignment-accent shrink-0"
@@ -216,9 +219,11 @@ export default function LandingPage() {
               <div className="max-w-md">
                 <h2 className={`${type.h2} text-balance`}>{copy.insightHeading}</h2>
                 <div className={`mt-6 space-y-3 ${type.body}`}>
-                  <p>{copy.insightLine1}</p>
-                  <p>{copy.insightLine2}</p>
-                  <p>{copy.insightLine3}</p>
+                  {[copy.insightLine1, copy.insightLine2, copy.insightLine3]
+                    .filter((line) => String(line || '').trim())
+                    .map((line) => (
+                      <p key={line}>{line}</p>
+                    ))}
                 </div>
                 <CmsCta href="/platform" className={`${pillPrimary} mt-8`}>
                   {copy.insightCta} <span aria-hidden>→</span>
@@ -264,7 +269,7 @@ export default function LandingPage() {
                 <h2 className={type.h2}>{copy.closeRightHeading}</h2>
                 <p className={`mt-4 ${type.body}`}>{copy.closeRightBody}</p>
                 <CmsCta href={copy.ctaHref} className={`${pillPrimary} mt-6`}>
-                  {copy.ctaLabel} <span aria-hidden>→</span>
+                  {copy.closeCtaLabel || copy.ctaLabel} <span aria-hidden>→</span>
                 </CmsCta>
                 <p className="mt-4 text-sm text-alignment-accent/70">{copy.closeMeta}</p>
               </div>

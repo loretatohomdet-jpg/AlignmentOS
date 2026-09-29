@@ -5,8 +5,9 @@
 export const HOME_COPY_DEFAULTS = {
   heroImage: '/images/home/hero.jpg',
   heroImageAlt:
-    'Alignment OS on a laptop — Good morning dashboard, score, and today’s focus on a sunlit desk.',
+    'Alignment OS on a laptop — Your Alignment Map, Alignment Score, and six areas of life.',
   domainsHeading: 'One life. Six areas.',
+  domainsBody: 'A simple framework to see the whole picture, so you can focus on what matters now.',
   domainsCta: 'See Your Map',
   domainIdentity: 'Identity',
   domainIdentityTag: 'Who you are',
@@ -29,26 +30,72 @@ export const HOME_COPY_DEFAULTS = {
   loopChooseBody: 'My Plan holds one focus and a few priorities. The rest can wait.',
   loopLiveTitle: 'Live',
   loopLiveBody: 'Daily carries the practice. Notice what helps. Adjust when you need to.',
-  insightHeading: 'You don’t need more information. You need to see what’s already there.',
-  insightLine1: 'The pattern is already in your days.',
-  insightLine2: 'The assessment makes it visible.',
-  insightLine3: 'Then you choose one place to begin.',
+  insightHeading: 'A clearer way forward.',
+  insightLine1: 'You don’t need more information. You need to see what’s already there.',
+  insightLine2: 'See the pattern. Choose what matters. Make one change.',
+  insightLine3: '',
   insightCta: 'Explore Alignment OS',
   outsideImage: '/images/home/outside.jpg',
   outsideImageAlt:
-    'A sunlit room with a woven armchair by the window, open book and mug on a wooden table, looking out over quiet hills.',
+    'A wooden table with a white mug and a stack of books in warm sunlight.',
   outsideHeading: 'Your life belongs outside the app.',
-  outsideBody:
-    'Alignment OS helps you see clearly and choose carefully — then close the screen and live what matters.',
+  outsideBody: 'Alignment OS is here to help you step back, get clear, and move forward. Then close it.',
   closeLeft: 'Less noise. More intention.',
   closeMid1: 'No endless tracking.',
-  closeMid2: 'No perfect streak required.',
-  closeMid3: 'No more system to manage.',
+  closeMid2: 'No perfect routines.',
+  closeMid3: 'No optimizing everything.',
   closeRightHeading: 'Start where you are.',
-  closeRightBody: 'Take the free Alignment Assessment and see the whole picture.',
+  closeRightBody: 'You don’t have to change everything. Just start with what matters.',
+  closeCtaLabel: 'Take the Assessment',
   closeMeta: 'Free · 12 minutes · No account',
-  footerTagline: 'See what is off. Start one practice.',
+  footerTagline: 'A more intentional life is possible.',
   footerCopyright: '© Alignment OS',
+};
+
+/** Hero column defaults (SitePage top-level fields). */
+export const HOME_HERO_DEFAULTS = {
+  headline: 'Know what matters. Make room for it.',
+  subhead:
+    'You have the list. You have the plan. But knowing what to do isn’t always knowing what matters.',
+  body: 'Free · 12 minutes · No account',
+  ctaLabel: 'Take the Free Alignment Assessment',
+  ctaHref: '/assessment',
+};
+
+/**
+ * Older homepage lines still stored in CMS. When these appear, use the current defaults instead.
+ */
+export const STALE_HOME_COPY = {
+  headline: [
+    'Know what matters. Know what to do next.',
+    'See which part of your life is off, and start one practice for it.',
+  ],
+  subhead: [
+    'A system for becoming whole.',
+    'You do not have to turn a score into a plan.',
+    'See where your life is holding, where it is thin, and what deserves your attention now.',
+  ],
+  body: [
+    'Six domains. One Alignment Score. A clearer path forward.',
+    'The assessment names the thin place. Alignment OS starts the practice.',
+    'Free. 12 minutes. No account.',
+  ],
+  ctaLabel: ['Take the free assessment', 'Take the Assessment'],
+  domainsHeading: ['One life Six areas.', 'One life. Six areas'],
+  insightHeading: [
+    'You don’t need more information. You need to see what’s already there.',
+    "You don't need more information. You need to see what's already there.",
+  ],
+  insightLine1: ['The pattern is already in your days.'],
+  insightLine2: ['The assessment makes it visible.'],
+  insightLine3: ['Then you choose one place to begin.'],
+  outsideBody: [
+    'Alignment OS helps you see clearly and choose carefully — then close the screen and live what matters.',
+  ],
+  closeMid2: ['No perfect streak required.'],
+  closeMid3: ['No more system to manage.'],
+  closeRightBody: ['Take the free Alignment Assessment and see the whole picture.'],
+  footerTagline: ['See what is off. Start one practice.'],
 };
 
 export const HOME_SECTION_FIELDS = [
@@ -60,6 +107,7 @@ export const HOME_SECTION_FIELDS = [
     kind: 'image',
   },
   { group: 'Six areas', key: 'domainsHeading', label: 'Section heading' },
+  { group: 'Six areas', key: 'domainsBody', label: 'Supporting line', multiline: true },
   { group: 'Six areas', key: 'domainsCta', label: 'Link to assessment' },
   { group: 'Six areas', key: 'domainIdentity', label: 'Identity label' },
   { group: 'Six areas', key: 'domainIdentityTag', label: 'Identity tag' },
@@ -83,9 +131,9 @@ export const HOME_SECTION_FIELDS = [
   { group: 'How it works', key: 'loopLiveTitle', label: 'Live — title' },
   { group: 'How it works', key: 'loopLiveBody', label: 'Live — body', multiline: true },
   { group: 'Insight', key: 'insightHeading', label: 'Heading', multiline: true },
-  { group: 'Insight', key: 'insightLine1', label: 'Line 1' },
-  { group: 'Insight', key: 'insightLine2', label: 'Line 2' },
-  { group: 'Insight', key: 'insightLine3', label: 'Line 3' },
+  { group: 'Insight', key: 'insightLine1', label: 'Line 1', multiline: true },
+  { group: 'Insight', key: 'insightLine2', label: 'Line 2', multiline: true },
+  { group: 'Insight', key: 'insightLine3', label: 'Line 3', multiline: true },
   { group: 'Insight', key: 'insightCta', label: 'Button label' },
   {
     group: 'Outside the app',
@@ -102,6 +150,7 @@ export const HOME_SECTION_FIELDS = [
   { group: 'Close', key: 'closeMid3', label: 'Middle line 3' },
   { group: 'Close', key: 'closeRightHeading', label: 'Right heading' },
   { group: 'Close', key: 'closeRightBody', label: 'Right body', multiline: true },
+  { group: 'Close', key: 'closeCtaLabel', label: 'Button label' },
   { group: 'Close', key: 'closeMeta', label: 'Line under the button' },
   { group: 'Site footer', key: 'footerTagline', label: 'Footer tagline', multiline: true },
   { group: 'Site footer', key: 'footerCopyright', label: 'Footer copyright' },

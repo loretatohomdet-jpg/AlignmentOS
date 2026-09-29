@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { API_BASE } from '../config/apiBase';
-import { HOME_COPY_DEFAULTS, mergeHomeSections } from '../config/homeCopy';
+import { HOME_COPY_DEFAULTS, HOME_HERO_DEFAULTS, STALE_HOME_COPY, mergeHomeSections } from '../config/homeCopy';
 import { mergePageSections, sectionConfigForPath } from '../config/pageSections';
 import { resolveCmsImageUrl } from '../config/cmsMedia';
 
@@ -53,30 +53,11 @@ export function pageCopy(cms, defaults) {
   };
 }
 
-const HERO_DEFAULTS = {
-  headline: 'Know what matters. Make room for it.',
-  subhead: 'See where your life is holding, where it is thin, and what deserves your attention now.',
-  body: 'Free · 12 minutes · No account',
-  ctaLabel: 'Take the Assessment',
-  ctaHref: '/assessment',
-};
-
-/** Previous shipped homepage lines. An Admin save of these should still pick up the new path. */
-const STALE_HOME_COPY = {
-  headline: [
-    'Know what matters. Know what to do next.',
-    'See which part of your life is off, and start one practice for it.',
-  ],
-  subhead: ['A system for becoming whole.', 'You do not have to turn a score into a plan.'],
-  body: [
-    'Six domains. One Alignment Score. A clearer path forward.',
-    'The assessment names the thin place. Alignment OS starts the practice.',
-  ],
-  ctaLabel: ['Take the free assessment'],
-};
+const HERO_DEFAULTS = HOME_HERO_DEFAULTS;
 
 function replaceStale(value, key, fallback) {
-  if (typeof value !== 'string' || !value.trim()) return fallback;
+  if (typeof value !== 'string') return fallback;
+  if (!value.trim()) return fallback === '' ? '' : fallback;
   const stale = STALE_HOME_COPY[key];
   const list = Array.isArray(stale) ? stale : stale ? [stale] : [];
   if (list.includes(value.trim())) return fallback;
@@ -88,7 +69,7 @@ export function homePageCopy(cms) {
   const hero = pageCopy(cms, HERO_DEFAULTS);
   const sections = wasEditedInAdmin(cms) ? mergeHomeSections(cms?.sections) : mergeHomeSections(null);
   const merged = { ...hero, ...sections };
-  for (const key of Object.keys(STALE_HOME_COPY)) {
+  for (const key of Object.keys({ ...HERO_DEFAULTS, ...HOME_COPY_DEFAULTS, ...STALE_HOME_COPY })) {
     if (!(key in merged)) continue;
     const fallback = HERO_DEFAULTS[key] ?? HOME_COPY_DEFAULTS[key];
     merged[key] = replaceStale(merged[key], key, fallback);
