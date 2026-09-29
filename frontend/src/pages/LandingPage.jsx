@@ -70,12 +70,6 @@ export default function LandingPage() {
     dot: key === 'PURPOSE' || key === 'HABITS' || key === 'EXECUTION' ? 'bg-alignment-surface/70' : 'bg-alignment-surface',
   }));
 
-  const loopSteps = [
-    { n: '01', title: copy.loopSeeTitle, body: copy.loopSeeBody },
-    { n: '02', title: copy.loopChooseTitle, body: copy.loopChooseBody },
-    { n: '03', title: copy.loopLiveTitle, body: copy.loopLiveBody },
-  ];
-
   const domainRow = (
     <ul className="flex shrink-0 items-center gap-x-10 sm:gap-x-14 md:gap-x-16 pr-10 sm:pr-14">
       {heroDomains.map(({ key, label, dot }) => (
@@ -182,34 +176,6 @@ export default function LandingPage() {
                 </li>
               ))}
             </ul>
-          </div>
-        </section>
-
-        <section className="w-full border-t border-alignment-accent/[0.06] bg-alignment-surfaceSoft/90">
-          <div className={`${pageWidth} py-14 sm:py-16`}>
-            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
-              <div>
-                <p className={type.kicker}>{copy.loopKicker}</p>
-                <h2 className={`mt-3 ${type.h2}`}>{copy.loopHeading}</h2>
-              </div>
-              <Link
-                to="/how-it-works"
-                className="text-[11px] font-medium uppercase tracking-[0.18em] text-alignment-accent/80 border-b border-alignment-accent/20 pb-1 hover:text-alignment-accent hover:border-alignment-accent shrink-0"
-              >
-                {copy.loopCta} <span aria-hidden>→</span>
-              </Link>
-            </div>
-            <ol className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-6 lg:gap-10">
-              {loopSteps.map((step) => (
-                <li key={step.n} className="max-w-sm">
-                  <p className="text-[11px] font-medium tabular-nums tracking-[0.18em] text-alignment-primary">
-                    {step.n}
-                  </p>
-                  <p className="mt-3 font-display text-xl font-medium text-alignment-accent">{step.title}</p>
-                  <p className={`mt-2 ${type.body}`}>{step.body}</p>
-                </li>
-              ))}
-            </ol>
           </div>
         </section>
 
