@@ -155,11 +155,17 @@ export function SitePageFooter({ extra = null }) {
   return (
     <footer className="w-full min-w-0 max-w-full overflow-x-hidden border-t border-alignment-accent/[0.08] bg-alignment-surfaceSoft/95 backdrop-blur-[2px] pb-[max(1rem,env(safe-area-inset-bottom))] mt-auto">
       <div className="w-full min-w-0 max-w-6xl xl:max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 py-10 sm:py-12">
-        <BrandLogo iconHeightPx={44} />
-        <p className={`mt-4 ${type.body} max-w-md`}>{siteFooterTagline}</p>
-        <SiteMarketingFooterNav className={`${linkRow} mt-8`} />
-        <SiteLegalFooterNav className={`${linkRow} mt-4`} />
-        <p className={`mt-8 ${type.muted}`}>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 md:items-start">
+          <div className="max-w-md">
+            <BrandLogo iconHeightPx={44} />
+            <p className={`mt-4 ${type.body}`}>{siteFooterTagline}</p>
+          </div>
+          <div className="min-w-0 md:flex md:flex-col md:items-end">
+            <SiteMarketingFooterNav className={`${linkRow} md:justify-end`} />
+            <SiteLegalFooterNav className={`${linkRow} mt-4 md:justify-end`} />
+          </div>
+        </div>
+        <p className={`mt-10 pt-8 border-t border-alignment-accent/[0.06] ${type.muted}`}>
           {siteFooterCopyright}
           {extra ? <span className="ml-4 inline-flex align-middle">{extra}</span> : null}
         </p>
