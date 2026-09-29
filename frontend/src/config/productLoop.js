@@ -1,6 +1,6 @@
 /**
- * One loop for signed-in people. Practice does the day.
- * Dashboard holds the record (score + map). Review is the library.
+ * One loop for signed-in people: Plan names the focus, Daily holds it, Review adjusts.
+ * Dashboard remains the record (score + history).
  */
 export const JUST_PAID_KEY = 'alignment_os_just_paid';
 
@@ -26,19 +26,19 @@ export function clearJustPaid() {
 
 export const LOOP_PLACES = [
   {
-    to: '/practice',
-    label: 'Practice',
-    body: 'Today’s three rooms. What you write is saved when you hold a room.',
+    to: '/plan',
+    label: 'My Plan',
+    body: 'Your focus and priorities from the assessment.',
   },
   {
-    to: '/dashboard',
-    label: 'Dashboard',
-    body: 'Your record. Score, map, and history live here.',
+    to: '/practice',
+    label: 'Daily',
+    body: 'Today’s rooms. Hold one practice from your plan.',
   },
   {
     to: '/reflect',
     label: 'Review',
-    body: 'A small library of lines, when you need one.',
+    body: 'A weekly pause to notice what is helping.',
   },
 ];
 
@@ -52,7 +52,7 @@ export const SNAPSHOT_SEEN_KEY = 'alignment_os_snapshot_seen';
 export const OS_OFFERS = [
   { label: 'Alignment Map', body: 'Understand the pattern.' },
   { label: 'Personal Plan', body: 'Decide what matters now.' },
-  { label: 'Habit Engine', body: 'Make the change practical.' },
+  { label: 'Daily Practice', body: 'Hold one change in the day.' },
   { label: 'Weekly Review', body: 'See what is actually helping.' },
 ];
 
@@ -71,4 +71,19 @@ export function sawSnapshotContinue() {
   } catch (_) {
     return false;
   }
+}
+
+/** After claim/signup — open Snapshot when a fresh handoff is waiting. */
+export function preferSnapshotIfFresh(path) {
+  try {
+    if (sessionStorage.getItem(FRESH_RESULT_KEY)) return '/snapshot';
+  } catch (_) {}
+  return path;
+}
+
+export function storeFreshResultHandoff(data) {
+  if (!data || typeof data !== 'object') return;
+  try {
+    sessionStorage.setItem(FRESH_RESULT_KEY, JSON.stringify({ ...data, _freshSubmission: true }));
+  } catch (_) {}
 }

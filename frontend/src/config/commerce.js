@@ -26,6 +26,7 @@ export const plannerImages = {
   paperGift: '/images/planner/paper-gift.png',
   sleevedDesk: '/images/planner/sleeved-desk.png',
   sleevedAnatomy: '/images/planner/sleeved-anatomy.png',
+  digitalTools: '/images/planner/digital-tools.jpg',
 };
 
 /** Single source for shop prices and checkout URLs. */
@@ -36,9 +37,10 @@ export const plannerEditions = [
     price: 27,
     note: 'The same planner, as a fillable download. Use it on a tablet, or print the pages yourself.',
     kicker: 'Instant download',
-    image: plannerImages.paperFoil,
-    imageAlt: 'Life of Purpose Planner cover lettering — the digital edition is a fillable download of the same planner',
-    imageClass: 'w-full aspect-[4/3] object-cover object-[center_70%]',
+    image: plannerImages.digitalTools,
+    imageAlt:
+      'Alignment OS digital tools — Daily, Clarity, and Quarterly Review covers standing together',
+    imageClass: 'w-full aspect-[4/3] object-cover object-center',
     checkoutUrl: shopPlannerDigitalUrl,
     vendor: 'gumroad',
     cta: 'Get the digital edition',
@@ -182,14 +184,14 @@ export const quarterlyProduct = {
   },
 };
 
-/** Clarity, Daily, Quarterly Review — not Reset, not the planner. */
-export const alignmentTools = [clarityProduct, dailyProduct, quarterlyProduct];
+/** Clarity + Quarterly Review — not Reset, not the planner, not Daily. */
+export const alignmentTools = [clarityProduct, quarterlyProduct];
 
 export const toolsCollection = {
   sku: 'alignment-tools-collection',
   title: 'The Alignment Tools Collection',
-  tagline: 'Clarity + Daily + Quarterly Review',
-  body: 'Move through the full cycle: see what matters, practice what matters, and realign as life changes.',
+  tagline: 'Clarity + Quarterly Review',
+  body: 'Move through the cycle: see what matters, then realign as life changes.',
   digital: {
     sku: 'alignment-tools-collection-digital',
     price: 54,

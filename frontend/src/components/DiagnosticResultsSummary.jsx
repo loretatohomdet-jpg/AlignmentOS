@@ -136,8 +136,8 @@ export default function DiagnosticResultsSummary({
           </p>
           <p className="mt-10 text-center text-sm text-alignment-accent/90">
             Returning user?{' '}
-            <Link to="/dashboard" className="font-medium text-alignment-accent underline underline-offset-2 hover:text-alignment-accent/80">
-              Open your Dashboard →
+            <Link to="/login?returnTo=/plan" className="font-medium text-alignment-accent underline underline-offset-2 hover:text-alignment-accent/80">
+              Sign in to open My Plan →
             </Link>
           </p>
         </div>

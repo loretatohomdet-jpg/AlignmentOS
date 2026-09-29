@@ -4,7 +4,7 @@ import { formationTeachableUrl } from '../config/externalLinks';
 const DISMISS_KEY = 'formationModalDismissedAt';
 const DISMISS_DAYS = 7;
 
-export default function FormationModal({ show, onClose, aqScore, daysWithHabits }) {
+export default function FormationModal({ show, onClose, aqScore, daysWithHabits, domain = null, domainLabel = null }) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -21,6 +21,9 @@ export default function FormationModal({ show, onClose, aqScore, daysWithHabits 
 
   if (!visible) return null;
 
+  const href = formationTeachableUrl({ domain });
+  const cta = domainLabel ? `Open ${domainLabel} on Teachable` : 'Open Formation on Teachable';
+
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-alignment-deep/45" role="dialog" aria-modal="true" aria-labelledby="formation-title">
       <div className="rounded-2xl bg-alignment-surface border border-alignment-accent/10 shadow-xl max-w-md w-full p-6 sm:p-8">
@@ -29,18 +32,22 @@ export default function FormationModal({ show, onClose, aqScore, daysWithHabits 
         </h2>
         <p className="mt-3 text-alignment-accent/90 leading-relaxed">
           {daysWithHabits >= 14
-            ? 'You’ve been building alignment for 14+ days. Formation on Teachable is ready when you want to go deeper.'
-            : 'Your alignment could use deeper support. Formation on Teachable holds the tracks and lessons.'}
+            ? domainLabel
+              ? `You’ve been building alignment for 14+ days. The ${domainLabel} track on Teachable is ready when you want to go deeper.`
+              : 'You’ve been building alignment for 14+ days. Formation on Teachable is ready when you want to go deeper.'
+            : domainLabel
+              ? `Your alignment could use deeper support. Start with the ${domainLabel} track on Teachable.`
+              : 'Your alignment could use deeper support. Formation on Teachable holds the tracks and lessons.'}
         </p>
         <div className="mt-6 flex flex-col sm:flex-row gap-3">
           <a
-            href={formationTeachableUrl()}
+            href={href}
             target="_blank"
             rel="noopener noreferrer"
             onClick={handleDismiss}
             className="rounded-full bg-alignment-primary text-white px-5 py-2.5 text-sm font-medium hover:bg-alignment-primary/90 text-center"
           >
-            Open Formation on Teachable
+            {cta}
           </a>
           <button
             type="button"

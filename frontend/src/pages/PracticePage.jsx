@@ -7,6 +7,7 @@ import { pushHeldLocalRituals } from '../utils/engineRitualsApi';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { type } from '../config/siteType';
 import { clearJustPaid, isJustPaid } from '../config/productLoop';
+import { checkoutHabitUrl } from '../config/externalLinks';
 import { pillGhost, pillPrimary } from '../components/HomeMarketingChrome';
 
 function authHeaders() {
@@ -234,20 +235,34 @@ export default function PracticePage() {
           <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-primary">Habit Engine</p>
           <p className="mt-3 font-medium text-alignment-accent">A daily hold, named for you.</p>
           <p className="mt-2 text-sm text-alignment-accent/90 leading-relaxed">
-            The engine picks one of your three practices each day, shows it here, and emails it if it is still open. The
-            three rooms stay available either way.
+            Free keeps the three rooms and today’s practice from My Plan. The Habit Engine (Pro) picks one hold each day,
+            shows it here, and emails it if it is still open.
           </p>
+          {checkoutHabitUrl ? (
+            <a href={checkoutHabitUrl} className={`${pillGhost} mt-5`} target="_blank" rel="noopener noreferrer">
+              Get the Habit Engine →
+            </a>
+          ) : (
+            <Link to="/pricing" className={`${pillGhost} mt-5`}>
+              See Habit Engine plans →
+            </Link>
+          )}
         </div>
       )}
 
       {!liveHabits && (
         <div className="mt-10 rounded-2xl border border-alignment-accent/10 bg-alignment-surface px-6 py-6 text-center">
           <p className="text-sm text-alignment-accent/90 leading-relaxed">
-            Take the free diagnostic so these rooms can sit on your lowest domain.
+            Daily holds the practice from My Plan. Open your plan first — or take the assessment if you have not yet.
           </p>
-          <Link to="/assessment" className={`${pillGhost} mt-5`}>
-            Begin the diagnostic
-          </Link>
+          <div className="mt-5 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <Link to="/plan" className={pillPrimary}>
+              Open My Plan
+            </Link>
+            <Link to="/assessment" className={pillGhost}>
+              Take the assessment
+            </Link>
+          </div>
         </div>
       )}
 

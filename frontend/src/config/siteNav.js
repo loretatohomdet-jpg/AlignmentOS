@@ -9,10 +9,10 @@ export const siteNavMainLinks = [
   { to: '/about', label: 'About' },
 ];
 
-/** Product nav when signed in — client flow: Map · Plan · Daily · Review · Formation */
+/** Product nav when signed in — Plan first, then Map · Daily · Review · Formation */
 export const siteNavSignedInLinks = [
-  { to: '/alignment-map', label: 'My Map' },
   { to: '/plan', label: 'My Plan' },
+  { to: '/alignment-map', label: 'My Map' },
   { to: '/practice', label: 'Daily' },
   { to: '/reflect', label: 'Review' },
   { to: '/formation', label: 'Formation' },

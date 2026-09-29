@@ -88,10 +88,10 @@ export default function PlannerPage() {
       <SiteMarketingHeader />
 
       <main id="planner-main" className="flex-1 w-full scroll-mt-16" tabIndex={-1}>
-        {/* Hero */}
-        <section className="relative w-full overflow-hidden">
+        {/* Hero — copy left, product photo on matching cream (no wash overlays) */}
+        <section className="relative w-full overflow-hidden bg-[#FBFAF8]">
           <div className="grid grid-cols-1 lg:grid-cols-[32rem_minmax(0,1fr)] xl:grid-cols-[36rem_minmax(0,1fr)] lg:min-h-[min(72vh,40rem)]">
-            <div className="relative z-10 flex flex-col justify-center bg-alignment-page px-5 sm:px-8 lg:px-10 xl:px-12 py-14 sm:py-16 lg:py-20 order-2 lg:order-1">
+            <div className="relative z-10 flex flex-col justify-center px-5 sm:px-8 lg:px-10 xl:px-12 py-14 sm:py-16 lg:py-20 order-2 lg:order-1 bg-[#FBFAF8]">
               <div className="max-w-md">
                 <p className={type.kicker}>Life of Purpose Planner</p>
                 <h1 className={`mt-5 ${type.h1} text-balance`}>Make room for what matters.</h1>
@@ -131,28 +131,12 @@ export default function PlannerPage() {
               </div>
             </div>
 
-            <div className="relative order-1 lg:order-2 min-h-[18rem] sm:min-h-[24rem] lg:min-h-full min-w-0 bg-[#F7F3EC]">
+            <div className="relative order-1 lg:order-2 min-h-[18rem] sm:min-h-[24rem] lg:min-h-full min-w-0 bg-[#FBFAF8]">
               <Photo
                 src="/images/planner/hero.jpg"
                 alt="Life of Purpose Planner with gift bag, box, and pen."
                 className="absolute inset-0 h-full w-full object-cover object-[55%_45%]"
                 eager
-              />
-              <div
-                className="pointer-events-none absolute inset-y-0 left-0 w-20 sm:w-28 lg:w-36 bg-gradient-to-r from-[#FBFAF8] via-[#FBFAF8]/70 to-transparent"
-                aria-hidden
-              />
-              <div
-                className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-[#FBFAF8]/90 to-transparent lg:from-[#FBFAF8]/40"
-                aria-hidden
-              />
-              <div
-                className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#FBFAF8] via-[#FBFAF8]/50 to-transparent lg:h-16 lg:from-[#F8F6F2]/90"
-                aria-hidden
-              />
-              <div
-                className="pointer-events-none absolute inset-y-0 right-0 w-10 sm:w-16 bg-gradient-to-l from-[#FBFAF8]/50 to-transparent"
-                aria-hidden
               />
             </div>
           </div>
@@ -263,21 +247,30 @@ export default function PlannerPage() {
             </ul>
 
             {digital ? (
-              <div className="mt-12 pt-10 border-t border-alignment-accent/[0.08] max-w-xl">
-                <p className={type.kicker}>{digital.kicker || 'Also available'}</p>
-                <h3 className={`mt-3 ${type.h3}`}>{digital.name}</h3>
-                <p className="mt-2 font-display text-xl font-medium tabular-nums text-alignment-accent">
-                  {formatUsd(digital.price)}
-                </p>
-                <p className={`mt-3 ${type.body}`}>{digital.note}</p>
-                <CommerceCta
-                  href={digital.checkoutUrl}
-                  event="checkout_started"
-                  sku={digital.sku}
-                  className={`${pillPrimary} mt-6`}
-                >
-                  {digital.cta} <span aria-hidden>→</span>
-                </CommerceCta>
+              <div className="mt-12 pt-10 border-t border-alignment-accent/[0.08] grid grid-cols-1 sm:grid-cols-[minmax(0,18rem)_minmax(0,1fr)] lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] gap-6 sm:gap-8 items-start">
+                <figure className="overflow-hidden rounded-2xl bg-alignment-surfaceSoft">
+                  <Photo
+                    src={digital.image}
+                    alt={digital.imageAlt}
+                    className="w-full aspect-[4/3] object-cover object-center"
+                  />
+                </figure>
+                <div className="min-w-0 max-w-xl">
+                  <p className={type.kicker}>{digital.kicker || 'Also available'}</p>
+                  <h3 className={`mt-3 ${type.h3}`}>{digital.name}</h3>
+                  <p className="mt-2 font-display text-xl font-medium tabular-nums text-alignment-accent">
+                    {formatUsd(digital.price)}
+                  </p>
+                  <p className={`mt-3 ${type.body}`}>{digital.note}</p>
+                  <CommerceCta
+                    href={digital.checkoutUrl}
+                    event="checkout_started"
+                    sku={digital.sku}
+                    className={`${pillPrimary} mt-6`}
+                  >
+                    {digital.cta} <span aria-hidden>→</span>
+                  </CommerceCta>
+                </div>
               </div>
             ) : null}
           </div>

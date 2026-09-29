@@ -168,10 +168,17 @@ async function saveAssessmentForUser(userId, assessmentId, responses) {
 
 async function claimGuestDiagnostic(userId, email) {
   const existing = await prisma.alignmentProfile.findUnique({ where: { userId } });
-  if (existing) return false;
+  if (existing) {
+    return { claimed: false, reason: 'ALREADY_HAS_PROFILE' };
+  }
+
+  const normalized = String(email || '').trim().toLowerCase();
+  if (!normalized) {
+    return { claimed: false, reason: 'NO_PENDING' };
+  }
 
   const leads = await prisma.lead.findMany({
-    where: { email: String(email || '').trim().toLowerCase() },
+    where: { email: normalized },
     orderBy: { createdAt: 'desc' },
     take: 12,
   });
@@ -179,7 +186,9 @@ async function claimGuestDiagnostic(userId, email) {
     const pending = row.pendingReport;
     return pending && pending.assessmentId && Array.isArray(pending.responses) && pending.responses.length;
   });
-  if (!lead) return false;
+  if (!lead) {
+    return { claimed: false, reason: 'NO_PENDING' };
+  }
 
   try {
     await saveAssessmentForUser(userId, lead.pendingReport.assessmentId, lead.pendingReport.responses);
@@ -187,10 +196,10 @@ async function claimGuestDiagnostic(userId, email) {
       where: { id: lead.id },
       data: { pendingReport: null },
     });
-    return true;
+    return { claimed: true, reason: null };
   } catch (err) {
     console.error('Claim guest diagnostic failed:', err.message);
-    return false;
+    return { claimed: false, reason: 'SAVE_FAILED' };
   }
 }
 

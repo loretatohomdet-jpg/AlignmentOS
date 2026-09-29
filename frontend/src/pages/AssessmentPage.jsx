@@ -9,8 +9,9 @@ import { domainScoresToDisplayPct } from '../utils/domainScores';
 import DomainPillarIcon from '../components/DomainPillarIcon';
 import { buildGuestPreviewPayload } from '../utils/assessmentPreview';
 import { type } from '../config/siteType';
-import { FRESH_RESULT_KEY } from '../config/productLoop';
+import { FRESH_RESULT_KEY, storeFreshResultHandoff } from '../config/productLoop';
 import { pillPrimary } from '../components/HomeMarketingChrome';
+import { rememberGuestEmail } from '../utils/guestClaim';
 const DRAFT_KEY = 'alignment_assessment_draft';
 
 function loadDraft() {
@@ -207,6 +208,10 @@ export default function AssessmentPage() {
         assessmentId: assessment.id,
         responses,
       });
+      rememberGuestEmail(guestEmail.trim());
+      if (guestPreview) {
+        storeFreshResultHandoff(guestPreview);
+      }
       setGuestUnlocked(true);
       setGuestEmailed(Boolean(res.data?.emailed));
     } catch (err) {
@@ -311,7 +316,7 @@ export default function AssessmentPage() {
               <Link to="/login?returnTo=/assessment" className="underline decoration-alignment-accent/20 hover:decoration-alignment-accent/50">
                 Sign in
               </Link>{' '}
-              anytime to save results to your dashboard.
+              anytime to save results to My Plan.
             </p>
           )}
           {restoredFromDraft && !loading && totalQuestions > 0 && (
@@ -342,14 +347,14 @@ export default function AssessmentPage() {
         <div className={`mt-10 ${diagRun.emptySurface} p-8 text-center`}>
           <p className="text-lg font-medium text-alignment-accent">No assessment available right now</p>
           <p className={`mt-2 text-sm ${diagRun.muted} max-w-md mx-auto`}>
-            There isn’t an active assessment to show. Try again later or open your dashboard.
+            There isn’t an active assessment to show. Try again later or open My Plan.
           </p>
           <div className="mt-6 flex flex-wrap justify-center gap-3">
             <Link
-              to="/dashboard"
+              to="/plan"
               className="rounded-full bg-alignment-primary text-white px-5 py-2.5 text-sm font-medium hover:bg-alignment-primary/90"
             >
-              Go to Dashboard
+              Open My Plan
             </Link>
             <a
               href="/"
@@ -378,8 +383,8 @@ export default function AssessmentPage() {
             >
               Reload page
             </button>
-            <Link to="/dashboard" className="text-sm font-medium text-alignment-accent/90 hover:text-alignment-accent">
-              Back to Dashboard →
+            <Link to="/plan" className="text-sm font-medium text-alignment-accent/90 hover:text-alignment-accent">
+              Open My Plan →
             </Link>
           </div>
         </div>
@@ -679,15 +684,22 @@ export default function AssessmentPage() {
                       {guestPreview.insight?.practice?.title || 'Your practice is ready'}
                     </p>
                     <p className="mt-2 text-sm text-alignment-accent/90">
-                      Create a free account and this practice is waiting. You do not set it up yourself.
+                      Create a free account to open your Snapshot and My Plan. This practice is already waiting.
                     </p>
-                    <Link to="/signup?returnTo=/plan" className={`${pillPrimary} mt-5`}>
+                    <Link
+                      to={`/signup?returnTo=${encodeURIComponent('/snapshot')}&email=${encodeURIComponent(guestEmail.trim())}`}
+                      className={`${pillPrimary} mt-5`}
+                    >
                       Create a free account →
                     </Link>
                     <p className="mt-4 text-sm text-alignment-accent/90">
-                      <Link to="/login?returnTo=/plan" className="underline underline-offset-2 hover:text-alignment-accent">
+                      <Link
+                        to={`/login?returnTo=${encodeURIComponent('/snapshot')}&email=${encodeURIComponent(guestEmail.trim())}`}
+                        className="underline underline-offset-2 hover:text-alignment-accent"
+                      >
                         Already have an account? Sign in
                       </Link>
+                      . Use the same email so we can attach this assessment to My Plan.
                     </p>
                     <p className="mt-6 text-sm text-alignment-accent/75">
                       <Link to="/founding-circle" className="underline underline-offset-2">

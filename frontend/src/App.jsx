@@ -19,7 +19,6 @@ import ShopPage from './pages/ShopPage';
 import PlannerPage from './pages/PlannerPage';
 import AlignmentClarityPage from './pages/AlignmentClarityPage';
 import QuarterlyReviewPage from './pages/QuarterlyReviewPage';
-import DailyPage from './pages/DailyPage';
 import ResetProductPage from './pages/ResetProductPage';
 import InstitutionPage from './pages/InstitutionPage';
 import PlatformPage from './pages/PlatformPage';
@@ -75,7 +74,7 @@ import { clearSession, getAccessToken, hasUnexpiredAccessToken, useAuthSession }
 function RequireAuth({ children }) {
   const location = useLocation();
   if (!hasUnexpiredAccessToken()) {
-    const returnTo = encodeURIComponent(location.pathname || '/practice');
+    const returnTo = encodeURIComponent(location.pathname || '/plan');
     return <Navigate to={`/login?returnTo=${returnTo}`} replace />;
   }
   return children;
@@ -207,7 +206,7 @@ export default function App() {
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/shop" element={<ShopPage />} />
       <Route path="/shop/alignment-clarity" element={<AlignmentClarityPage />} />
-      <Route path="/shop/daily" element={<DailyPage />} />
+      <Route path="/shop/daily" element={<Navigate to="/shop" replace />} />
       <Route path="/shop/quarterly-review" element={<QuarterlyReviewPage />} />
       <Route path="/shop/reset" element={<ResetProductPage />} />
       <Route path="/planner" element={<PlannerPage />} />

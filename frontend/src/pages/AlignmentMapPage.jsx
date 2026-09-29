@@ -116,11 +116,11 @@ export default function AlignmentMapPage() {
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
             {hasMap ? (
               <>
-                <Link to="/practice" className={pillPrimary}>
-                  Open Practice
+                <Link to="/plan" className={pillPrimary}>
+                  Open My Plan →
                 </Link>
-                <Link to="/dashboard" className={pillGhost}>
-                  Back to your record
+                <Link to="/practice" className={pillGhost}>
+                  Open Daily
                 </Link>
               </>
             ) : (
@@ -128,8 +128,8 @@ export default function AlignmentMapPage() {
                 <Link to="/assessment" className={pillPrimary}>
                   Take the diagnostic
                 </Link>
-                <Link to="/dashboard" className={pillGhost}>
-                  Your record
+                <Link to="/plan" className={pillGhost}>
+                  My Plan
                 </Link>
               </>
             )}

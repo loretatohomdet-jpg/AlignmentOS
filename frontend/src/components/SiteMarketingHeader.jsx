@@ -16,7 +16,7 @@ import AdminPageBar from './AdminPageBar';
 
 /**
  * Site header. Marketing pages: How it works · Platform · Planner · Shop · About, plus Take the Assessment.
- * Product pages switch to My Map · My Plan · Daily · Review · Formation once a real session exists.
+ * Product pages switch to My Plan · My Map · Daily · Review · Formation once a real session exists.
  */
 export default function SiteMarketingHeader({ appendDesktop = null, authDrawer }) {
   const { pathname } = useLocation();

@@ -11,17 +11,17 @@ export const visibility = {
 
 /** Human labels → canonical path */
 export const routeMap = {
-  Results: { path: '/results', visibility: visibility.auth, note: 'Full report · logged in' },
+  Results: { path: '/results', visibility: visibility.auth, note: 'Archive · full report · logged in' },
   Snapshot: { path: '/snapshot', visibility: visibility.auth, note: 'Post-assessment transition · logged in' },
   Diagnostic: { path: '/diagnostic', visibility: visibility.public, note: 'How it works; /assessment is the flow' },
   Platform: { path: '/platform', visibility: visibility.public, note: 'Human alignment software · marketing' },
-  Pricing: { path: '/pricing', visibility: visibility.hidden, note: 'Unlisted until stage 2 · keep route for later' },
+  Pricing: { path: '/pricing', visibility: visibility.public, note: 'Habit Engine & plans · public upsell' },
   Shop: { path: '/shop', visibility: visibility.public, note: 'Planner, Alignment Tools, collection, Reset' },
   Planner: { path: '/planner', visibility: visibility.public, note: 'Life of Purpose Planner' },
   ResetGuide: { path: '/reset', visibility: visibility.public, note: 'Free Reset guide · diagnostic' },
   Reset: { path: '/shop/reset', visibility: visibility.public, note: 'Reset tool $12 / $24' },
   AlignmentClarity: { path: '/shop/alignment-clarity', visibility: visibility.public, note: 'Clarity $27 / $42' },
-  Daily: { path: '/shop/daily', visibility: visibility.public, note: 'Daily $24 / $38' },
+  Daily: { path: '/shop/daily', visibility: visibility.hidden, note: 'Retired from shelf · redirects to /shop' },
   QuarterlyReview: { path: '/shop/quarterly-review', visibility: visibility.public, note: 'Quarterly Review $18 / $32' },
   Wholeness: { path: '/ethics', visibility: visibility.public, note: '/wholeness redirects here' },
   Framework: { path: '/framework', visibility: visibility.public, note: 'Six domains diagram + formation axis' },

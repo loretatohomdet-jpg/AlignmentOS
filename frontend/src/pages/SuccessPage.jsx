@@ -47,14 +47,12 @@ export default function SuccessPage() {
     };
   }, [isCheckout]);
 
-  const primary = isCheckout
-    ? hasScore
-      ? { to: '/practice', label: 'Begin Practice' }
-      : { to: '/assessment', label: 'Take the diagnostic' }
-    : { to: '/dashboard', label: 'Open your record' };
+  const primary = isCheckout && !hasScore
+    ? { to: '/assessment', label: 'Take the diagnostic' }
+    : { to: '/plan', label: 'Open My Plan' };
 
   const secondary = isCheckout
-    ? { to: '/dashboard', label: 'See your record' }
+    ? { to: '/practice', label: 'Begin Daily' }
     : { to: '/assessment', label: 'Diagnostic' };
 
   return (
@@ -66,10 +64,10 @@ export default function SuccessPage() {
           ? loading
             ? 'Payment received. Finding your next step…'
             : hasScore
-              ? 'Payment received. Practice holds the day. Your score and map live on the Dashboard.'
-              : 'Payment received. Take the diagnostic first — twelve minutes — so the map can fill. Then Practice holds the day.'
+              ? 'Payment received. My Plan holds the focus. Daily carries the practice. Your score and map live on the Dashboard.'
+              : 'Payment received. Take the diagnostic first — twelve minutes — so My Plan can fill. Then Daily holds the day.'
           : from === 'signup'
-            ? 'Your account is ready. The Dashboard is your record. Practice is where the day is held.'
+            ? 'Your account is ready. Open My Plan — the assessment attaches there when you use the same email.'
             : 'Next: sign in to save progress, or take the diagnostic if you haven’t yet.'}
       </p>
 

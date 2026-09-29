@@ -7,6 +7,7 @@ import { insightFromResult } from '../config/domainInsight';
 import { type } from '../config/siteType';
 import { pillPrimary } from '../components/HomeMarketingChrome';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { consumeClaimNote } from '../utils/guestClaim';
 
 function authHeaders() {
   const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
@@ -35,8 +36,10 @@ export default function SnapshotPage() {
   const [result, setResult] = useState(() => readHandoff());
   const [loading, setLoading] = useState(!readHandoff());
   const [error, setError] = useState(null);
+  const [claimNote, setClaimNote] = useState('');
 
   useEffect(() => {
+    setClaimNote(consumeClaimNote());
     const token = localStorage.getItem('accessToken');
     if (!token) {
       navigate('/login?returnTo=/snapshot', { replace: true });
@@ -97,7 +100,7 @@ export default function SnapshotPage() {
         <p className={type.kicker}>Alignment Snapshot</p>
         <h1 className={`mt-4 ${type.h1}`}>No snapshot yet.</h1>
         <p className={`mt-4 ${type.body}`}>
-          {error || 'Take the Assessment. This page is what comes after.'}
+          {claimNote || error || 'Take the Assessment. This page is what comes after.'}
         </p>
         <Link to="/assessment" className={`${pillPrimary} mt-10`}>
           Take the Assessment
@@ -108,6 +111,14 @@ export default function SnapshotPage() {
 
   return (
     <div className="mx-auto w-full max-w-lg px-6 pb-20 pt-12 sm:pt-16">
+      {claimNote ? (
+        <p
+          className="mb-6 rounded-xl border border-alignment-accent/10 bg-alignment-surface px-4 py-3 text-sm text-alignment-accent/90 leading-relaxed text-center"
+          role="status"
+        >
+          {claimNote}
+        </p>
+      ) : null}
       <p className={`${type.kicker} text-center`}>Assessment result</p>
       <h1 className={`mt-5 text-center ${type.h1}`}>Your Alignment Snapshot</h1>
 

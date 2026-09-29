@@ -21,7 +21,7 @@ function stepsFor({ hasScore }) {
       {
         n: '03',
         title: 'See your map',
-        body: 'It fills from the diagnostic. Score and history stay on Dashboard.',
+        body: 'It fills from the diagnostic. Score and history stay on your Record.',
         to: '/alignment-map',
       },
     ];
@@ -64,6 +64,8 @@ export default function DashboardWelcomeModal({ open, onDismiss, hasScore = fals
   if (!open) return null;
 
   const steps = stepsFor({ hasScore });
+  const continueTo = hasScore ? '/plan' : '/assessment';
+  const continueLabel = hasScore ? 'Open My Plan' : 'Take the diagnostic';
 
   return (
     <div
@@ -101,13 +103,9 @@ export default function DashboardWelcomeModal({ open, onDismiss, hasScore = fals
           ))}
         </div>
 
-        <button
-          type="button"
-          onClick={onDismiss}
-          className={`${pillPrimary} mt-10 w-full`}
-        >
-          Enter dashboard <span aria-hidden className="ml-2">→</span>
-        </button>
+        <Link to={continueTo} onClick={onDismiss} className={`${pillPrimary} mt-10 w-full`}>
+          {continueLabel} <span aria-hidden className="ml-2">→</span>
+        </Link>
         <p className="mt-4 text-center text-[10px] sm:text-[11px] text-alignment-accent/75">
           You will not see this again after dismissing.
         </p>

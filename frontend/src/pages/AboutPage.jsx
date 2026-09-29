@@ -71,10 +71,10 @@ export default function AboutPage() {
       <SiteMarketingHeader />
 
       <main id="about-main" className="flex-1 w-full scroll-mt-16" tabIndex={-1}>
-        {/* Hero */}
-        <section className="relative w-full overflow-hidden">
+        {/* Hero — copy left, lifestyle photo on matching cream (no wash overlays) */}
+        <section className="relative w-full overflow-hidden bg-[#FBFAF8]">
           <div className="grid grid-cols-1 lg:grid-cols-[32rem_minmax(0,1fr)] xl:grid-cols-[36rem_minmax(0,1fr)] lg:min-h-[min(72vh,40rem)]">
-            <div className="relative z-10 flex flex-col justify-center bg-alignment-page px-5 sm:px-8 lg:px-10 xl:px-12 py-14 sm:py-16 lg:py-20 order-2 lg:order-1">
+            <div className="relative z-10 flex flex-col justify-center px-5 sm:px-8 lg:px-10 xl:px-12 py-14 sm:py-16 lg:py-20 order-2 lg:order-1 bg-[#FBFAF8]">
               <div className="max-w-md">
                 <p className={type.kicker}>{copy.eyebrow}</p>
                 <h1 className={`mt-5 ${type.h1} text-balance`}>{copy.headline}</h1>
@@ -85,30 +85,13 @@ export default function AboutPage() {
               </div>
             </div>
 
-            <div className="relative order-1 lg:order-2 min-h-[18rem] sm:min-h-[24rem] lg:min-h-full min-w-0 bg-[#F3EFE9]">
+            <div className="relative order-1 lg:order-2 min-h-[18rem] sm:min-h-[24rem] lg:min-h-full min-w-0 bg-[#FBFAF8]">
               <img
                 src="/images/about/hero.jpg"
-                alt="A calm room looking out over water — chair, olive branch, and Alignment OS tools on the table."
-                className="absolute inset-0 h-full w-full object-cover object-right scale-[1.35] origin-right"
+                alt="A quiet room with a woven chair by the window, looking out over green hills — book, mug, and olive plant on the table."
+                className="absolute inset-0 h-full w-full object-cover object-[55%_45%]"
                 decoding="async"
                 fetchPriority="high"
-              />
-              <div
-                className="pointer-events-none absolute inset-y-0 left-0 w-28 sm:w-40 lg:w-48 bg-gradient-to-r from-[#FBFAF8] via-[#FBFAF8]/85 to-transparent"
-                aria-hidden
-              />
-              <div
-                className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-[#FBFAF8]/85 to-transparent lg:from-[#FBFAF8]/35"
-                aria-hidden
-              />
-              <div
-                className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#FBFAF8] via-[#FBFAF8]/55 to-transparent lg:h-16 lg:from-[#F8F6F2]/90"
-                aria-hidden
-              />
-              {/* Soft wash over any leftover baked-in type on the left of the photo */}
-              <div
-                className="pointer-events-none absolute inset-y-0 left-0 w-[42%] max-w-md bg-gradient-to-r from-[#FBFAF8]/55 via-[#FBFAF8]/20 to-transparent"
-                aria-hidden
               />
             </div>
           </div>

@@ -1,10 +1,13 @@
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import LoginForm from './LoginForm';
 
 /**
  * Sign-in as a modal with blurred backdrop (e.g. when opening Dashboard while logged out).
  */
-export default function LoginModal({ open, onClose, returnTo = '/practice', onLoggedIn }) {
+export default function LoginModal({ open, onClose, returnTo = '/plan', onLoggedIn }) {
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (!open) return;
     const onKey = (e) => {
@@ -50,8 +53,9 @@ export default function LoginModal({ open, onClose, returnTo = '/practice', onLo
         <LoginForm
           returnTo={returnTo}
           compact
-          onSuccess={() => {
-            onLoggedIn?.();
+          onSuccess={(path) => {
+            onLoggedIn?.(path);
+            navigate(path || returnTo, { replace: true });
           }}
         />
       </div>

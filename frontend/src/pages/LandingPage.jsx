@@ -18,12 +18,6 @@ const DOMAIN_BLURBS = {
   EXECUTION: { label: 'Follow-through', tag: 'How it comes together' },
 };
 
-/** Soft left fade into page cream — single mask (dual masks can blank the image) */
-const heroMaskStyle = {
-  WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 20%, black 100%)',
-  maskImage: 'linear-gradient(to right, transparent 0%, black 20%, black 100%)',
-};
-
 function ProductPreviewCards() {
   return (
     <div className="relative min-h-[18rem] sm:min-h-[22rem]">
@@ -100,7 +94,7 @@ export default function LandingPage() {
       <SiteMarketingHeader />
 
       <main id="main-content" className="flex-1 w-full scroll-mt-16" tabIndex={-1}>
-        {/* Hero — copy left, product lifestyle photo soft-masked into page cream */}
+        {/* Hero — copy left, lifestyle photo on matching cream (no wash overlays) */}
         <section className="relative w-full overflow-hidden bg-[#FBFAF8]">
           <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,34rem)_minmax(0,1fr)] xl:grid-cols-[minmax(0,38rem)_minmax(0,1fr)] lg:min-h-[min(78vh,42rem)]">
             <div className="relative z-10 flex flex-col justify-center px-5 sm:px-8 lg:px-10 xl:px-12 py-14 sm:py-16 lg:py-20 order-2 lg:order-1 bg-[#FBFAF8]">
@@ -117,23 +111,10 @@ export default function LandingPage() {
             <div className="relative order-1 lg:order-2 min-h-[16rem] sm:min-h-[22rem] lg:min-h-full min-w-0 bg-[#FBFAF8]">
               <img
                 src="/images/home/hero.jpg"
-                alt="Alignment OS on a laptop — alignment score, today’s focus, and practices on a sunlit desk."
-                className="absolute inset-0 h-full w-full object-cover object-[58%_42%]"
-                style={heroMaskStyle}
+                alt="Alignment OS on a laptop — Good morning dashboard, score, and today’s focus on a sunlit desk."
+                className="absolute inset-0 h-full w-full object-cover object-[52%_48%]"
                 decoding="async"
                 fetchPriority="high"
-              />
-              <div
-                className="pointer-events-none absolute inset-y-0 left-0 w-32 sm:w-44 lg:w-52 bg-gradient-to-r from-[#FBFAF8] from-10% via-[#FBFAF8]/80 to-transparent"
-                aria-hidden
-              />
-              <div
-                className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#FBFAF8] via-[#FBFAF8]/70 to-transparent"
-                aria-hidden
-              />
-              <div
-                className="pointer-events-none absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-[#FBFAF8]/70 to-transparent"
-                aria-hidden
               />
             </div>
           </div>
@@ -203,8 +184,53 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* See what's already there */}
+        {/* How it works — brief */}
         <section className="w-full border-t border-alignment-accent/[0.06] bg-alignment-surfaceSoft/90">
+          <div className={`${pageWidth} py-14 sm:py-16`}>
+            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+              <div>
+                <p className={type.kicker}>How it works</p>
+                <h2 className={`mt-3 ${type.h2}`}>See. Choose. Live.</h2>
+              </div>
+              <Link
+                to="/how-it-works"
+                className="text-[11px] font-medium uppercase tracking-[0.18em] text-alignment-accent/80 border-b border-alignment-accent/20 pb-1 hover:text-alignment-accent hover:border-alignment-accent shrink-0"
+              >
+                Full walkthrough <span aria-hidden>→</span>
+              </Link>
+            </div>
+            <ol className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-6 lg:gap-10">
+              {[
+                {
+                  n: '01',
+                  title: 'See',
+                  body: 'The assessment names the thin place across six areas of life.',
+                },
+                {
+                  n: '02',
+                  title: 'Choose',
+                  body: 'My Plan holds one focus and a few priorities. The rest can wait.',
+                },
+                {
+                  n: '03',
+                  title: 'Live',
+                  body: 'Daily carries the practice. Notice what helps. Adjust when you need to.',
+                },
+              ].map((step) => (
+                <li key={step.n} className="max-w-sm">
+                  <p className="text-[11px] font-medium tabular-nums tracking-[0.18em] text-alignment-primary">
+                    {step.n}
+                  </p>
+                  <p className="mt-3 font-display text-xl font-medium text-alignment-accent">{step.title}</p>
+                  <p className={`mt-2 ${type.body}`}>{step.body}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+
+        {/* See what's already there */}
+        <section className="w-full border-t border-alignment-accent/[0.06]">
           <div className={`${pageWidth} py-16 sm:py-20`}>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 lg:items-center">
               <div className="max-w-md">

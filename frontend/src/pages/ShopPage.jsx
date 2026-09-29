@@ -30,7 +30,7 @@ const SHOP_DEFAULTS = {
 
 const STALE_SHOP = new Set([
   'Practical tools for real life.',
-  'The Life of Purpose Planner in three editions — sleeved, paperback, and digital — plus the digital Alignment Tools in three parts: Clarity, Daily, and the Quarterly Review.',
+  'The Life of Purpose Planner in three editions — sleeved, paperback, and digital — plus the digital Alignment Tools: Clarity and the Quarterly Review.',
 ]);
 
 function pickShop(cms) {
@@ -66,10 +66,10 @@ export default function ShopPage() {
       <SiteMarketingHeader />
 
       <main id="shop-main" className="flex-1 w-full scroll-mt-16" tabIndex={-1}>
-        {/* Hero — copy left, product shot blended into page wash */}
-        <section className="relative w-full overflow-hidden">
+        {/* Hero — copy left, product photo on matching cream (no wash overlays) */}
+        <section className="relative w-full overflow-hidden bg-[#FBFAF8]">
           <div className="grid grid-cols-1 lg:grid-cols-[32rem_minmax(0,1fr)] xl:grid-cols-[36rem_minmax(0,1fr)] lg:min-h-[min(72vh,40rem)]">
-            <div className="relative z-10 flex flex-col justify-center bg-alignment-page px-5 sm:px-8 lg:px-10 xl:px-12 py-14 sm:py-16 lg:py-20 order-2 lg:order-1">
+            <div className="relative z-10 flex flex-col justify-center px-5 sm:px-8 lg:px-10 xl:px-12 py-14 sm:py-16 lg:py-20 order-2 lg:order-1 bg-[#FBFAF8]">
               <div className="max-w-sm">
                 <p className={type.kicker}>{copy.eyebrow}</p>
                 <h1 className={`mt-5 ${type.h1} text-balance`}>{copy.headline}</h1>
@@ -85,30 +85,13 @@ export default function ShopPage() {
               </div>
             </div>
 
-            <div className="relative order-1 lg:order-2 min-h-[18rem] sm:min-h-[24rem] lg:min-h-full min-w-0 bg-[#F7F3EC]">
+            <div className="relative order-1 lg:order-2 min-h-[18rem] sm:min-h-[24rem] lg:min-h-full min-w-0 bg-[#FBFAF8]">
               <img
                 src="/images/shop/hero.jpg"
                 alt="Life of Purpose Planner with gift bag, box, and pen."
                 className="absolute inset-0 h-full w-full object-cover object-[55%_45%]"
                 decoding="async"
                 fetchPriority="high"
-              />
-              {/* Soft blends into page cream so the photo doesn’t sit as a hard inset */}
-              <div
-                className="pointer-events-none absolute inset-y-0 left-0 w-20 sm:w-28 lg:w-36 bg-gradient-to-r from-[#FBFAF8] via-[#FBFAF8]/70 to-transparent"
-                aria-hidden
-              />
-              <div
-                className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-[#FBFAF8]/90 to-transparent lg:from-[#FBFAF8]/40"
-                aria-hidden
-              />
-              <div
-                className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#FBFAF8] via-[#FBFAF8]/50 to-transparent lg:h-16 lg:from-[#F8F6F2]/90"
-                aria-hidden
-              />
-              <div
-                className="pointer-events-none absolute inset-y-0 right-0 w-10 sm:w-16 bg-gradient-to-l from-[#FBFAF8]/50 to-transparent"
-                aria-hidden
               />
             </div>
           </div>
@@ -156,7 +139,7 @@ export default function ShopPage() {
               </p>
             </div>
 
-            <ul className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6">
+            <ul className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-6">
               {shelf.map((product) => (
                 <li key={product.sku}>
                   <Link to={product.path} className="group block h-full">
@@ -184,21 +167,19 @@ export default function ShopPage() {
         {/* Collection + assessment */}
         <section className="w-full border-t border-alignment-accent/[0.06]">
           <div className="grid grid-cols-1 lg:grid-cols-2">
-            <div className="px-5 sm:px-8 lg:px-12 xl:px-16 py-14 sm:py-16 lg:py-20 flex flex-col justify-center bg-alignment-page">
-              <div className="max-w-md mx-auto lg:mx-0 w-full">
-                <div className="grid grid-cols-4 gap-2 sm:gap-3">
-                  {shelf.map((product) => (
-                    <BookCover
-                      key={`collection-${product.sku}`}
-                      src={product.image}
-                      alt=""
-                      title={product.title}
-                      className="rounded-lg"
-                    />
-                  ))}
-                </div>
+            <div className="px-5 sm:px-8 lg:px-10 xl:px-12 py-14 sm:py-16 lg:py-20 flex flex-col justify-center bg-alignment-page">
+              <div className="w-full max-w-xl xl:max-w-2xl mx-auto lg:mx-0">
+                <figure className="overflow-hidden rounded-2xl bg-[#F7F3EC]">
+                  <img
+                    src="/images/shop/tools-collection.jpg"
+                    alt="Alignment OS tools — Clarity and Quarterly Review covers"
+                    className="block w-full h-auto"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </figure>
                 <h2 className={`mt-10 ${type.h2} text-balance`}>Not more to manage.</h2>
-                <p className={`mt-4 ${type.body}`}>
+                <p className={`mt-4 ${type.body} max-w-md`}>
                   Simple tools for seeing clearly, practicing daily, and returning when life shifts.
                 </p>
               </div>

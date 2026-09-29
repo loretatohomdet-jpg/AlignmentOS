@@ -77,11 +77,12 @@ async function register(req, res, next) {
       console.error('Signup welcome email failed:', err.message)
     );
 
-    const claimedDiagnostic = await claimGuestDiagnostic(user.id, user.email);
+    const claim = await claimGuestDiagnostic(user.id, user.email);
 
     res.status(201).json({
       token,
-      claimedDiagnostic,
+      claimedDiagnostic: Boolean(claim?.claimed),
+      claimReason: claim?.reason || null,
       user: {
         id: user.id,
         email: user.email,
@@ -125,11 +126,12 @@ async function login(req, res, next) {
     }
 
     const token = signToken(user);
-    const claimedDiagnostic = await claimGuestDiagnostic(user.id, user.email);
+    const claim = await claimGuestDiagnostic(user.id, user.email);
 
     res.json({
       token,
-      claimedDiagnostic,
+      claimedDiagnostic: Boolean(claim?.claimed),
+      claimReason: claim?.reason || null,
       user: {
         id: user.id,
         email: user.email,

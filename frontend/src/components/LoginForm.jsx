@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { API_BASE } from '../config/apiBase';
 import {
@@ -9,22 +9,26 @@ import {
   authPrimaryButtonMarketingClass,
   authPrimaryButtonCompactClass,
 } from '../constants/authPageTheme';
+import { noteClaimOutcome, readGuestEmail } from '../utils/guestClaim';
+import { preferSnapshotIfFresh } from '../config/productLoop';
 
 /**
  * Shared sign-in form for full-page /login and LoginModal.
  */
 export default function LoginForm({
-  returnTo = '/practice',
+  returnTo = '/plan',
   /** Called after token is stored (navigate or parent state update) */
   onSuccess,
   /** Smaller vertical spacing for modal */
   compact = false,
-  lead = 'Take the assessment and track your AQ score.',
+  lead = 'Sign in to open My Plan and hold the day.',
   showSignup = true,
   showGuest = true,
 }) {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
+  const [searchParams] = useSearchParams();
+  const emailFromQuery = searchParams.get('email') || '';
+  const [email, setEmail] = useState(() => emailFromQuery || readGuestEmail() || '');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -40,8 +44,10 @@ export default function LoginForm({
       const claimed = Boolean(data?.claimedDiagnostic);
       let path = returnTo.startsWith('/') ? returnTo : `/${returnTo}`;
       if (claimed && (path === '/assessment' || path === '/login' || path === '/signup')) {
-        path = '/dashboard';
+        path = '/plan';
       }
+      path = preferSnapshotIfFresh(path);
+      noteClaimOutcome({ claimed, reason: data?.claimReason, returnTo: path });
       if (onSuccess) {
         onSuccess(path);
       } else {

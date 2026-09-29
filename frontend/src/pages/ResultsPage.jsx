@@ -64,6 +64,12 @@ export default function ResultsPage() {
       return;
     }
 
+    // Fresh submissions land on Snapshot; Results is the archive.
+    if (fromFreshSubmit) {
+      navigate('/snapshot', { replace: true });
+      return;
+    }
+
     let handoff = null;
     try {
       const raw = sessionStorage.getItem(FRESH_RESULT_KEY);
@@ -112,9 +118,9 @@ export default function ResultsPage() {
       }
     };
     fetchResult();
-  }, [navigate, fetchHabits]);
+  }, [navigate, fetchHabits, fromFreshSubmit]);
 
-  const lockResultsUntilEmail = fromFreshSubmit && !!result?.pillarScores;
+  const lockResultsUntilEmail = false;
 
   const handleShareSend = async (e) => {
     e.preventDefault();
@@ -153,6 +159,12 @@ export default function ResultsPage() {
   return (
     <div className={`max-w-6xl mx-auto w-full min-w-0 overflow-x-hidden px-4 sm:px-6 lg:px-8 py-10 sm:py-12 ${resultsUi.wrap} min-h-[calc(100vh-6rem)]`}>
       <div className="max-w-6xl mx-auto w-full">
+        <div className="mb-8 text-center max-w-lg mx-auto">
+          <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-accent/65">Archive</p>
+          <p className="mt-2 text-sm text-alignment-accent/90 leading-relaxed">
+            Full score and history. After a new assessment, start at the Snapshot — then My Plan.
+          </p>
+        </div>
         {loading && !result && <p className={`${diag.muted} text-center`}>Loading...</p>}
 
         {!loading && error && !result && (

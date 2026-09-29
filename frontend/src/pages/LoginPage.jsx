@@ -6,7 +6,7 @@ import { SitePageFooter } from '../components/HomeMarketingChrome';
 
 export default function LoginPage() {
   const [searchParams] = useSearchParams();
-  const returnTo = searchParams.get('returnTo') || '/practice';
+  const returnTo = searchParams.get('returnTo') || '/plan';
 
   return (
     <div className={`${type.page} overflow-x-hidden antialiased`}>

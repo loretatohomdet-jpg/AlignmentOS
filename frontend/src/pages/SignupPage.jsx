@@ -6,13 +6,16 @@ import SiteMarketingHeader from '../components/SiteMarketingHeader';
 import { authHeadingClass, authLeadClass, authPrimaryButtonMarketingClass } from '../constants/authPageTheme';
 import { type } from '../config/siteType';
 import { SitePageFooter } from '../components/HomeMarketingChrome';
+import { noteClaimOutcome, readGuestEmail } from '../utils/guestClaim';
+import { preferSnapshotIfFresh } from '../config/productLoop';
 
 export default function SignupPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const returnTo = searchParams.get('returnTo') || '/assessment';
+  const returnTo = searchParams.get('returnTo') || '/plan';
+  const emailFromQuery = searchParams.get('email') || '';
   const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(() => emailFromQuery || readGuestEmail() || '');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -31,12 +34,13 @@ export default function SignupPage() {
       localStorage.setItem('accessToken', data.token);
       window.dispatchEvent(new Event('alignment-auth'));
       const claimed = Boolean(data?.claimedDiagnostic);
-      const dest = returnTo.startsWith('/') ? returnTo : `/${returnTo}`;
+      let dest = returnTo.startsWith('/') ? returnTo : `/${returnTo}`;
       if (claimed && (dest === '/assessment' || dest === '/signup')) {
-        navigate('/dashboard', { replace: true });
-      } else {
-        navigate(dest, { replace: true });
+        dest = '/plan';
       }
+      dest = preferSnapshotIfFresh(dest);
+      noteClaimOutcome({ claimed, reason: data?.claimReason, returnTo: dest });
+      navigate(dest, { replace: true });
     } catch (err) {
       const msg = err.response?.data?.message;
       const errors = err.response?.data?.errors;
@@ -63,7 +67,7 @@ export default function SignupPage() {
             Get started
           </h1>
           <p className={`${authLeadClass} max-w-md mx-auto`}>
-            Create an account to take the assessment and track your AQ score.
+            Create an account to save your assessment and open My Plan.
           </p>
         </div>
 
@@ -102,6 +106,11 @@ export default function SignupPage() {
               className="w-full rounded-xl border border-alignment-accent/10 bg-alignment-surface px-4 py-3.5 font-sans text-sm text-alignment-accent placeholder-alignment-accent/45 focus:border-alignment-accent focus:ring-2 focus:ring-alignment-accent/20 outline-none transition-all"
               placeholder="you@example.com"
             />
+            {emailFromQuery || readGuestEmail() ? (
+              <p className="mt-2 text-xs text-alignment-accent/70">
+                Use the same email as your assessment report so we can attach it to My Plan.
+              </p>
+            ) : null}
           </div>
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-alignment-accent mb-2">
@@ -131,7 +140,7 @@ export default function SignupPage() {
         <p className="mt-8 text-center text-sm text-alignment-accent/90">
           Already have an account?{' '}
           <NavLink
-            to={`/login?returnTo=${encodeURIComponent(returnTo)}`}
+            to={`/login?returnTo=${encodeURIComponent(returnTo)}${email ? `&email=${encodeURIComponent(email)}` : ''}`}
             className="font-medium text-alignment-accent hover:underline"
           >
             Sign in

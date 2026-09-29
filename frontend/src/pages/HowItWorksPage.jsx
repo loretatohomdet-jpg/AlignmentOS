@@ -204,10 +204,10 @@ export default function HowItWorksPage() {
       <SiteMarketingHeader />
 
       <main id="how-it-works-main" className="flex-1 w-full scroll-mt-16" tabIndex={-1}>
-        {/* Hero — fixed copy column + full-bleed mockup */}
-        <section className="relative w-full overflow-hidden border-b border-alignment-accent/[0.06]">
+        {/* Hero — copy left, product mockup on matching cream (no wash overlays) */}
+        <section className="relative w-full overflow-hidden bg-[#FBFAF8]">
           <div className="grid grid-cols-1 lg:grid-cols-[32rem_minmax(0,1fr)] xl:grid-cols-[36rem_minmax(0,1fr)] lg:min-h-[min(70vh,38rem)]">
-            <div className="relative z-10 flex flex-col justify-center bg-alignment-page px-5 sm:px-8 lg:px-10 xl:px-12 py-14 sm:py-16 lg:py-20 order-2 lg:order-1">
+            <div className="relative z-10 flex flex-col justify-center px-5 sm:px-8 lg:px-10 xl:px-12 py-14 sm:py-16 lg:py-20 order-2 lg:order-1 bg-[#FBFAF8]">
               <div className="max-w-sm">
                 <p className={type.kicker}>{copy.eyebrow}</p>
                 <h1 className={`mt-5 ${type.h1} text-balance`}>{copy.headline}</h1>
@@ -219,11 +219,11 @@ export default function HowItWorksPage() {
               </div>
             </div>
 
-            <div className="relative order-1 lg:order-2 min-h-[20rem] sm:min-h-[26rem] lg:min-h-full min-w-0 overflow-hidden bg-alignment-surfaceSoft">
+            <div className="relative order-1 lg:order-2 min-h-[20rem] sm:min-h-[26rem] lg:min-h-full min-w-0 bg-[#FBFAF8]">
               <img
                 src="/images/how-it-works/hero.jpg"
                 alt="Alignment OS on a laptop — Alignment Map, today’s practice, My Plan, and Weekly Review."
-                className="absolute inset-0 h-full w-full object-cover object-[75%_42%]"
+                className="absolute inset-0 h-full w-full object-cover object-[62%_45%]"
                 decoding="async"
                 fetchPriority="high"
               />

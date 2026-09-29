@@ -7,6 +7,7 @@ import { formationTeachableUrl } from '../config/externalLinks';
 import { type } from '../config/siteType';
 import { pillPrimary, pillGhost } from '../components/HomeMarketingChrome';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { consumeClaimNote } from '../utils/guestClaim';
 
 function authHeaders() {
   const token = localStorage.getItem('accessToken');
@@ -18,6 +19,7 @@ export default function PlanPage() {
   usePageTitle('My Plan — Alignment OS');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [claimNote, setClaimNote] = useState('');
   const [result, setResult] = useState(null);
   const [habits, setHabits] = useState([]);
   const [completingId, setCompletingId] = useState(null);
@@ -54,6 +56,7 @@ export default function PlanPage() {
   }, [navigate]);
 
   useEffect(() => {
+    setClaimNote(consumeClaimNote());
     load();
   }, [load]);
 
@@ -87,17 +90,34 @@ export default function PlanPage() {
         <p className={type.kicker}>My Plan</p>
         <h1 className={`mt-4 ${type.h1}`}>Your plan starts with the assessment.</h1>
         <p className={`mt-4 ${type.body}`}>
-          {error || 'Take the free diagnostic. It names the thin place and builds this plan for you.'}
+          {claimNote ||
+            error ||
+            'Take the free diagnostic. It names the thin place and builds this plan for you.'}
         </p>
-        <Link to="/assessment" className={`${pillPrimary} mt-10`}>
-          Take the Assessment
-        </Link>
+        <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
+          <Link to="/assessment" className={pillPrimary}>
+            Take the Assessment
+          </Link>
+          {claimNote ? (
+            <Link to="/login?returnTo=/plan" className={pillGhost}>
+              Sign in with report email
+            </Link>
+          ) : null}
+        </div>
       </div>
     );
   }
 
   return (
     <div className="mx-auto w-full max-w-2xl px-6 pb-20 pt-10 sm:pt-14">
+      {claimNote ? (
+        <p
+          className="mb-6 rounded-xl border border-alignment-accent/10 bg-alignment-surface px-4 py-3 text-sm text-alignment-accent/90 leading-relaxed"
+          role="status"
+        >
+          {claimNote}
+        </p>
+      ) : null}
       <p className={type.kicker}>My Plan</p>
       <h1 className={`mt-4 ${type.h1}`}>A calmer, more aligned you.</h1>
       <p className={`mt-4 ${type.body}`}>
@@ -162,7 +182,7 @@ export default function PlanPage() {
           Open Daily →
         </Link>
         <a
-          href={formationTeachableUrl()}
+          href={formationTeachableUrl({ domain: plan.domain })}
           target="_blank"
           rel="noopener noreferrer"
           className={pillGhost}

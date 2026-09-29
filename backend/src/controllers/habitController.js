@@ -80,7 +80,11 @@ async function getCompletionStats(req, res, next) {
     const userId = req.user.sub;
     const active = await loadActiveWithCompletions(userId);
     const summary = summarizeActiveHabits(active);
-    const engineActive = true;
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { plan: true },
+    });
+    const engineActive = user?.plan === 'PRO' || user?.plan === 'TEAM';
     res.json({
       totalCompletions: summary.totalCompletions,
       totalDaysWithActivity: summary.totalDaysWithActivity,

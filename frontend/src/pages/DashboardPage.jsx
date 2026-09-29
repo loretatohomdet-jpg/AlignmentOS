@@ -156,7 +156,7 @@ export default function DashboardPage() {
         <LoginModal
           open
           onClose={() => navigate('/', { replace: true })}
-          returnTo="/dashboard"
+          returnTo="/plan"
           onLoggedIn={() => setAuthed(true)}
         />
         <div className="min-h-[min(50vh,420px)]" aria-hidden />
@@ -284,7 +284,7 @@ export default function DashboardPage() {
                 <ScoreGauge score={result?.score} label={result?.label} />
                 {result ? (
                   <Link to="/results" className="text-sm font-medium text-alignment-accent hover:underline shrink-0">
-                    View details →
+                    Full report (archive) →
                   </Link>
                 ) : (
                   <Link to="/assessment" className="text-sm font-medium text-alignment-accent hover:underline shrink-0">
@@ -421,7 +421,7 @@ export default function DashboardPage() {
                       Open the map →
                     </Link>
                     <Link to="/results" className="mt-2 text-sm font-medium text-alignment-accent hover:underline">
-                      Full results →
+                      Full report (archive) →
                     </Link>
                     <Link to="/journey" className="mt-2 text-sm font-medium text-alignment-accent hover:underline">
                       What you have written →
@@ -463,6 +463,8 @@ export default function DashboardPage() {
             onClose={() => setShowFormation(false)}
             aqScore={result?.score}
             daysWithHabits={habitStats?.totalDaysWithActivity ?? 0}
+            domain={insight?.domain}
+            domainLabel={insight?.label}
           />
         </>
       )}

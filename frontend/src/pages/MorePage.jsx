@@ -74,7 +74,7 @@ export default function MorePage() {
 
       <div className="mt-10 border-t border-alignment-accent/[0.08]">
         <Row to="/profile" label="Profile" note="Name & photo" />
-        <Row to="/results" label="Results" note="Your score" />
+        <Row to="/results" label="Full report" note="Archive · score history" />
         <Row to="/journey" label="Archive" note="What you have written" />
         <Row onClick={signOut} label="Sign out" />
       </div>
