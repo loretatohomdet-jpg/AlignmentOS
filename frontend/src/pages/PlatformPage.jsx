@@ -11,34 +11,17 @@ import {
 import { type } from '../config/siteType';
 import { DOMAIN_ORDER } from '../constants/domains';
 import { usePageTitle } from '../hooks/usePageTitle';
-import { pageCopy, useSitePage } from '../hooks/useSiteContent';
+import { marketingPageCopy, useSitePage } from '../hooks/useSiteContent';
+import { PLATFORM_SECTION_DEFAULTS } from '../config/pageSections';
 
-const DOMAIN_BLURBS = {
-  IDENTITY: { label: 'Identity', tag: 'Who you are' },
-  PURPOSE: { label: 'Purpose', tag: 'Why it matters' },
-  MINDSET: { label: 'Mindset', tag: 'How you think' },
-  HABITS: { label: 'Habits', tag: 'What you do' },
-  ENVIRONMENT: { label: 'Environment', tag: 'Where you live' },
-  EXECUTION: { label: 'Follow-through', tag: 'How it comes together' },
+const DOMAIN_KEYS = {
+  IDENTITY: { labelKey: 'domainIdentity', tagKey: 'domainIdentityTag' },
+  PURPOSE: { labelKey: 'domainPurpose', tagKey: 'domainPurposeTag' },
+  MINDSET: { labelKey: 'domainMindset', tagKey: 'domainMindsetTag' },
+  HABITS: { labelKey: 'domainHabits', tagKey: 'domainHabitsTag' },
+  ENVIRONMENT: { labelKey: 'domainEnvironment', tagKey: 'domainEnvironmentTag' },
+  EXECUTION: { labelKey: 'domainExecution', tagKey: 'domainExecutionTag' },
 };
-
-const FLOW_STEPS = [
-  {
-    n: '01',
-    title: 'See',
-    body: 'Your Map shows the whole picture.',
-  },
-  {
-    n: '02',
-    title: 'Choose',
-    body: 'Your Plan names what matters now.',
-  },
-  {
-    n: '03',
-    title: 'Live',
-    body: 'Daily + Review help you practice and adjust.',
-  },
-];
 
 const PLATFORM_DEFAULTS = {
   eyebrow: 'Platform',
@@ -46,6 +29,7 @@ const PLATFORM_DEFAULTS = {
   subhead: 'See where you are. Choose what matters. Make one change.',
   ctaLabel: 'Take the Assessment',
   ctaHref: '/assessment',
+  ...PLATFORM_SECTION_DEFAULTS,
 };
 
 const STALE_PLATFORM = new Set([
@@ -55,7 +39,7 @@ const STALE_PLATFORM = new Set([
 ]);
 
 function pickPlatform(cms) {
-  const copy = pageCopy(cms, PLATFORM_DEFAULTS);
+  const copy = marketingPageCopy('/platform', cms, PLATFORM_DEFAULTS);
   const out = { ...copy };
   for (const key of Object.keys(PLATFORM_DEFAULTS)) {
     if (STALE_PLATFORM.has(String(out[key] || '').trim())) {
@@ -63,6 +47,14 @@ function pickPlatform(cms) {
     }
   }
   return out;
+}
+
+function flowSteps(copy) {
+  return [
+    { n: '01', title: copy.loopSeeTitle, body: copy.loopSeeBody },
+    { n: '02', title: copy.loopChooseTitle, body: copy.loopChooseBody },
+    { n: '03', title: copy.loopLiveTitle, body: copy.loopLiveBody },
+  ];
 }
 
 function DevicesPreview() {
@@ -131,6 +123,7 @@ function DevicesPreview() {
 export default function PlatformPage() {
   usePageTitle('Platform — Alignment OS');
   const copy = pickPlatform(useSitePage('/platform'));
+  const steps = flowSteps(copy);
 
   return (
     <div className={type.page}>
@@ -153,14 +146,14 @@ export default function PlatformPage() {
                 <CmsCta href={copy.ctaHref} className={`${pillPrimary} mt-8`}>
                   {copy.ctaLabel} <span aria-hidden>→</span>
                 </CmsCta>
-                <p className="mt-4 text-sm text-alignment-accent/70">Free · 12 minutes · No account</p>
+                <p className="mt-4 text-sm text-alignment-accent/70">{copy.heroMeta}</p>
               </div>
             </div>
 
             <div className="relative order-1 lg:order-2 min-h-[20rem] sm:min-h-[26rem] lg:min-h-full min-w-0 overflow-hidden bg-alignment-surfaceSoft">
               <img
-                src="/images/platform/hero.jpg"
-                alt="Alignment OS on laptop and phone — today’s focus, practice, and alignment score."
+                src={copy.heroImage}
+                alt={copy.heroImageAlt}
                 className="absolute inset-0 h-full w-full object-cover object-[58%_42%]"
                 decoding="async"
                 fetchPriority="high"
@@ -173,21 +166,23 @@ export default function PlatformPage() {
         <section className="w-full border-t border-alignment-accent/[0.06]">
           <div className={`${pageWidth} py-16 sm:py-20`}>
             <div className="max-w-xl mx-auto text-center">
-              <p className={type.kicker}>One life. Six areas</p>
-              <h2 className={`mt-4 ${type.h2}`}>One life. Six areas.</h2>
+              <p className={type.kicker}>{copy.domainsKicker}</p>
+              <h2 className={`mt-4 ${type.h2}`}>{copy.domainsHeading}</h2>
             </div>
 
             <ul className="mt-12 sm:mt-14 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-8 lg:gap-6">
               {DOMAIN_ORDER.map((key) => {
-                const d = DOMAIN_BLURBS[key];
+                const keys = DOMAIN_KEYS[key];
                 return (
                   <li key={key} className="flex flex-col items-center text-center gap-3">
                     <span className="flex h-14 w-14 items-center justify-center text-alignment-accent">
                       <DomainPillarIcon pillar={key} className="h-8 w-8" />
                     </span>
-                    <span className="font-display text-lg font-medium text-alignment-accent">{d.label}</span>
+                    <span className="font-display text-lg font-medium text-alignment-accent">
+                      {copy[keys.labelKey]}
+                    </span>
                     <span className="text-[10px] font-medium uppercase tracking-[0.18em] text-alignment-accent/60">
-                      {d.tag}
+                      {copy[keys.tagKey]}
                     </span>
                   </li>
                 );
@@ -196,7 +191,7 @@ export default function PlatformPage() {
 
             <div className="mt-12 sm:mt-14 flex justify-center">
               <Link to="/assessment" className={pillOutline}>
-                See Your Map <span aria-hidden>→</span>
+                {copy.domainsCta} <span aria-hidden>→</span>
               </Link>
             </div>
           </div>
@@ -206,14 +201,14 @@ export default function PlatformPage() {
         <section className="w-full border-t border-alignment-accent/[0.06] bg-alignment-surfaceSoft/90">
           <div className={`${pageWidth} py-16 sm:py-20`}>
             <div className="max-w-xl">
-              <p className={type.kicker}>How it works</p>
-              <h2 className={`mt-4 ${type.h2}`}>See. Choose. Live.</h2>
+              <p className={type.kicker}>{copy.loopKicker}</p>
+              <h2 className={`mt-4 ${type.h2}`}>{copy.loopHeading}</h2>
             </div>
 
             <ol className="mt-10 sm:mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6">
-              {FLOW_STEPS.map((step, idx) => (
+              {steps.map((step, idx) => (
                 <li key={step.n} className="relative">
-                  {idx < FLOW_STEPS.length - 1 && (
+                  {idx < steps.length - 1 && (
                     <span
                       className="pointer-events-none absolute top-5 left-[3.25rem] right-0 hidden md:block h-px bg-alignment-accent/15"
                       aria-hidden
@@ -243,20 +238,20 @@ export default function PlatformPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 lg:min-h-[min(52vh,28rem)]">
             <div className="relative min-h-[16rem] sm:min-h-[20rem] lg:min-h-full overflow-hidden bg-alignment-surfaceSoft">
               <img
-                src="/images/planner/paper-lifestyle.png"
-                alt="Alignment OS planner on a wooden table."
+                src={copy.closeImage}
+                alt={copy.closeImageAlt}
                 className="absolute inset-0 h-full w-full object-cover object-center"
                 decoding="async"
               />
             </div>
             <div className="flex flex-col justify-center px-5 sm:px-8 lg:px-12 xl:px-16 py-14 sm:py-16 lg:py-20 bg-alignment-page">
               <div className="max-w-md">
-                <h2 className={`${type.h2} text-balance`}>Your life belongs outside the app.</h2>
-                <p className={`mt-5 ${type.body}`}>Get clear. Make the change. Then close it.</p>
+                <h2 className={`${type.h2} text-balance`}>{copy.outsideHeading}</h2>
+                <p className={`mt-5 ${type.body}`}>{copy.outsideBody}</p>
                 <CmsCta href={copy.ctaHref} className={`${pillPrimary} mt-8`}>
                   {copy.ctaLabel} <span aria-hidden>→</span>
                 </CmsCta>
-                <p className="mt-4 text-sm text-alignment-accent/70">Free · 12 minutes · No account</p>
+                <p className="mt-4 text-sm text-alignment-accent/70">{copy.outsideMeta}</p>
               </div>
             </div>
           </div>

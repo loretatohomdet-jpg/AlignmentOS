@@ -12,20 +12,21 @@ import {
 import {
   alignmentTools,
   formatUsd,
-  plannerImages,
   plannerProduct,
   resetProduct,
   toolsCollection,
   trackCommerce,
 } from '../config/commerce';
+import { SHOP_SECTION_DEFAULTS } from '../config/pageSections';
 import { type } from '../config/siteType';
 import { usePageTitle } from '../hooks/usePageTitle';
-import { mergeProduct, useShopCatalog, useSitePage } from '../hooks/useSiteContent';
+import { marketingPageCopy, mergeProduct, useShopCatalog, useSitePage } from '../hooks/useSiteContent';
 
 const SHOP_DEFAULTS = {
   eyebrow: 'Shop',
   headline: 'Tools for what matters.',
   body: 'Simple tools for getting clear, choosing what matters, and carrying it into everyday life.',
+  ...SHOP_SECTION_DEFAULTS,
 };
 
 const STALE_SHOP = new Set([
@@ -34,20 +35,19 @@ const STALE_SHOP = new Set([
 ]);
 
 function pickShop(cms) {
-  const eyebrow = String(cms?.eyebrow || '').trim();
-  const headline = String(cms?.headline || '').trim();
-  const body = String(cms?.body || '').trim();
-  return {
-    eyebrow: !eyebrow || STALE_SHOP.has(eyebrow) ? SHOP_DEFAULTS.eyebrow : eyebrow,
-    headline: !headline || STALE_SHOP.has(headline) ? SHOP_DEFAULTS.headline : headline,
-    body: !body || STALE_SHOP.has(body) ? SHOP_DEFAULTS.body : body,
-  };
+  const copy = marketingPageCopy('/shop', cms, SHOP_DEFAULTS);
+  const out = { ...copy };
+  for (const key of ['eyebrow', 'headline', 'body']) {
+    if (STALE_SHOP.has(String(out[key] || '').trim())) {
+      out[key] = SHOP_DEFAULTS[key];
+    }
+  }
+  return out;
 }
 
 export default function ShopPage() {
   usePageTitle('Shop — Alignment OS');
-  const cms = useSitePage('/shop');
-  const copy = pickShop(cms);
+  const copy = pickShop(useSitePage('/shop'));
   const offers = useShopCatalog();
   const planner = mergeProduct(plannerProduct, offers);
   const reset = mergeProduct(resetProduct, offers);
@@ -80,15 +80,15 @@ export default function ShopPage() {
                   sku={planner.sku}
                   className={`${pillPrimary} mt-8`}
                 >
-                  Explore the Planner <span aria-hidden>→</span>
+                  {copy.plannerCta} <span aria-hidden>→</span>
                 </CommerceCta>
               </div>
             </div>
 
             <div className="relative order-1 lg:order-2 min-h-[18rem] sm:min-h-[24rem] lg:min-h-full min-w-0 bg-[#FBFAF8]">
               <img
-                src="/images/shop/hero.jpg"
-                alt="Life of Purpose Planner with gift bag, box, and pen."
+                src={copy.heroImage}
+                alt={copy.heroImageAlt}
                 className="absolute inset-0 h-full w-full object-cover object-[55%_45%]"
                 decoding="async"
                 fetchPriority="high"
@@ -102,24 +102,21 @@ export default function ShopPage() {
           <div className={`${pageWidth} py-16 sm:py-20`}>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 lg:items-center">
               <div className="max-w-md">
-                <h2 className={`${type.h2} text-balance`}>One place for the life you’re actually living.</h2>
-                <p className={`mt-5 ${type.body}`}>
-                  The Life of Purpose Planner helps you decide what matters, make room for it, and carry those
-                  priorities into your day.
-                </p>
+                <h2 className={`${type.h2} text-balance`}>{copy.featuredHeading}</h2>
+                <p className={`mt-5 ${type.body}`}>{copy.featuredBody}</p>
                 <CommerceCta
                   to="/planner"
                   event="planner_shop_click"
                   sku={planner.sku}
                   className={`${pillPrimary} mt-8`}
                 >
-                  Explore the Planner <span aria-hidden>→</span>
+                  {copy.featuredCta} <span aria-hidden>→</span>
                 </CommerceCta>
               </div>
               <figure className="overflow-hidden rounded-2xl bg-alignment-surfaceSoft">
                 <img
-                  src={plannerImages.paperFoil}
-                  alt={planner.imageAlt}
+                  src={copy.featuredImage}
+                  alt={copy.featuredImageAlt || planner.imageAlt}
                   className="w-full aspect-[5/4] object-cover object-center"
                   loading="lazy"
                   decoding="async"
@@ -133,10 +130,8 @@ export default function ShopPage() {
         <section className="w-full border-t border-alignment-accent/[0.06] bg-alignment-surfaceSoft/90">
           <div className={`${pageWidth} py-16 sm:py-20`}>
             <div className="max-w-xl">
-              <h2 className={`${type.h2} text-balance`}>Start with what you need.</h2>
-              <p className={`mt-4 ${type.body}`}>
-                Use the tools digitally, or print them at home. Each one does one job well.
-              </p>
+              <h2 className={`${type.h2} text-balance`}>{copy.shelfHeading}</h2>
+              <p className={`mt-4 ${type.body}`}>{copy.shelfBody}</p>
             </div>
 
             <ul className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-6">
@@ -171,23 +166,21 @@ export default function ShopPage() {
               <div className="w-full max-w-xl xl:max-w-2xl mx-auto lg:mx-0">
                 <figure className="overflow-hidden rounded-2xl bg-[#F7F3EC]">
                   <img
-                    src="/images/shop/tools-collection.jpg"
-                    alt="Alignment OS tools — Clarity and Quarterly Review covers"
+                    src={copy.collectionImage}
+                    alt={copy.collectionImageAlt}
                     className="block w-full h-auto"
                     loading="lazy"
                     decoding="async"
                   />
                 </figure>
-                <h2 className={`mt-10 ${type.h2} text-balance`}>Not more to manage.</h2>
-                <p className={`mt-4 ${type.body} max-w-md`}>
-                  Simple tools for seeing clearly, practicing daily, and returning when life shifts.
-                </p>
+                <h2 className={`mt-10 ${type.h2} text-balance`}>{copy.collectionHeading}</h2>
+                <p className={`mt-4 ${type.body} max-w-md`}>{copy.collectionBody}</p>
               </div>
             </div>
 
             <div className="px-5 sm:px-8 lg:px-12 xl:px-16 py-14 sm:py-16 lg:py-20 flex flex-col justify-center bg-alignment-surfaceSoft/90 border-t lg:border-t-0 lg:border-l border-alignment-accent/[0.06]">
               <div className="max-w-md mx-auto lg:mx-0 w-full">
-                <p className={type.kicker}>The Alignment Tools Collection</p>
+                <p className={type.kicker}>{copy.collectionKicker}</p>
                 <p className="mt-3 font-display text-lg font-medium text-alignment-primary">
                   {toolsCollection.tagline}
                 </p>
@@ -212,14 +205,12 @@ export default function ShopPage() {
                 </div>
 
                 <div className="mt-12 pt-10 border-t border-alignment-accent/[0.08]">
-                  <p className={type.kicker}>Alignment Assessment</p>
-                  <p className={`mt-4 ${type.body}`}>
-                    Not sure where to begin? Start with the free assessment.
-                  </p>
+                  <p className={type.kicker}>{copy.assessKicker}</p>
+                  <p className={`mt-4 ${type.body}`}>{copy.assessBody}</p>
                   <Link to="/assessment" className={`${pillPrimary} mt-6`}>
-                    Take the Assessment <span aria-hidden>→</span>
+                    {copy.assessCta} <span aria-hidden>→</span>
                   </Link>
-                  <p className="mt-4 text-sm text-alignment-accent/70">Free · 12 minutes · No account</p>
+                  <p className="mt-4 text-sm text-alignment-accent/70">{copy.assessMeta}</p>
                 </div>
               </div>
             </div>

@@ -3,19 +3,18 @@ import AgentFloatingButton from '../components/AgentFloatingButton';
 import SiteMarketingHeader from '../components/SiteMarketingHeader';
 import DomainPillarIcon from '../components/DomainPillarIcon';
 import { pageWidth, pillPrimary, SitePageFooter, CmsCta } from '../components/HomeMarketingChrome';
-import { plannerImages } from '../config/commerce';
 import { type } from '../config/siteType';
 import { DOMAIN_ORDER } from '../constants/domains';
 import { homePageCopy, useSitePage } from '../hooks/useSiteContent';
 import { usePageTitle } from '../hooks/usePageTitle';
 
-const DOMAIN_BLURBS = {
-  IDENTITY: { label: 'Identity', tag: 'Who you are' },
-  PURPOSE: { label: 'Purpose', tag: 'Why it matters' },
-  MINDSET: { label: 'Mindset', tag: 'How you think' },
-  HABITS: { label: 'Habits', tag: 'What you do' },
-  ENVIRONMENT: { label: 'Environment', tag: 'Where you live' },
-  EXECUTION: { label: 'Follow-through', tag: 'How it comes together' },
+const DOMAIN_KEYS = {
+  IDENTITY: { labelKey: 'domainIdentity', tagKey: 'domainIdentityTag' },
+  PURPOSE: { labelKey: 'domainPurpose', tagKey: 'domainPurposeTag' },
+  MINDSET: { labelKey: 'domainMindset', tagKey: 'domainMindsetTag' },
+  HABITS: { labelKey: 'domainHabits', tagKey: 'domainHabitsTag' },
+  ENVIRONMENT: { labelKey: 'domainEnvironment', tagKey: 'domainEnvironmentTag' },
+  EXECUTION: { labelKey: 'domainExecution', tagKey: 'domainExecutionTag' },
 };
 
 function ProductPreviewCards() {
@@ -63,20 +62,24 @@ export default function LandingPage() {
   usePageTitle('Alignment OS — A life is formed by what is repeated');
   const copy = homePageCopy(useSitePage('/'));
 
-  const heroDomains = [
-    { label: DOMAIN_BLURBS.IDENTITY.label, dot: 'bg-alignment-surface' },
-    { label: DOMAIN_BLURBS.PURPOSE.label, dot: 'bg-alignment-surface/70' },
-    { label: DOMAIN_BLURBS.MINDSET.label, dot: 'bg-alignment-surface' },
-    { label: DOMAIN_BLURBS.HABITS.label, dot: 'bg-alignment-surface/70' },
-    { label: DOMAIN_BLURBS.ENVIRONMENT.label, dot: 'bg-alignment-surface' },
-    { label: DOMAIN_BLURBS.EXECUTION.label, dot: 'bg-alignment-surface/70' },
+  const heroDomains = DOMAIN_ORDER.map((key) => ({
+    key,
+    label: copy[DOMAIN_KEYS[key].labelKey],
+    tag: copy[DOMAIN_KEYS[key].tagKey],
+    dot: key === 'PURPOSE' || key === 'HABITS' || key === 'EXECUTION' ? 'bg-alignment-surface/70' : 'bg-alignment-surface',
+  }));
+
+  const loopSteps = [
+    { n: '01', title: copy.loopSeeTitle, body: copy.loopSeeBody },
+    { n: '02', title: copy.loopChooseTitle, body: copy.loopChooseBody },
+    { n: '03', title: copy.loopLiveTitle, body: copy.loopLiveBody },
   ];
 
   const domainRow = (
     <ul className="flex shrink-0 items-center gap-x-10 sm:gap-x-14 md:gap-x-16 pr-10 sm:pr-14">
-      {heroDomains.map(({ label, dot }) => (
+      {heroDomains.map(({ key, label, dot }) => (
         <li
-          key={label}
+          key={key}
           className="flex items-center gap-2 text-[9px] sm:text-[10px] font-medium uppercase tracking-[0.2em] whitespace-nowrap"
         >
           <span className={`h-1.5 w-1.5 rounded-full shrink-0 ${dot}`} aria-hidden />
@@ -94,7 +97,6 @@ export default function LandingPage() {
       <SiteMarketingHeader />
 
       <main id="main-content" className="flex-1 w-full scroll-mt-16" tabIndex={-1}>
-        {/* Hero — copy left, lifestyle photo on matching cream (no wash overlays) */}
         <section className="relative w-full overflow-hidden bg-[#FBFAF8]">
           <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,34rem)_minmax(0,1fr)] xl:grid-cols-[minmax(0,38rem)_minmax(0,1fr)] lg:min-h-[min(78vh,42rem)]">
             <div className="relative z-10 flex flex-col justify-center px-5 sm:px-8 lg:px-10 xl:px-12 py-14 sm:py-16 lg:py-20 order-2 lg:order-1 bg-[#FBFAF8]">
@@ -110,8 +112,8 @@ export default function LandingPage() {
 
             <div className="relative order-1 lg:order-2 min-h-[16rem] sm:min-h-[22rem] lg:min-h-full min-w-0 bg-[#FBFAF8]">
               <img
-                src="/images/home/hero.jpg"
-                alt="Alignment OS on a laptop — Good morning dashboard, score, and today’s focus on a sunlit desk."
+                src={copy.heroImage}
+                alt={copy.heroImageAlt}
                 className="absolute inset-0 h-full w-full object-cover object-[52%_48%]"
                 decoding="async"
                 fetchPriority="high"
@@ -120,7 +122,6 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Domains marquee */}
         <div
           className="relative w-full shrink-0 bg-alignment-primary text-white overflow-hidden"
           role="region"
@@ -140,9 +141,9 @@ export default function LandingPage() {
               className="flex shrink-0 items-center gap-x-10 sm:gap-x-14 md:gap-x-16 pr-10 sm:pr-14"
               aria-hidden
             >
-              {heroDomains.map(({ label, dot }) => (
+              {heroDomains.map(({ key, label, dot }) => (
                 <li
-                  key={`dup-${label}`}
+                  key={`dup-${key}`}
                   className="flex items-center gap-2 text-[9px] sm:text-[10px] font-medium uppercase tracking-[0.2em] whitespace-nowrap"
                 >
                   <span className={`h-1.5 w-1.5 rounded-full shrink-0 ${dot}`} aria-hidden />
@@ -153,70 +154,49 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* One life. Six areas. */}
         <section className="w-full border-t border-alignment-accent/[0.06]">
           <div className={`${pageWidth} py-16 sm:py-20`}>
             <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
-              <h2 className={type.h2}>One life. Six areas.</h2>
+              <h2 className={type.h2}>{copy.domainsHeading}</h2>
               <Link
                 to="/assessment"
                 className="text-[11px] font-medium uppercase tracking-[0.18em] text-alignment-accent/80 border-b border-alignment-accent/20 pb-1 hover:text-alignment-accent hover:border-alignment-accent shrink-0"
               >
-                See Your Map <span aria-hidden>→</span>
+                {copy.domainsCta} <span aria-hidden>→</span>
               </Link>
             </div>
             <ul className="mt-12 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-8 lg:gap-5">
-              {DOMAIN_ORDER.map((key) => {
-                const d = DOMAIN_BLURBS[key];
-                return (
-                  <li key={key} className="flex flex-col items-center text-center gap-3">
-                    <span className="flex h-12 w-12 items-center justify-center text-alignment-accent">
-                      <DomainPillarIcon pillar={key} className="h-7 w-7" />
-                    </span>
-                    <span className="font-display text-base font-medium text-alignment-accent">{d.label}</span>
-                    <span className="text-[10px] font-medium uppercase tracking-[0.16em] text-alignment-accent/60">
-                      {d.tag}
-                    </span>
-                  </li>
-                );
-              })}
+              {heroDomains.map(({ key, label, tag }) => (
+                <li key={key} className="flex flex-col items-center text-center gap-3">
+                  <span className="flex h-12 w-12 items-center justify-center text-alignment-accent">
+                    <DomainPillarIcon pillar={key} className="h-7 w-7" />
+                  </span>
+                  <span className="font-display text-base font-medium text-alignment-accent">{label}</span>
+                  <span className="text-[10px] font-medium uppercase tracking-[0.16em] text-alignment-accent/60">
+                    {tag}
+                  </span>
+                </li>
+              ))}
             </ul>
           </div>
         </section>
 
-        {/* How it works — brief */}
         <section className="w-full border-t border-alignment-accent/[0.06] bg-alignment-surfaceSoft/90">
           <div className={`${pageWidth} py-14 sm:py-16`}>
             <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
               <div>
-                <p className={type.kicker}>How it works</p>
-                <h2 className={`mt-3 ${type.h2}`}>See. Choose. Live.</h2>
+                <p className={type.kicker}>{copy.loopKicker}</p>
+                <h2 className={`mt-3 ${type.h2}`}>{copy.loopHeading}</h2>
               </div>
               <Link
                 to="/how-it-works"
                 className="text-[11px] font-medium uppercase tracking-[0.18em] text-alignment-accent/80 border-b border-alignment-accent/20 pb-1 hover:text-alignment-accent hover:border-alignment-accent shrink-0"
               >
-                Full walkthrough <span aria-hidden>→</span>
+                {copy.loopCta} <span aria-hidden>→</span>
               </Link>
             </div>
             <ol className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-6 lg:gap-10">
-              {[
-                {
-                  n: '01',
-                  title: 'See',
-                  body: 'The assessment names the thin place across six areas of life.',
-                },
-                {
-                  n: '02',
-                  title: 'Choose',
-                  body: 'My Plan holds one focus and a few priorities. The rest can wait.',
-                },
-                {
-                  n: '03',
-                  title: 'Live',
-                  body: 'Daily carries the practice. Notice what helps. Adjust when you need to.',
-                },
-              ].map((step) => (
+              {loopSteps.map((step) => (
                 <li key={step.n} className="max-w-sm">
                   <p className="text-[11px] font-medium tabular-nums tracking-[0.18em] text-alignment-primary">
                     {step.n}
@@ -229,21 +209,18 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* See what's already there */}
         <section className="w-full border-t border-alignment-accent/[0.06]">
           <div className={`${pageWidth} py-16 sm:py-20`}>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 lg:items-center">
               <div className="max-w-md">
-                <h2 className={`${type.h2} text-balance`}>
-                  You don’t need more information. You need to see what’s already there.
-                </h2>
+                <h2 className={`${type.h2} text-balance`}>{copy.insightHeading}</h2>
                 <div className={`mt-6 space-y-3 ${type.body}`}>
-                  <p>The pattern is already in your days.</p>
-                  <p>The assessment makes it visible.</p>
-                  <p>Then you choose one place to begin.</p>
+                  <p>{copy.insightLine1}</p>
+                  <p>{copy.insightLine2}</p>
+                  <p>{copy.insightLine3}</p>
                 </div>
                 <CmsCta href="/platform" className={`${pillPrimary} mt-8`}>
-                  Explore Alignment OS <span aria-hidden>→</span>
+                  {copy.insightCta} <span aria-hidden>→</span>
                 </CmsCta>
               </div>
               <ProductPreviewCards />
@@ -251,49 +228,44 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Outside the app */}
         <section className="w-full border-t border-alignment-accent/[0.06]">
           <div className="grid grid-cols-1 lg:grid-cols-2 lg:min-h-[min(48vh,26rem)]">
             <div className="relative min-h-[14rem] sm:min-h-[18rem] lg:min-h-full overflow-hidden bg-[#FBFAF8]">
               <img
-                src={plannerImages.paperLifestyle}
-                alt="Life lived with intention — planner and everyday light."
-                className="absolute inset-0 h-full w-full object-cover object-center"
+                src={copy.outsideImage}
+                alt={copy.outsideImageAlt}
+                className="absolute inset-0 h-full w-full object-cover object-[55%_45%]"
                 loading="lazy"
                 decoding="async"
               />
             </div>
             <div className="flex flex-col justify-center px-5 sm:px-8 lg:px-12 xl:px-16 py-14 sm:py-16 bg-alignment-page">
               <div className="max-w-md">
-                <h2 className={`${type.h2} text-balance`}>Your life belongs outside the app.</h2>
-                <p className={`mt-5 ${type.body}`}>
-                  Alignment OS helps you see clearly and choose carefully — then close the screen and live what
-                  matters.
-                </p>
+                <h2 className={`${type.h2} text-balance`}>{copy.outsideHeading}</h2>
+                <p className={`mt-5 ${type.body}`}>{copy.outsideBody}</p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Close */}
         <section className="w-full border-t border-alignment-accent/[0.06] bg-alignment-surfaceSoft/90">
           <div className={`${pageWidth} py-16 sm:py-20`}>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
               <div className="max-w-xs">
-                <h2 className={type.h2}>Less noise. More intention.</h2>
+                <h2 className={type.h2}>{copy.closeLeft}</h2>
               </div>
               <div className={`max-w-xs space-y-4 ${type.body} md:border-x md:border-alignment-accent/[0.08] md:px-8`}>
-                <p>No endless tracking.</p>
-                <p>No perfect streak required.</p>
-                <p>No more system to manage.</p>
+                <p>{copy.closeMid1}</p>
+                <p>{copy.closeMid2}</p>
+                <p>{copy.closeMid3}</p>
               </div>
               <div className="max-w-sm md:ml-auto">
-                <h2 className={type.h2}>Start where you are.</h2>
-                <p className={`mt-4 ${type.body}`}>Take the free Alignment Assessment and see the whole picture.</p>
+                <h2 className={type.h2}>{copy.closeRightHeading}</h2>
+                <p className={`mt-4 ${type.body}`}>{copy.closeRightBody}</p>
                 <CmsCta href={copy.ctaHref} className={`${pillPrimary} mt-6`}>
                   {copy.ctaLabel} <span aria-hidden>→</span>
                 </CmsCta>
-                <p className="mt-4 text-sm text-alignment-accent/70">Free · 12 minutes · No account</p>
+                <p className="mt-4 text-sm text-alignment-accent/70">{copy.closeMeta}</p>
               </div>
             </div>
           </div>

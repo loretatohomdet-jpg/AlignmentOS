@@ -83,7 +83,7 @@ const adminPageFields = {
   body: z.string().max(20000).optional().nullable(),
   ctaLabel: z.string().max(120).optional().nullable(),
   ctaHref: z.string().max(500).optional().nullable(),
-  sections: z.record(z.string(), z.string().max(5000)).optional().nullable(),
+  sections: z.record(z.string(), z.string().max(400000)).optional().nullable(),
   isPublished: z.boolean().optional(),
 };
 
@@ -99,7 +99,7 @@ const adminUpdatePageSchema = z.object({
   body: z.string().max(20000).optional().nullable(),
   ctaLabel: z.string().max(120).optional().nullable(),
   ctaHref: z.string().max(500).optional().nullable(),
-  sections: z.record(z.string(), z.string().max(5000)).optional().nullable(),
+  sections: z.record(z.string(), z.string().max(400000)).optional().nullable(),
   isPublished: z.boolean().optional(),
 });
 
@@ -110,7 +110,7 @@ const adminCreateShopSchema = z.object({
   kicker: z.string().max(80).optional().nullable(),
   tagline: z.string().max(300).optional().nullable(),
   body: z.string().max(5000).optional().nullable(),
-  image: z.string().max(500).optional().nullable(),
+  image: z.string().max(400000).optional().nullable(),
   digitalPrice: z.number().int().min(0).optional().nullable(),
   printPrice: z.number().int().min(0).optional().nullable(),
   digitalUrl: z.string().max(1000).optional().nullable(),

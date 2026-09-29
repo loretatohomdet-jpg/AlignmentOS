@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { API_BASE } from '../../config/apiBase';
 import { adminHeaders, btnDanger, btnGhost, btnPrimary, confirmDelete, fieldClass } from './adminShared';
+import AdminImageField from './AdminImageField';
 
 const empty = {
   name: '',
@@ -121,6 +122,14 @@ export default function AdminShopEditPage() {
           <span className="text-xs font-medium uppercase tracking-wide text-[#8E4A4A]">Body</span>
           <textarea className={`${fieldClass} mt-1`} rows={4} value={form.body} onChange={set('body')} />
         </label>
+        <AdminImageField
+          label="Product image"
+          src={form.image}
+          alt={form.name ? `${form.name} cover` : 'Product image'}
+          onChangeSrc={(value) => {
+            setForm((prev) => ({ ...prev, image: value }));
+          }}
+        />
         <div className="grid sm:grid-cols-2 gap-3">
           <label className="block">
             <span className="text-xs font-medium uppercase tracking-wide text-[#8E4A4A]">Digital $</span>

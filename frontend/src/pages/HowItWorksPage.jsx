@@ -5,7 +5,8 @@ import { pageWidth, pillPrimary, SitePageFooter } from '../components/HomeMarket
 import { type } from '../config/siteType';
 import { DOMAIN_ORDER, DOMAIN_LABELS } from '../constants/domains';
 import { usePageTitle } from '../hooks/usePageTitle';
-import { pageCopy, useSitePage } from '../hooks/useSiteContent';
+import { marketingPageCopy, useSitePage } from '../hooks/useSiteContent';
+import { HOW_IT_WORKS_SECTION_DEFAULTS } from '../config/pageSections';
 
 const DEMO_SCORES = {
   IDENTITY: 78,
@@ -170,6 +171,7 @@ const HOW_IT_WORKS_DEFAULTS = {
   body: 'Get a clear picture of what’s working, what’s getting in the way, and what deserves your attention now.',
   ctaLabel: 'Take the Assessment',
   ctaHref: '/assessment',
+  ...HOW_IT_WORKS_SECTION_DEFAULTS,
 };
 
 const STALE_HOW_IT_WORKS = new Set([
@@ -182,7 +184,7 @@ const STALE_HOW_IT_WORKS = new Set([
 ]);
 
 function pickHowItWorks(cms) {
-  const copy = pageCopy(cms, HOW_IT_WORKS_DEFAULTS);
+  const copy = marketingPageCopy('/how-it-works', cms, HOW_IT_WORKS_DEFAULTS);
   const out = { ...copy };
   for (const key of Object.keys(HOW_IT_WORKS_DEFAULTS)) {
     if (STALE_HOW_IT_WORKS.has(String(out[key] || '').trim())) {
@@ -215,14 +217,14 @@ export default function HowItWorksPage() {
                 <Link to={copy.ctaHref} className={`${pillPrimary} mt-8`}>
                   {copy.ctaLabel} <span aria-hidden>→</span>
                 </Link>
-                <p className="mt-4 text-sm text-alignment-accent/70">Free · 12 minutes · No account</p>
+                <p className="mt-4 text-sm text-alignment-accent/70">{copy.heroMeta}</p>
               </div>
             </div>
 
             <div className="relative order-1 lg:order-2 min-h-[20rem] sm:min-h-[26rem] lg:min-h-full min-w-0 bg-[#FBFAF8]">
               <img
-                src="/images/how-it-works/hero.jpg"
-                alt="Alignment OS on a laptop — Alignment Map, today’s practice, My Plan, and Weekly Review."
+                src={copy.heroImage}
+                alt={copy.heroImageAlt}
                 className="absolute inset-0 h-full w-full object-cover object-[62%_45%]"
                 decoding="async"
                 fetchPriority="high"
@@ -237,9 +239,9 @@ export default function HowItWorksPage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 lg:items-start">
               <div className="max-w-md">
                 <StepMark n="01" />
-                <p className={`${type.kicker} mt-6`}>See</p>
-                <h2 className={`mt-4 ${type.h2}`}>See the whole picture.</h2>
-                <p className={`mt-4 ${type.body}`}>Your Map brings six areas of life into one view.</p>
+                <p className={`${type.kicker} mt-6`}>{copy.seeKicker}</p>
+                <h2 className={`mt-4 ${type.h2}`}>{copy.seeHeading}</h2>
+                <p className={`mt-4 ${type.body}`}>{copy.seeBody}</p>
                 <ul className="mt-8 grid grid-cols-3 gap-4">
                   {DOMAIN_ORDER.map((key) => (
                     <li key={key} className="flex flex-col items-center text-center gap-2">
@@ -262,9 +264,9 @@ export default function HowItWorksPage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 lg:items-start">
               <div className="max-w-md lg:order-1">
                 <StepMark n="02" />
-                <p className={`${type.kicker} mt-6`}>Choose</p>
-                <h2 className={`mt-4 ${type.h2}`}>Choose what matters now.</h2>
-                <p className={`mt-4 ${type.body}`}>One focus. A few priorities. Let the rest wait.</p>
+                <p className={`${type.kicker} mt-6`}>{copy.chooseKicker}</p>
+                <h2 className={`mt-4 ${type.h2}`}>{copy.chooseHeading}</h2>
+                <p className={`mt-4 ${type.body}`}>{copy.chooseBody}</p>
               </div>
               <div className="lg:order-2 min-h-[18rem] sm:min-h-[20rem]">
                 <PlanPreviewCard />
@@ -279,9 +281,9 @@ export default function HowItWorksPage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 lg:items-start">
               <div className="max-w-md">
                 <StepMark n="03" />
-                <p className={`${type.kicker} mt-6`}>Live</p>
-                <h2 className={`mt-4 ${type.h2}`}>Make one change.</h2>
-                <p className={`mt-4 ${type.body}`}>Practice it. Notice what happens. Adjust when you need to.</p>
+                <p className={`${type.kicker} mt-6`}>{copy.liveKicker}</p>
+                <h2 className={`mt-4 ${type.h2}`}>{copy.liveHeading}</h2>
+                <p className={`mt-4 ${type.body}`}>{copy.liveBody}</p>
               </div>
               <LivePreviewCards />
             </div>
@@ -293,17 +295,15 @@ export default function HowItWorksPage() {
           <div className={`${pageWidth} py-16 sm:py-24`}>
             <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10">
               <div className="max-w-xl">
-                <p className={type.kicker}>That’s it</p>
-                <h2 className={`mt-4 ${type.h2} text-balance`}>
-                  See the pattern. Choose what matters. Make one change.
-                </h2>
-                <p className={`mt-4 ${type.body}`}>Then go live it.</p>
+                <p className={type.kicker}>{copy.closeKicker}</p>
+                <h2 className={`mt-4 ${type.h2} text-balance`}>{copy.closeHeading}</h2>
+                <p className={`mt-4 ${type.body}`}>{copy.closeBody}</p>
               </div>
               <div className="shrink-0">
                 <Link to={copy.ctaHref} className={pillPrimary}>
                   {copy.ctaLabel} <span aria-hidden>→</span>
                 </Link>
-                <p className="mt-4 text-sm text-alignment-accent/70">Free · 12 minutes · No account</p>
+                <p className="mt-4 text-sm text-alignment-accent/70">{copy.closeMeta}</p>
               </div>
             </div>
           </div>

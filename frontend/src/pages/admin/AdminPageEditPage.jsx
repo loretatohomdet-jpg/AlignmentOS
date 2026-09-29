@@ -2,8 +2,9 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { API_BASE } from '../../config/apiBase';
-import { HOME_COPY_DEFAULTS, HOME_SECTION_FIELDS } from '../../config/homeCopy';
+import { heroFieldsForPath, sectionConfigForPath } from '../../config/pageSections';
 import { adminHeaders, apiError, btnDanger, btnGhost, btnPrimary, confirmDelete, fieldClass } from './adminShared';
+import AdminImageField from './AdminImageField';
 
 const empty = {
   title: '',
@@ -17,7 +18,7 @@ const empty = {
   ctaHref: '',
   isPublished: true,
   isSystem: false,
-  sections: { ...HOME_COPY_DEFAULTS },
+  sections: {},
 };
 
 function Field({ label, value, onChange, multiline = false }) {
@@ -42,17 +43,28 @@ export default function AdminPageEditPage() {
   const [loaded, setLoaded] = useState(false);
   const [saving, setSaving] = useState(false);
 
+  const sectionConfig = sectionConfigForPath(form.path);
+  const hasSections = Boolean(sectionConfig);
   const isHome = form.path === '/';
+  const heroFields = useMemo(() => heroFieldsForPath(form.path), [form.path]);
 
   const sectionGroups = useMemo(() => {
+    if (!sectionConfig?.fields?.length) return [];
     const groups = [];
-    for (const field of HOME_SECTION_FIELDS) {
+    for (const field of sectionConfig.fields) {
+      // Hero image fields render inside the top Hero card
+      if (field.group === 'Hero') continue;
       const last = groups[groups.length - 1];
       if (!last || last.name !== field.group) groups.push({ name: field.group, fields: [field] });
       else last.fields.push(field);
     }
     return groups;
-  }, []);
+  }, [sectionConfig]);
+
+  const heroSectionFields = useMemo(() => {
+    if (!sectionConfig?.fields?.length) return [];
+    return sectionConfig.fields.filter((field) => field.group === 'Hero');
+  }, [sectionConfig]);
 
   useEffect(() => {
     axios
@@ -60,6 +72,7 @@ export default function AdminPageEditPage() {
       .then((res) => {
         const p = res.data;
         const savedSections = p.sections && typeof p.sections === 'object' ? p.sections : {};
+        const config = sectionConfigForPath(p.path);
         setForm({
           title: p.title || '',
           path: p.path || '',
@@ -72,7 +85,7 @@ export default function AdminPageEditPage() {
           ctaHref: p.ctaHref || '',
           isPublished: p.isPublished,
           isSystem: Boolean(p.isSystem),
-          sections: { ...HOME_COPY_DEFAULTS, ...savedSections },
+          sections: config ? { ...config.defaults, ...savedSections } : {},
         });
       })
       .catch((err) => {
@@ -88,13 +101,16 @@ export default function AdminPageEditPage() {
     setSaved(false);
   };
 
-  const setSection = (key) => (e) => {
-    const value = e.target.value;
+  const setSectionValue = (key, value) => {
     setForm((prev) => ({
       ...prev,
       sections: { ...prev.sections, [key]: value },
     }));
     setSaved(false);
+  };
+
+  const setSection = (key) => (e) => {
+    setSectionValue(key, e.target.value);
   };
 
   const save = async (e) => {
@@ -104,11 +120,12 @@ export default function AdminPageEditPage() {
     setSaved(false);
     try {
       const { isSystem, sections, ...rest } = form;
-      const payload = isHome
+      const config = sectionConfigForPath(form.path);
+      const payload = config
         ? {
             ...rest,
             sections: Object.fromEntries(
-              Object.entries(sections).map(([key, value]) => [key, String(value ?? '').trim()])
+              Object.entries(sections || {}).map(([key, value]) => [key, String(value ?? '').trim()])
             ),
           }
         : rest;
@@ -132,6 +149,30 @@ export default function AdminPageEditPage() {
     }
   };
 
+  const renderSectionField = (field) => {
+    if (field.kind === 'image') {
+      return (
+        <AdminImageField
+          key={field.key}
+          label={field.label}
+          src={form.sections[field.key] ?? ''}
+          alt={form.sections[field.altKey] ?? ''}
+          onChangeSrc={(value) => setSectionValue(field.key, value)}
+          onChangeAlt={(value) => setSectionValue(field.altKey, value)}
+        />
+      );
+    }
+    return (
+      <Field
+        key={field.key}
+        label={field.label}
+        value={form.sections[field.key] ?? ''}
+        onChange={setSection(field.key)}
+        multiline={Boolean(field.multiline)}
+      />
+    );
+  };
+
   if (!loaded) return <p className="text-alignment-accent/80">Loading…</p>;
 
   return (
@@ -141,13 +182,17 @@ export default function AdminPageEditPage() {
       </Link>
       <h2 className="mt-4 font-display text-2xl text-[#5A4A78]">{isHome ? 'Edit homepage' : 'Edit page'}</h2>
       <p className="mt-2 text-sm text-alignment-accent/75 max-w-2xl">
-        {isHome
-          ? 'Every visible word on the homepage lives here. Change it, save, then view live.'
-          : 'These fields are the words on the public page: kicker, headline, subhead, body, and the button. Save, then view live.'}
+        {hasSections
+          ? 'These fields match what visitors see on this page — including photos. Change, save, then view live.'
+          : 'These fields are the words on the public page. Save, then view live.'}
       </p>
 
       {error ? <p className="mt-4 rounded-2xl bg-white px-4 py-3 text-sm text-[#C45C4A]">{error}</p> : null}
-      {saved ? <p className="mt-4 rounded-2xl bg-white px-4 py-3 text-sm text-[#3A635C]">Saved. The live page will show this copy.</p> : null}
+      {saved ? (
+        <p className="mt-4 rounded-2xl bg-white px-4 py-3 text-sm text-[#3A635C]">
+          Saved. The live page will show this content.
+        </p>
+      ) : null}
 
       <form onSubmit={save} className="mt-6 space-y-6 max-w-2xl">
         <div className="rounded-2xl bg-white p-5 space-y-3">
@@ -163,46 +208,33 @@ export default function AdminPageEditPage() {
               disabled={form.isSystem}
             />
             {form.isSystem ? (
-              <span className="mt-1 block text-xs text-alignment-accent/60">Core page URLs stay fixed so the site does not break.</span>
+              <span className="mt-1 block text-xs text-alignment-accent/60">
+                Core page URLs stay fixed so the site does not break.
+              </span>
             ) : null}
           </label>
         </div>
 
         <div className="rounded-2xl bg-white p-5 space-y-3">
-          <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#5A4A78]">
-            {isHome ? 'Hero' : 'Page copy'}
-          </p>
-          {!isHome ? <Field label="Kicker (small line above the headline)" value={form.eyebrow} onChange={set('eyebrow')} /> : null}
-          <Field label="Headline" value={form.headline} onChange={set('headline')} />
-          <Field label="Subhead" value={form.subhead} onChange={set('subhead')} />
-          <Field
-            label={isHome ? 'Line under the buttons' : 'Body'}
-            value={form.body}
-            onChange={set('body')}
-            multiline={!isHome}
-          />
-          <div className="grid sm:grid-cols-2 gap-3">
-            <Field label="Primary button label" value={form.ctaLabel} onChange={set('ctaLabel')} />
-            <Field label="Primary button link" value={form.ctaHref} onChange={set('ctaHref')} />
-          </div>
+          <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#5A4A78]">Hero</p>
+          {heroFields.map((field) => (
+            <Field
+              key={field.key}
+              label={field.label}
+              value={form[field.key] ?? ''}
+              onChange={set(field.key)}
+              multiline={Boolean(field.multiline)}
+            />
+          ))}
+          {heroSectionFields.map((field) => renderSectionField(field))}
         </div>
 
-        {isHome
-          ? sectionGroups.map((group) => (
-              <div key={group.name} className="rounded-2xl bg-white p-5 space-y-3">
-                <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#5A4A78]">{group.name}</p>
-                {group.fields.map((field) => (
-                  <Field
-                    key={field.key}
-                    label={field.label}
-                    value={form.sections[field.key] ?? ''}
-                    onChange={setSection(field.key)}
-                    multiline={Boolean(field.multiline)}
-                  />
-                ))}
-              </div>
-            ))
-          : null}
+        {sectionGroups.map((group) => (
+          <div key={group.name} className="rounded-2xl bg-white p-5 space-y-3">
+            <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#5A4A78]">{group.name}</p>
+            {group.fields.map((field) => renderSectionField(field))}
+          </div>
+        ))}
 
         <div className="rounded-2xl bg-white p-5 space-y-3">
           <label className="flex items-center gap-3 cursor-pointer">

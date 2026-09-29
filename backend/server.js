@@ -47,7 +47,8 @@ app.post(
 );
 
 app.use(cors(corsOptions));
-app.use(express.json({ limit: '120kb' }));
+// CMS page sections may include uploaded image data-URLs (admin media).
+app.use(express.json({ limit: '2mb' }));
 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,

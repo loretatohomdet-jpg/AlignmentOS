@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { API_BASE } from '../config/apiBase';
 import { HOME_COPY_DEFAULTS, mergeHomeSections } from '../config/homeCopy';
+import { mergePageSections, sectionConfigForPath } from '../config/pageSections';
 
 export function useSitePage(path) {
   const [page, setPage] = useState(null);
@@ -70,12 +71,6 @@ const STALE_HOME_COPY = {
     'The assessment names the thin place. Alignment OS starts the practice.',
   ],
   ctaLabel: ['Take the free assessment'],
-  quote: ['You need structure beneath the effort — not more effort.'],
-  stepsHeading: ['Four steps. One system.'],
-  step1: ['Diagnostic'],
-  step2: ['Identity anchors'],
-  step3: ['Habit engine'],
-  step4: ['Weekly review'],
 };
 
 function replaceStale(value, key, fallback) {
@@ -97,6 +92,26 @@ export function homePageCopy(cms) {
     merged[key] = replaceStale(merged[key], key, fallback);
   }
   return merged;
+}
+
+/** Hero + sections for any path registered in pageSections.js */
+export function marketingPageCopy(path, cms, heroDefaults) {
+  const hero = pageCopy(cms, heroDefaults);
+  const config = sectionConfigForPath(path);
+  if (!config) return hero;
+  const sections = wasEditedInAdmin(cms)
+    ? mergePageSections(path, cms?.sections)
+    : mergePageSections(path, null);
+  return { ...hero, ...sections };
+}
+
+/** Site footer strings (stored on the homepage sections). */
+export function siteFooterCopy(cms) {
+  const sections = wasEditedInAdmin(cms) ? mergeHomeSections(cms?.sections) : mergeHomeSections(null);
+  return {
+    tagline: sections.footerTagline,
+    copyright: sections.footerCopyright,
+  };
 }
 
 export function useShopCatalog() {

@@ -7,6 +7,7 @@ import { SiteLegalFooterNav, SiteMarketingFooterNav } from './SiteFooterNav';
 import { siteFooterCopyright, siteFooterTagline } from '../config/footerNav';
 import { type } from '../config/siteType';
 import { clearSession, useAuthSession } from '../utils/authSession';
+import { siteFooterCopy, useSitePage } from '../hooks/useSiteContent';
 
 export const hairline = 'border-alignment-accent/[0.10]';
 export const focusRing =
@@ -147,10 +148,13 @@ export function HomeFooter() {
   return <SitePageFooter />;
 }
 
-/** Same footer as the homepage. */
+/** Same footer as the homepage. Footer copy is editable on Admin → Home → Site footer. */
 export function SitePageFooter({ extra = null }) {
   const linkRow =
     'flex flex-wrap items-center gap-y-2 min-w-0 text-[9px] sm:text-[10px] font-normal uppercase tracking-[0.14em]';
+  const footer = siteFooterCopy(useSitePage('/'));
+  const tagline = footer.tagline || siteFooterTagline;
+  const copyright = footer.copyright || siteFooterCopyright;
 
   return (
     <footer className="w-full min-w-0 max-w-full overflow-x-hidden border-t border-alignment-accent/[0.08] bg-alignment-surfaceSoft/95 backdrop-blur-[2px] pb-[max(1rem,env(safe-area-inset-bottom))] mt-auto">
@@ -158,7 +162,7 @@ export function SitePageFooter({ extra = null }) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 md:items-start">
           <div className="max-w-md">
             <BrandLogo iconHeightPx={44} />
-            <p className={`mt-4 ${type.body}`}>{siteFooterTagline}</p>
+            <p className={`mt-4 ${type.body}`}>{tagline}</p>
           </div>
           <div className="min-w-0 md:flex md:flex-col md:items-end">
             <SiteMarketingFooterNav className={`${linkRow} md:justify-end`} />
@@ -166,7 +170,7 @@ export function SitePageFooter({ extra = null }) {
           </div>
         </div>
         <p className={`mt-10 pt-8 border-t border-alignment-accent/[0.06] ${type.muted}`}>
-          {siteFooterCopyright}
+          {copyright}
           {extra ? <span className="ml-4 inline-flex align-middle">{extra}</span> : null}
         </p>
       </div>
