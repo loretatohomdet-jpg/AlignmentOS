@@ -1,21 +1,24 @@
 import { useRef, useState } from 'react';
-import { fieldClass, btnGhost } from './adminShared';
+import axios from 'axios';
+import { API_BASE } from '../../config/apiBase';
+import { resolveCmsImageUrl } from '../../config/cmsMedia';
+import { fieldClass, btnGhost, adminHeaders, apiError } from './adminShared';
 
 const MAX_SOURCE_BYTES = 8 * 1024 * 1024;
 const MAX_EDGE = 1600;
 const JPEG_QUALITY = 0.72;
 
 /**
- * Image URL / path / uploaded data-URL editor with live preview.
- * Pass `onChangeAlt` to edit alt text; omit it for path-only (e.g. shop products).
- * Uploads are resized/compressed so Admin saves stay within API body limits.
+ * Image URL / path / uploaded file editor with live preview.
+ * Uploads go to POST /admin/media (binary) so page JSON saves stay small.
  */
 export default function AdminImageField({ label, src, alt, onChangeSrc, onChangeAlt }) {
   const inputRef = useRef(null);
   const [error, setError] = useState(null);
   const [busy, setBusy] = useState(false);
   const showAlt = typeof onChangeAlt === 'function';
-  const pathOnly = Boolean(src && !String(src).startsWith('data:'));
+  const preview = resolveCmsImageUrl(src);
+  const isUploaded = Boolean(src && String(src).includes('/public/media/'));
 
   const pickFile = async (e) => {
     const file = e.target.files?.[0];
@@ -32,10 +35,17 @@ export default function AdminImageField({ label, src, alt, onChangeSrc, onChange
     }
     setBusy(true);
     try {
-      const dataUrl = await compressImage(file);
-      onChangeSrc(dataUrl);
+      const blob = await compressToJpegBlob(file);
+      const body = new FormData();
+      body.append('file', blob, 'image.jpg');
+      const res = await axios.post(`${API_BASE}/admin/media`, body, {
+        headers: { ...adminHeaders() },
+      });
+      const path = res.data?.path;
+      if (!path) throw new Error('Upload did not return a path');
+      onChangeSrc(path);
     } catch (err) {
-      setError(err?.message || 'Could not process that file');
+      setError(apiError(err, err?.message || 'Could not upload image'));
     } finally {
       setBusy(false);
     }
@@ -44,9 +54,9 @@ export default function AdminImageField({ label, src, alt, onChangeSrc, onChange
   return (
     <div className="space-y-3 rounded-xl border border-alignment-accent/10 bg-alignment-page/40 p-3">
       <span className="text-xs font-medium uppercase tracking-wide text-[#5A4A78]">{label}</span>
-      {src ? (
+      {preview ? (
         <div className="overflow-hidden rounded-lg bg-alignment-surfaceSoft aspect-[16/10] max-h-48">
-          <img src={src} alt={alt || ''} className="h-full w-full object-cover object-center" />
+          <img src={preview} alt={alt || ''} className="h-full w-full object-cover object-center" />
         </div>
       ) : (
         <div className="rounded-lg border border-dashed border-alignment-accent/20 px-4 py-8 text-center text-sm text-alignment-accent/60">
@@ -55,14 +65,13 @@ export default function AdminImageField({ label, src, alt, onChangeSrc, onChange
       )}
       <label className="block">
         <span className="text-[11px] text-alignment-accent/70">
-          {pathOnly ? 'Image path or URL (or upload below to replace)' : 'Image path, URL, or uploaded file'}
+          {isUploaded ? 'Uploaded image (or paste a path / URL)' : 'Image path or URL (or upload below)'}
         </span>
         <input
           className={`${fieldClass} mt-1 font-mono text-xs`}
-          value={src?.startsWith('data:') ? '(uploaded image — save the page to publish)' : src || ''}
+          value={src || ''}
           onChange={(e) => onChangeSrc(e.target.value)}
           placeholder="/images/… or https://…"
-          disabled={Boolean(src?.startsWith('data:'))}
         />
       </label>
       {showAlt ? (
@@ -90,21 +99,21 @@ export default function AdminImageField({ label, src, alt, onChangeSrc, onChange
           disabled={busy}
           onClick={() => inputRef.current?.click()}
         >
-          {busy ? 'Compressing…' : 'Upload image'}
+          {busy ? 'Uploading…' : 'Upload image'}
         </button>
-        {src?.startsWith('data:') ? (
+        {src ? (
           <button type="button" className={btnGhost} onClick={() => onChangeSrc('')}>
-            Clear upload
+            Clear
           </button>
         ) : null}
-        <span className="text-[11px] text-alignment-accent/55">Auto-compressed for the site · JPEG/PNG/WebP/GIF</span>
+        <span className="text-[11px] text-alignment-accent/55">Uploads to the server · then Save the page</span>
       </div>
       {error ? <p className="text-sm text-[#C45C4A]">{error}</p> : null}
     </div>
   );
 }
 
-function compressImage(file) {
+function compressToJpegBlob(file) {
   return new Promise((resolve, reject) => {
     const url = URL.createObjectURL(file);
     const img = new Image();
@@ -122,12 +131,17 @@ function compressImage(file) {
         return;
       }
       ctx.drawImage(img, 0, 0, w, h);
-      const dataUrl = canvas.toDataURL('image/jpeg', JPEG_QUALITY);
-      if (dataUrl.length > 380000) {
-        reject(new Error('Image is still too large after compression. Try a simpler photo.'));
-        return;
-      }
-      resolve(dataUrl);
+      canvas.toBlob(
+        (blob) => {
+          if (!blob) {
+            reject(new Error('Could not compress image'));
+            return;
+          }
+          resolve(blob);
+        },
+        'image/jpeg',
+        JPEG_QUALITY
+      );
     };
     img.onerror = () => {
       URL.revokeObjectURL(url);

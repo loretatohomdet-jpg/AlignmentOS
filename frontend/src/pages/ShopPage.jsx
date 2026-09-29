@@ -21,6 +21,7 @@ import { SHOP_SECTION_DEFAULTS } from '../config/pageSections';
 import { type } from '../config/siteType';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { marketingPageCopy, mergeProduct, useShopCatalog, useSitePage } from '../hooks/useSiteContent';
+import { resolveCmsImageUrl } from '../config/cmsMedia';
 
 const SHOP_DEFAULTS = {
   eyebrow: 'Shop',
@@ -87,7 +88,7 @@ export default function ShopPage() {
 
             <div className="relative order-1 lg:order-2 min-h-[18rem] sm:min-h-[24rem] lg:min-h-full min-w-0 bg-[#FBFAF8]">
               <img
-                src={copy.heroImage}
+                src={resolveCmsImageUrl(copy.heroImage)}
                 alt={copy.heroImageAlt}
                 className="absolute inset-0 h-full w-full object-cover object-[55%_45%]"
                 decoding="async"
@@ -115,7 +116,7 @@ export default function ShopPage() {
               </div>
               <figure className="overflow-hidden rounded-2xl bg-alignment-surfaceSoft">
                 <img
-                  src={copy.featuredImage}
+                  src={resolveCmsImageUrl(copy.featuredImage)}
                   alt={copy.featuredImageAlt || planner.imageAlt}
                   className="w-full aspect-[5/4] object-cover object-center"
                   loading="lazy"
@@ -166,7 +167,7 @@ export default function ShopPage() {
               <div className="w-full max-w-xl xl:max-w-2xl mx-auto lg:mx-0">
                 <figure className="overflow-hidden rounded-2xl bg-[#F7F3EC]">
                   <img
-                    src={copy.collectionImage}
+                    src={resolveCmsImageUrl(copy.collectionImage)}
                     alt={copy.collectionImageAlt}
                     className="block w-full h-auto"
                     loading="lazy"

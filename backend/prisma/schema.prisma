@@ -289,3 +289,11 @@ model ShopOffer {
   @@index([isPublished, sortOrder])
 }
 
+/** Admin-uploaded CMS images (served at /api/public/media/:id). */
+model CmsAsset {
+  id        String   @id @default(uuid())
+  mime      String
+  bytes     Bytes
+  createdAt DateTime @default(now())
+}
+

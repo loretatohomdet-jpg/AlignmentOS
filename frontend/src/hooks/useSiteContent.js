@@ -3,6 +3,7 @@ import axios from 'axios';
 import { API_BASE } from '../config/apiBase';
 import { HOME_COPY_DEFAULTS, mergeHomeSections } from '../config/homeCopy';
 import { mergePageSections, sectionConfigForPath } from '../config/pageSections';
+import { resolveCmsImageUrl } from '../config/cmsMedia';
 
 export function useSitePage(path) {
   const [page, setPage] = useState(null);
@@ -147,7 +148,7 @@ export function mergeProduct(base, offers) {
     kicker: row.kicker || base.kicker,
     tagline: row.tagline || base.tagline,
     body: row.body || base.body,
-    image: row.image || base.image,
+    image: resolveCmsImageUrl(row.image || base.image) || base.image,
     price: row.digitalPrice ?? base.price,
     checkoutUrl: row.digitalUrl || base.checkoutUrl,
     print: base.print

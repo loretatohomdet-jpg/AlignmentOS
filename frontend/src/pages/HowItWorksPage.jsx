@@ -7,6 +7,7 @@ import { DOMAIN_ORDER, DOMAIN_LABELS } from '../constants/domains';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { marketingPageCopy, useSitePage } from '../hooks/useSiteContent';
 import { HOW_IT_WORKS_SECTION_DEFAULTS } from '../config/pageSections';
+import { resolveCmsImageUrl } from '../config/cmsMedia';
 
 const DEMO_SCORES = {
   IDENTITY: 78,
@@ -223,7 +224,7 @@ export default function HowItWorksPage() {
 
             <div className="relative order-1 lg:order-2 min-h-[20rem] sm:min-h-[26rem] lg:min-h-full min-w-0 bg-[#FBFAF8]">
               <img
-                src={copy.heroImage}
+                src={resolveCmsImageUrl(copy.heroImage)}
                 alt={copy.heroImageAlt}
                 className="absolute inset-0 h-full w-full object-cover object-[62%_45%]"
                 decoding="async"

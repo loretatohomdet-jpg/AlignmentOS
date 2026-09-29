@@ -41,6 +41,7 @@ const {
   updateHabit,
   deleteHabit,
 } = require('../controllers/adminContentController');
+const { mediaUpload, uploadMedia } = require('../controllers/mediaController');
 
 const router = express.Router();
 
@@ -79,6 +80,18 @@ router.post('/pages', createPage);
 router.get('/pages/:pageId', getPage);
 router.patch('/pages/:pageId', updatePage);
 router.delete('/pages/:pageId', deletePage);
+
+router.post('/media', (req, res, next) => {
+  mediaUpload(req, res, (err) => {
+    if (err) {
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        return res.status(400).json({ message: 'Image must be under 2MB' });
+      }
+      return res.status(400).json({ message: err.message || 'Upload failed' });
+    }
+    return uploadMedia(req, res, next);
+  });
+});
 
 router.get('/shop', listShop);
 router.post('/shop', createShopOffer);

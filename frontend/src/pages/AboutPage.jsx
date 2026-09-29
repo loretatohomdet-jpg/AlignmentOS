@@ -6,6 +6,7 @@ import { ABOUT_SECTION_DEFAULTS } from '../config/pageSections';
 import { type } from '../config/siteType';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { marketingPageCopy, useSitePage } from '../hooks/useSiteContent';
+import { resolveCmsImageUrl } from '../config/cmsMedia';
 
 const ABOUT_DEFAULTS = {
   eyebrow: 'About Alignment OS',
@@ -70,7 +71,7 @@ export default function AboutPage() {
 
             <div className="relative order-1 lg:order-2 min-h-[18rem] sm:min-h-[24rem] lg:min-h-full min-w-0 bg-[#FBFAF8]">
               <img
-                src={copy.heroImage}
+                src={resolveCmsImageUrl(copy.heroImage)}
                 alt={copy.heroImageAlt}
                 className="absolute inset-0 h-full w-full object-cover object-[55%_45%]"
                 decoding="async"

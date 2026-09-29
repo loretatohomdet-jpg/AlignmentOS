@@ -13,6 +13,7 @@ import { DOMAIN_ORDER } from '../constants/domains';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { marketingPageCopy, useSitePage } from '../hooks/useSiteContent';
 import { PLATFORM_SECTION_DEFAULTS } from '../config/pageSections';
+import { resolveCmsImageUrl } from '../config/cmsMedia';
 
 const DOMAIN_KEYS = {
   IDENTITY: { labelKey: 'domainIdentity', tagKey: 'domainIdentityTag' },
@@ -152,7 +153,7 @@ export default function PlatformPage() {
 
             <div className="relative order-1 lg:order-2 min-h-[20rem] sm:min-h-[26rem] lg:min-h-full min-w-0 overflow-hidden bg-alignment-surfaceSoft">
               <img
-                src={copy.heroImage}
+                src={resolveCmsImageUrl(copy.heroImage)}
                 alt={copy.heroImageAlt}
                 className="absolute inset-0 h-full w-full object-cover object-[58%_42%]"
                 decoding="async"
@@ -238,7 +239,7 @@ export default function PlatformPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 lg:min-h-[min(52vh,28rem)]">
             <div className="relative min-h-[16rem] sm:min-h-[20rem] lg:min-h-full overflow-hidden bg-alignment-surfaceSoft">
               <img
-                src={copy.closeImage}
+                src={resolveCmsImageUrl(copy.closeImage)}
                 alt={copy.closeImageAlt}
                 className="absolute inset-0 h-full w-full object-cover object-center"
                 decoding="async"

@@ -23,6 +23,7 @@ const {
   listPublicShop,
   getPublicShopByPath,
 } = require('./src/controllers/adminContentController');
+const { getPublicMedia } = require('./src/controllers/mediaController');
 
 const app = express();
 app.set('trust proxy', 1);
@@ -47,8 +48,7 @@ app.post(
 );
 
 app.use(cors(corsOptions));
-// CMS page sections may include uploaded image data-URLs (admin media).
-app.use(express.json({ limit: '2mb' }));
+app.use(express.json({ limit: '1mb' }));
 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -92,6 +92,7 @@ app.get('/api/public/share/:token', sharePublicLimiter, getPublicShare);
 app.get('/api/public/pages/by-path', sharePublicLimiter, getPublicPageByPath);
 app.get('/api/public/shop', sharePublicLimiter, listPublicShop);
 app.get('/api/public/shop/by-path', sharePublicLimiter, getPublicShopByPath);
+app.get('/api/public/media/:id', sharePublicLimiter, getPublicMedia);
 
 // Public auth routes
 app.use('/api/auth', authLimiter, authRoutes);

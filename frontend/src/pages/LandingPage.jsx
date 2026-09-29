@@ -7,6 +7,7 @@ import { type } from '../config/siteType';
 import { DOMAIN_ORDER } from '../constants/domains';
 import { homePageCopy, useSitePage } from '../hooks/useSiteContent';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { resolveCmsImageUrl } from '../config/cmsMedia';
 
 const DOMAIN_KEYS = {
   IDENTITY: { labelKey: 'domainIdentity', tagKey: 'domainIdentityTag' },
@@ -112,7 +113,7 @@ export default function LandingPage() {
 
             <div className="relative order-1 lg:order-2 min-h-[16rem] sm:min-h-[22rem] lg:min-h-full min-w-0 bg-[#FBFAF8]">
               <img
-                src={copy.heroImage}
+                src={resolveCmsImageUrl(copy.heroImage)}
                 alt={copy.heroImageAlt}
                 className="absolute inset-0 h-full w-full object-cover object-[52%_48%]"
                 decoding="async"
@@ -232,7 +233,7 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 lg:min-h-[min(48vh,26rem)]">
             <div className="relative min-h-[14rem] sm:min-h-[18rem] lg:min-h-full overflow-hidden bg-[#FBFAF8]">
               <img
-                src={copy.outsideImage}
+                src={resolveCmsImageUrl(copy.outsideImage)}
                 alt={copy.outsideImageAlt}
                 className="absolute inset-0 h-full w-full object-cover object-[55%_45%]"
                 loading="lazy"
