@@ -46,6 +46,11 @@ export function formationExploreUrl() {
   return programHubUrl || formationExploreFallback;
 }
 
+/** Teachable course library when set; otherwise the Formation / program hub URL. */
+export function formationTeachableUrl() {
+  return courseLibraryUrl || formationExploreUrl();
+}
+
 function withUtmParams(url, params) {
   if (!url) return '';
   try {

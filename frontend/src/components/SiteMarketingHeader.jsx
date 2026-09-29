@@ -16,7 +16,7 @@ import AdminPageBar from './AdminPageBar';
 
 /**
  * Site header. Marketing pages: How it works · Platform · Planner · Shop · About, plus Take the Assessment.
- * Product pages switch to Dashboard · Practice · Review once a real session exists.
+ * Product pages switch to My Map · My Plan · Daily · Review · Formation once a real session exists.
  */
 export default function SiteMarketingHeader({ appendDesktop = null, authDrawer }) {
   const { pathname } = useLocation();
@@ -26,7 +26,7 @@ export default function SiteMarketingHeader({ appendDesktop = null, authDrawer }
 
   const navLinks = showProductNav ? siteNavSignedInLinks : siteNavMainLinks;
   const primaryCta = showProductNav
-    ? { to: '/practice', label: 'Practice' }
+    ? { to: '/plan', label: 'My Plan' }
     : { to: '/assessment', label: 'Take the Assessment' };
 
   const handleLogout = () => {

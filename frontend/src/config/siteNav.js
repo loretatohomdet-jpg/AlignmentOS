@@ -9,16 +9,20 @@ export const siteNavMainLinks = [
   { to: '/about', label: 'About' },
 ];
 
-/** Product nav when signed in — daily work lives on Practice. */
+/** Product nav when signed in — client flow: Map · Plan · Daily · Review · Formation */
 export const siteNavSignedInLinks = [
-  { to: '/dashboard', label: 'Dashboard' },
-  { to: '/practice', label: 'Practice' },
+  { to: '/alignment-map', label: 'My Map' },
+  { to: '/plan', label: 'My Plan' },
+  { to: '/practice', label: 'Daily' },
   { to: '/reflect', label: 'Review' },
+  { to: '/formation', label: 'Formation' },
 ];
 
 const PRODUCT_APP_PREFIXES = [
   '/dashboard',
   '/practice',
+  '/plan',
+  '/formation',
   '/reflect',
   '/snapshot',
   '/results',
@@ -33,7 +37,7 @@ const PRODUCT_APP_PREFIXES = [
   '/success',
 ];
 
-/** Product chrome (Dashboard · Practice · Review). Marketing pages stay visitor-facing. */
+/** Product chrome. Marketing pages stay visitor-facing. */
 export function isProductAppPath(pathname) {
   if (!pathname) return false;
   return PRODUCT_APP_PREFIXES.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`));

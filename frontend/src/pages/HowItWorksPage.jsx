@@ -1,52 +1,200 @@
+import { Link } from 'react-router-dom';
 import SiteMarketingHeader from '../components/SiteMarketingHeader';
-import { pageWidth, pillPrimary, SitePageFooter, CmsCta } from '../components/HomeMarketingChrome';
+import DomainPillarIcon from '../components/DomainPillarIcon';
+import { pageWidth, pillPrimary, SitePageFooter } from '../components/HomeMarketingChrome';
 import { type } from '../config/siteType';
+import { DOMAIN_ORDER, DOMAIN_LABELS } from '../constants/domains';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { pageCopy, useSitePage } from '../hooks/useSiteContent';
 
-const steps = [
-  {
-    n: '01',
-    label: 'See',
-    title: 'Start with the Alignment Assessment.',
-    body: 'Look across the six parts of your life and notice what is working—and what is not.',
-  },
-  {
-    n: '02',
-    label: 'Understand',
-    title: 'See what may be underneath the problem.',
-    body: 'Sometimes the difficulty is not where it first appears. Look at the relationships between your priorities, habits, environment, mindset, and follow-through.',
-  },
-  {
-    n: '03',
-    label: 'Decide',
-    title: 'Choose what matters now.',
-    body: 'Not everything deserves equal attention. Decide what needs protecting, what needs changing, and what can become smaller for this season.',
-  },
-  {
-    n: '04',
-    label: 'Practice',
-    title: 'Make the change livable.',
-    body: 'Choose one or two habits, boundaries, rhythms, or changes that support what matters.',
-  },
-  {
-    n: '05',
-    label: 'Review',
-    title: 'Notice what is actually helping.',
-    body: 'Step back, see what is working, and adjust without starting over.',
-  },
-];
+const DEMO_SCORES = {
+  IDENTITY: 78,
+  PURPOSE: 66,
+  MINDSET: 58,
+  HABITS: 71,
+  ENVIRONMENT: 80,
+  EXECUTION: 67,
+};
+
+function AlignmentMapCard({ className = '' }) {
+  return (
+    <div
+      className={`rounded-2xl border border-alignment-accent/[0.08] bg-alignment-surface shadow-apple px-5 py-6 sm:px-7 sm:py-7 ${className}`}
+    >
+      <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-accent/65">Your Alignment Map</p>
+      <div className="mt-6 flex flex-col sm:flex-row sm:items-center gap-8">
+        <div className="relative mx-auto sm:mx-0 h-36 w-36 shrink-0">
+          <svg viewBox="0 0 120 120" className="h-full w-full -rotate-90" aria-hidden>
+            <circle cx="60" cy="60" r="48" fill="none" stroke="rgba(110,113,88,0.12)" strokeWidth="12" />
+            <circle
+              cx="60"
+              cy="60"
+              r="48"
+              fill="none"
+              stroke="#6E7158"
+              strokeWidth="12"
+              strokeLinecap="round"
+              strokeDasharray={`${72 * 3.016} 301.6`}
+            />
+          </svg>
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+            <span className="font-display text-3xl font-medium tabular-nums text-alignment-accent leading-none">72</span>
+            <span className="mt-1 text-[9px] uppercase tracking-[0.16em] text-alignment-accent/65">Alignment Score</span>
+          </div>
+        </div>
+        <ul className="flex-1 space-y-2.5 min-w-0">
+          {DOMAIN_ORDER.map((key) => (
+            <li key={key} className="flex items-center justify-between gap-3 text-sm">
+              <span className="flex items-center gap-2 min-w-0 text-alignment-accent">
+                <DomainPillarIcon pillar={key} className="h-4 w-4 shrink-0 text-alignment-accent/80" />
+                <span className="truncate">{DOMAIN_LABELS[key]}</span>
+              </span>
+              <span className="tabular-nums text-alignment-accent/80 shrink-0">{DEMO_SCORES[key]}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <p className="mt-6 rounded-xl bg-alignment-primary/[0.08] px-4 py-3 text-sm text-alignment-accent/90 leading-relaxed">
+        Your primary opportunity: <span className="font-medium text-alignment-accent">Mindset</span> — where attention
+        begins.
+      </p>
+    </div>
+  );
+}
+
+function PlanPreviewCard() {
+  return (
+    <div className="relative">
+      <div className="rounded-2xl border border-alignment-accent/[0.08] bg-alignment-surface shadow-apple px-5 py-5 sm:px-6 sm:py-6">
+        <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-accent/65">My Plan</p>
+        <p className="mt-4 text-xs uppercase tracking-[0.16em] text-alignment-primary">This season</p>
+        <ul className="mt-3 space-y-2.5 text-sm text-alignment-accent">
+          <li className="flex gap-2">
+            <span className="text-alignment-primary" aria-hidden>
+              ✓
+            </span>
+            Grow in attentiveness
+          </li>
+          <li className="flex gap-2 text-alignment-accent/70">
+            <span aria-hidden>○</span>
+            Simplify my space
+          </li>
+          <li className="flex gap-2 text-alignment-accent/70">
+            <span aria-hidden>○</span>
+            Be present with my family
+          </li>
+        </ul>
+      </div>
+      <div className="mt-4 sm:mt-0 sm:absolute sm:-right-2 sm:top-16 sm:w-[min(100%,16rem)] rounded-2xl border border-alignment-primary/25 bg-alignment-primary/[0.08] shadow-apple px-5 py-5">
+        <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-primary">Your focus</p>
+        <p className="mt-3 font-display text-lg font-medium text-alignment-accent leading-snug">Grow in attentiveness.</p>
+        <p className="mt-2 text-sm text-alignment-accent/90">A calmer, more present life.</p>
+        <p className="mt-4 text-[10px] font-medium uppercase tracking-[0.16em] text-alignment-accent/65">Next steps</p>
+        <ul className="mt-2 space-y-1.5 text-sm text-alignment-accent/90">
+          <li>Choose one daily practice</li>
+          <li>Hold it on Daily</li>
+          <li>Track what helps</li>
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+function LivePreviewCards() {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="rounded-2xl border border-alignment-accent/[0.08] bg-alignment-surface shadow-apple px-5 py-5">
+        <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-accent/65">Daily</p>
+        <div className="mt-3 flex gap-3 text-[11px] uppercase tracking-[0.14em] text-alignment-accent/55">
+          <span>Morning</span>
+          <span className="text-alignment-primary font-medium">Today</span>
+          <span>Evening</span>
+        </div>
+        <ul className="mt-4 space-y-2.5 text-sm text-alignment-accent">
+          <li className="flex gap-2 text-alignment-accent/70">
+            <span aria-hidden>○</span>
+            Be still and begin the day
+          </li>
+          <li className="flex gap-2 text-alignment-accent/70">
+            <span aria-hidden>○</span>
+            Set your intention
+          </li>
+          <li className="flex gap-2">
+            <span className="text-alignment-primary" aria-hidden>
+              ✓
+            </span>
+            Choose one important step
+          </li>
+        </ul>
+      </div>
+      <div className="rounded-2xl border border-alignment-accent/[0.08] bg-alignment-surface shadow-apple px-5 py-5">
+        <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-accent/65">Weekly Review</p>
+        <ol className="mt-4 space-y-3 text-sm text-alignment-accent/90">
+          <li>
+            <span className="text-alignment-primary tabular-nums mr-2">1.</span>
+            What is working well?
+          </li>
+          <li>
+            <span className="text-alignment-primary tabular-nums mr-2">2.</span>
+            Where did I feel most aligned?
+          </li>
+          <li>
+            <span className="text-alignment-primary tabular-nums mr-2">3.</span>
+            What felt harder than it should?
+          </li>
+          <li>
+            <span className="text-alignment-primary tabular-nums mr-2">4.</span>
+            What will I focus on next?
+          </li>
+        </ol>
+      </div>
+    </div>
+  );
+}
+
+function StepMark({ n }) {
+  return (
+    <div className="flex items-center gap-4">
+      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-alignment-accent/20 text-sm font-medium tabular-nums text-alignment-accent">
+        {n}
+      </span>
+      <span className="h-px flex-1 max-w-[4rem] bg-alignment-accent/15" aria-hidden />
+    </div>
+  );
+}
+
+const HOW_IT_WORKS_DEFAULTS = {
+  eyebrow: 'How it works',
+  headline: 'Start where you are.',
+  subhead: 'Take the Assessment.',
+  body: 'Get a clear picture of what’s working, what’s getting in the way, and what deserves your attention now.',
+  ctaLabel: 'Take the Assessment',
+  ctaHref: '/assessment',
+};
+
+const STALE_HOW_IT_WORKS = new Set([
+  'See clearly. Start small.',
+  'See what is off. Start one practice.',
+  'You do not need to change everything at once.',
+  'The assessment names the thin place. Alignment OS starts the practice and keeps the day on that thread.',
+  'You need to see what matters now and make the changes that support it.',
+  'Take the Alignment Assessment',
+]);
+
+function pickHowItWorks(cms) {
+  const copy = pageCopy(cms, HOW_IT_WORKS_DEFAULTS);
+  const out = { ...copy };
+  for (const key of Object.keys(HOW_IT_WORKS_DEFAULTS)) {
+    if (STALE_HOW_IT_WORKS.has(String(out[key] || '').trim())) {
+      out[key] = HOW_IT_WORKS_DEFAULTS[key];
+    }
+  }
+  return out;
+}
 
 export default function HowItWorksPage() {
   usePageTitle('How It Works — Alignment OS');
-  const copy = pageCopy(useSitePage('/how-it-works'), {
-    eyebrow: 'How it works',
-    headline: 'See clearly. Start small.',
-    subhead: 'You do not need to change everything at once.',
-    body: 'You need to see what matters now and make the changes that support it.',
-    ctaLabel: 'Take the Alignment Assessment',
-    ctaHref: '/assessment',
-  });
+  const copy = pickHowItWorks(useSitePage('/how-it-works'));
 
   return (
     <div className={type.page}>
@@ -56,46 +204,107 @@ export default function HowItWorksPage() {
       <SiteMarketingHeader />
 
       <main id="how-it-works-main" className="flex-1 w-full scroll-mt-16" tabIndex={-1}>
-        <section>
-          <div className={`${pageWidth} pt-12 sm:pt-16 pb-10 sm:pb-14`}>
-            <div className="max-w-xl">
-              <p className={type.kicker}>{copy.eyebrow}</p>
-              <h1 className={`mt-6 ${type.h1} text-balance`}>{copy.headline}</h1>
-              <div className={`mt-10 sm:mt-12 space-y-6 ${type.body}`}>
-                <p>{copy.subhead}</p>
-                <p>{copy.body}</p>
+        {/* Hero — fixed copy column + full-bleed mockup */}
+        <section className="relative w-full overflow-hidden border-b border-alignment-accent/[0.06]">
+          <div className="grid grid-cols-1 lg:grid-cols-[32rem_minmax(0,1fr)] xl:grid-cols-[36rem_minmax(0,1fr)] lg:min-h-[min(70vh,38rem)]">
+            <div className="relative z-10 flex flex-col justify-center bg-alignment-page px-5 sm:px-8 lg:px-10 xl:px-12 py-14 sm:py-16 lg:py-20 order-2 lg:order-1">
+              <div className="max-w-sm">
+                <p className={type.kicker}>{copy.eyebrow}</p>
+                <h1 className={`mt-5 ${type.h1} text-balance`}>{copy.headline}</h1>
+                <p className={`mt-5 ${type.body}`}>{copy.body}</p>
+                <Link to={copy.ctaHref} className={`${pillPrimary} mt-8`}>
+                  {copy.ctaLabel} <span aria-hidden>→</span>
+                </Link>
+                <p className="mt-4 text-sm text-alignment-accent/70">Free · 12 minutes · No account</p>
+              </div>
+            </div>
+
+            <div className="relative order-1 lg:order-2 min-h-[20rem] sm:min-h-[26rem] lg:min-h-full min-w-0 overflow-hidden bg-alignment-surfaceSoft">
+              <img
+                src="/images/how-it-works/hero.jpg"
+                alt="Alignment OS on a laptop — Alignment Map, today’s practice, My Plan, and Weekly Review."
+                className="absolute inset-0 h-full w-full object-cover object-[75%_42%]"
+                decoding="async"
+                fetchPriority="high"
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* 01 SEE */}
+        <section className="w-full border-t border-alignment-accent/[0.06]">
+          <div className={`${pageWidth} py-14 sm:py-20`}>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 lg:items-start">
+              <div className="max-w-md">
+                <StepMark n="01" />
+                <p className={`${type.kicker} mt-6`}>See</p>
+                <h2 className={`mt-4 ${type.h2}`}>See the whole picture.</h2>
+                <p className={`mt-4 ${type.body}`}>Your Map brings six areas of life into one view.</p>
+                <ul className="mt-8 grid grid-cols-3 gap-4">
+                  {DOMAIN_ORDER.map((key) => (
+                    <li key={key} className="flex flex-col items-center text-center gap-2">
+                      <span className="flex h-12 w-12 items-center justify-center rounded-full border border-alignment-accent/15 text-alignment-accent">
+                        <DomainPillarIcon pillar={key} className="h-6 w-6" />
+                      </span>
+                      <span className="text-[11px] font-medium text-alignment-accent/85">{DOMAIN_LABELS[key]}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <AlignmentMapCard />
+            </div>
+          </div>
+        </section>
+
+        {/* 02 CHOOSE */}
+        <section className="w-full border-t border-alignment-accent/[0.06] bg-alignment-surfaceSoft/90">
+          <div className={`${pageWidth} py-14 sm:py-20`}>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 lg:items-start">
+              <div className="max-w-md lg:order-1">
+                <StepMark n="02" />
+                <p className={`${type.kicker} mt-6`}>Choose</p>
+                <h2 className={`mt-4 ${type.h2}`}>Choose what matters now.</h2>
+                <p className={`mt-4 ${type.body}`}>One focus. A few priorities. Let the rest wait.</p>
+              </div>
+              <div className="lg:order-2 min-h-[18rem] sm:min-h-[20rem]">
+                <PlanPreviewCard />
               </div>
             </div>
           </div>
         </section>
 
-        <section>
-          <div className={`${pageWidth} pb-10 sm:pb-14`}>
-            <ol className="max-w-xl space-y-12 sm:space-y-14">
-              {steps.map((step) => (
-                <li key={step.n}>
-                  <p className={type.kicker}>
-                    {step.n} — {step.label}
-                  </p>
-                  <h2 className={`mt-4 ${type.h2}`}>{step.title}</h2>
-                  <p className={`mt-4 ${type.body}`}>{step.body}</p>
-                </li>
-              ))}
-            </ol>
+        {/* 03 LIVE */}
+        <section className="w-full border-t border-alignment-accent/[0.06]">
+          <div className={`${pageWidth} py-14 sm:py-20`}>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 lg:items-start">
+              <div className="max-w-md">
+                <StepMark n="03" />
+                <p className={`${type.kicker} mt-6`}>Live</p>
+                <h2 className={`mt-4 ${type.h2}`}>Make one change.</h2>
+                <p className={`mt-4 ${type.body}`}>Practice it. Notice what happens. Adjust when you need to.</p>
+              </div>
+              <LivePreviewCards />
+            </div>
           </div>
         </section>
 
+        {/* Close */}
         <section className="w-full border-t border-alignment-accent/[0.06] bg-alignment-surfaceSoft/90">
           <div className={`${pageWidth} py-16 sm:py-24`}>
-            <div className="max-w-xl">
-              <p className="font-display text-xl sm:text-2xl font-medium text-alignment-accent leading-snug">
-                You don’t need a perfect system. You need one that helps you notice, decide, act, and adjust.
-              </p>
-              <CmsCta href={copy.ctaHref} className={`${pillPrimary} mt-10`}>
-                {copy.ctaLabel} <span aria-hidden className="ml-1">
-                  →
-                </span>
-              </CmsCta>
+            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10">
+              <div className="max-w-xl">
+                <p className={type.kicker}>That’s it</p>
+                <h2 className={`mt-4 ${type.h2} text-balance`}>
+                  See the pattern. Choose what matters. Make one change.
+                </h2>
+                <p className={`mt-4 ${type.body}`}>Then go live it.</p>
+              </div>
+              <div className="shrink-0">
+                <Link to={copy.ctaHref} className={pillPrimary}>
+                  {copy.ctaLabel} <span aria-hidden>→</span>
+                </Link>
+                <p className="mt-4 text-sm text-alignment-accent/70">Free · 12 minutes · No account</p>
+              </div>
             </div>
           </div>
         </section>

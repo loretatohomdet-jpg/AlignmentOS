@@ -1,257 +1,90 @@
-import { useState, useEffect, Fragment, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import AgentFloatingButton from '../components/AgentFloatingButton';
-import EmailCaptureForm from '../components/EmailCaptureForm';
 import SiteMarketingHeader from '../components/SiteMarketingHeader';
 import DomainPillarIcon from '../components/DomainPillarIcon';
-import { pillGhost, pillPrimary, SitePageFooter, CmsCta } from '../components/HomeMarketingChrome';
-import CommerceCta from '../components/CommerceCta';
-import BookCover from '../components/BookCover';
-import { alignmentTools, plannerImages, plannerProduct, resetProduct } from '../config/commerce';
+import { pageWidth, pillPrimary, SitePageFooter, CmsCta } from '../components/HomeMarketingChrome';
+import { plannerImages } from '../config/commerce';
 import { type } from '../config/siteType';
-import { homePageCopy, mergeProduct, useShopCatalog, useSitePage } from '../hooks/useSiteContent';
+import { DOMAIN_ORDER } from '../constants/domains';
+import { homePageCopy, useSitePage } from '../hooks/useSiteContent';
+import { usePageTitle } from '../hooks/usePageTitle';
 
-function usePrefersReducedMotion() {
-  const [reduced, setReduced] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setReduced(mq.matches);
-    const onChange = () => setReduced(mq.matches);
-    mq.addEventListener('change', onChange);
-    return () => mq.removeEventListener('change', onChange);
-  }, []);
-  return reduced;
-}
+const DOMAIN_BLURBS = {
+  IDENTITY: { label: 'Identity', tag: 'Who you are' },
+  PURPOSE: { label: 'Purpose', tag: 'Why it matters' },
+  MINDSET: { label: 'Mindset', tag: 'How you think' },
+  HABITS: { label: 'Habits', tag: 'What you do' },
+  ENVIRONMENT: { label: 'Environment', tag: 'Where you live' },
+  EXECUTION: { label: 'Follow-through', tag: 'How it comes together' },
+};
 
-/** Shared focus ring for primary actions (matches global focus-visible outline) */
-const focusRingBtn =
-  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2 focus-visible:ring-offset-alignment-foundation';
+/** Soft left fade into page cream — single mask (dual masks can blank the image) */
+const heroMaskStyle = {
+  WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 20%, black 100%)',
+  maskImage: 'linear-gradient(to right, transparent 0%, black 20%, black 100%)',
+};
 
-function AnimatedProofStat({ target, prefix = '', suffix = '', label }) {
-  const ref = useRef(null);
-  const [started, setStarted] = useState(false);
-  const [value, setValue] = useState(0);
-  const prefersReducedMotion = usePrefersReducedMotion();
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setStarted(true);
-          io.disconnect();
-        }
-      },
-      { threshold: 0.2, rootMargin: '0px 0px -5% 0px' }
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (!started) return;
-    if (prefersReducedMotion) {
-      setValue(target);
-      return;
-    }
-    let rafId = 0;
-    const duration = 2000;
-    const t0 = performance.now();
-
-    const tick = (now) => {
-      const t = Math.min(1, (now - t0) / duration);
-      const eased = 1 - (1 - t) ** 3;
-      setValue(Math.round(target * eased));
-      if (t < 1) rafId = requestAnimationFrame(tick);
-      else setValue(target);
-    };
-    rafId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(rafId);
-  }, [started, target, prefersReducedMotion]);
-
+function ProductPreviewCards() {
   return (
-    <div ref={ref} className="bg-alignment-primary px-4 py-8 sm:py-10 md:py-12 text-center">
-      <p className="font-display text-[clamp(1.35rem,7vw,2.75rem)] sm:text-4xl md:text-[2.75rem] font-medium text-white leading-none tracking-tight tabular-nums px-1">
-        {prefix}
-        {value}
-        {suffix}
-      </p>
-      <p className="mt-3 text-[10px] sm:text-[11px] font-normal uppercase tracking-[0.22em] text-white/80">
-        {label}
-      </p>
+    <div className="relative min-h-[18rem] sm:min-h-[22rem]">
+      <div className="rounded-2xl border border-alignment-accent/[0.08] bg-alignment-surface shadow-apple px-5 py-5 sm:px-6 max-w-sm">
+        <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-accent/65">Daily</p>
+        <div className="mt-3 flex gap-3 text-[11px] uppercase tracking-[0.14em] text-alignment-accent/55">
+          <span>Morning</span>
+          <span className="text-alignment-primary font-medium">Today</span>
+          <span>Evening</span>
+        </div>
+        <ul className="mt-4 space-y-2.5 text-sm text-alignment-accent">
+          <li className="flex gap-2 text-alignment-accent/70">
+            <span aria-hidden>○</span>
+            Be still and begin the day
+          </li>
+          <li className="flex gap-2">
+            <span className="text-alignment-primary" aria-hidden>
+              ✓
+            </span>
+            Choose one important step
+          </li>
+          <li className="flex gap-2 text-alignment-accent/70">
+            <span aria-hidden>○</span>
+            Be present with someone
+          </li>
+        </ul>
+      </div>
+      <div className="mt-4 sm:mt-0 sm:absolute sm:right-0 sm:top-10 sm:w-[min(100%,15.5rem)] rounded-2xl border border-alignment-primary/20 bg-alignment-primary/[0.07] shadow-apple px-5 py-5">
+        <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-primary">Your focus</p>
+        <p className="mt-3 font-display text-lg font-medium text-alignment-accent leading-snug">
+          Grow in attentiveness.
+        </p>
+        <p className="mt-2 text-sm text-alignment-accent/90">One change. Practiced daily.</p>
+        <div className="mt-4 h-1.5 rounded-full bg-alignment-accent/10 overflow-hidden" aria-hidden>
+          <div className="h-full w-[62%] rounded-full bg-alignment-primary" />
+        </div>
+      </div>
     </div>
   );
 }
 
-function HomeToolsSection({ copy }) {
-  const offers = useShopCatalog();
-  const planner = mergeProduct(plannerProduct, offers);
-  const reset = mergeProduct(resetProduct, offers);
-  const tools = alignmentTools.map((item) => mergeProduct(item, offers)).filter((item) => !item.hidden);
-
-  return (
-    <section
-      id="tools"
-      className="w-full border-t border-alignment-accent/[0.06] bg-alignment-surfaceSoft/90"
-      aria-labelledby="home-tools-heading"
-    >
-      <div className="max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12 sm:py-16">
-        <p className={type.kicker}>{copy.plannerKicker}</p>
-        <h2 id="home-tools-heading" className={`mt-4 ${type.h2} max-w-xl text-balance`}>
-          {planner.title}
-        </h2>
-        <p className={`mt-6 ${type.body} max-w-xl`}>{copy.plannerBody}</p>
-        <figure className="mt-10 overflow-hidden rounded-2xl bg-alignment-foundation">
-          <img
-            src={plannerImages.paperLifestyle}
-            alt={planner.imageAlt}
-            className="w-full aspect-[16/10] sm:aspect-[16/9] object-cover object-center"
-            loading="lazy"
-            decoding="async"
-          />
-        </figure>
-        <CommerceCta
-          to="/planner"
-          event="planner_shop_click"
-          sku={planner.sku}
-          className="mt-8 inline-flex items-center text-[11px] font-medium uppercase tracking-[0.2em] text-alignment-accent border-b border-alignment-accent/25 pb-1 hover:border-alignment-accent"
-        >
-          {copy.plannerCta} <span aria-hidden>→</span>
-        </CommerceCta>
-
-        <p className={`${type.kicker} mt-16`}>{copy.toolsKicker}</p>
-        <h3 className={`mt-4 ${type.h2} max-w-xl text-balance`}>{copy.toolsHeading}</h3>
-        <p className={`mt-4 ${type.body} max-w-xl`}>{copy.toolsBody}</p>
-        <ul className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-6 lg:gap-8">
-          {tools.map((product) => (
-            <li key={product.sku}>
-              <Link to={product.path} className="group block">
-                <BookCover
-                  src={product.image}
-                  alt={product.imageAlt}
-                  title={product.title}
-                  className="rounded-2xl transition-opacity group-hover:opacity-90"
-                />
-                <h3 className={`mt-4 ${type.h3}`}>{product.title}</h3>
-                <p className="mt-1 font-display font-medium text-alignment-primary">{product.tagline}</p>
-              </Link>
-            </li>
-          ))}
-        </ul>
-
-        <div className="mt-16 max-w-xl">
-          <p className={type.kicker}>{copy.resetKicker}</p>
-          <h3 className={`mt-4 ${type.h3}`}>{reset.title}</h3>
-          <p className="mt-2 font-display font-medium text-alignment-primary">{reset.tagline}</p>
-          <p className={`mt-3 ${type.muted}`}>{reset.priceLabel}</p>
-          <CommerceCta
-            to={reset.path}
-            event="shop_all_click"
-            sku={reset.sku}
-            className="mt-6 inline-flex items-center text-[11px] font-medium uppercase tracking-[0.2em] text-alignment-accent border-b border-alignment-accent/25 pb-1 hover:border-alignment-accent"
-          >
-            {copy.resetCta} <span aria-hidden>→</span>
-          </CommerceCta>
-        </div>
-
-        <CommerceCta
-          to="/shop"
-          event="shop_all_click"
-          sku="shop"
-          className="mt-8 inline-flex items-center text-[11px] font-medium uppercase tracking-[0.2em] text-alignment-accent/80 border-b border-alignment-accent/20 pb-1 hover:text-alignment-accent hover:border-alignment-accent"
-        >
-          {copy.shopCta} <span aria-hidden>→</span>
-        </CommerceCta>
-      </div>
-    </section>
-  );
-}
-
-function FinalCtaClosing({ copy }) {
-  return (
-    <section
-      className="w-full bg-alignment-foundation border-t border-alignment-neutral/25"
-      aria-labelledby="final-cta-heading"
-    >
-      <div className="max-w-2xl mx-auto px-6 py-20 sm:py-28 lg:py-32 text-center">
-        <p className={type.kicker}>{copy.emailKicker}</p>
-        <h2 id="final-cta-heading" className={`mt-6 ${type.h2}`}>
-          {copy.emailHeading}
-        </h2>
-        <p className={`mt-6 ${type.body}`}>{copy.emailBody}</p>
-
-        <div className="mt-8 w-full max-w-sm mx-auto text-left">
-          <EmailCaptureForm
-            source="home-reset-guide"
-            redirectTo={null}
-            layout="stacked"
-            buttonText={copy.emailButton}
-            helperText={copy.emailHelper}
-            successText={copy.emailSuccess}
-          />
-        </div>
-        <p className="mt-5 text-center">
-          <Link
-            to="/assessment"
-            className="text-[11px] sm:text-xs text-alignment-accent/75 transition-colors duration-200 hover:text-alignment-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-alignment-primary/30 rounded-sm px-0.5"
-          >
-            {copy.preferDiagnostic} <span aria-hidden>→</span>
-          </Link>
-        </p>
-        <p className="mt-3 text-center">
-          <Link
-            to="/dashboard"
-            className="text-[11px] sm:text-xs text-alignment-accent/75 transition-colors duration-200 hover:text-alignment-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-alignment-primary/30 rounded-sm px-0.5"
-          >
-            {copy.alreadyAccount} <span aria-hidden>→</span>
-          </Link>
-        </p>
-      </div>
-    </section>
-  );
-}
-
 export default function LandingPage() {
-  const cms = useSitePage('/');
-  const copy = homePageCopy(cms);
+  usePageTitle('Alignment OS — A life is formed by what is repeated');
+  const copy = homePageCopy(useSitePage('/'));
 
   const heroDomains = [
-    { label: copy.domainIdentity, dot: 'bg-alignment-surface' },
-    { label: copy.domainPurpose, dot: 'bg-alignment-surface/70' },
-    { label: copy.domainMindset, dot: 'bg-alignment-surface' },
-    { label: copy.domainHabits, dot: 'bg-alignment-surface/70' },
-    { label: copy.domainEnvironment, dot: 'bg-alignment-surface' },
-    { label: copy.domainExecution, dot: 'bg-alignment-surface/70' },
-  ];
-
-  const compoundingSteps = [
-    { n: 1, title: copy.step1 },
-    { n: 2, title: copy.step2 },
-    { n: 3, title: copy.step3 },
-    { n: 4, title: copy.step4 },
-  ];
-
-  const sixDomains = [
-    { pillar: 'IDENTITY', title: copy.domainIdentity },
-    { pillar: 'PURPOSE', title: copy.domainPurpose },
-    { pillar: 'MINDSET', title: copy.domainMindset },
-    { pillar: 'HABITS', title: copy.domainHabits },
-    { pillar: 'ENVIRONMENT', title: copy.domainEnvironment },
-    { pillar: 'EXECUTION', title: copy.domainExecution },
-  ];
-
-  const proofStats = [
-    { target: 24, label: copy.proofQuestions },
-    { target: 6, label: copy.proofDomains },
-    { target: 90, label: copy.proofCycles },
-    { target: 12, label: copy.proofMinutes },
+    { label: DOMAIN_BLURBS.IDENTITY.label, dot: 'bg-alignment-surface' },
+    { label: DOMAIN_BLURBS.PURPOSE.label, dot: 'bg-alignment-surface/70' },
+    { label: DOMAIN_BLURBS.MINDSET.label, dot: 'bg-alignment-surface' },
+    { label: DOMAIN_BLURBS.HABITS.label, dot: 'bg-alignment-surface/70' },
+    { label: DOMAIN_BLURBS.ENVIRONMENT.label, dot: 'bg-alignment-surface' },
+    { label: DOMAIN_BLURBS.EXECUTION.label, dot: 'bg-alignment-surface/70' },
   ];
 
   const domainRow = (
     <ul className="flex shrink-0 items-center gap-x-10 sm:gap-x-14 md:gap-x-16 pr-10 sm:pr-14">
       {heroDomains.map(({ label, dot }) => (
-        <li key={label} className="flex items-center gap-2 text-[9px] sm:text-[10px] font-medium uppercase tracking-[0.2em] whitespace-nowrap">
+        <li
+          key={label}
+          className="flex items-center gap-2 text-[9px] sm:text-[10px] font-medium uppercase tracking-[0.2em] whitespace-nowrap"
+        >
           <span className={`h-1.5 w-1.5 rounded-full shrink-0 ${dot}`} aria-hidden />
           {label}
         </li>
@@ -267,160 +100,178 @@ export default function LandingPage() {
       <SiteMarketingHeader />
 
       <main id="main-content" className="flex-1 w-full scroll-mt-16" tabIndex={-1}>
-        <section className="flex w-full flex-col bg-alignment-foundation min-h-[calc(100vh-5.5rem)] sm:min-h-[calc(100vh-6rem)]">
-          <div className="relative flex min-h-0 flex-1 flex-col">
-            <div className="relative flex flex-1 flex-col justify-center px-6 sm:px-8 lg:px-12 pt-12 pb-8 sm:pt-16 sm:pb-10">
-              <div className="mx-auto w-full max-w-5xl text-center">
-                <h1 className="font-display not-italic font-medium leading-[1.2] tracking-tight text-alignment-accent text-center text-balance max-w-full px-1 text-[clamp(1.5rem,3.8vw,2.6rem)]">
-                  {copy.headline}
-                </h1>
-                <p className="mt-7 sm:mt-9 font-display not-italic font-medium text-xl sm:text-2xl text-alignment-primary leading-snug">
-                  {copy.subhead}
-                </p>
-                <div className="mt-9 sm:mt-11 flex flex-col items-center gap-3">
-                  <CmsCta href={copy.ctaHref} label={copy.ctaLabel} className={pillPrimary} />
-                  <a href="#how-it-works" className={pillGhost}>
-                    {copy.heroSecondaryCta}
-                  </a>
-                </div>
-                <p className={`mt-8 ${type.body} max-w-sm mx-auto`}>{copy.body}</p>
+        {/* Hero — copy left, product lifestyle photo soft-masked into page cream */}
+        <section className="relative w-full overflow-hidden bg-[#FBFAF8]">
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,34rem)_minmax(0,1fr)] xl:grid-cols-[minmax(0,38rem)_minmax(0,1fr)] lg:min-h-[min(78vh,42rem)]">
+            <div className="relative z-10 flex flex-col justify-center px-5 sm:px-8 lg:px-10 xl:px-12 py-14 sm:py-16 lg:py-20 order-2 lg:order-1 bg-[#FBFAF8]">
+              <div className="max-w-md">
+                <h1 className={`${type.h1} text-balance`}>{copy.headline}</h1>
+                <p className={`mt-6 ${type.body} text-base sm:text-lg`}>{copy.subhead}</p>
+                <CmsCta href={copy.ctaHref} className={`${pillPrimary} mt-8`}>
+                  {copy.ctaLabel} <span aria-hidden>→</span>
+                </CmsCta>
+                <p className="mt-4 text-sm text-alignment-accent/70">{copy.body}</p>
               </div>
             </div>
-          </div>
 
+            <div className="relative order-1 lg:order-2 min-h-[16rem] sm:min-h-[22rem] lg:min-h-full min-w-0 bg-[#FBFAF8]">
+              <img
+                src="/images/home/hero.jpg"
+                alt="Alignment OS on a laptop — alignment score, today’s focus, and practices on a sunlit desk."
+                className="absolute inset-0 h-full w-full object-cover object-[58%_42%]"
+                style={heroMaskStyle}
+                decoding="async"
+                fetchPriority="high"
+              />
+              <div
+                className="pointer-events-none absolute inset-y-0 left-0 w-32 sm:w-44 lg:w-52 bg-gradient-to-r from-[#FBFAF8] from-10% via-[#FBFAF8]/80 to-transparent"
+                aria-hidden
+              />
+              <div
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#FBFAF8] via-[#FBFAF8]/70 to-transparent"
+                aria-hidden
+              />
+              <div
+                className="pointer-events-none absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-[#FBFAF8]/70 to-transparent"
+                aria-hidden
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Domains marquee */}
+        <div
+          className="relative w-full shrink-0 bg-alignment-primary text-white overflow-hidden"
+          role="region"
+          aria-label="Six alignment domains"
+        >
           <div
-            className="relative w-full shrink-0 bg-alignment-primary text-white overflow-hidden"
-            role="region"
-            aria-label="Six alignment domains"
-          >
-            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 sm:w-20 bg-gradient-to-r from-alignment-primary to-transparent" aria-hidden />
-            <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 sm:w-20 bg-gradient-to-l from-alignment-primary to-transparent" aria-hidden />
-            <div className="flex w-max motion-safe:animate-marquee-domains motion-reduce:animate-none py-3 sm:py-3.5 will-change-transform">
-              {domainRow}
-              <ul className="flex shrink-0 items-center gap-x-10 sm:gap-x-14 md:gap-x-16 pr-10 sm:pr-14" aria-hidden>
-                {heroDomains.map(({ label, dot }) => (
-                  <li key={`dup-${label}`} className="flex items-center gap-2 text-[9px] sm:text-[10px] font-medium uppercase tracking-[0.2em] whitespace-nowrap">
-                    <span className={`h-1.5 w-1.5 rounded-full shrink-0 ${dot}`} aria-hidden />
-                    {label}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 sm:w-20 bg-gradient-to-r from-alignment-primary to-transparent"
+            aria-hidden
+          />
+          <div
+            className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 sm:w-20 bg-gradient-to-l from-alignment-primary to-transparent"
+            aria-hidden
+          />
+          <div className="flex w-max motion-safe:animate-marquee-domains motion-reduce:animate-none py-3 sm:py-3.5 will-change-transform">
+            {domainRow}
+            <ul
+              className="flex shrink-0 items-center gap-x-10 sm:gap-x-14 md:gap-x-16 pr-10 sm:pr-14"
+              aria-hidden
+            >
+              {heroDomains.map(({ label, dot }) => (
+                <li
+                  key={`dup-${label}`}
+                  className="flex items-center gap-2 text-[9px] sm:text-[10px] font-medium uppercase tracking-[0.2em] whitespace-nowrap"
+                >
+                  <span className={`h-1.5 w-1.5 rounded-full shrink-0 ${dot}`} aria-hidden />
+                  {label}
+                </li>
+              ))}
+            </ul>
           </div>
-        </section>
+        </div>
 
-        <section className="w-full border-t border-alignment-accent/[0.06] bg-alignment-surfaceSoft/90">
-          <div className="max-w-xl mx-auto px-6 sm:px-8 py-12 sm:py-16 text-center">
-            <blockquote className={type.quote}>
-              <p>{copy.quote}</p>
-            </blockquote>
-          </div>
-        </section>
-
-        <section id="how-it-works" className="w-full border-t border-alignment-accent/[0.06] bg-apple-surface-muted scroll-mt-20">
-          <div className="max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12 sm:py-16">
-            <h2 className={`${type.h2} max-w-xl text-balance`}>{copy.stepsHeading}</h2>
-            <div className="mt-10 sm:mt-12">
-              <ol className="flex flex-col lg:hidden">
-                {compoundingSteps.map((step, idx) => (
-                  <li key={step.n} className="flex gap-4">
-                    <div className="flex w-11 shrink-0 flex-col items-center">
-                      <span
-                        className="flex h-11 w-11 items-center justify-center rounded-full border border-alignment-accent/20 text-sm font-medium text-alignment-accent/90"
-                        aria-hidden
-                      >
-                        {step.n}
-                      </span>
-                      {idx < compoundingSteps.length - 1 && (
-                        <span className="mt-1 mb-1 w-px flex-1 min-h-[1.25rem] bg-alignment-accent/15" aria-hidden />
-                      )}
-                    </div>
-                    <h3 className={`min-w-0 pt-2.5 text-base font-semibold text-alignment-accent tracking-tight ${idx < compoundingSteps.length - 1 ? 'pb-8' : ''}`}>
-                      {step.title}
-                    </h3>
-                  </li>
-                ))}
-              </ol>
-
-              <div className="hidden lg:grid lg:grid-cols-[minmax(0,1fr)_2.5rem_minmax(0,1fr)_2.5rem_minmax(0,1fr)_2.5rem_minmax(0,1fr)] lg:items-start">
-                {compoundingSteps.map((step, idx) => (
-                  <Fragment key={`desktop-${step.n}`}>
-                    <div className="min-w-0 flex flex-col">
-                      <span
-                        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-alignment-accent/20 text-sm font-medium text-alignment-accent/90"
-                        aria-hidden
-                      >
-                        {step.n}
-                      </span>
-                      <h3 className="mt-6 text-base font-semibold text-alignment-accent tracking-tight">{step.title}</h3>
-                    </div>
-                    {idx < 3 && (
-                      <div
-                        className="flex h-11 w-full shrink-0 items-center justify-center text-alignment-accent/30"
-                        aria-hidden="true"
-                      >
-                        <svg className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
-                      </div>
-                    )}
-                  </Fragment>
-                ))}
-              </div>
-            </div>
-
-            <div className="mt-10 max-w-xl">
+        {/* One life. Six areas. */}
+        <section className="w-full border-t border-alignment-accent/[0.06]">
+          <div className={`${pageWidth} py-16 sm:py-20`}>
+            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+              <h2 className={type.h2}>One life. Six areas.</h2>
               <Link
                 to="/assessment"
-                className={`inline-block rounded-sm text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.2em] text-alignment-accent border-b border-alignment-accent/25 pb-1 transition-colors duration-200 hover:border-alignment-accent focus-visible:border-alignment-accent ${focusRingBtn}`}
+                className="text-[11px] font-medium uppercase tracking-[0.18em] text-alignment-accent/80 border-b border-alignment-accent/20 pb-1 hover:text-alignment-accent hover:border-alignment-accent shrink-0"
               >
-                {copy.stepsCta} <span aria-hidden>→</span>
+                See Your Map <span aria-hidden>→</span>
               </Link>
             </div>
+            <ul className="mt-12 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-8 lg:gap-5">
+              {DOMAIN_ORDER.map((key) => {
+                const d = DOMAIN_BLURBS[key];
+                return (
+                  <li key={key} className="flex flex-col items-center text-center gap-3">
+                    <span className="flex h-12 w-12 items-center justify-center text-alignment-accent">
+                      <DomainPillarIcon pillar={key} className="h-7 w-7" />
+                    </span>
+                    <span className="font-display text-base font-medium text-alignment-accent">{d.label}</span>
+                    <span className="text-[10px] font-medium uppercase tracking-[0.16em] text-alignment-accent/60">
+                      {d.tag}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
           </div>
         </section>
 
+        {/* See what's already there */}
         <section className="w-full border-t border-alignment-accent/[0.06] bg-alignment-surfaceSoft/90">
-          <div className="max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12 sm:py-16">
-            <h2 className={type.h2}>{copy.domainsHeading}</h2>
-
-            <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
-              {sixDomains.map((domain) => (
-                <div
-                  key={domain.pillar}
-                  className="group flex items-center gap-3 rounded-xl border border-alignment-accent/10 bg-alignment-foundationBright/95 px-4 py-3 transition-colors duration-200 hover:border-alignment-primary hover:bg-alignment-primary"
-                >
-                  <DomainPillarIcon
-                    pillar={domain.pillar}
-                    className="h-6 w-6 shrink-0 text-alignment-primary transition-colors duration-200 group-hover:text-white"
-                  />
-                  <h3 className="text-sm font-semibold text-alignment-accent transition-colors duration-200 group-hover:text-white">
-                    {domain.title}
-                  </h3>
+          <div className={`${pageWidth} py-16 sm:py-20`}>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 lg:items-center">
+              <div className="max-w-md">
+                <h2 className={`${type.h2} text-balance`}>
+                  You don’t need more information. You need to see what’s already there.
+                </h2>
+                <div className={`mt-6 space-y-3 ${type.body}`}>
+                  <p>The pattern is already in your days.</p>
+                  <p>The assessment makes it visible.</p>
+                  <p>Then you choose one place to begin.</p>
                 </div>
-              ))}
+                <CmsCta href="/platform" className={`${pillPrimary} mt-8`}>
+                  Explore Alignment OS <span aria-hidden>→</span>
+                </CmsCta>
+              </div>
+              <ProductPreviewCards />
             </div>
           </div>
         </section>
 
+        {/* Outside the app */}
         <section className="w-full border-t border-alignment-accent/[0.06]">
-          <div className="w-full bg-alignment-primary">
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-px bg-white/25">
-              {proofStats.map((s) => (
-                <AnimatedProofStat
-                  key={s.label}
-                  target={s.target}
-                  prefix={s.prefix ?? ''}
-                  suffix={s.suffix ?? ''}
-                  label={s.label}
-                />
-              ))}
+          <div className="grid grid-cols-1 lg:grid-cols-2 lg:min-h-[min(48vh,26rem)]">
+            <div className="relative min-h-[14rem] sm:min-h-[18rem] lg:min-h-full overflow-hidden bg-[#FBFAF8]">
+              <img
+                src={plannerImages.paperLifestyle}
+                alt="Life lived with intention — planner and everyday light."
+                className="absolute inset-0 h-full w-full object-cover object-center"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <div className="flex flex-col justify-center px-5 sm:px-8 lg:px-12 xl:px-16 py-14 sm:py-16 bg-alignment-page">
+              <div className="max-w-md">
+                <h2 className={`${type.h2} text-balance`}>Your life belongs outside the app.</h2>
+                <p className={`mt-5 ${type.body}`}>
+                  Alignment OS helps you see clearly and choose carefully — then close the screen and live what
+                  matters.
+                </p>
+              </div>
             </div>
           </div>
         </section>
 
-        <HomeToolsSection copy={copy} />
-        <FinalCtaClosing copy={copy} />
+        {/* Close */}
+        <section className="w-full border-t border-alignment-accent/[0.06] bg-alignment-surfaceSoft/90">
+          <div className={`${pageWidth} py-16 sm:py-20`}>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
+              <div className="max-w-xs">
+                <h2 className={type.h2}>Less noise. More intention.</h2>
+              </div>
+              <div className={`max-w-xs space-y-4 ${type.body} md:border-x md:border-alignment-accent/[0.08] md:px-8`}>
+                <p>No endless tracking.</p>
+                <p>No perfect streak required.</p>
+                <p>No more system to manage.</p>
+              </div>
+              <div className="max-w-sm md:ml-auto">
+                <h2 className={type.h2}>Start where you are.</h2>
+                <p className={`mt-4 ${type.body}`}>Take the free Alignment Assessment and see the whole picture.</p>
+                <CmsCta href={copy.ctaHref} className={`${pillPrimary} mt-6`}>
+                  {copy.ctaLabel} <span aria-hidden>→</span>
+                </CmsCta>
+                <p className="mt-4 text-sm text-alignment-accent/70">Free · 12 minutes · No account</p>
+              </div>
+            </div>
+          </div>
+        </section>
 
         <SitePageFooter />
         <AgentFloatingButton />

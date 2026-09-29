@@ -4,12 +4,12 @@
  */
 export const HOME_COPY_DEFAULTS = {
   heroSecondaryCta: 'How it works',
-  quote: 'You need structure beneath the effort — not more effort.',
-  stepsHeading: 'Four steps. One system.',
-  step1: 'Diagnostic',
-  step2: 'Identity anchors',
-  step3: 'Habit engine',
-  step4: 'Weekly review',
+  quote: 'The assessment names the thin place. The practice starts there.',
+  stepsHeading: 'One path.',
+  step1: 'Assessment',
+  step2: 'Insight',
+  step3: 'One practice',
+  step4: 'Return',
   stepsCta: 'Start free',
   domainsHeading: 'Six domains',
   domainIdentity: 'Identity',

@@ -584,8 +584,26 @@ export default function AssessmentPage() {
                   <p className="mt-4 font-display text-2xl font-medium text-alignment-accent">{guestPreview.primaryStrainLabel}</p>
                 )}
                 <p className="mt-3 text-sm text-alignment-accent/90 leading-relaxed">
-                  {guestPreview.primaryStrainDescription}
+                  {guestPreview.insight?.thin || guestPreview.primaryStrainDescription}
                 </p>
+                {guestPreview.insight?.why ? (
+                  <p className="mt-3 text-sm text-alignment-accent/90 leading-relaxed">{guestPreview.insight.why}</p>
+                ) : null}
+                {guestPreview.insight?.practice?.title ? (
+                  <div className="mt-6 text-left">
+                    <p className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.22em] text-alignment-accent/65 text-center">
+                      Your practice
+                    </p>
+                    <p className="mt-3 font-display text-xl font-medium text-alignment-accent text-center">
+                      {guestPreview.insight.practice.title}
+                    </p>
+                    {guestPreview.insight.practice.description ? (
+                      <p className="mt-2 text-sm text-alignment-accent/90 leading-relaxed text-center">
+                        {guestPreview.insight.practice.description}
+                      </p>
+                    ) : null}
+                  </div>
+                ) : null}
               </div>
 
               {!guestUnlocked ? (
@@ -657,16 +675,23 @@ export default function AssessmentPage() {
                   </div>
                   <div className="rounded-2xl border border-alignment-accent/10 bg-alignment-surface px-6 py-6 text-center shadow-apple">
                     <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-alignment-primary/70">Next step</p>
-                    <p className="mt-3 text-sm font-medium text-alignment-accent">Keep what you discovered</p>
-                    <p className="mt-2 text-sm text-alignment-accent/90">
-                      Create a free account to save this snapshot. Alignment OS is where you do something with it.
+                    <p className="mt-3 text-sm font-medium text-alignment-accent">
+                      {guestPreview.insight?.practice?.title || 'Your practice is ready'}
                     </p>
-                    <Link to="/signup?returnTo=/snapshot" className={`${pillPrimary} mt-5`}>
+                    <p className="mt-2 text-sm text-alignment-accent/90">
+                      Create a free account and this practice is waiting. You do not set it up yourself.
+                    </p>
+                    <Link to="/signup?returnTo=/plan" className={`${pillPrimary} mt-5`}>
                       Create a free account →
                     </Link>
                     <p className="mt-4 text-sm text-alignment-accent/90">
-                      <Link to="/login?returnTo=/snapshot" className="underline underline-offset-2 hover:text-alignment-accent">
+                      <Link to="/login?returnTo=/plan" className="underline underline-offset-2 hover:text-alignment-accent">
                         Already have an account? Sign in
+                      </Link>
+                    </p>
+                    <p className="mt-6 text-sm text-alignment-accent/75">
+                      <Link to="/founding-circle" className="underline underline-offset-2">
+                        Or apply for the Founding Circle →
                       </Link>
                     </p>
                   </div>

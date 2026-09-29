@@ -18,6 +18,7 @@ import {
 import { API_BASE } from '../config/apiBase';
 import { type } from '../config/siteType';
 import { sawSnapshotContinue } from '../config/productLoop';
+import { insightFromResult } from '../config/domainInsight';
 import { clearSession, hasUnexpiredAccessToken } from '../utils/authSession';
 
 function ScoreGauge({ score, label }) {
@@ -185,9 +186,15 @@ export default function DashboardPage() {
   const daysSinceAssessment = lastTakenAt ? Math.floor((Date.now() - lastTakenAt.getTime()) / (1000 * 60 * 60 * 24)) : null;
   const isQuarterlyDue = daysSinceAssessment !== null && daysSinceAssessment >= 90;
 
+  const insight = insightFromResult(result, habits[0]);
+  const practiceTitle = insight?.practice?.title;
   const nextStep = !result
     ? { label: 'Take the assessment', to: '/assessment', cta: 'Start →' }
-    : { label: 'The day has three rooms.', to: '/practice', cta: 'Open Practice →' };
+    : {
+        label: practiceTitle || 'Your plan is ready',
+        to: '/plan',
+        cta: 'Open My Plan →',
+      };
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 relative">
@@ -212,24 +219,41 @@ export default function DashboardPage() {
             </h1>
             <p className="text-sm text-alignment-accent/90">{todayStr}</p>
           </div>
-          <p className="mt-3 text-sm text-alignment-accent/90 leading-relaxed max-w-xl">
-            Practice holds the day. This page holds the record — your score and map.
-          </p>
+          {insight ? (
+            <section className="mt-6 max-w-xl rounded-2xl border border-alignment-primary/20 bg-alignment-primary/[0.06] px-6 py-6">
+              <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-primary">Your path</p>
+              <p className="mt-3 font-medium text-alignment-accent">
+                {insight.label} is the thin place.
+              </p>
+              <p className="mt-2 text-sm text-alignment-accent/90 leading-relaxed">{insight.thin}</p>
+              <p className="mt-2 text-sm text-alignment-accent/90 leading-relaxed">{insight.why}</p>
+              {practiceTitle ? (
+                <p className="mt-4 text-sm font-medium text-alignment-accent">Practice: {practiceTitle}</p>
+              ) : null}
+              <Link to="/plan" className="mt-4 inline-block text-sm font-medium text-alignment-accent hover:underline">
+                Open My Plan →
+              </Link>
+            </section>
+          ) : (
+            <p className="mt-3 text-sm text-alignment-accent/90 leading-relaxed max-w-xl">
+              Take the assessment. It names the thin place and starts one practice.
+            </p>
+          )}
           <div className="mt-1 flex flex-wrap items-center gap-3">
             <span className="rounded-full bg-alignment-surface px-3 py-1 text-xs font-medium text-alignment-accent capitalize">
               {user.plan?.toLowerCase() ?? 'free'} plan
             </span>
           </div>
 
-          {habitStats?.engineActive && habitStats?.prompt && (
+          {!insight && habitStats?.engineActive && habitStats?.prompt && (
             <div className="mt-6 rounded-2xl border border-alignment-primary/20 bg-alignment-primary/[0.06] p-5 sm:p-6">
               <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-primary">
                 Today’s hold
               </p>
               <p className="mt-2 font-medium text-alignment-accent">{habitStats.prompt.title}</p>
               <p className="mt-1 text-sm text-alignment-accent/90 leading-relaxed">{habitStats.prompt.body}</p>
-              <Link to="/practice" className="mt-3 inline-block text-sm font-medium text-alignment-accent hover:underline">
-                Open Practice →
+                <Link to="/practice#assigned-practice" className="mt-3 inline-block text-sm font-medium text-alignment-accent hover:underline">
+                Open this practice →
               </Link>
             </div>
           )}
@@ -239,17 +263,17 @@ export default function DashboardPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-6 xl:gap-8 lg:items-stretch">
               <section className="rounded-2.5xl bg-alignment-surface border border-alignment-accent/[0.06] shadow-apple p-6 sm:p-8 flex flex-col justify-between h-full min-h-0">
                 <div>
-                  <p className="text-xs font-medium text-alignment-accent/65 uppercase tracking-wider mb-2">The day</p>
-                  <p className="font-medium text-alignment-accent">Morning, midday, close.</p>
+                  <p className="text-xs font-medium text-alignment-accent/65 uppercase tracking-wider mb-2">The practice</p>
+                  <p className="font-medium text-alignment-accent">{practiceTitle || 'One practice from the assessment.'}</p>
                   <p className="mt-2 text-sm text-alignment-accent/90 leading-relaxed">
-                    Write here in Practice. It is saved when you hold a room.
+                    Open it and mark it when it happens. The rooms of the day sit under it.
                   </p>
                 </div>
                 <Link
-                  to="/practice"
+                  to="/practice#assigned-practice"
                   className="mt-6 inline-flex items-center justify-center rounded-full bg-alignment-primary text-white px-5 py-2.5 text-sm font-medium hover:bg-alignment-primary/90"
                 >
-                  Open Practice →
+                  Open this practice →
                 </Link>
               </section>
 
@@ -372,13 +396,13 @@ export default function DashboardPage() {
                   <>
                     <div>
                       <p className="text-xs font-medium text-alignment-accent/65 uppercase tracking-wider mb-2">Today</p>
-                      <p className="text-sm text-alignment-accent/90">Morning, midday, close.</p>
+                      <p className="text-sm text-alignment-accent/90">{practiceTitle || 'One practice, already started.'}</p>
                     </div>
                     <Link
-                      to="/practice"
+                      to="/practice#assigned-practice"
                       className="mt-4 w-full text-center rounded-full bg-alignment-primary text-white px-5 py-2.5 text-sm font-medium hover:bg-alignment-primary/90 transition-colors"
                     >
-                      Open Practice
+                      Open this practice
                     </Link>
                   </>
                 )}

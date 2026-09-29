@@ -43,7 +43,7 @@ test('report html includes score, strain, and domains', () => {
   assert.match(html, /Habits/);
   assert.match(html, /48%/);
   assert.match(html, /Create a free account/);
-  assert.match(html, /\/signup\?returnTo=\/snapshot/);
+  assert.match(html, /returnTo=%2Fplan/);
   assert.match(html, /Keep what you discovered/);
   assert.doesNotMatch(html, /See pricing/);
   assert.doesNotMatch(html, /\/pricing/);

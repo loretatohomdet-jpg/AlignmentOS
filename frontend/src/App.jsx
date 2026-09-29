@@ -61,6 +61,9 @@ import SuccessPage from './pages/SuccessPage';
 import SnapshotPage from './pages/SnapshotPage';
 import SharePage from './pages/SharePage';
 import SharePublicPage from './pages/SharePublicPage';
+import PlanPage from './pages/PlanPage';
+import FormationPage from './pages/FormationPage';
+import FoundingCirclePage from './pages/FoundingCirclePage';
 import HeaderUserMenu from './components/HeaderUserMenu';
 import AgentFloatingButton from './components/AgentFloatingButton';
 import SiteMarketingHeader from './components/SiteMarketingHeader';
@@ -188,6 +191,7 @@ export default function App() {
     <Routes>
       <Route path="/" element={<LandingPage />} />
       <Route path="/cohort" element={<CharterCohortPage />} />
+      <Route path="/founding-circle" element={<FoundingCirclePage />} />
       <Route path="/s/:token" element={<SharePublicPage />} />
       <Route path="/start" element={<StartPage />} />
       <Route path="/go/alignment" element={<StartPage />} />
@@ -278,6 +282,27 @@ export default function App() {
         }
       />
       <Route path="/today" element={<Navigate to="/practice" replace />} />
+      <Route path="/daily" element={<Navigate to="/practice" replace />} />
+      <Route
+        path="/plan"
+        element={
+          <RequireAuth>
+            <Layout>
+              <PlanPage />
+            </Layout>
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/formation"
+        element={
+          <RequireAuth>
+            <Layout>
+              <FormationPage />
+            </Layout>
+          </RequireAuth>
+        }
+      />
       <Route
         path="/practice"
         element={

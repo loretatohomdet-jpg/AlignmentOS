@@ -42,6 +42,8 @@ export default function PracticePage() {
   const [now] = useState(() => new Date());
   const day = utcDayStamp(now);
   const [rituals, setRituals] = useState(() => loadRituals(day));
+  const [completing, setCompleting] = useState(false);
+  const [completeError, setCompleteError] = useState(null);
 
   const load = useCallback(async () => {
     const token = localStorage.getItem('accessToken');
@@ -128,6 +130,31 @@ export default function PracticePage() {
   const nextRoom = rooms.find((room) => !room.held);
   const greeting = useMemo(() => greetingForHour(now.getHours()), [now]);
   const dateLabel = useMemo(() => formatEngineDate(now), [now]);
+  const opened = (prompt?.habitId && habits.find((h) => h.id === prompt.habitId)) || habits[0] || null;
+
+  useEffect(() => {
+    if (loading || !opened) return;
+    if (window.location.hash !== '#assigned-practice') return;
+    document.getElementById('assigned-practice')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, [loading, opened]);
+
+  const markPracticeDone = async () => {
+    if (!opened || opened.completedToday || completing) return;
+    setCompleting(true);
+    setCompleteError(null);
+    try {
+      await axios.post(
+        `${API_BASE}/habits/complete`,
+        { activeHabitId: opened.id },
+        { headers: authHeaders() }
+      );
+      setHabits((list) => list.map((h) => (h.id === opened.id ? { ...h, completedToday: true } : h)));
+    } catch (e) {
+      setCompleteError(e.response?.data?.message || 'Could not mark this practice done.');
+    } finally {
+      setCompleting(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -144,7 +171,9 @@ export default function PracticePage() {
       </p>
       <h1 className={`mt-4 text-center ${type.h1}`}>{greeting}</h1>
       <p className="mt-3 text-center text-[15px] text-alignment-accent/90 leading-relaxed">
-        Three rooms. What you write is saved to your record.
+        {opened
+          ? 'One practice from your assessment. Mark it when it happens.'
+          : 'Three rooms. What you write is saved to your record.'}
       </p>
 
       {error && (
@@ -153,7 +182,33 @@ export default function PracticePage() {
         </p>
       )}
 
-      {engineActive && prompt && (
+      {opened && (
+        <section
+          id="assigned-practice"
+          className="mt-10 scroll-mt-24 rounded-2xl border border-alignment-primary/20 bg-alignment-primary/[0.06] px-6 py-6"
+        >
+          <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-primary">Your practice</p>
+          <p className="mt-3 font-display text-xl font-medium text-alignment-accent leading-snug">{opened.title}</p>
+          {opened.description ? (
+            <p className="mt-2 text-sm text-alignment-accent/90 leading-relaxed">{opened.description}</p>
+          ) : null}
+          <button
+            type="button"
+            onClick={markPracticeDone}
+            disabled={opened.completedToday || completing}
+            className={`${pillPrimary} mt-6 disabled:opacity-60`}
+          >
+            {opened.completedToday ? 'Held today' : completing ? 'Saving…' : 'Mark this done'}
+          </button>
+          {completeError ? (
+            <p className="mt-3 text-sm text-red-800" role="alert">
+              {completeError}
+            </p>
+          ) : null}
+        </section>
+      )}
+
+      {!opened && engineActive && prompt && (
         <div className="mt-10 rounded-2xl border border-alignment-primary/20 bg-alignment-primary/[0.06] px-6 py-6">
           <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-primary">Today’s hold</p>
           <p className="mt-3 font-display text-xl font-medium text-alignment-accent leading-snug">{prompt.title}</p>
@@ -164,7 +219,7 @@ export default function PracticePage() {
         </div>
       )}
 
-      {!engineActive && enginePending && (
+      {!opened && !engineActive && enginePending && (
         <div className="mt-10 rounded-2xl border border-alignment-primary/20 bg-alignment-primary/[0.06] px-6 py-6">
           <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-primary">Habit Engine</p>
           <p className="mt-3 font-medium text-alignment-accent">Your daily hold is turning on.</p>
@@ -174,7 +229,7 @@ export default function PracticePage() {
         </div>
       )}
 
-      {!engineActive && !enginePending && (
+      {!opened && !engineActive && !enginePending && (
         <div className="mt-10 rounded-2xl border border-alignment-accent/10 bg-alignment-surface px-6 py-6">
           <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-primary">Habit Engine</p>
           <p className="mt-3 font-medium text-alignment-accent">A daily hold, named for you.</p>
@@ -226,6 +281,10 @@ export default function PracticePage() {
       </ol>
 
       <p className="mt-10 text-center text-sm text-alignment-accent/90">
+        <Link to="/plan" className="underline underline-offset-2 hover:text-alignment-accent">
+          My Plan
+        </Link>
+        {' · '}
         <Link to="/dashboard" className="underline underline-offset-2 hover:text-alignment-accent">
           Record and map
         </Link>

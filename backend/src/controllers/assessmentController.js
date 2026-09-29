@@ -11,31 +11,58 @@ const {
   computeAssessmentFromResponses,
   saveAssessmentForUser,
 } = require('../services/persistAssessment');
+const { applyDomainInsight } = require('../services/domainInsight');
+const { ensureActiveHabits, loadCurrentActive } = require('../services/habitAssignment');
 
 function reportFromComputed(computed) {
   const { aqScore, pillarScores, primaryDomain, alignmentTypeTitle, alignmentTypeSubtitle } = computed;
-  return {
-    score: aqScore,
-    label: buildAlignmentLabel(aqScore),
-    alignmentTypeTitle,
-    alignmentTypeSubtitle,
-    primaryStrainLabel: primaryDomain ? DOMAIN_LABELS[primaryDomain] : null,
-    primaryStrainDescription: 'Your primary structural gap — where habit installation begins.',
-    pillarScores,
-  };
+  return applyDomainInsight(
+    {
+      score: aqScore,
+      label: buildAlignmentLabel(aqScore),
+      alignmentTypeTitle,
+      alignmentTypeSubtitle,
+      primaryStrainLabel: primaryDomain ? DOMAIN_LABELS[primaryDomain] : null,
+      pillarScores,
+      primaryDomain,
+    },
+    null
+  );
 }
 
-function reportFromProfile(profile) {
+function reportFromProfile(profile, practice) {
   const scores = profile.pillarScores && typeof profile.pillarScores === 'object' ? profile.pillarScores : {};
-  return {
-    score: profile.aqScore,
-    label: buildAlignmentLabel(profile.aqScore),
-    alignmentTypeTitle: profile.archetype || 'The Developing Person',
-    alignmentTypeSubtitle: getAlignmentTypeSubtitle(profile.archetype),
-    primaryStrainLabel: profile.primaryDomain ? DOMAIN_LABELS[profile.primaryDomain] : null,
-    primaryStrainDescription: 'Your primary structural gap — where habit installation begins.',
-    pillarScores: scores,
-  };
+  return applyDomainInsight(
+    {
+      score: profile.aqScore,
+      label: buildAlignmentLabel(profile.aqScore),
+      alignmentTypeTitle: profile.archetype || 'The Developing Person',
+      alignmentTypeSubtitle: getAlignmentTypeSubtitle(profile.archetype),
+      primaryStrainLabel: profile.primaryDomain ? DOMAIN_LABELS[profile.primaryDomain] : null,
+      pillarScores: scores,
+      primaryDomain: profile.primaryDomain,
+    },
+    practice
+  );
+}
+
+async function firstPracticeForUser(userId) {
+  try {
+    await ensureActiveHabits(userId);
+    const rows = await loadCurrentActive(userId);
+    const profile = await prisma.alignmentProfile.findUnique({ where: { userId } });
+    const match =
+      rows.find((row) => profile?.primaryDomain && row.habit.pillar === profile.primaryDomain) || rows[0];
+    if (!match) return null;
+    return {
+      id: match.id,
+      title: match.habit.title,
+      description: match.habit.description,
+    };
+  } catch (err) {
+    console.error('Practice lookup for insight failed:', err.message);
+    return null;
+  }
 }
 
 async function persistDiagnosticLead(email, source, pendingReport = null) {
@@ -100,18 +127,21 @@ async function previewAssessment(req, res, next) {
 
     const label = buildAlignmentLabel(aqScore);
     res.set('Cache-Control', 'no-store, no-cache, must-revalidate');
-    res.json({
-      score: aqScore,
-      label,
-      pillarScores,
-      primaryDomain,
-      archetype,
-      alignmentTypeTitle,
-      alignmentTypeSubtitle,
-      primaryStrainLabel: primaryDomain ? DOMAIN_LABELS[primaryDomain] : null,
-      primaryStrainDescription:
-        'Your primary structural gap — where habit installation begins.',
-    });
+    res.json(
+      applyDomainInsight(
+        {
+          score: aqScore,
+          label,
+          pillarScores,
+          primaryDomain,
+          archetype,
+          alignmentTypeTitle,
+          alignmentTypeSubtitle,
+          primaryStrainLabel: primaryDomain ? DOMAIN_LABELS[primaryDomain] : null,
+        },
+        null
+      )
+    );
   } catch (err) {
     if (err instanceof ZodError) {
       return res.status(400).json({ message: 'Invalid data', errors: err.errors });
@@ -181,8 +211,10 @@ async function getLatestResult(req, res, next) {
       if (profile.primaryDomain && DOMAIN_LABELS[profile.primaryDomain]) {
         payload.primaryStrainLabel = DOMAIN_LABELS[profile.primaryDomain];
       }
-      payload.primaryStrainDescription =
-        'Your primary structural gap — where habit installation begins.';
+      const practice = await firstPracticeForUser(userId);
+      const withInsight = applyDomainInsight(payload, practice);
+      payload.primaryStrainDescription = withInsight.primaryStrainDescription;
+      payload.insight = withInsight.insight;
     } else {
       payload.alignmentTypeTitle = 'The Developing Person';
       payload.alignmentTypeSubtitle = getAlignmentTypeSubtitle('The Developing Person');
@@ -263,7 +295,7 @@ async function emailAssessmentReport(req, res, next) {
       if (!profile) {
         return res.status(404).json({ message: 'Complete an assessment first.' });
       }
-      report = reportFromProfile(profile);
+      report = reportFromProfile(profile, await firstPracticeForUser(req.user.sub));
     } else {
       return res.status(400).json({
         message: 'Include your diagnostic answers, or sign in after saving a score.',

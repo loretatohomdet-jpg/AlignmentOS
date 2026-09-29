@@ -14,6 +14,7 @@ import DiagnosticResultsSummary from '../components/DiagnosticResultsSummary';
 import { diag, resultsUi } from '../constants/diagnosticTheme';
 import { API_BASE } from '../config/apiBase';
 import { FRESH_RESULT_KEY } from '../config/productLoop';
+import { insightFromResult } from '../config/domainInsight';
 import { creatorHandoffUrl } from '../config/externalLinks';
 
 const REQUEST_TIMEOUT_MS = 15000;
@@ -166,6 +167,7 @@ export default function ResultsPage() {
               alignmentTypeSubtitle={result.alignmentTypeSubtitle}
               primaryStrainLabel={result.primaryStrainLabel}
               primaryStrainDescription={result.primaryStrainDescription}
+              insight={insightFromResult(result, habits[0])}
               pillarScores={result.pillarScores}
               lockBreakdownUntilEmail={lockResultsUntilEmail}
               onEmailUnlock={clearFreshFlow}
@@ -176,23 +178,24 @@ export default function ResultsPage() {
                 <div className="rounded-xl border border-alignment-primary/20 bg-alignment-primary/[0.06] px-6 py-6 sm:px-8 sm:py-7 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                   <div>
                     <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-primary">Next</p>
-                    <p className="mt-2 font-medium text-alignment-accent">Hold today’s practice</p>
+                    <p className="mt-2 font-medium text-alignment-accent">
+                      {habits[0]?.title || 'Your practice is ready'}
+                    </p>
                     <p className="mt-1 text-sm text-alignment-accent/90 leading-relaxed">
-                      Three practices from your lowest domain. Mark one done.
+                      {habits[0]?.description || 'One practice from your lowest domain. It is already open.'}
                     </p>
                   </div>
-                  <Link to="/practice" className={`shrink-0 inline-flex ${resultsUi.btnPrimary} px-8 py-3`}>
-                    Open Practice →
+                  <Link to="/plan" className={`shrink-0 inline-flex ${resultsUi.btnPrimary} px-8 py-3`}>
+                    Open My Plan →
                   </Link>
                 </div>
 
                 {/* Row 1: three columns (lg+) */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-6 xl:gap-8 lg:items-stretch">
                   <section className={`${resultsUi.panel} flex flex-col h-full min-h-0`}>
-                    <p className={resultsUi.label}>Your three structural habits</p>
+                    <p className={resultsUi.label}>Start with the first</p>
                     <p className="mt-3 text-sm text-alignment-accent/90 leading-relaxed">
-                      These three habits are drawn from your primary gap domain. Begin with one. Hold it for 21 days. Then add
-                      the second.
+                      The first practice is the one to hold. The other two wait until that one is familiar.
                     </p>
                     <ul className="mt-6 space-y-4 flex-1">
                       {habits.length === 0 ? (
@@ -200,8 +203,13 @@ export default function ResultsPage() {
                           Finish the diagnostic while signed in to install three practices.
                         </li>
                       ) : (
-                        habits.slice(0, 3).map((h) => (
+                        habits.slice(0, 3).map((h, index) => (
                           <li key={h.id} className="border border-alignment-accent/[0.08] rounded-lg px-4 py-3 bg-alignment-surface">
+                            {index === 0 && (
+                              <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-alignment-primary mb-1">
+                                Begin here
+                              </p>
+                            )}
                             <span className="font-medium text-alignment-accent">{h.title}</span>
                             {h.description && <p className="mt-1 text-sm text-alignment-accent/90">{h.description}</p>}
                           </li>
@@ -371,8 +379,8 @@ export default function ResultsPage() {
                     <p className="mt-4 text-sm text-alignment-accent/90 leading-relaxed flex-1">
                       The day is held in Practice. The record — score and map — lives on the Dashboard.
                     </p>
-                    <Link to="/practice" className={`mt-6 inline-flex ${resultsUi.btnOutline} px-8 py-3 self-start`}>
-                      Open Practice
+                    <Link to="/plan" className={`mt-6 inline-flex ${resultsUi.btnOutline} px-8 py-3 self-start`}>
+                      Open My Plan
                     </Link>
                   </section>
 
@@ -395,10 +403,10 @@ export default function ResultsPage() {
                       </a>
                     ) : (
                       <Link
-                        to="/cohort"
+                        to="/founding-circle"
                         className={`mt-6 inline-flex ${resultsUi.btnOutline} px-8 py-3 self-start`}
                       >
-                        Explore the cohort →
+                        Apply for the Founding Circle →
                       </Link>
                     )}
                   </section>

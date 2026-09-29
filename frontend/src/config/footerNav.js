@@ -24,6 +24,6 @@ export const siteSecondaryFooter = [
   ...siteLegalLinks,
 ];
 
-export const siteFooterTagline = 'Know what matters. Know what to do next.';
+export const siteFooterTagline = 'See what is off. Start one practice.';
 export const siteFooterCopyright = '© Alignment OS';
 export const siteContactEmail = 'hello@alignmentos.co';

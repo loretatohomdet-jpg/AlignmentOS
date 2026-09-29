@@ -45,7 +45,7 @@ function domainScoresToDisplayPct(pillarScores, key) {
 function buildAssessmentReportHtml(report) {
   const score = Math.round(Math.min(100, Math.max(0, Number(report.score) || 0)));
   const origin = appOrigin();
-  const continueUrl = `${origin}/signup?returnTo=/snapshot`;
+  const continueUrl = `${origin}/signup?returnTo=${encodeURIComponent('/plan')}`;
   const rows = DOMAIN_ORDER.map((key) => {
     if (report.pillarScores?.[key] == null) return '';
     const pct = domainScoresToDisplayPct(report.pillarScores, key);
@@ -70,17 +70,25 @@ function buildAssessmentReportHtml(report) {
         <p style="margin:0 0 24px;font-size:15px;line-height:1.5;color:#5a5c54;">${escapeHtml(report.alignmentTypeSubtitle || '')}</p>
         <p style="margin:0 0 6px;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#6E7158;">Primary strain</p>
         <p style="margin:0 0 8px;font-size:20px;font-weight:500;">${escapeHtml(report.primaryStrainLabel || '—')}</p>
-        <p style="margin:0 0 28px;font-size:15px;line-height:1.5;color:#5a5c54;">${escapeHtml(
+        <p style="margin:0 0 12px;font-size:15px;line-height:1.5;color:#5a5c54;">${escapeHtml(
           report.primaryStrainDescription || 'Your primary structural gap — where habit installation begins.'
         )}</p>
+        ${
+          report.insight?.why
+            ? `<p style="margin:0 0 28px;font-size:15px;line-height:1.5;color:#5a5c54;">${escapeHtml(report.insight.why)}</p>`
+            : ''
+        }
         <p style="margin:0 0 8px;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#6E7158;">Six domains</p>
         <table style="width:100%;border-collapse:collapse;">${rows}</table>
         <div style="margin:32px 0 0;padding:24px;border:1px solid #E7E4DC;border-radius:16px;">
-          <p style="margin:0 0 6px;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#6E7158;">Next step</p>
-          <p style="margin:0 0 10px;font-size:22px;font-weight:500;line-height:1.25;">Keep what you discovered</p>
-          <p style="margin:0 0 20px;font-size:15px;line-height:1.55;color:#5a5c54;">
-            Create a free account to save this snapshot. Alignment OS is where you do something with what the diagnostic named.
-          </p>
+          <p style="margin:0 0 6px;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#6E7158;">Your practice</p>
+          <p style="margin:0 0 10px;font-size:22px;font-weight:500;line-height:1.25;">${escapeHtml(
+            report.insight?.practice?.title || 'Keep what you discovered'
+          )}</p>
+          <p style="margin:0 0 20px;font-size:15px;line-height:1.55;color:#5a5c54;">${escapeHtml(
+            report.insight?.practice?.description ||
+              'Create a free account to save this snapshot. Alignment OS starts the one practice the diagnostic named.'
+          )}</p>
           <table role="presentation" cellspacing="0" cellpadding="0" border="0">
             <tr>
               <td style="border-radius:999px;background:#6E7158;">

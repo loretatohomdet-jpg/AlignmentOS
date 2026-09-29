@@ -14,7 +14,22 @@ async function create(req, res, next) {
 
     let lead = null;
     try {
-      lead = await prisma.lead.create({ data: { email, source } });
+      const pendingReport =
+        data.name || data.note || data.season
+          ? {
+              kind: source,
+              name: data.name || null,
+              season: data.season || null,
+              note: data.note || null,
+            }
+          : undefined;
+      lead = await prisma.lead.create({
+        data: {
+          email,
+          source,
+          ...(pendingReport ? { pendingReport } : {}),
+        },
+      });
     } catch (dbErr) {
       console.error('Lead DB save failed:', dbErr.message);
     }

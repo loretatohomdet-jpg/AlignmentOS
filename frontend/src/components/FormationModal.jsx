@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { formationExploreUrl } from '../config/externalLinks';
+import { formationTeachableUrl } from '../config/externalLinks';
 
 const DISMISS_KEY = 'formationModalDismissedAt';
 const DISMISS_DAYS = 7;
@@ -29,20 +29,18 @@ export default function FormationModal({ show, onClose, aqScore, daysWithHabits 
         </h2>
         <p className="mt-3 text-alignment-accent/90 leading-relaxed">
           {daysWithHabits >= 14
-            ? "You've been building alignment for 14+ days. Explore the Simplicity & Productivity Formation program for guided transformation and deeper practice."
-            : "Your alignment could use deeper support. The Simplicity & Productivity Formation program offers guided transformation to close the gap."}
-        </p>
-        <p className="mt-4 text-xs text-alignment-accent/75 leading-relaxed">
-          Partner programme — separate from your Alignment OS subscription; for deeper 1:1 and cohort formation support.
+            ? 'You’ve been building alignment for 14+ days. Formation on Teachable is ready when you want to go deeper.'
+            : 'Your alignment could use deeper support. Formation on Teachable holds the tracks and lessons.'}
         </p>
         <div className="mt-6 flex flex-col sm:flex-row gap-3">
           <a
-            href={formationExploreUrl()}
+            href={formationTeachableUrl()}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={handleDismiss}
             className="rounded-full bg-alignment-primary text-white px-5 py-2.5 text-sm font-medium hover:bg-alignment-primary/90 text-center"
           >
-            Go to Simplicity & Productivity
+            Open Formation on Teachable
           </a>
           <button
             type="button"

@@ -3,6 +3,7 @@
  * Used when POST /api/assessment/preview is unavailable (404 / old API).
  */
 import { DOMAIN_LABELS } from '../constants/domains';
+import { buildDomainInsight } from '../config/domainInsight';
 
 const SCORE_PILLARS = ['IDENTITY', 'PURPOSE', 'MINDSET', 'HABITS', 'ENVIRONMENT', 'EXECUTION'];
 
@@ -127,6 +128,7 @@ export function buildGuestPreviewPayload(questions, answers) {
   const computed = computeAQ(responses, questionMeta);
   const { aqScore, pillarScores, primaryDomain, alignmentTypeTitle, alignmentTypeSubtitle } = computed;
 
+  const insight = buildDomainInsight(primaryDomain, null);
   return {
     score: aqScore,
     label: buildAlignmentLabel(aqScore),
@@ -136,6 +138,7 @@ export function buildGuestPreviewPayload(questions, answers) {
     alignmentTypeTitle,
     alignmentTypeSubtitle,
     primaryStrainLabel: primaryDomain ? DOMAIN_LABELS[primaryDomain] : null,
-    primaryStrainDescription: 'Your primary structural gap — where habit installation begins.',
+    primaryStrainDescription: insight?.thin || '',
+    insight,
   };
 }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { API_BASE } from '../config/apiBase';
-import { mergeHomeSections } from '../config/homeCopy';
+import { HOME_COPY_DEFAULTS, mergeHomeSections } from '../config/homeCopy';
 
 export function useSitePage(path) {
   const [page, setPage] = useState(null);
@@ -50,17 +50,53 @@ export function pageCopy(cms, defaults) {
   };
 }
 
+const HERO_DEFAULTS = {
+  headline: 'Know what matters. Make room for it.',
+  subhead: 'See where your life is holding, where it is thin, and what deserves your attention now.',
+  body: 'Free · 12 minutes · No account',
+  ctaLabel: 'Take the Assessment',
+  ctaHref: '/assessment',
+};
+
+/** Previous shipped homepage lines. An Admin save of these should still pick up the new path. */
+const STALE_HOME_COPY = {
+  headline: [
+    'Know what matters. Know what to do next.',
+    'See which part of your life is off, and start one practice for it.',
+  ],
+  subhead: ['A system for becoming whole.', 'You do not have to turn a score into a plan.'],
+  body: [
+    'Six domains. One Alignment Score. A clearer path forward.',
+    'The assessment names the thin place. Alignment OS starts the practice.',
+  ],
+  ctaLabel: ['Take the free assessment'],
+  quote: ['You need structure beneath the effort — not more effort.'],
+  stepsHeading: ['Four steps. One system.'],
+  step1: ['Diagnostic'],
+  step2: ['Identity anchors'],
+  step3: ['Habit engine'],
+  step4: ['Weekly review'],
+};
+
+function replaceStale(value, key, fallback) {
+  if (typeof value !== 'string' || !value.trim()) return fallback;
+  const stale = STALE_HOME_COPY[key];
+  const list = Array.isArray(stale) ? stale : stale ? [stale] : [];
+  if (list.includes(value.trim())) return fallback;
+  return value.trim();
+}
+
 /** Hero fields + every other homepage interface string. */
 export function homePageCopy(cms) {
-  const hero = pageCopy(cms, {
-    headline: 'Know what matters. Know what to do next.',
-    subhead: 'A system for becoming whole.',
-    body: 'Six domains. One Alignment Score. A clearer path forward.',
-    ctaLabel: 'Take the free assessment',
-    ctaHref: '/assessment',
-  });
+  const hero = pageCopy(cms, HERO_DEFAULTS);
   const sections = wasEditedInAdmin(cms) ? mergeHomeSections(cms?.sections) : mergeHomeSections(null);
-  return { ...hero, ...sections };
+  const merged = { ...hero, ...sections };
+  for (const key of Object.keys(STALE_HOME_COPY)) {
+    if (!(key in merged)) continue;
+    const fallback = HERO_DEFAULTS[key] ?? HOME_COPY_DEFAULTS[key];
+    merged[key] = replaceStale(merged[key], key, fallback);
+  }
+  return merged;
 }
 
 export function useShopCatalog() {

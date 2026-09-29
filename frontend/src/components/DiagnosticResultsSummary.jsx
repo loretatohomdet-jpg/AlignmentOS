@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { DOMAIN_ORDER, DOMAIN_LABELS } from '../constants/domains';
@@ -9,12 +9,10 @@ import { API_BASE } from '../config/apiBase';
 import { pillPrimary } from './HomeMarketingChrome';
 
 const DEFAULT_SCORE_REVEALS =
-  'Your score is a composite across Identity, Purpose, Mindset, Habits, Environment, and Execution. It reflects how aligned your interior structure is today — not moral worth. The lowest domain is your primary strain: where habit installation begins first.';
-
-const ANCHOR_STORAGE = 'alignment_os_identity_anchors';
+  'The lowest domain is the thin place. The practice below is already chosen for it.';
 
 /**
- * Results: score → type & strain → meaning → email gate → six domains → identity anchors.
+ * Results: score → thin place → why → one practice already started.
  * Palette: alignment foundation / surface / accent (site-wide).
  */
 export default function DiagnosticResultsSummary({
@@ -25,6 +23,7 @@ export default function DiagnosticResultsSummary({
   primaryStrainDescription = 'Your primary structural gap — where habit installation begins.',
   whatThisMeans,
   whatScoreReveals = DEFAULT_SCORE_REVEALS,
+  insight = null,
   pillarScores,
   lockBreakdownUntilEmail = false,
   onEmailUnlock,
@@ -34,20 +33,13 @@ export default function DiagnosticResultsSummary({
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const [emailed, setEmailed] = useState(false);
-  const [anchors, setAnchors] = useState({ a1: '', a2: '', a3: '' });
-  const [anchorsSaved, setAnchorsSaved] = useState(false);
-
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem(ANCHOR_STORAGE);
-      if (raw) setAnchors((s) => ({ ...s, ...JSON.parse(raw) }));
-    } catch (_) {}
-  }, []);
 
   const n = Number(score);
   const hasScore = score != null && Number.isFinite(n);
   const displayPct = hasScore ? Math.round(Math.max(0, Math.min(100, n))) : null;
-  const meaningBody = whatThisMeans ?? primaryStrainDescription;
+  const meaningBody = whatThisMeans ?? insight?.thin ?? primaryStrainDescription;
+  const whyBody = insight?.why || whatScoreReveals;
+  const practice = insight?.practice;
 
   const showExtended = !lockBreakdownUntilEmail || unlocked;
   const showEmailGate = lockBreakdownUntilEmail && !unlocked && pillarScores;
@@ -80,14 +72,6 @@ export default function DiagnosticResultsSummary({
     }
   };
 
-  const saveAnchors = () => {
-    try {
-      localStorage.setItem(ANCHOR_STORAGE, JSON.stringify(anchors));
-      setAnchorsSaved(true);
-      setTimeout(() => setAnchorsSaved(false), 2500);
-    } catch (_) {}
-  };
-
   return (
     <div className="w-full">
       <div className="text-center pt-2 pb-2 max-w-xl mx-auto">
@@ -118,7 +102,7 @@ export default function DiagnosticResultsSummary({
 
         <div className={`${resultsUi.panel} h-full`}>
           <p className={resultsUi.label}>What the score reveals</p>
-          <p className="mt-4 text-sm text-alignment-accent/90 leading-relaxed">{whatScoreReveals?.trim() ? whatScoreReveals : '—'}</p>
+          <p className="mt-4 text-sm text-alignment-accent/90 leading-relaxed">{whyBody?.trim() ? whyBody : '—'}</p>
         </div>
       </div>
 
@@ -198,37 +182,28 @@ export default function DiagnosticResultsSummary({
             </div>
           </div>
 
-          <div className={`${resultsUi.panel} h-full`}>
-            <p className={resultsUi.label}>Identity Anchors</p>
+          <div className={`${resultsUi.panel} h-full flex flex-col`}>
+            <p className={resultsUi.label}>Your practice</p>
             <p className="mt-3 text-sm text-alignment-accent/90 leading-relaxed">
-              Three statements about who you are becoming. Saved here on Results.
+              Chosen from {primaryStrainLabel || 'your lowest domain'}. It is already started.
             </p>
-            <div className="mt-6 space-y-3">
-              <input
-                type="text"
-                value={anchors.a1}
-                onChange={(e) => setAnchors((s) => ({ ...s, a1: e.target.value }))}
-                placeholder="I am a…"
-                className={resultsUi.input}
-              />
-              <input
-                type="text"
-                value={anchors.a2}
-                onChange={(e) => setAnchors((s) => ({ ...s, a2: e.target.value }))}
-                placeholder="I am someone who…"
-                className={resultsUi.input}
-              />
-              <input
-                type="text"
-                value={anchors.a3}
-                onChange={(e) => setAnchors((s) => ({ ...s, a3: e.target.value }))}
-                placeholder="I am becoming…"
-                className={resultsUi.input}
-              />
-            </div>
-            <button type="button" onClick={saveAnchors} className={`mt-6 ${resultsUi.btnPrimary}`}>
-              {anchorsSaved ? 'Saved' : 'Save Anchors →'}
-            </button>
+            {practice?.title ? (
+              <>
+                <p className="mt-6 font-display text-xl font-medium text-alignment-accent leading-snug">{practice.title}</p>
+                {practice.description ? (
+                  <p className="mt-3 text-sm text-alignment-accent/90 leading-relaxed flex-1">{practice.description}</p>
+                ) : (
+                  <div className="flex-1" />
+                )}
+              </>
+            ) : (
+              <p className="mt-6 text-sm text-alignment-accent/90 leading-relaxed flex-1">
+                Finish the assessment while signed in and this practice is installed for you.
+              </p>
+            )}
+            <Link to="/plan" className={`${pillPrimary} mt-6 self-start`}>
+              Open My Plan →
+            </Link>
           </div>
         </div>
       )}
@@ -236,12 +211,16 @@ export default function DiagnosticResultsSummary({
       {showExtended && lockBreakdownUntilEmail && (
         <div className={`${resultsUi.panel} mt-8 text-center`}>
           <p className={resultsUi.label}>Next step</p>
-          <p className="mt-4 font-display text-xl sm:text-2xl font-medium text-alignment-accent">Keep what you discovered</p>
-          <p className="mt-3 text-sm text-alignment-accent/90 leading-relaxed">
-            Continue into Alignment OS. The snapshot is waiting.
+          <p className="mt-4 font-display text-xl sm:text-2xl font-medium text-alignment-accent">
+            {practice?.title || 'Your practice is ready'}
           </p>
-          <Link to="/snapshot" className={`${pillPrimary} mt-6`}>
-            Open your snapshot →
+          <p className="mt-3 text-sm text-alignment-accent/90 leading-relaxed">
+            {practice?.title
+              ? `My Plan holds this focus. ${practice.title} is waiting in Daily.`
+              : 'Open My Plan — the focus and practice are already started.'}
+          </p>
+          <Link to="/plan" className={`${pillPrimary} mt-6`}>
+            Open My Plan →
           </Link>
         </div>
       )}

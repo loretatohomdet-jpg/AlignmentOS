@@ -9,40 +9,40 @@ function stepsFor({ hasScore }) {
       {
         n: '01',
         title: 'Take the diagnostic',
-        body: 'Twelve minutes. This fills your map and names three practices.',
+        body: 'Twelve minutes. It names the thin place and starts one practice.',
         to: '/assessment',
       },
       {
         n: '02',
-        title: 'Open Practice',
-        body: 'Three rooms: morning, midday, close. What you write is saved.',
-        to: '/practice',
+        title: 'Open My Plan',
+        body: 'Primary focus and this week’s practices — drawn from the assessment.',
+        to: '/plan',
       },
       {
         n: '03',
         title: 'See your map',
         body: 'It fills from the diagnostic. Score and history stay on Dashboard.',
-        to: '/dashboard',
+        to: '/alignment-map',
       },
     ];
   }
   return [
     {
       n: '01',
-      title: 'Open Practice',
-      body: 'Three rooms. Do them in order. What you write is saved.',
-      to: '/practice',
+      title: 'Open My Plan',
+      body: 'Your focus and this week’s practices are already named.',
+      to: '/plan',
     },
     {
       n: '02',
-      title: 'See your results',
-      body: 'Score and map live on the Dashboard — one record, not a separate menu.',
-      to: '/dashboard',
+      title: 'Hold the day',
+      body: 'Daily carries the practice. Mark it when it happens.',
+      to: '/practice#assigned-practice',
     },
     {
       n: '03',
-      title: 'Review when you need a line',
-      body: 'A small library. Not the day, and not the record.',
+      title: 'Weekly review',
+      body: 'Reflect. Adjust. Keep going.',
       to: '/reflect',
     },
   ];
@@ -73,13 +73,13 @@ export default function DashboardWelcomeModal({ open, onDismiss, hasScore = fals
       aria-labelledby="dashboard-welcome-title"
     >
       <div className="relative w-full max-w-lg rounded-2xl border border-alignment-accent/12 bg-alignment-foundation shadow-apple-lg px-6 py-8 sm:px-10 sm:py-10 animate-fade-in">
-        <p className={type.kicker}>Two places, every day</p>
+        <p className={type.kicker}>One path</p>
 
         <h2 id="dashboard-welcome-title" className={`mt-6 ${type.h2}`}>
           {hasHabits ? 'Your practices are installed.' : hasScore ? 'Your score is in.' : 'Here is the loop.'}
         </h2>
         <p className="mt-3 font-display text-[1.35rem] sm:text-[1.5rem] font-medium text-alignment-primary leading-snug">
-          Practice holds the day. This page holds the record.
+          The assessment names the thin place. The practice is already started.
         </p>
 
         <div className="mt-10 border-t border-alignment-accent/10">

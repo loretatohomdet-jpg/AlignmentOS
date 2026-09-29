@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_BASE } from '../config/apiBase';
-import { FRESH_RESULT_KEY, OS_OFFERS, markSnapshotContinued } from '../config/productLoop';
+import { FRESH_RESULT_KEY, markSnapshotContinued } from '../config/productLoop';
+import { insightFromResult } from '../config/domainInsight';
 import { type } from '../config/siteType';
 import { pillPrimary } from '../components/HomeMarketingChrome';
 import { usePageTitle } from '../hooks/usePageTitle';
@@ -73,8 +74,10 @@ export default function SnapshotPage() {
       ? Math.round(Math.max(0, Math.min(100, Number(result.score))))
       : null;
   const strain = result?.primaryStrainLabel || null;
-  const attention = (result?.primaryStrainDescription || '').trim();
+  const insight = insightFromResult(result);
+  const attention = (insight?.thin || result?.primaryStrainDescription || '').trim();
   const typeTitle = result?.alignmentTypeTitle || null;
+  const practice = insight?.practice;
 
   const continueIntoOs = () => {
     markSnapshotContinued();
@@ -128,39 +131,29 @@ export default function SnapshotPage() {
       </div>
 
       <section className="mt-14 border-t border-alignment-accent/[0.08] pt-10">
-        <h2 className={type.h2}>Here is what may deserve your attention now.</h2>
+        <h2 className={type.h2}>This is the thin place.</h2>
         <p className={`mt-4 ${type.body}`}>
           {attention
             ? attention
             : strain
-              ? `${strain} is the thin place in this snapshot. That is where the work begins — not everywhere at once.`
-              : 'The lowest domain is the thin place. That is where the work begins — not everywhere at once.'}
+              ? `${strain} is the thin place. The practice starts there.`
+              : 'The lowest domain is the thin place. The practice starts there.'}
         </p>
+        {insight?.why ? <p className={`mt-4 ${type.body}`}>{insight.why}</p> : null}
       </section>
 
       <section className="mt-14 border-t border-alignment-accent/[0.08] pt-10">
-        <h2 className={type.h2}>This is where the Assessment ends.</h2>
+        <p className={type.kicker}>Your plan</p>
+        <h2 className={`mt-4 ${type.h2}`}>{practice?.title || 'One focus, already chosen'}</h2>
         <p className={`mt-4 ${type.body}`}>
-          Alignment OS helps you do something with what you discovered.
+          {practice?.description ||
+            'My Plan holds the focus from this snapshot. Daily carries the practice. You do not set it up yourself.'}
         </p>
-        <ol className="mt-8 space-y-5">
-          {OS_OFFERS.map((offer, i) => (
-            <li key={offer.label} className="flex gap-4">
-              <span className="shrink-0 w-8 pt-0.5 text-sm font-medium tabular-nums text-alignment-primary">
-                {String(i + 1).padStart(2, '0')}
-              </span>
-              <div>
-                <p className="text-sm font-medium text-alignment-accent">{offer.label}</p>
-                <p className="mt-0.5 text-sm text-alignment-accent/90 leading-relaxed">{offer.body}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
       </section>
 
       <div className="mt-12 flex justify-center">
-        <Link to="/dashboard" onClick={continueIntoOs} className={pillPrimary}>
-          Continue into Alignment OS
+        <Link to="/plan" onClick={continueIntoOs} className={pillPrimary}>
+          Open My Plan
         </Link>
       </div>
     </div>

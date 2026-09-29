@@ -1,6 +1,7 @@
 const { prisma } = require('../prismaClient');
 const { computeAQ } = require('./aqScore');
 const { syncActiveHabits } = require('./habitAssignment');
+const { applyDomainInsight } = require('./domainInsight');
 
 const DOMAIN_LABELS = {
   IDENTITY: 'Identity',
@@ -143,20 +144,26 @@ async function saveAssessmentForUser(userId, assessmentId, responses) {
     console.error('Habit assignment failed:', assignErr.message);
   }
 
-  return {
-    score: aqScore,
-    label: buildAlignmentLabel(aqScore),
-    createdAt: scoreRecord.createdAt,
-    pillarScores,
-    primaryDomain,
-    archetype,
-    profileId: profile.id,
-    alignmentTypeTitle,
-    alignmentTypeSubtitle,
-    primaryStrainLabel: primaryDomain ? DOMAIN_LABELS[primaryDomain] : null,
-    primaryStrainDescription: 'Your primary structural gap — where habit installation begins.',
-    habits,
-  };
+  const firstPractice = habits[0]
+    ? { id: habits[0].id, title: habits[0].title, description: habits[0].description }
+    : null;
+
+  return applyDomainInsight(
+    {
+      score: aqScore,
+      label: buildAlignmentLabel(aqScore),
+      createdAt: scoreRecord.createdAt,
+      pillarScores,
+      primaryDomain,
+      archetype,
+      profileId: profile.id,
+      alignmentTypeTitle,
+      alignmentTypeSubtitle,
+      primaryStrainLabel: primaryDomain ? DOMAIN_LABELS[primaryDomain] : null,
+      habits,
+    },
+    firstPractice
+  );
 }
 
 async function claimGuestDiagnostic(userId, email) {
