@@ -27,6 +27,7 @@ export function useSitePage(path) {
 }
 
 function wasEditedInAdmin(cms) {
+  if (cms?.sections && typeof cms.sections === 'object' && cms.sections.cmsEdited) return true;
   if (!cms?.createdAt || !cms?.updatedAt) return false;
   return new Date(cms.updatedAt) - new Date(cms.createdAt) > 2000;
 }

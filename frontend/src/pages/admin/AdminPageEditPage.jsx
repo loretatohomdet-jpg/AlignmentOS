@@ -121,18 +121,25 @@ export default function AdminPageEditPage() {
     try {
       const { isSystem, sections, ...rest } = form;
       const config = sectionConfigForPath(form.path);
-      const payload = config
-        ? {
-            ...rest,
-            sections: Object.fromEntries(
-              Object.entries(sections || {}).map(([key, value]) => [key, String(value ?? '').trim()])
-            ),
-          }
-        : rest;
+      let payload = rest;
+      if (config) {
+        const known = Object.keys(config.defaults);
+        const next = {};
+        for (const key of known) {
+          next[key] = String(sections?.[key] ?? '').trim();
+        }
+        next.cmsEdited = new Date().toISOString();
+        payload = { ...rest, sections: next };
+      }
       await axios.patch(`${API_BASE}/admin/pages/${pageId}`, payload, { headers: adminHeaders() });
       setSaved(true);
     } catch (err) {
-      setError(apiError(err, 'Could not save page'));
+      const status = err.response?.status;
+      if (status === 413) {
+        setError('Save too large — remove a freshly uploaded photo or use a smaller image, then try again.');
+      } else {
+        setError(apiError(err, 'Could not save page'));
+      }
     } finally {
       setSaving(false);
     }
@@ -190,7 +197,8 @@ export default function AdminPageEditPage() {
       {error ? <p className="mt-4 rounded-2xl bg-white px-4 py-3 text-sm text-[#C45C4A]">{error}</p> : null}
       {saved ? (
         <p className="mt-4 rounded-2xl bg-white px-4 py-3 text-sm text-[#3A635C]">
-          Saved. The live page will show this content.
+          Saved. Open <strong>View live</strong>, then hard-refresh the page (Cmd+Shift+R) if you still see the old
+          version.
         </p>
       ) : null}
 
