@@ -151,7 +151,7 @@ export function HomeFooter() {
 /** Same footer as the homepage. Footer copy is editable on Admin → Home → Site footer. */
 export function SitePageFooter({ extra = null }) {
   const linkRow =
-    'flex flex-wrap items-center gap-y-2 min-w-0 text-[9px] sm:text-[10px] font-normal uppercase tracking-[0.14em]';
+    'flex flex-nowrap items-center text-[9px] sm:text-[10px] font-normal uppercase tracking-[0.14em]';
   const footer = siteFooterCopy(useSitePage('/'));
   const tagline = footer.tagline || siteFooterTagline;
   const copyright = footer.copyright || siteFooterCopyright;
@@ -159,20 +159,22 @@ export function SitePageFooter({ extra = null }) {
   return (
     <footer className="w-full min-w-0 max-w-full overflow-x-hidden border-t border-alignment-accent/[0.08] bg-alignment-surfaceSoft/95 backdrop-blur-[2px] pb-[max(1rem,env(safe-area-inset-bottom))] mt-auto">
       <div className="w-full min-w-0 max-w-6xl xl:max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 py-10 sm:py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 md:items-start">
-          <div className="max-w-md">
+        <div className="flex flex-col gap-8 xl:flex-row xl:items-start xl:justify-between xl:gap-12">
+          <div className="max-w-md shrink-0">
             <BrandLogo iconHeightPx={44} />
             <p className={`mt-4 ${type.body}`}>{tagline}</p>
           </div>
-          <div className="min-w-0 md:flex md:flex-col md:items-end">
-            <SiteMarketingFooterNav className={`${linkRow} md:justify-end`} />
-            <SiteLegalFooterNav className={`${linkRow} mt-4 md:justify-end`} />
+          <div className="min-w-0 overflow-x-auto xl:flex xl:justify-end xl:pt-3">
+            <SiteMarketingFooterNav className={linkRow} />
           </div>
         </div>
-        <p className={`mt-10 pt-8 border-t border-alignment-accent/[0.06] ${type.muted}`}>
-          {copyright}
-          {extra ? <span className="ml-4 inline-flex align-middle">{extra}</span> : null}
-        </p>
+        <div className="mt-10 pt-8 border-t border-alignment-accent/[0.06] flex flex-nowrap items-center justify-between gap-x-4">
+          <p className={`min-w-0 ${type.muted}`}>{copyright}</p>
+          <div className="flex shrink-0 items-center gap-4">
+            <SiteLegalFooterNav className={linkRow} />
+            {extra}
+          </div>
+        </div>
       </div>
     </footer>
   );

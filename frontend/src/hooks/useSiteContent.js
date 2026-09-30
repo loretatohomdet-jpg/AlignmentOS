@@ -137,7 +137,7 @@ export function mergeProduct(base, offers) {
   if (!row) return base;
   return {
     ...base,
-    title: row.name || base.title,
+    title: base.sku === 'alignment-reset' && row.name === 'Reset' ? base.title : row.name || base.title,
     name: row.name || base.name,
     kicker: row.kicker || base.kicker,
     tagline: row.tagline || base.tagline,

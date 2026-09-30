@@ -55,10 +55,10 @@ const SITE_PAGES = [
   {
     slug: 'reset-product',
     path: '/shop/reset',
-    title: 'Reset',
+    title: 'Daily',
     pageGroup: 'shop',
     eyebrow: 'Fresh start',
-    headline: 'Reset',
+    headline: 'Daily',
     subhead: 'A fresh start for what matters.',
     body: 'A short guided reset for stepping back, clearing what no longer belongs, and deciding what matters next.',
     ctaLabel: 'Choose Digital',
@@ -428,7 +428,7 @@ const SHOP_OFFERS = [
   },
   {
     sku: 'alignment-reset',
-    name: 'Reset',
+    name: 'Daily',
     path: '/shop/reset',
     kicker: 'Fresh start',
     tagline: 'A fresh start for what matters.',

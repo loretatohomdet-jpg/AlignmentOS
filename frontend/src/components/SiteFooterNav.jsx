@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { siteLegalLinks, siteMarketingFooter, siteSecondaryFooter } from '../config/footerNav';
 
 const linkClass =
-  'hover:text-alignment-accent transition-colors duration-200 whitespace-normal break-words focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2 rounded-sm';
+  'hover:text-alignment-accent transition-colors duration-200 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alignment-primary focus-visible:ring-offset-2 rounded-sm';
 
 function FooterItem({ item }) {
   const className = `${linkClass} text-alignment-accent/65`;
@@ -28,7 +28,7 @@ function FooterLinkRow({ links, className, ariaLabel }) {
   return (
     <nav className={className} aria-label={ariaLabel}>
       {links.map((item, index) => (
-        <span key={`${item.to || item.href}-${item.label}`} className="inline-flex items-center">
+        <span key={`${item.to || item.href}-${item.label}`} className="inline-flex shrink-0 items-center">
           {index > 0 ? (
             <span aria-hidden className="mx-2.5 sm:mx-3 text-alignment-accent/35">
               ·

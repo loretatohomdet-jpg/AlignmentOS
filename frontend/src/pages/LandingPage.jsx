@@ -93,9 +93,9 @@ export default function LandingPage() {
 
       <main id="main-content" className="flex-1 w-full scroll-mt-16" tabIndex={-1}>
         <section className="relative w-full overflow-hidden bg-[#FBFAF8]">
-          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,34rem)_minmax(0,1fr)] xl:grid-cols-[minmax(0,38rem)_minmax(0,1fr)] lg:min-h-[min(78vh,42rem)]">
-            <div className="relative z-10 flex flex-col justify-center px-5 sm:px-8 lg:px-10 xl:px-12 py-14 sm:py-16 lg:py-20 order-2 lg:order-1 bg-[#FBFAF8]">
-              <div className="max-w-md">
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.45fr)_minmax(0,0.75fr)] lg:min-h-[min(78vh,42rem)]">
+            <div className="relative z-10 flex flex-col justify-center px-5 sm:px-8 lg:px-12 xl:px-16 py-14 sm:py-16 lg:py-20 order-2 lg:order-1 bg-[#FBFAF8]">
+              <div className="max-w-xl">
                 <h1 className={`${type.h1} text-balance`}>{copy.headline}</h1>
                 <p className={`mt-6 ${type.body} text-base sm:text-lg`}>{copy.subhead}</p>
                 <CmsCta href={copy.ctaHref} className={`${pillPrimary} mt-8`}>
@@ -105,7 +105,7 @@ export default function LandingPage() {
               </div>
             </div>
 
-            <div className="relative order-1 lg:order-2 min-h-[16rem] sm:min-h-[22rem] lg:min-h-full min-w-0 bg-[#FBFAF8]">
+            <div className="relative order-1 lg:order-2 min-h-[12rem] sm:min-h-[16rem] lg:min-h-full min-w-0 bg-[#FBFAF8]">
               <img
                 src={resolveCmsImageUrl(copy.heroImage)}
                 alt={copy.heroImageAlt}
@@ -116,38 +116,6 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
-
-        <div
-          className="relative w-full shrink-0 bg-alignment-primary text-white overflow-hidden"
-          role="region"
-          aria-label="Six alignment domains"
-        >
-          <div
-            className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 sm:w-20 bg-gradient-to-r from-alignment-primary to-transparent"
-            aria-hidden
-          />
-          <div
-            className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 sm:w-20 bg-gradient-to-l from-alignment-primary to-transparent"
-            aria-hidden
-          />
-          <div className="flex w-max motion-safe:animate-marquee-domains motion-reduce:animate-none py-3 sm:py-3.5 will-change-transform">
-            {domainRow}
-            <ul
-              className="flex shrink-0 items-center gap-x-10 sm:gap-x-14 md:gap-x-16 pr-10 sm:pr-14"
-              aria-hidden
-            >
-              {heroDomains.map(({ key, label, dot }) => (
-                <li
-                  key={`dup-${key}`}
-                  className="flex items-center gap-2 text-[9px] sm:text-[10px] font-medium uppercase tracking-[0.2em] whitespace-nowrap"
-                >
-                  <span className={`h-1.5 w-1.5 rounded-full shrink-0 ${dot}`} aria-hidden />
-                  {label}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
 
         <section className="w-full border-t border-alignment-accent/[0.06]">
           <div className={`${pageWidth} py-16 sm:py-20`}>
@@ -180,6 +148,37 @@ export default function LandingPage() {
         </section>
 
         <section className="w-full border-t border-alignment-accent/[0.06]">
+          <div
+            className="relative w-full shrink-0 bg-alignment-primary text-white overflow-hidden"
+            role="region"
+            aria-label="Six alignment domains"
+          >
+            <div
+              className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 sm:w-20 bg-gradient-to-r from-alignment-primary to-transparent"
+              aria-hidden
+            />
+            <div
+              className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 sm:w-20 bg-gradient-to-l from-alignment-primary to-transparent"
+              aria-hidden
+            />
+            <div className="flex w-max motion-safe:animate-marquee-domains motion-reduce:animate-none py-3 sm:py-3.5 will-change-transform">
+              {domainRow}
+              <ul
+                className="flex shrink-0 items-center gap-x-10 sm:gap-x-14 md:gap-x-16 pr-10 sm:pr-14"
+                aria-hidden
+              >
+                {heroDomains.map(({ key, label, dot }) => (
+                  <li
+                    key={`dup-${key}`}
+                    className="flex items-center gap-2 text-[9px] sm:text-[10px] font-medium uppercase tracking-[0.2em] whitespace-nowrap"
+                  >
+                    <span className={`h-1.5 w-1.5 rounded-full shrink-0 ${dot}`} aria-hidden />
+                    {label}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
           <div className={`${pageWidth} py-16 sm:py-20`}>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 lg:items-center">
               <div className="max-w-md">

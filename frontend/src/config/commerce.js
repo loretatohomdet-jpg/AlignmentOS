@@ -98,7 +98,7 @@ function digitalPrint(digitalPrice, printPrice) {
 
 export const resetProduct = {
   sku: 'alignment-reset',
-  title: 'Reset',
+  title: 'Daily',
   kicker: 'Fresh start',
   tagline: 'A fresh start for what matters.',
   body: 'A short guided reset for stepping back, clearing what no longer belongs, and deciding what matters next.',
@@ -106,7 +106,7 @@ export const resetProduct = {
   path: '/shop/reset',
   checkoutUrl: checkout(shopResetUrl),
   image: companionImages.reset,
-  imageAlt: 'Reset — A Fresh Start for What Matters',
+  imageAlt: 'Daily — A Fresh Start for What Matters',
   priceLabel: digitalPrint(12, 24),
   cta: 'Choose Digital',
   event: 'checkout_started',
