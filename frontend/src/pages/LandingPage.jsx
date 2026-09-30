@@ -20,10 +20,10 @@ const DOMAIN_KEYS = {
 
 function ProductPreviewCards() {
   return (
-    <div className="relative min-h-[18rem] sm:min-h-[22rem]">
-      <div className="rounded-2xl border border-alignment-accent/[0.08] bg-alignment-surface shadow-apple px-5 py-5 sm:px-6 max-w-sm">
+    <div className="relative mx-auto w-full max-w-xl lg:mx-0 pb-28 sm:pb-10">
+      <div className="rounded-2xl border border-white/80 bg-white/45 shadow-apple backdrop-blur-md px-5 py-5 sm:px-6 sm:pr-44">
         <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-accent/65">Daily</p>
-        <div className="mt-3 flex gap-3 text-[11px] uppercase tracking-[0.14em] text-alignment-accent/55">
+        <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-[11px] uppercase tracking-[0.14em] text-alignment-accent/55">
           <span>Morning</span>
           <span className="text-alignment-primary font-medium">Today</span>
           <span>Evening</span>
@@ -45,14 +45,12 @@ function ProductPreviewCards() {
           </li>
         </ul>
       </div>
-      <div className="mt-4 sm:mt-0 sm:absolute sm:right-0 sm:top-10 sm:w-[min(100%,15.5rem)] rounded-2xl border border-alignment-primary/20 bg-alignment-primary/[0.07] shadow-apple px-5 py-5">
-        <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-primary">Your focus</p>
-        <p className="mt-3 font-display text-lg font-medium text-alignment-accent leading-snug">
-          Grow in attentiveness.
-        </p>
-        <p className="mt-2 text-sm text-alignment-accent/90">One change. Practiced daily.</p>
-        <div className="mt-4 h-1.5 rounded-full bg-alignment-accent/10 overflow-hidden" aria-hidden>
-          <div className="h-full w-[62%] rounded-full bg-alignment-primary" />
+      <div className="absolute left-8 right-0 bottom-0 sm:left-auto sm:w-[16.5rem] rounded-2xl bg-alignment-primary text-[#FBFAF8] shadow-apple-lg px-5 py-5">
+        <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-[#FBFAF8]/75">Your focus</p>
+        <p className="mt-3 font-display text-lg font-medium leading-snug">Grow in attentiveness.</p>
+        <p className="mt-2 text-sm text-[#FBFAF8]/85">One change. Practiced daily.</p>
+        <div className="mt-4 h-1.5 rounded-full bg-white/25 overflow-hidden" aria-hidden>
+          <div className="h-full w-[62%] rounded-full bg-[#FBFAF8]" />
         </div>
       </div>
     </div>
@@ -93,9 +91,9 @@ export default function LandingPage() {
 
       <main id="main-content" className="flex-1 w-full scroll-mt-16" tabIndex={-1}>
         <section className="relative w-full overflow-hidden bg-[#FBFAF8]">
-          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.45fr)_minmax(0,0.75fr)] lg:min-h-[min(78vh,42rem)]">
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.45fr)_minmax(0,0.75fr)] lg:items-center">
             <div className="relative z-10 flex flex-col justify-center px-5 sm:px-8 lg:px-12 xl:px-16 py-14 sm:py-16 lg:py-20 order-2 lg:order-1 bg-[#FBFAF8]">
-              <div className="max-w-xl">
+              <div className="max-w-xl lg:ml-[10%] xl:ml-[16%]">
                 <h1 className={`${type.h1} text-balance`}>{copy.headline}</h1>
                 <p className={`mt-6 ${type.body} text-base sm:text-lg`}>{copy.subhead}</p>
                 <CmsCta href={copy.ctaHref} className={`${pillPrimary} mt-8`}>
@@ -105,11 +103,11 @@ export default function LandingPage() {
               </div>
             </div>
 
-            <div className="relative order-1 lg:order-2 min-h-[12rem] sm:min-h-[16rem] lg:min-h-full min-w-0 bg-[#FBFAF8]">
+            <div className="relative order-1 lg:order-2 min-w-0 bg-[#FBFAF8] flex items-center">
               <img
                 src={resolveCmsImageUrl(copy.heroImage)}
                 alt={copy.heroImageAlt}
-                className="absolute inset-0 h-full w-full object-cover object-[52%_48%]"
+                className="h-auto w-full object-contain"
                 decoding="async"
                 fetchPriority="high"
               />

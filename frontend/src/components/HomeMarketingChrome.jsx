@@ -159,14 +159,14 @@ export function SitePageFooter({ extra = null }) {
   return (
     <footer className="w-full min-w-0 max-w-full overflow-x-hidden border-t border-alignment-accent/[0.08] bg-alignment-surfaceSoft/95 backdrop-blur-[2px] pb-[max(1rem,env(safe-area-inset-bottom))] mt-auto">
       <div className="w-full min-w-0 max-w-6xl xl:max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 py-10 sm:py-12">
-        <div className="flex flex-col gap-8 xl:flex-row xl:items-start xl:justify-between xl:gap-12">
-          <div className="max-w-md shrink-0">
-            <BrandLogo iconHeightPx={44} />
-            <p className={`mt-4 ${type.body}`}>{tagline}</p>
+        <div>
+          <div className="flex items-center justify-between gap-6">
+            <BrandLogo iconHeightPx={44} className="shrink-0" />
+            <div className="min-w-0 overflow-x-auto">
+              <SiteMarketingFooterNav className={`${linkRow} justify-end`} />
+            </div>
           </div>
-          <div className="min-w-0 overflow-x-auto xl:flex xl:justify-end xl:pt-3">
-            <SiteMarketingFooterNav className={linkRow} />
-          </div>
+          <p className={`mt-4 max-w-md ${type.body}`}>{tagline}</p>
         </div>
         <div className="mt-10 pt-8 border-t border-alignment-accent/[0.06] flex flex-nowrap items-center justify-between gap-x-4">
           <p className={`min-w-0 ${type.muted}`}>{copyright}</p>
