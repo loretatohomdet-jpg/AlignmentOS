@@ -91,8 +91,8 @@ export default function LandingPage() {
 
       <main id="main-content" className="flex-1 w-full scroll-mt-16" tabIndex={-1}>
         <section className="relative w-full overflow-hidden bg-[#FBFAF8]">
-          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-center">
-            <div className="relative z-10 flex flex-col justify-center px-5 sm:px-8 lg:pl-12 lg:pr-8 xl:pl-16 xl:pr-10 py-12 sm:py-16 lg:py-20 order-2 lg:order-1 bg-[#FBFAF8]">
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
+            <div className="relative z-10 flex flex-col justify-center px-5 sm:px-8 lg:pl-12 lg:pr-10 xl:pl-16 xl:pr-14 py-12 sm:py-16 lg:py-20 order-2 lg:order-1 bg-[#FBFAF8]">
               <div className="max-w-xl">
                 <h1 className={`${type.h1} text-balance`}>{copy.headline}</h1>
                 <p className={`mt-6 ${type.body} text-base sm:text-lg`}>{copy.subhead}</p>
@@ -103,19 +103,11 @@ export default function LandingPage() {
               </div>
             </div>
 
-            <div className="relative order-1 lg:order-2 min-w-0 bg-[#FBFAF8] flex items-center justify-end">
+            <div className="relative order-1 lg:order-2 min-h-[16rem] sm:min-h-[22rem] lg:min-h-full overflow-hidden bg-[#FBFAF8]">
               <img
                 src={resolveCmsImageUrl(copy.heroImage)}
                 alt={copy.heroImageAlt}
-                className="h-auto w-full max-w-[64rem] object-contain object-right"
-                style={{
-                  WebkitMaskImage:
-                    'linear-gradient(to right, transparent 0%, #000 18%, #000 94%, transparent 100%), linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%)',
-                  WebkitMaskComposite: 'source-in',
-                  maskImage:
-                    'linear-gradient(to right, transparent 0%, #000 18%, #000 94%, transparent 100%), linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%)',
-                  maskComposite: 'intersect',
-                }}
+                className="absolute inset-0 h-full w-full object-cover object-center lg:[mask-image:linear-gradient(to_right,transparent_0%,#000_14%)] lg:[-webkit-mask-image:linear-gradient(to_right,transparent_0%,#000_14%)]"
                 decoding="async"
                 fetchPriority="high"
               />
