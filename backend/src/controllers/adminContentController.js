@@ -131,6 +131,20 @@ async function ensureContent() {
   if (missingOffers.length) {
     await prisma.shopOffer.createMany({ data: missingOffers });
   }
+  await prisma.shopOffer.updateMany({
+    where: { sku: 'alignment-reset', name: 'Reset' },
+    data: { name: 'Daily' },
+  });
+  const resetPage = await prisma.sitePage.findUnique({ where: { path: '/shop/reset' } });
+  if (resetPage && (resetPage.title === 'Reset' || resetPage.headline === 'Reset')) {
+    await prisma.sitePage.update({
+      where: { id: resetPage.id },
+      data: {
+        ...(resetPage.title === 'Reset' ? { title: 'Daily' } : {}),
+        ...(resetPage.headline === 'Reset' ? { headline: 'Daily' } : {}),
+      },
+    });
+  }
   contentReady = true;
 }
 
