@@ -103,11 +103,19 @@ export default function LandingPage() {
               </div>
             </div>
 
-            <div className="relative order-1 lg:order-2 min-w-0 bg-[#FBFAF8] flex items-center justify-end lg:py-8 lg:pr-6 xl:pr-10">
+            <div className="relative order-1 lg:order-2 min-w-0 bg-[#FBFAF8] flex items-center justify-end">
               <img
                 src={resolveCmsImageUrl(copy.heroImage)}
                 alt={copy.heroImageAlt}
                 className="h-auto w-full max-w-[64rem] object-contain object-right"
+                style={{
+                  WebkitMaskImage:
+                    'linear-gradient(to right, transparent 0%, #000 18%, #000 94%, transparent 100%), linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%)',
+                  WebkitMaskComposite: 'source-in',
+                  maskImage:
+                    'linear-gradient(to right, transparent 0%, #000 18%, #000 94%, transparent 100%), linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%)',
+                  maskComposite: 'intersect',
+                }}
                 decoding="async"
                 fetchPriority="high"
               />
