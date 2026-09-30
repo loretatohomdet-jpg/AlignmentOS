@@ -91,7 +91,7 @@ export default function LandingPage() {
 
       <main id="main-content" className="flex-1 w-full scroll-mt-16" tabIndex={-1}>
         <section className="relative w-full overflow-hidden bg-[#FBFAF8]">
-          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
             <div className="relative z-10 flex flex-col justify-center px-5 sm:px-8 lg:pl-12 lg:pr-10 xl:pl-16 xl:pr-14 py-12 sm:py-16 lg:py-20 order-2 lg:order-1 bg-[#FBFAF8]">
               <div className="max-w-xl">
                 <h1 className={`${type.h1} text-balance`}>{copy.headline}</h1>
@@ -103,13 +103,11 @@ export default function LandingPage() {
               </div>
             </div>
 
-            <div className="relative order-1 lg:order-2 bg-[#FBFAF8] flex items-center justify-end">
+            <div className="relative order-1 lg:order-2 min-h-[18rem] sm:min-h-[24rem] lg:min-h-full overflow-hidden bg-[#FBFAF8]">
               <img
                 src={resolveCmsImageUrl(copy.heroImage)}
                 alt={copy.heroImageAlt}
-                width={1024}
-                height={576}
-                className="h-auto w-full max-w-[36rem] xl:max-w-[40rem] object-contain object-right lg:[mask-image:linear-gradient(to_right,transparent_0%,#000_12%)] lg:[-webkit-mask-image:linear-gradient(to_right,transparent_0%,#000_12%)]"
+                className="absolute inset-0 h-full w-full object-cover object-[center_42%] lg:[mask-image:linear-gradient(to_right,transparent_0%,#000_14%)] lg:[-webkit-mask-image:linear-gradient(to_right,transparent_0%,#000_14%)]"
                 decoding="async"
                 fetchPriority="high"
               />
