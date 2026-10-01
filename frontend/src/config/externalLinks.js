@@ -50,7 +50,7 @@ export const shopCollectionUrl = trimUrl(import.meta.env.VITE_SHOP_COLLECTION_UR
 export const shopCollectionPrintUrl = trimUrl(import.meta.env.VITE_SHOP_COLLECTION_PRINT_URL);
 
 /** Fallback when no VITE_PROGRAM_HUB_URL — existing formation site */
-export const formationExploreFallback = 'https://simplicityandproductivity.com/';
+export const formationExploreFallback = 'https://simplicityandproductivity.teachable.com/';
 export const monicaStoryUrl =
   trimUrl(import.meta.env.VITE_MONICA_STORY_URL) || creatorUrl || formationExploreFallback;
 

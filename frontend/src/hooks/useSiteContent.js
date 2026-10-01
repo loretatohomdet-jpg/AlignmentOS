@@ -105,7 +105,7 @@ export function marketingPageCopy(path, cms, heroDefaults) {
 export function siteFooterCopy(cms) {
   const sections = wasEditedInAdmin(cms) ? mergeHomeSections(cms?.sections) : mergeHomeSections(null);
   return {
-    tagline: sections.footerTagline,
+    tagline: replaceStale(sections.footerTagline, 'footerTagline', HOME_COPY_DEFAULTS.footerTagline),
     copyright: sections.footerCopyright,
   };
 }

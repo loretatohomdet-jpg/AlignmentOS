@@ -185,7 +185,7 @@ Implement as `assignHabits(profileId, userId, segmentTags?)` in backend; call af
 ### 4.3 Formation transition modal
 
 - **Trigger**: After **14 days of habit completions** OR **AQ &lt; 70** (configurable).
-- **Content**: Invitation to the deeper **Simplicity** platform (link to simplicityandproductivity.com or Formation program); emphasize continuity (e.g. “You’ve built a foundation—explore the full program”).
+- **Content**: Invitation to the deeper **Simplicity** platform (link to simplicityandproductivity.teachable.com or Formation program); emphasize continuity (e.g. “You’ve built a foundation—explore the full program”).
 - **Dismiss**: “Remind me later” / “Go to Simplicity”; store dismissal so modal doesn’t show again for X days if desired.
 
 ---

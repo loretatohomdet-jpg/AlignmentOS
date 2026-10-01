@@ -24,6 +24,6 @@ export const siteSecondaryFooter = [
   ...siteLegalLinks,
 ];
 
-export const siteFooterTagline = 'See what is off. Start one practice.';
+export const siteFooterTagline = 'A more intentional life is possible.';
 export const siteFooterCopyright = '© Alignment OS';
 export const siteContactEmail = 'hello@alignmentos.co';

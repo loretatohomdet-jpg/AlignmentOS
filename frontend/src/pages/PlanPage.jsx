@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_BASE, networkErrorUserMessage } from '../config/apiBase';
 import { insightFromResult, planFromInsight } from '../config/domainInsight';
-import { formationTeachableUrl } from '../config/externalLinks';
 import { type } from '../config/siteType';
 import { pillPrimary, pillGhost } from '../components/HomeMarketingChrome';
 import { usePageTitle } from '../hooks/usePageTitle';
@@ -108,8 +107,16 @@ export default function PlanPage() {
     );
   }
 
+  const doneCount = habits.filter((h) => h.completedToday).length;
+  const streak = habits.reduce((max, h) => Math.max(max, Number(h.streak) || 0), 0);
+  const todayLabel = new Date().toLocaleDateString(undefined, {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+  });
+
   return (
-    <div className="mx-auto w-full max-w-2xl px-6 pb-20 pt-10 sm:pt-14">
+    <div className="mx-auto w-full max-w-6xl px-5 sm:px-8 pb-20 pt-8 sm:pt-12">
       {claimNote ? (
         <p
           className="mb-6 rounded-xl border border-alignment-accent/10 bg-alignment-surface px-4 py-3 text-sm text-alignment-accent/90 leading-relaxed"
@@ -118,77 +125,100 @@ export default function PlanPage() {
           {claimNote}
         </p>
       ) : null}
-      <p className={type.kicker}>My Plan</p>
-      <h1 className={`mt-4 ${type.h1}`}>A calmer, more aligned you.</h1>
-      <p className={`mt-4 ${type.body}`}>
-        One focus. A few key priorities. A simpler path forward — from {plan.label}.
-      </p>
-
       {error ? (
-        <p className="mt-6 text-sm text-red-800 bg-red-50 border border-red-200 rounded-lg px-4 py-3" role="alert">
+        <p className="mb-6 text-sm text-red-800 bg-red-50 border border-red-200 rounded-lg px-4 py-3" role="alert">
           {error}
         </p>
       ) : null}
 
-      <section className="mt-10 rounded-2xl border border-alignment-primary/20 bg-alignment-primary/[0.08] px-6 py-7">
-        <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-primary">Primary focus</p>
-        <h2 className="mt-3 font-display text-2xl font-medium text-alignment-accent leading-snug">{plan.focusTitle}</h2>
-        <p className="mt-3 text-sm text-alignment-accent/90 leading-relaxed">{plan.focusBody}</p>
-      </section>
-
-      <section className="mt-10">
-        <p className={type.kicker}>This week</p>
-        <h2 className={`mt-3 ${type.h2}`}>Supporting priorities</h2>
-        <ul className="mt-6 divide-y divide-alignment-accent/[0.08] border-t border-b border-alignment-accent/[0.08]">
-          {plan.priorities.map((item) => (
-            <li key={item.id} className="flex items-start gap-4 py-5">
-              <button
-                type="button"
-                disabled={!habits.some((h) => h.id === item.id) || item.completedToday || completingId === item.id}
-                onClick={() => markDone(item.id)}
-                className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border ${
-                  item.completedToday
-                    ? 'border-alignment-primary bg-alignment-primary text-white'
-                    : 'border-alignment-accent/20 text-transparent'
-                } disabled:opacity-60`}
-                aria-label={item.completedToday ? `${item.title} held` : `Mark ${item.title} done`}
-              >
-                <span aria-hidden>✓</span>
-              </button>
-              <div className="min-w-0 flex-1">
-                <p className="font-medium text-alignment-accent">{item.title}</p>
-                <p className="mt-1 text-sm text-alignment-accent/75 leading-relaxed">{item.cadence}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section className="mt-10 rounded-2xl border border-alignment-accent/10 bg-alignment-surface px-6 py-6">
-        <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-accent/65">What can wait</p>
-        <p className="mt-3 text-sm text-alignment-accent/90 leading-relaxed">{plan.whatCanWait}</p>
-      </section>
-
-      <section className="mt-10 rounded-2xl border border-alignment-accent/10 bg-alignment-surfaceSoft/90 px-6 py-6">
-        <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-alignment-primary">Why this matters</p>
-        <p className="mt-3 text-sm text-alignment-accent/90 leading-relaxed">{plan.why}</p>
-        <p className="mt-4 font-display text-lg font-medium text-alignment-accent leading-snug">
-          Less noise. More of what matters.
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p className="text-[11px] uppercase tracking-[0.16em] text-alignment-accent/55">{todayLabel}</p>
+          <h1 className={`mt-2 ${type.h1}`}>My Plan</h1>
+          <p className="mt-2 font-display text-lg text-alignment-accent">Choose what matters now.</p>
+        </div>
+        <p className="shrink-0 rounded-xl border border-alignment-accent/10 bg-alignment-surface px-4 py-2 text-sm text-alignment-accent">
+          This week
         </p>
-      </section>
+      </div>
 
-      <div className="mt-12 flex flex-col sm:flex-row gap-3">
-        <Link to="/practice#assigned-practice" className={pillPrimary}>
-          Open Daily →
-        </Link>
-        <a
-          href={formationTeachableUrl({ domain: plan.domain })}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={pillGhost}
-        >
-          Go deeper in Formation
-        </a>
+      <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1.5fr)_minmax(16rem,0.7fr)] lg:items-start">
+        <div>
+          <section className="rounded-2xl border border-alignment-accent/10 bg-alignment-surface/80 px-5 py-6 sm:px-6">
+            <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-alignment-accent/55">Your primary focus</p>
+            <h2 className="mt-3 font-display text-2xl font-medium text-alignment-accent leading-snug">{plan.focusTitle}</h2>
+            <p className="mt-2 text-sm text-alignment-accent/90 leading-relaxed">{plan.focusBody}</p>
+            <p className="mt-3 text-sm text-alignment-accent/65">From {plan.label}.</p>
+          </section>
+
+          <section className="mt-8">
+            <h2 className="font-display text-xl font-medium text-alignment-accent">Supporting priorities</h2>
+            <ul className="mt-4 space-y-3">
+              {plan.priorities.map((item) => (
+                <li key={item.id} className="flex items-center gap-3 rounded-xl border border-alignment-accent/10 bg-white px-4 py-3">
+                  <button
+                    type="button"
+                    disabled={!habits.some((h) => h.id === item.id) || item.completedToday || completingId === item.id}
+                    onClick={() => markDone(item.id)}
+                    className={`flex h-5 w-5 shrink-0 items-center justify-center rounded border ${
+                      item.completedToday
+                        ? 'border-alignment-primary bg-alignment-primary text-white'
+                        : 'border-alignment-accent/25 text-transparent'
+                    } disabled:opacity-60`}
+                    aria-label={item.completedToday ? `${item.title} held` : `Mark ${item.title} done`}
+                  >
+                    <span aria-hidden className="text-[11px]">✓</span>
+                  </button>
+                  <div className="min-w-0 flex-1">
+                    <p className="font-medium text-alignment-accent">{item.title}</p>
+                    <p className="text-sm text-alignment-accent/65">{item.cadence}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section className="mt-8 rounded-2xl border border-alignment-accent/10 bg-alignment-surface/70 px-5 py-5">
+            <h2 className="font-display text-xl font-medium text-alignment-accent">What can wait</h2>
+            <p className="mt-3 text-sm text-alignment-accent/90 leading-relaxed">{plan.whatCanWait}</p>
+          </section>
+        </div>
+
+        <aside className="flex flex-col gap-4">
+          <section className="rounded-2xl border border-alignment-accent/10 bg-white p-5">
+            <div className="flex items-center justify-between gap-3">
+              <h2 className="font-display text-lg font-medium text-alignment-accent">This week</h2>
+              <Link to="/practice#assigned-practice" className="text-sm text-alignment-accent/70 hover:text-alignment-accent">
+                Open Daily →
+              </Link>
+            </div>
+            {plan.practice?.title ? (
+              <p className="mt-4 text-sm text-alignment-accent">
+                <span className="block text-[10px] uppercase tracking-[0.16em] text-alignment-accent/55">Practice</span>
+                <span className="mt-1 block font-medium">{plan.practice.title}</span>
+              </p>
+            ) : null}
+            <p className="mt-4 text-sm text-alignment-accent/80">
+              {habits.length ? `${doneCount} of ${habits.length} completed` : 'Practices appear here once Daily is open.'}
+            </p>
+            {streak > 0 ? <p className="mt-1 text-sm text-alignment-accent/80">{streak} day streak</p> : null}
+          </section>
+
+          <section className="rounded-2xl border border-alignment-accent/10 bg-alignment-surface/80 px-5 py-6">
+            <p className="font-display text-lg leading-snug text-alignment-accent">Less noise. More of what matters.</p>
+            {plan.why ? <p className="mt-3 text-sm text-alignment-accent/75 leading-relaxed">{plan.why}</p> : null}
+          </section>
+
+          <section className="rounded-2xl border border-alignment-accent/10 bg-white p-5">
+            <h2 className="font-display text-lg font-medium text-alignment-accent">Need a reset?</h2>
+            <p className="mt-2 text-sm text-alignment-accent/80 leading-relaxed">
+              If things feel off, return to your Alignment Map and adjust your focus.
+            </p>
+            <Link to="/alignment-map" className={`${pillPrimary} mt-5`}>
+              Open My Map →
+            </Link>
+          </section>
+        </aside>
       </div>
     </div>
   );
