@@ -76,7 +76,7 @@ export function sawSnapshotContinue() {
 /** After claim/signup — open Snapshot when a fresh handoff is waiting. */
 export function preferSnapshotIfFresh(path) {
   try {
-    if (sessionStorage.getItem(FRESH_RESULT_KEY)) return '/snapshot';
+    if (sessionStorage.getItem(FRESH_RESULT_KEY)) return '/alignment-map';
   } catch (_) {}
   return path;
 }

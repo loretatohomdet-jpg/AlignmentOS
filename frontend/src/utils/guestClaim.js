@@ -41,7 +41,7 @@ export function noteClaimOutcome({ claimed, reason, returnTo }) {
     clearGuestEmail();
     return;
   }
-  if (!returnTo || !(String(returnTo).includes('/plan') || String(returnTo).includes('/snapshot'))) return;
+  if (!returnTo || !(String(returnTo).includes('/plan') || String(returnTo).includes('/snapshot') || String(returnTo).includes('/alignment-map'))) return;
   const message = CLAIM_MESSAGES[reason] || CLAIM_MESSAGES.NO_PENDING;
   try {
     sessionStorage.setItem(CLAIM_NOTE_KEY, message);

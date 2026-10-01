@@ -4,7 +4,7 @@ import { domainScoresToDisplayPct } from '../utils/domainScores';
 const MAP_NODES = [
   { pillar: 'IDENTITY', label: 'Identity', sub: 'Who you are', angle: -90 },
   { pillar: 'PURPOSE', label: 'Purpose', sub: 'What you are for', angle: -30 },
-  { pillar: 'EXECUTION', label: 'Execution', sub: 'How you follow through', angle: 30 },
+  { pillar: 'EXECUTION', label: 'Follow-through', sub: 'How you follow through', angle: 30 },
   { pillar: 'HABITS', label: 'Habits', sub: 'What you do daily', angle: 90 },
   { pillar: 'ENVIRONMENT', label: 'Environment', sub: 'What surrounds you', angle: 150 },
   { pillar: 'MINDSET', label: 'Mindset', sub: 'How you think', angle: 210 },
@@ -60,6 +60,20 @@ export default function AlignmentMapHex({ result = null, className = 'w-full h-a
         className="fill-alignment-accent/[0.04] stroke-alignment-accent/[0.12]"
         strokeWidth="1"
       />
+      {scored ? (
+        <polygon
+          points={MAP_NODES.map((d) => {
+            const pct = pctFor(result, d.pillar) ?? 0;
+            const p = pt(d.angle, Math.max(18, (pct / 100) * rHex));
+            return `${p.x},${p.y}`;
+          }).join(' ')}
+          fill="#6E7158"
+          fillOpacity="0.22"
+          stroke="#6E7158"
+          strokeOpacity="0.55"
+          strokeWidth="1.5"
+        />
+      ) : null}
       {MAP_NODES.map((d) => {
         const p = pt(d.angle, rLine);
         return (
@@ -166,7 +180,7 @@ export default function AlignmentMapHex({ result = null, className = 'w-full h-a
           <foreignObject key={`fo-${d.pillar}`} x={x} y={y} width="116" height="48">
             <div className={`${align} leading-tight px-1`}>
               <p className="text-[9px] font-semibold uppercase tracking-[0.12em] text-alignment-accent">{d.label}</p>
-              <p className="mt-0.5 text-[8px] text-alignment-accent/80">{pct != null ? `${pct}%` : d.sub}</p>
+              <p className="mt-0.5 text-[11px] font-medium text-alignment-accent">{pct != null ? pct : d.sub}</p>
             </div>
           </foreignObject>
         );

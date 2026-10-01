@@ -257,7 +257,7 @@ export default function AssessmentPage() {
       try {
         sessionStorage.setItem(FRESH_RESULT_KEY, JSON.stringify({ ...res.data, _freshSubmission: true }));
       } catch (_) {}
-      navigate('/snapshot', { replace: true });
+      navigate('/alignment-map', { replace: true });
     } catch (err) {
       console.error(err);
       setError(err.response?.data?.message || err.message || 'Failed to submit assessment');
@@ -687,14 +687,14 @@ export default function AssessmentPage() {
                       Create a free account to open your Snapshot and My Plan. This practice is already waiting.
                     </p>
                     <Link
-                      to={`/signup?returnTo=${encodeURIComponent('/snapshot')}&email=${encodeURIComponent(guestEmail.trim())}`}
+                      to={`/signup?returnTo=${encodeURIComponent('/alignment-map')}&email=${encodeURIComponent(guestEmail.trim())}`}
                       className={`${pillPrimary} mt-5`}
                     >
                       Create a free account →
                     </Link>
                     <p className="mt-4 text-sm text-alignment-accent/90">
                       <Link
-                        to={`/login?returnTo=${encodeURIComponent('/snapshot')}&email=${encodeURIComponent(guestEmail.trim())}`}
+                        to={`/login?returnTo=${encodeURIComponent('/alignment-map')}&email=${encodeURIComponent(guestEmail.trim())}`}
                         className="underline underline-offset-2 hover:text-alignment-accent"
                       >
                         Already have an account? Sign in
